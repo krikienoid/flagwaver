@@ -22,8 +22,8 @@
         $openImg = $( '#open-img-file' );
 
     // Set flag img
-    function setLink ( imgSrc, w, h ) {
-        window.flagWaver.setFlagImg( { src : imgSrc, w : w, h : h } );
+    function setLink ( imgSrc ) {
+        window.flagWaver.setFlagImg( { src : imgSrc } );
     }
 
     // Auto load flag image from hash data url
@@ -32,11 +32,7 @@
             imgSrc;
         if ( hashData && hashData.length > 1 ) {
             imgSrc = window.unescape( hashData[ 1 ] );
-            setLink(
-                imgSrc,
-                window.unescape( hashData[ 2 ] ),
-                window.unescape( hashData[ 3 ] )
-            );
+            setLink( imgSrc );
             $setLink.val( imgSrc );
         }
     } );
@@ -44,15 +40,9 @@
     // Generate hashed url for loaded flag image
     $getLink.on( 'click', function getLink () {
         if ( $setLink.val().length ) {
-            var imageData = window.flagWaver.getFlagImg(),
-                w = ( imageData.w )? imageData.w : 0,
-                h = ( imageData.h )? imageData.h : 0;
             window.prompt(
                 'Your link:',
-                window.location.href.split( '#' )[ 0 ] +
-                '#' + window.escape( $setLink.val() ) +
-                ((w && h)? '#' + window.escape( w ) : '') +
-                ((w && h)? '#' + window.escape( h ) : '')
+                window.location.href.split( '#' )[ 0 ] + '#' + window.escape( $setLink.val() )
             );
         }
         else {

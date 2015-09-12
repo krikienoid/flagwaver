@@ -501,27 +501,54 @@
 
     function setFlagImg ( imageDataVal ) {
 
-        var xSegs = 15,
-            ySegs = 10,
-            clothTexture,
-            flagMaterial;
-
-        cloth = new Cloth( xSegs, ySegs );
+        var SEG       = 10,
+            xSegs     = 15,
+            ySegs     = 10,
+            imgSrc    = 'img/NZ.2b.png',
+            imgWidth  = 15,
+            imgHeight = 10;
 
         // Get image data
-        if ( imageDataVal ) {
-            imageData = imageDataVal;
-        }
-        if ( imageData && imageData.w ) xSegs = window.Number( imageData.w );
-        if ( imageData && imageData.h ) ySegs = window.Number( imageData.h );
+        if ( imageDataVal ) imageData = imageDataVal;
+
+        // Get image src
+        if ( imageData && imageData.src ) imgSrc = imageData.src;
+
+        // Load image file
+        testImg = new Image();
+        testImg.onload = function () {
+
+            // Get flag size from file
+            imgWidth  = this.width;
+            imgHeight = this.height;
+            if ( imgWidth / imgHeight < 1 ) { // vertical flag
+                xSegs = SEG;
+                ySegs = window.Math.round( SEG * imgHeight / imgWidth );
+            }
+            else { // horizontal or square flag
+                xSegs = window.Math.round( SEG * imgWidth / imgHeight );
+                ySegs = SEG;
+            }
+
+            // Get flag size from user input
+            if ( imageData && imageData.w ) xSegs = window.Number( imageData.w );
+            if ( imageData && imageData.h ) ySegs = window.Number( imageData.h );
+
+            // Init flag cloth
+            cloth = new Cloth( xSegs, ySegs );
+            setFlag( imgSrc );
+
+        };
+        testImg.src = imgSrc;
+
+    }
+
+    function setFlag ( imgSrc ) {
+
+        var clothTexture, flagMaterial;
 
         // Init cloth texture
-        if ( imageData && imageData.src ) {
-            clothTexture = THREE.ImageUtils.loadTexture( imageData.src );
-        }
-        else {
-            clothTexture = THREE.ImageUtils.loadTexture( 'img/NZ.2b.png' );
-        }
+        clothTexture = THREE.ImageUtils.loadTexture( imgSrc );
         //clothTexture.image.crossOrigin = 'anonymous';
         clothTexture.wrapS = clothTexture.wrapT = THREE.RepeatWrapping;
         clothTexture.anisotropy = 16;
@@ -564,6 +591,7 @@
             fragmentShader : fragmentShader
         } );
         scene.add( object );
+
     }
 
     function setWind ( value ) {
