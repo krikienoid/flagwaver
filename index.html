@@ -24,7 +24,8 @@
     <script type="text/javascript" src="js/three50dev2.js"></script>
 
 	<!-- Main -->
-	<link   type="text/css" rel="stylesheet" href="css/flagwaver.css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css" />
+	<link type="text/css" rel="stylesheet" href="css/flagwaver.css" />
 
 </head>
 
@@ -39,15 +40,20 @@
 		<div class="wrapper-body">
 
             <div class="wrapper-inputs">
-                <p>
-                    Enter image URL:
-                    <input id="set-img-link" />
+                <div class="wrapper-row">
+                    <input id="set-img-link" placeholder="Enter image URL..." />
                     <input id="get-img-link" type="button" value="Get Link" />
-                </p>
-                <p>
-                    Open a file:
-                    <input type="file" accept="image/*" id="open-img-file" />
-                </p>
+                </div>
+                <div class="wrapper-row">
+                    <div class="file-input">
+                        Upload image from file
+                        <input type="file" accept="image/*" value="Open a file" id="open-img-file" />
+                    </div>
+                    <div class="wind-input">
+                        <input id="wind-toggle" type="checkbox" checked="checked" />
+                        <label></label>
+                    </div>
+                </div>
             </div>
 
             <div class="js-flag-canvas"></div>

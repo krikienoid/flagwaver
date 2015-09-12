@@ -17,9 +17,10 @@
     // Quick Links
     //
 
-    var $setLink = $( '#set-img-link' ),
-        $getLink = $( '#get-img-link' ),
-        $openImg = $( '#open-img-file' );
+    var $setImgLink  = $( '#set-img-link' ),
+        $getImgLink  = $( '#get-img-link' ),
+        $openImgFile = $( '#open-img-file' ),
+        $windToggle  = $( '#wind-toggle' );
 
     // Set flag img
     function setLink ( imgSrc ) {
@@ -33,16 +34,16 @@
         if ( hashData && hashData.length > 1 ) {
             imgSrc = window.unescape( hashData[ 1 ] );
             setLink( imgSrc );
-            $setLink.val( imgSrc );
+            $setImgLink.val( imgSrc );
         }
     } );
 
     // Generate hashed url for loaded flag image
-    $getLink.on( 'click', function getLink () {
-        if ( $setLink.val().length ) {
+    $getImgLink.on( 'click', function getLink () {
+        if ( $setImgLink.val().length ) {
             window.prompt(
                 'Your link:',
-                window.location.href.split( '#' )[ 0 ] + '#' + window.escape( $setLink.val() )
+                window.location.href.split( '#' )[ 0 ] + '#' + window.escape( $setImgLink.val() )
             );
         }
         else {
@@ -51,21 +52,30 @@
     } );
 
     // Load flag image from user given url
-    $setLink.on( 'change', function () {
-        setLink( $setLink.val() );
+    $setImgLink.on( 'change', function () {
+        setLink( $setImgLink.val() );
     } );
 
     //
     // Load from file
     //
 
-    $openImg.on( 'change', function () {
-        var file   = $openImg[ 0 ].files[ 0 ],
+    $openImgFile.on( 'change', function () {
+        var file   = $openImgFile[ 0 ].files[ 0 ],
             reader = new FileReader();
         reader.onload = function (e) {
             setLink( e.target.result );
         };
         reader.readAsDataURL( file );
+    } );
+
+    //
+    // Settings
+    //
+
+    $windToggle.on( 'change', function () {
+        if ( this.checked ) window.flagWaver.setWind( 300 );
+        else window.flagWaver.setWind( 0 );
     } );
 
 }( window, document, jQuery ));
