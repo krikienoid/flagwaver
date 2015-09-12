@@ -522,6 +522,7 @@
         else {
             clothTexture = THREE.ImageUtils.loadTexture( 'img/NZ.2b.png' );
         }
+        //clothTexture.image.crossOrigin = 'anonymous';
         clothTexture.wrapS = clothTexture.wrapT = THREE.RepeatWrapping;
         clothTexture.anisotropy = 16;
 

@@ -17,8 +17,9 @@
     // Quick Links
     //
 
-    var $setLink = $( '#set-link' ),
-        $getLink = $( '#get-link' );
+    var $setLink = $( '#set-img-link' ),
+        $getLink = $( '#get-img-link' ),
+        $openImg = $( '#open-img-file' );
 
     // Set flag img
     function setLink ( imgSrc, w, h ) {
@@ -62,6 +63,19 @@
     // Load flag image from user given url
     $setLink.on( 'change', function () {
         setLink( $setLink.val() );
+    } );
+
+    //
+    // Load from file
+    //
+
+    $openImg.on( 'change', function () {
+        var file   = $openImg[ 0 ].files[ 0 ],
+            reader = new FileReader();
+        reader.onload = function (e) {
+            setLink( e.target.result );
+        };
+        reader.readAsDataURL( file );
     } );
 
 }( window, document, jQuery ));
