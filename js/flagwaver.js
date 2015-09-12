@@ -51,31 +51,31 @@
 // Real-time Cloth Animation http://www.darwin3d.com/gamedev/articles/col0599.pdf
 
 //
-// Flag sim
+// Flag Waver Tool
 //
 
 ;(function ( window, document, THREE, undefined ) {
 
     //
-    // Global settings
+    // Global Settings
     //
 
-    // Physics settings
+    // Physics Settings
     var DAMPING = 0.03,
         DRAG    = 1 - DAMPING,
         MASS    = .1,
         GRAVITY = 981 * 1.4;
 
-    // Time settings
+    // Time Settings
     var TIMESTEP    = 18 / 1000,
         TIMESTEP_SQ = TIMESTEP * TIMESTEP;
 
-    // Wind settings
+    // Wind Settings
     var wind         = true,
         windStrength = 300,
         windForce    = new THREE.Vector3( 0, 0, 0 );
 
-    // Ball settings
+    // Ball Settings
     var ballPosition = new THREE.Vector3( 0, -45, 0 ),
         ballSize     = 60; //40
 
@@ -135,7 +135,7 @@
             return u + v * ( w + 1 );
         }
 
-        // Cloth plane
+        // Cloth Plane
         plane = function plane ( u, v ) {
             var x = u * width, //(u-0.5)
                 y = v * height,
@@ -143,12 +143,12 @@
             return new THREE.Vector3( x, y, z );
         };
 
-        // Cloth geometry
+        // Cloth Geometry
         clothGeometry = new THREE.ParametricGeometry( plane, w, h, true );
         clothGeometry.dynamic = true;
         clothGeometry.computeFaceNormals();
 
-        // Create particles
+        // Particles
         for ( v = 0; v <= h ; v++ ) {
             for (u = 0; u <= w; u++ ) {
                 particles.push(
@@ -276,7 +276,7 @@
             pins.push( index( 0, j ) );
         }
 
-        // Public attributes
+        // Public Properties
         this.w            = w;
         this.h            = h;
         this.width        = width;
@@ -292,7 +292,7 @@
     }
 
     //
-    // Simulation functions
+    // Simulation Functions
     //
 
     // Sim variables
@@ -402,7 +402,7 @@
     }
 
     //
-    // Render functions
+    // Render Functions
     //
 
     var scene, camera, renderer, object,
@@ -490,19 +490,20 @@
     function setFlagImg ( imageDataVal ) {
 
         var xSegs = 15,
-            ySegs = 10;
-
-        imageData = imageDataVal;
-        if ( imageData ) {
-            if ( imageData.w ) xSegs = window.Number( imageData.w );
-            if ( imageData.h ) ySegs = window.Number( imageData.h );
-        }
+            ySegs = 10,
+            clothTexture,
+            flagMaterial;
 
         cloth = new Cloth( xSegs, ySegs );
 
-        // init cloth texture
-        var flagMaterial, clothTexture;
-        if (imageData !== undefined){
+        if ( imageDataVal ) {
+            imageData = imageDataVal;
+        }
+
+        if ( imageData && imageData.w ) xSegs = window.Number( imageData.w );
+        if ( imageData && imageData.h ) ySegs = window.Number( imageData.h );
+
+        if ( imageData && imageData.src ) {
             clothTexture = THREE.ImageUtils.loadTexture( imageData.src );
         }
         else {
@@ -612,57 +613,3 @@
     };
 
 }( window, document, THREE ));
-
-//
-// Quick links!
-//
-
-;(function ( window, document, $, undefined ) {
-
-    var $setLink = $( '#set-link' ),
-        $getLink = $( '#get-link' );
-
-    function setLink ( imgSrc, w, h ) {
-        window.flagWaver.setFlagImg( { src : imgSrc, w : w, h : h } );
-    }
-
-    // Auto load flag image from hash data url
-    $( window.document ).ready( function getDataFromURL () {
-        var hashData = window.location.href.split( '#' ),
-            imgSrc;
-        if ( hashData && hashData.length ) {
-            imgSrc = window.unescape( hashData[ 1 ] );
-            setLink(
-                imgSrc,
-                hashData[ 2 ],
-                hashData[ 3 ]
-            );
-            $setLink.val( imgSrc );
-        }
-    } );
-
-    // Generate hashed url for loaded flag image
-    $getLink.on( 'click', function getLink () {
-        if ( $setLink.val().length ) {
-            var imageData = window.flagWaver.getImageData(),
-                w = (imageData.w)? imageData.w : 0,
-                h = (imageData.h)? imageData.h : 0;
-            window.prompt(
-                'Your link:',
-                window.location.href.split('#')[0] + '#' +
-                window.escape( $setLink.val() ) + '#' +
-                ((w && h)? window.escape( w ) + '#' : '') +
-                ((h && h)? window.escape( h ) + '#' : '')
-            );
-        }
-        else {
-            window.alert( 'Input field is empty!' );
-        }
-    } );
-
-    // Load flag image from user given url
-    $setLink.on( 'change', function () {
-        setLink( $setLink.val() );
-    } );
-
-}( window, document, jQuery ));
