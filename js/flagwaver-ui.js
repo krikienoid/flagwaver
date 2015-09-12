@@ -43,7 +43,7 @@
     // Generate hashed url for loaded flag image
     $getLink.on( 'click', function getLink () {
         if ( $setLink.val().length ) {
-            var imageData = window.flagWaver.getImageData(),
+            var imageData = window.flagWaver.getFlagImg(),
                 w = ( imageData.w )? imageData.w : 0,
                 h = ( imageData.h )? imageData.h : 0;
             window.prompt(
