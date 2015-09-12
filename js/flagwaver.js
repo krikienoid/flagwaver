@@ -445,7 +445,7 @@
         scene.add( new THREE.AmbientLight( 0x666666 ) );
         light = new THREE.DirectionalLight( 0xffffff, 1.75 );
         light.color.setHSV( 0.6, 0.125, 1 );
-        light.position.set( 50, 200, 100 );
+        light.position.set( 50, 175, 100 );
         light.position.multiplyScalar( 1.3 );
         light.castShadow      = true;
         light.shadowMapWidth  = 2048;
@@ -463,7 +463,7 @@
         scene.add( light );
 
         // Init flag pole
-        var poleGeo = new THREE.CubeGeometry( 14, 1000, 2 ),
+        var poleGeo = new THREE.CubeGeometry( 14, 750, 2 ),
             poleMat = new THREE.MeshPhongMaterial( {
                 color    : 0x4A4A4A,
                 specular : 0x111111,
@@ -471,7 +471,7 @@
                 perPixel : true
             } ),
             mesh = new THREE.Mesh( poleGeo, poleMat );
-        mesh.position.y    = -200;
+        mesh.position.y    = -175;
         mesh.position.x    = -4;
         mesh.receiveShadow = true;
         mesh.castShadow    = true;
@@ -580,7 +580,7 @@
         object = new THREE.Mesh( cloth.geometry, flagMaterial );
         object.position.set(
             0,
-            (cloth.restDistance * 10 - cloth.height) + 100,
+            (cloth.restDistance * 10 - cloth.height) + 0,
             0
         );
         object.castShadow    = true;

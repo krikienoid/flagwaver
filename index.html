@@ -33,34 +33,28 @@
 
 	<div class="wrapper-main" data-role="page">
 
-		<div class="wrapper-head">
-
+		<div class="wrapper-header">
+            <input id="set-img-link" placeholder="Enter image URL..." />
+            <input id="get-img-link" type="button" value="Get Link" />
+            <div class="file-input">
+                ... or upload from file
+                <input type="file" accept="image/*" value="Open a file" id="open-img-file" />
+            </div>
+            <div class="wind-input">
+                <input id="wind-toggle" type="checkbox" checked="checked" />
+                <label></label>
+            </div>
 		</div>
 
 		<div class="wrapper-body">
-
-            <div class="wrapper-inputs">
-                <div class="wrapper-row">
-                    <input id="set-img-link" placeholder="Enter image URL..." />
-                    <input id="get-img-link" type="button" value="Get Link" />
-                </div>
-                <div class="wrapper-row">
-                    <div class="file-input">
-                        Upload image from file
-                        <input type="file" accept="image/*" value="Open a file" id="open-img-file" />
-                    </div>
-                    <div class="wind-input">
-                        <input id="wind-toggle" type="checkbox" checked="checked" />
-                        <label></label>
-                    </div>
-                </div>
-            </div>
-
             <div class="js-flag-canvas"></div>
-
 		</div>
 
-	</div>
+        <div class="wrapper-footer">
+            <h1>Flag Waver</h1>
+		</div>
+
+    </div>
 
 </body>
 
