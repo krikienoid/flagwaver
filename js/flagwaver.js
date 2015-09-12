@@ -201,6 +201,43 @@ var clothGeometry, pins;
     }
 
     //
+    // quick links!
+    //
+
+    var $setLink = $('#set-link'),
+        $getLink = $('#get-link');
+
+    function setLink (imgLink) {
+        setFlagImg( { src : imgLink } );
+    }
+
+    $(window.document).ready(function getDataFromURL () {
+        var hashData = window.location.href.split( '#' )[ 1 ],
+            imgLink;
+        if ( hashData && hashData.length ) {
+            imgLink = window.unescape( hashData );
+            setLink(imgLink);
+            $setLink.val( imgLink );
+        }
+    });
+
+    $getLink.on( 'click', function getLink () {
+        if ($setLink.val().length) {
+            window.prompt(
+                'Your link:',
+                window.location.href.split('#')[0] + '#' + window.escape($setLink.val())
+            );
+        }
+        else {
+            window.alert('Input field is empty!');
+        }
+    } );
+
+    $setLink.on( 'change', function () {
+        setLink( $setLink.val() );
+    } );
+
+    //
     // export
     //
 
