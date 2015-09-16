@@ -516,6 +516,7 @@
 
         // Load image file
         testImg = new Image();
+        //testImg.setAttribute('crossOrigin', 'anonymous');
         testImg.onload = function () {
 
             // Get flag size from file
