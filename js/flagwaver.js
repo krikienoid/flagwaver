@@ -124,7 +124,7 @@
 
     }
 
-    function Cloth ( w, h, restDistance ) {
+    function Cloth ( xSegs, ySegs, restDistance ) {
 
         var particles   = [],
             constraints = [],
@@ -133,15 +133,15 @@
             u, v,
             plane, geometry;
 
-        w            = w || 10;
-        h            = h || 10;
+        xSegs            = xSegs || 10;
+        ySegs            = ySegs || 10;
         restDistance = restDistance || 20;
-        width        = restDistance * w;
-        height       = restDistance * h;
+        width        = restDistance * xSegs;
+        height       = restDistance * ySegs;
 
         // Index
         function index ( u, v ) {
-            return u + v * ( w + 1 );
+            return u + v * ( xSegs + 1 );
         }
 
         // Cloth Plane
@@ -153,17 +153,17 @@
         };
 
         // Cloth Geometry
-        geometry = new THREE.ParametricGeometry( plane, w, h, true );
+        geometry = new THREE.ParametricGeometry( plane, xSegs, ySegs, true );
         geometry.dynamic = true;
         geometry.computeFaceNormals();
 
         // Particles
-        for ( v = 0; v <= h ; v++ ) {
-            for (u = 0; u <= w; u++ ) {
+        for ( v = 0; v <= ySegs ; v++ ) {
+            for (u = 0; u <= xSegs; u++ ) {
                 particles.push(
                     new Particle (
-                        u / w,
-                        v / h,
+                        u / xSegs,
+                        v / ySegs,
                         0,
                         plane,
                         MASS
@@ -174,8 +174,8 @@
 
         // Structural Constraints
 
-        for ( v = 0; v < h; v++ ) {
-            for ( u = 0; u < w; u++ ) {
+        for ( v = 0; v < ySegs; v++ ) {
+            for ( u = 0; u < xSegs; u++ ) {
 
                 constraints.push( [
                     particles[ index( u, v ) ],
@@ -192,7 +192,7 @@
             }
         }
 
-        for ( u = w, v = 0; v < h; v++ ) {
+        for ( u = xSegs, v = 0; v < ySegs; v++ ) {
             constraints.push( [
                 particles[ index( u, v  ) ],
                 particles[ index( u, v + 1 ) ],
@@ -201,7 +201,7 @@
             ] );
         }
 
-        for ( v = h, u = 0; u < w; u++ ) {
+        for ( v = ySegs, u = 0; u < xSegs; u++ ) {
             constraints.push( [
                 particles[ index( u, v ) ],
                 particles[ index( u + 1, v ) ],
@@ -215,8 +215,8 @@
         // Shear
         var diagonalDist = window.Math.sqrt( restDistance * restDistance * 2 );
 
-        for ( v = 0; v < h; v++ ) {
-            for ( u = 0; u < w; u++ ) {
+        for ( v = 0; v < ySegs; v++ ) {
+            for ( u = 0; u < xSegs; u++ ) {
 
                 constraints.push( [
                     particles[ index( u, v ) ],
@@ -239,8 +239,8 @@
         // var hlen = restDistance * 2;
         // diagonalDist = window.Math.sqrt(wlen * wlen + hlen * hlen);
 
-        // for (v=0;v<h-1;v++) {
-        // 	for (u=0;u<w-1;u++) {
+        // for ( v = 0; v < ySegs - 1; v++ ) {
+        // 	for ( u = 0; u < xSegs - 1; u++ ) {
         // 		constraints.push([
         // 			particles[index(u, v)],
         // 			particles[index(u+2, v)],
@@ -281,13 +281,13 @@
         // }
 
         // Pins
-        for ( var j = 0; j <= h; j++ ) {
+        for ( var j = 0; j <= ySegs; j++ ) {
             pins.push( index( 0, j ) );
         }
 
         // Public Properties
-        this.w            = w;
-        this.h            = h;
+        this.xSegs        = xSegs;
+        this.ySegs        = ySegs;
         this.width        = width;
         this.height       = height;
         this.restDistance = restDistance;
