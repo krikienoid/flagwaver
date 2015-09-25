@@ -27,10 +27,6 @@ body,
     height : 100%;
 }
 
-.wrapper-body {
-    background-image: url('../img/Sky_over_Washington_Monument.jpg');
-}
-
 .wrapper-header,
 .wrapper-footer {
     position : absolute;
@@ -46,11 +42,15 @@ body,
 
 /* //// Styles and Type //// */
 
+/* Header */
+
 .wrapper-footer > h1 {
     font        : 24pt 'Open Sans', sans-serif;
     font-weight : 600;
     text-shadow : 3px 3px 0px rgba(0, 0, 0, 0.5);
 }
+
+/* Inputs */
 
 input,
 div.file-input,
@@ -120,10 +120,41 @@ div.wind-input > label {
     padding   : 6px 12px;
 }
 
-div.wind-input > input[type="checkbox"] + label:after {
+div.wind-input > input[type="checkbox"] + label::after {
     content : "Wind: Off";
 }
 
-div.wind-input > input[type="checkbox"]:checked + label:after {
+div.wind-input > input[type="checkbox"]:checked + label::after {
     content : "Wind: On";
+}
+
+/* Background Image */
+
+.bg-sky {
+    width    : 100%;
+    height   : 100%;
+    position : absolute;
+    top      : 0;
+    left     : 0;
+    z-index  : -1;
+    display  : block;
+    background-attachment : fixed;
+    background-color      : #566C73;
+    background-image      : url('../img/Sky_over_Washington_Monument-480x640px.jpg');
+    background-position   : center center;
+    background-repeat     : no-repeat;
+    background-size       : cover;
+    content : '';
+}
+
+@media only screen and (min-width : 480px) {
+    .bg-sky {
+        background-image      : url('../img/Sky_over_Washington_Monument-800x600px.jpg');
+    }
+}
+
+@media only screen and (min-width : 800px) {
+    .bg-sky {
+        background-image      : url('../img/Sky_over_Washington_Monument-1600x1200px.jpg');
+    }
 }
