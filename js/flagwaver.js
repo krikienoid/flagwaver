@@ -501,12 +501,14 @@
 
     function setFlagImg ( imageDataVal ) {
 
-        var SEG       = 10,
-            xSegs     = 15,
-            ySegs     = 10,
-            imgSrc    = 'img/NZ.2b.png',
-            imgWidth  = 15,
-            imgHeight = 10;
+        var DEFAULT      = 10,
+            GRANULARITY  = 10,
+            xSegs        = 15,
+            ySegs        = 10,
+            restDistance = 20 * DEFAULT / GRANULARITY,
+            imgSrc       = 'img/NZ.2b.png',
+            imgWidth     = 15,
+            imgHeight    = 10;
 
         // Get image data
         if ( imageDataVal ) imageData = imageDataVal;
@@ -522,12 +524,12 @@
             imgWidth  = this.width;
             imgHeight = this.height;
             if ( imgWidth / imgHeight < 1 ) { // vertical flag
-                xSegs = SEG;
-                ySegs = window.Math.round( SEG * imgHeight / imgWidth );
+                xSegs = GRANULARITY;
+                ySegs = window.Math.round( GRANULARITY * imgHeight / imgWidth );
             }
             else { // horizontal or square flag
-                xSegs = window.Math.round( SEG * imgWidth / imgHeight );
-                ySegs = SEG;
+                xSegs = window.Math.round( GRANULARITY * imgWidth / imgHeight );
+                ySegs = GRANULARITY;
             }
 
             // Get flag size from user input
@@ -535,7 +537,7 @@
             if ( imageData && imageData.h ) ySegs = window.Number( imageData.h );
 
             // Init flag cloth
-            cloth = new Cloth( xSegs, ySegs );
+            cloth = new Cloth( xSegs, ySegs, restDistance );
             setFlag( imgSrc );
 
         };
