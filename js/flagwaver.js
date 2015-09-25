@@ -129,13 +129,13 @@
         var particles   = [],
             constraints = [],
             pins        = [],
+            plane, geometry,
             width, height,
-            u, v,
-            plane, geometry;
+            u, v;
 
-        xSegs            = xSegs || 10;
-        ySegs            = ySegs || 10;
-        restDistance = restDistance || 20;
+        xSegs        = Math.round(xSegs) || 15;
+        ySegs        = Math.round(ySegs) || 10;
+        restDistance = Math.round(restDistance) || 20;
         width        = restDistance * xSegs;
         height       = restDistance * ySegs;
 
@@ -146,7 +146,7 @@
 
         // Cloth Plane
         plane = function plane ( u, v ) {
-            var x = u * width, //(u-0.5)
+            var x = u * width, //( u - 0.5 )
                 y = v * height,
                 z = 0;
             return new THREE.Vector3( x, y, z );
@@ -233,49 +233,49 @@
             }
         }
 
-        // // Bend
+        // Bend
 
         // var wlen = restDistance * 2;
         // var hlen = restDistance * 2;
-        // diagonalDist = window.Math.sqrt(wlen * wlen + hlen * hlen);
+        // diagonalDist = window.Math.sqrt( wlen * wlen + hlen * hlen );
 
         // for ( v = 0; v < ySegs - 1; v++ ) {
         // 	for ( u = 0; u < xSegs - 1; u++ ) {
-        // 		constraints.push([
-        // 			particles[index(u, v)],
-        // 			particles[index(u+2, v)],
+        // 		constraints.push( [
+        // 			particles[ index( u, v ) ],
+        // 			particles[ index( u + 2, v ) ],
         // 			wlen
-        // 		]);
+        // 		] );
 
-        // 		constraints.push([
-        // 			particles[index(u, v)],
-        // 			particles[index(u, v+2)],
+        // 		constraints.push( [
+        // 			particles[ index( u, v ) ],
+        // 			particles[ index( u, v + 2 ) ],
         // 			hlen
-        // 		]);
+        // 		] );
 
-        // 		constraints.push([
-        // 			particles[index(u, v)],
-        // 			particles[index(u+2, v+2)],
+        // 		constraints.push( [
+        // 			particles[ index( u, v ) ],
+        // 			particles[ index( u + 2, v + 2 ) ],
         // 			diagonalDist
-        // 		]);
+        // 		] );
 
-        // 		constraints.push([
-        // 			particles[index(u, v+2)],
-        // 			particles[index(u+2, v+2)],
+        // 		constraints.push( [
+        // 			particles[ index( u, v + 2 ) ],
+        // 			particles[ index( u + 2, v + 2 ) ],
         // 			wlen
-        // 		]);
+        // 		] );
 
-        // 		constraints.push([
-        // 			particles[index(u+2, v+2)],
-        // 			particles[index(u+2, v+2)],
+        // 		constraints.push( [
+        // 			particles[ index( u + 2, v + 2 ) ],
+        // 			particles[ index( u + 2, v + 2 ) ],
         // 			hlen
-        // 		]);
+        // 		] );
 
-        // 		constraints.push([
-        // 			particles[index(u+2, v)],
-        // 			particles[index(u, v+2)],
+        // 		constraints.push( [
+        // 			particles[ index( u + 2,  v ) ],
+        // 			particles[ index( u , v + 2 ) ],
         // 			diagonalDist
-        // 		]);
+        // 		] );
 
         // 	}
         // }
@@ -285,7 +285,7 @@
             pins.push( index( 0, j ) );
         }
 
-        // Public Properties
+        // Public Properties and Methods
         this.xSegs        = xSegs;
         this.ySegs        = ySegs;
         this.width        = width;
