@@ -422,7 +422,9 @@
         scene, camera, renderer,
         object, imageData;
 
-    var GRANULARITY = 1;
+    var GRANULARITY = 1,
+        POLE_OFFSET = 300,
+        POLE_HEIGHT = 1000;
 
     function init ( containerElem ) {
 
@@ -465,7 +467,7 @@
         scene.add( light );
 
         // Init flag pole
-        var poleGeo = new THREE.CubeGeometry( 14, 750, 2 ),
+        var poleGeo = new THREE.CubeGeometry( 14, POLE_HEIGHT, 2 ),
             poleMat = new THREE.MeshPhongMaterial( {
                 color    : 0x4A4A4A,
                 specular : 0x111111,
@@ -473,19 +475,19 @@
                 perPixel : true
             } ),
             mesh = new THREE.Mesh( poleGeo, poleMat );
-        mesh.position.y    = -175;
+        mesh.position.y    = POLE_OFFSET - POLE_HEIGHT / 2;
         mesh.position.x    = -4;
         mesh.receiveShadow = true;
         mesh.castShadow    = true;
         scene.add( mesh );
 
         // Init renderer object
-        renderer = new THREE.WebGLRenderer( { antialias: true } );
+        renderer = new THREE.WebGLRenderer( { antialias : true } );
         renderer.setSize( window.innerWidth, window.innerHeight );
-        renderer.gammaInput = true;
-        renderer.gammaOutput = true;
+        renderer.gammaInput             = true;
+        renderer.gammaOutput            = true;
         renderer.physicallyBasedShading = true;
-        renderer.shadowMapEnabled = true;
+        renderer.shadowMapEnabled       = true;
 
         // Init flag
         setFlagImg();
@@ -580,7 +582,7 @@
 
         // Init cloth geometry
         var uniforms = {
-            texture : { type: "t", value: 0, texture: clothTexture }
+            texture : { type: "t", value: 0, texture : clothTexture }
         };
 
         // Init cloth mesh
@@ -588,7 +590,7 @@
         object = new THREE.Mesh( cloth.geometry, flagMaterial );
         object.position.set(
             0,
-            ( cloth.restDistance * GRANULARITY - cloth.height ) + 0,
+            POLE_OFFSET - cloth.height,
             0
         );
         object.castShadow    = true;
