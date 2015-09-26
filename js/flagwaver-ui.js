@@ -28,9 +28,7 @@
 
     // Get hash data
     function fromHash () {
-        var hashData = window.unescape(
-            window.location.hash.split( '#' )[ 1 ]
-        );
+        var hashData = window.location.hash.split( '#' )[ 1 ];
         if ( hashData ) {
             if ( hashData[ 0 ] === '{' ) {
                 flagData = window.JSON.parse( hashData );
