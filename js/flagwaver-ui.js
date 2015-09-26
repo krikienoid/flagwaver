@@ -13,47 +13,51 @@
 
 ;(function ( window, document, $, undefined ) {
 
-    //
-    // Quick Links
-    //
-
     var $setImgLink  = $( '#set-img-link' ),
-        $getImgLink  = $( '#get-img-link' ),
         $openImgFile = $( '#open-img-file' ),
         $windToggle  = $( '#wind-toggle' );
 
-    // Set flag img
-    function setLink ( imgSrc ) {
-        window.flagWaver.setFlagImg( { src : imgSrc } );
+    //
+    // Hash Links
+    //
+
+    // Set flag image
+    function setImg ( flagData ) {
+        window.flagWaver.setFlagImg( flagData );
     }
 
-    // Auto load flag image from hash data url
-    $( window.document ).ready( function getDataFromURL () {
-        var hashData = window.location.href.split( '#' ),
-            imgSrc;
-        if ( hashData && hashData.length > 1 ) {
-            imgSrc = window.unescape( hashData[ 1 ] );
-            setLink( imgSrc );
-            $setImgLink.val( imgSrc );
+    // Get hash data
+    function fromHash () {
+        var hashData = window.unescape(
+            window.location.hash.split( '#' )[ 1 ]
+        );
+        if ( hashData ) {
+            if ( hashData[ 0 ] === '{' ) {
+                flagData = window.JSON.parse( hashData );
+            }
+            else {
+                flagData = { src : hashData };
+            }
+            setImg( flagData );
+            $setImgLink.val( flagData.src );
         }
-    } );
+    }
 
-    // Generate hashed url for loaded flag image
-    $getImgLink.on( 'click', function getLink () {
-        if ( $setImgLink.val().length ) {
-            window.prompt(
-                'Your link:',
-                window.location.href.split( '#' )[ 0 ] + '#' + window.escape( $setImgLink.val() )
-            );
-        }
-        else {
-            window.alert( 'Input field is empty!' );
-        }
-    } );
+    // Set hash data
+    function toHash () {
+        window.location.hash = window.escape( JSON.stringify( { src : $setImgLink.val() } ) );
+    }
+
+    // Load flag image from hash on page load
+    $( window.document ).ready( fromHash );
+
+    // Load flag image from hash on user entered hash
+    $( window ).on( 'hashchange', fromHash );
 
     // Load flag image from user given url
     $setImgLink.on( 'change', function () {
-        setLink( $setImgLink.val() );
+        toHash();
+        setImg( { src : $setImgLink.val() } );
     } );
 
     //
@@ -64,7 +68,9 @@
         var file   = $openImgFile[ 0 ].files[ 0 ],
             reader = new FileReader();
         reader.onload = function (e) {
-            setLink( e.target.result );
+            setImg( { src : e.target.result } );
+            $setImgLink.val( '' );
+            toHash();
         };
         reader.readAsDataURL( file );
     } );
