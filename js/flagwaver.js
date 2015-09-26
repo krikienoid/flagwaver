@@ -501,7 +501,7 @@
 
     function setFlagImg ( imageDataVal ) {
 
-        var GRANULARITY  = 0.5,
+        var GRANULARITY  = 1,
             DEFAULT      = 10 * GRANULARITY,
             xSegs        = 15,
             ySegs        = 10,
@@ -579,14 +579,14 @@
         } );*/
 
         // Init cloth geometry
-        var uniforms = { texture:  { type: "t", value: 0, texture: clothTexture } };
+        var uniforms = { texture : { type: "t", value: 0, texture: clothTexture } };
 
         // Init cloth mesh
         scene.remove( object );
         object = new THREE.Mesh( cloth.geometry, flagMaterial );
         object.position.set(
             0,
-            (cloth.restDistance * 10 - cloth.height) + 0,
+            0,
             0
         );
         object.castShadow    = true;
