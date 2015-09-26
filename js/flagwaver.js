@@ -422,6 +422,8 @@
         scene, camera, renderer,
         object, imageData;
 
+    var GRANULARITY = 1;
+
     function init ( containerElem ) {
 
         // Get DOM elements
@@ -501,11 +503,9 @@
 
     function setFlagImg ( imageDataVal ) {
 
-        var GRANULARITY  = 1,
-            DEFAULT      = 10 * GRANULARITY,
+        var DEFAULT      = 10 * GRANULARITY,
             xSegs        = 15,
             ySegs        = 10,
-            restDistance = 20 / GRANULARITY,
             imgSrc       = 'img/NZ.2b.png',
             imgWidth     = 15,
             imgHeight    = 10;
@@ -540,7 +540,7 @@
             cloth = new Cloth(
                 xSegs,
                 ySegs,
-                restDistance
+                20 / GRANULARITY
             );
             setFlag( imgSrc );
 
@@ -579,14 +579,16 @@
         } );*/
 
         // Init cloth geometry
-        var uniforms = { texture : { type: "t", value: 0, texture: clothTexture } };
+        var uniforms = {
+            texture : { type: "t", value: 0, texture: clothTexture }
+        };
 
         // Init cloth mesh
         scene.remove( object );
         object = new THREE.Mesh( cloth.geometry, flagMaterial );
         object.position.set(
             0,
-            0,
+            ( cloth.restDistance * GRANULARITY - cloth.height ) + 0,
             0
         );
         object.castShadow    = true;
