@@ -129,13 +129,14 @@
         var particles   = [],
             constraints = [],
             pins        = [],
-            plane, geometry,
+            plane,
+            geometry,
             width, height,
             u, v;
 
-        xSegs        = Math.round(xSegs) || 15;
-        ySegs        = Math.round(ySegs) || 10;
-        restDistance = Math.round(restDistance) || 20;
+        xSegs        = window.Math.round( xSegs ) || 15;
+        ySegs        = window.Math.round( ySegs ) || 10;
+        restDistance = window.Math.round( restDistance ) || 20;
         width        = restDistance * xSegs;
         height       = restDistance * ySegs;
 
@@ -419,8 +420,8 @@
     //
 
     var container, canvas, vertexShader, fragmentShader,
-        scene, camera, renderer,
-        object, imageData;
+        scene, camera, renderer, object,
+        imageData;
 
     var GRANULARITY = 1,
         POLE_OFFSET = 300,
@@ -489,17 +490,20 @@
         renderer.physicallyBasedShading = true;
         renderer.shadowMapEnabled       = true;
 
-        // Init flag
-        setFlagImg();
-
-        // Append renderer to dom
+        // Append renderer to DOM
         canvas = renderer.domElement;
         container.appendChild( canvas );
 
-        // Begin animation
+        // Add event handlers
         window.addEventListener( 'resize', onResize );
-        animate();
         onResize();
+
+        // Init flag
+        setFlagImg();
+
+        // Begin animation
+        cloth = new Cloth();
+        animate();
 
     }
 
@@ -519,7 +523,7 @@
         if ( imageData && imageData.src ) imgSrc = imageData.src;
 
         // Load image file
-        testImg = new Image();
+        testImg = new window.Image();
         testImg.onload = function () {
 
             // Get flag size from file
@@ -623,7 +627,7 @@
     }
 
     function animate () {
-        requestAnimationFrame( animate );
+        window.requestAnimationFrame( animate );
         var time = window.Date.now();
         // windStrength = window.Math.cos( time / 7000 ) * 100 + 200;
         // windStrength = 100;

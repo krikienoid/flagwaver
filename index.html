@@ -26,6 +26,8 @@
 	<!-- Main -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css" />
 	<link type="text/css" rel="stylesheet" href="css/flagwaver.css" />
+    <script type="text/javascript" src="js/flagwaver.js"></script>
+    <script type="text/javascript" src="js/flagwaver-ui.js"></script>
 
 </head>
 
@@ -81,13 +83,6 @@
             vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
             gl_Position = projectionMatrix * mvPosition;
         }
-    </script>
-
-    <script type="text/javascript" src="js/flagwaver.js"></script>
-    <script type="text/javascript" src="js/flagwaver-ui.js"></script>
-
-    <script type="text/javascript">
-        flagWaver.init($('.js-flag-canvas')[0]);
     </script>
 
 </html>

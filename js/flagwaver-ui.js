@@ -11,7 +11,7 @@
 // Flag Waver UI
 //
 
-;(function ( window, document, $, undefined ) {
+;(function ( window, document, $, flagWaver, undefined ) {
 
     var $setImgLink,
         $openImgFile,
@@ -23,7 +23,7 @@
 
     // Set flag image
     function setImg ( flagData ) {
-        window.flagWaver.setFlagImg( flagData );
+        flagWaver.setFlagImg( flagData );
     }
 
     // Get hash data
@@ -45,7 +45,9 @@
 
     // Set hash data
     function toHash () {
-        window.location.hash = window.escape( JSON.stringify( { src : $setImgLink.val() } ) );
+        window.location.hash = window.escape(
+            window.JSON.stringify( { src : $setImgLink.val() } )
+        );
     }
 
     //
@@ -93,17 +95,24 @@
 
         // Turn wind on or off
         $windToggle.on( 'change', function () {
-            if ( this.checked ) window.flagWaver.setWind( 300 );
-            else window.flagWaver.setWind( 0 );
+            if ( this.checked ) {
+                flagWaver.setWind( 300 );
+            }
+            else {
+                flagWaver.setWind( 0 );
+            }
         } );
 
         //
         // Init
         //
 
+        // Init FlagWaver
+        flagWaver.init( $( '.js-flag-canvas' )[ 0 ] );
+
         // Load flag image from hash on page load
         fromHash();
 
     } );
 
-}( window, document, jQuery ));
+}( window, document, jQuery, window.flagWaver ));
