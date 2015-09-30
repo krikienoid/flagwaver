@@ -26,28 +26,51 @@
         flagWaver.setFlagImg( flagData );
     }
 
+    // Get URI variables
+    function getURIVars () {
+        var vars  = [],
+            pairs = window.location.href.slice( window.location.href.indexOf( '?' ) + 1 ).split( '&' ),
+            pair, i;
+        for ( i = 0, ii = pairs.length; i < ii; i++ ) {
+            pair = pairs[ i ].split( '=' );
+            vars.push( pair[ 0 ] );
+            vars[ pair[ 0 ] ] = pair[ 1 ];
+        }
+        return vars;
+    }
+
     // Get hash data
     function fromHash () {
-        var hashData = window.unescape(
-            window.location.hash.split( '#' )[ 1 ]
-        );
+        var hashData = window.location.hash.split( '#' )[ 1 ],
+            imgSrc,
+            flagData;
         if ( hashData ) {
-            if ( hashData[ 0 ] === '{' ) {
-                flagData = window.JSON.parse( hashData );
+            if ( hashData[ 0 ] === '?' ) {
+                hashData = getURIVars()[ 'src' ];
+                if ( hashData ) {
+                    imgSrc = window.decodeURIComponent( hashData );
+                }
             }
             else {
-                flagData = { src : hashData };
+                // Old version links
+                imgSrc = window.unescape( hashData );
             }
+        }
+        if ( imgSrc ) {
+            flagData = { src : imgSrc };
+            $setImgLink.val( imgSrc );
             setImg( flagData );
-            $setImgLink.val( flagData.src );
         }
     }
 
     // Set hash data
     function toHash () {
-        window.location.hash = window.escape(
-            window.JSON.stringify( { src : $setImgLink.val() } )
-        );
+        if ( $setImgLink.val() ) {
+            window.location.hash = '?src=' + window.encodeURIComponent( $setImgLink.val() );
+        }
+        else {
+            window.location.hash = '';
+        }
     }
 
     //
