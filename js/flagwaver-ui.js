@@ -107,7 +107,8 @@
         $openImgFile.on( 'change', function () {
             var file   = $openImgFile[ 0 ].files[ 0 ],
                 reader = new FileReader();
-            reader.onload = function (e) {
+            reader.onload = function ( e ) {
+                e.preventDefault();
                 $setImgLink.val( '' );
                 toHash();
                 setImg( { src : e.target.result } );
