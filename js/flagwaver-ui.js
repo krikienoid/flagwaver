@@ -95,7 +95,7 @@
         //
 
         // Load flag image from hash on user entered hash
-        $( window ).on( 'hashchange', fromHash );
+        $( window ).on( 'popstate', fromHash );
 
         // Load flag image from user given url
         $setImgLink.on( 'change', function () {
@@ -108,9 +108,9 @@
             var file   = $openImgFile[ 0 ].files[ 0 ],
                 reader = new FileReader();
             reader.onload = function (e) {
-                setImg( { src : e.target.result } );
                 $setImgLink.val( '' );
                 toHash();
+                setImg( { src : e.target.result } );
             };
             reader.readAsDataURL( file );
         } );
