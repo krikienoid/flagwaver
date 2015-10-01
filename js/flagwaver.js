@@ -488,24 +488,19 @@
         window.addEventListener( 'resize', onResize );
         onResize();
 
-        // Init flag
-        setFlagImg();
-
         // Begin animation
-        cloth = new Cloth(); // tmp cloth for init
+        cloth = new Cloth(); // tmp cloth to init animation
         animate();
+
+        // Set flag
+        setFlagImg();
 
     }
 
     function setFlagImg ( imageDataVal ) {
 
-        // Defaults
-        var defaultSize  = 10 * granularity,
-            xSegs        = 15,
-            ySegs        = 10,
-            imgSrc       = 'img/NZ.2b.png',
-            imgWidth     = 15,
-            imgHeight    = 10;
+        var imgSrc = 'img/NZ.2b.png',
+            testImg;
 
         // Get image data
         if ( imageDataVal ) imageData = imageDataVal;
@@ -513,13 +508,20 @@
         // Get image src
         if ( imageData && imageData.src ) imgSrc = imageData.src;
 
-        // Load image file
+        // Test load to get image size
         testImg = new window.Image();
+
+        // Get image and create flag texture
         testImg.onload = function () {
 
-            // Get flag size from file
-            imgWidth  = this.width;
-            imgHeight = this.height;
+            // Defaults
+            var imgWidth    = this.width,
+                imgHeight   = this.height,
+                defaultSize = 10 * granularity,
+                xSegs       = 15,
+                ySegs       = 10;
+
+            // Get flag size from image
             if ( imgWidth / imgHeight < 1 ) { // vertical flag
                 xSegs = defaultSize;
                 ySegs = window.Math.round( defaultSize * imgHeight / imgWidth );
@@ -539,39 +541,48 @@
                 ySegs,
                 20 / granularity
             );
+
+            // Set flag texture
             setFlagTex( imgSrc );
 
         };
+
+        // Do nothing if image fails to load
+        testImg.onerror = function () {
+            window.console.log(
+                'Error: FlagWaver: Failed to load image from ' + imgSrc + '.'
+            );
+        };
+
+        // Attempt to load image
         testImg.src = imgSrc;
 
     }
 
     function setFlagTex ( imgSrc ) {
-
-        var clothTexture, flagMaterial;
-
-        // Init cloth texture
-        clothTexture = THREE.ImageUtils.loadTexture(
+        var clothTexture = THREE.ImageUtils.loadTexture(
             imgSrc,
             null,
             function () {
                 setFlagMat( clothTexture );
             },
             function () {
-                console.log( 'Error: Image load failed. Je me rends!' );
+                window.console.log( 'Error: FlagWaver: Failed to load image as texture.' );
                 setFlagMat(
-                    THREE.ImageUtils.generateDataTexture( 4, 4, new THREE.Color( 0xffffff ) )
+                    THREE.ImageUtils.generateDataTexture(
+                        4,
+                        4,
+                        new THREE.Color( 0xffffff )
+                    )
                 );
             }
         );
-
     }
 
     function setFlagMat ( clothTexture ) {
 
         var flagMaterial;
 
-        //clothTexture.image.crossOrigin = 'anonymous';
         //THREE.MTLLoader.ensurePowerOfTwo();
         clothTexture.wrapS = clothTexture.wrapT = THREE.RepeatWrapping;
         clothTexture.anisotropy = 16;
