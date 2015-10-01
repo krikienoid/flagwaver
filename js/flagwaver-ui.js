@@ -109,7 +109,7 @@
                 reader = new FileReader();
             reader.onload = function (e) {
                 $setImgLink.val( '' );
-                toHash();
+                //toHash();
                 setImg( { src : e.target.result } );
             };
             reader.readAsDataURL( file );
