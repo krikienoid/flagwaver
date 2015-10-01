@@ -40,10 +40,14 @@
     }
 
     // Get hash data
+    function getHashData () {
+        return window.location.hash.split( '#' )[ 1 ];
+    }
+
+    // Get image src from hash data
     function fromHash () {
-        var hashData = window.location.hash.split( '#' )[ 1 ],
-            imgSrc,
-            flagData;
+        var hashData = getHashData(),
+            imgSrc;
         if ( hashData ) {
             if ( hashData[ 0 ] === '?' ) {
                 hashData = getURIVars()[ 'src' ];
@@ -51,17 +55,16 @@
                     imgSrc = window.decodeURIComponent( hashData );
                 }
             }
-            else {
-                // Old version links
+            else { // Old version links
                 imgSrc = window.unescape( hashData );
             }
         }
         if ( imgSrc ) {
-            flagData = { src : imgSrc };
             $setImgLink.val( imgSrc );
-            setImg( flagData );
+            setImg( { src : imgSrc } );
         }
         else {
+            $setImgLink.val( '' );
             setImg( { src : 'img/NZ.2b.png' } );
         }
     }
@@ -69,10 +72,18 @@
     // Set hash data
     function toHash () {
         if ( $setImgLink.val() ) {
-            window.location.hash = '?src=' + window.encodeURIComponent( $setImgLink.val() );
+            window.history.pushState(
+                null,
+                null,
+                '#' + '?src=' + window.encodeURIComponent( $setImgLink.val() )
+            );
         }
         else {
-            window.location.hash = '';
+            window.history.pushState(
+                null,
+                null,
+                window.location.pathname
+            );
         }
     }
 
@@ -106,10 +117,12 @@
         // Load flag image from file
         $openImgFile.on( 'change', function () {
             var file   = $openImgFile[ 0 ].files[ 0 ],
-                reader = new FileReader();
-            reader.onload = function (e) {
-                $setImgLink.val( '' );
-                //toHash();
+                reader = new window.FileReader();
+            reader.onload = function ( e ) {
+                if ( $setImgLink.val() || getHashData() ) {
+                    $setImgLink.val( '' );
+                    toHash();
+                }
                 setImg( { src : e.target.result } );
             };
             reader.readAsDataURL( file );
