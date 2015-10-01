@@ -539,20 +539,40 @@
                 ySegs,
                 20 / granularity
             );
-            setFlag( imgSrc );
+            setFlagTex( imgSrc );
 
         };
         testImg.src = imgSrc;
 
     }
 
-    function setFlag ( imgSrc ) {
+    function setFlagTex ( imgSrc ) {
 
         var clothTexture, flagMaterial;
 
         // Init cloth texture
-        clothTexture = THREE.ImageUtils.loadTexture( imgSrc );
+        clothTexture = THREE.ImageUtils.loadTexture(
+            imgSrc,
+            null,
+            function () {
+                setFlagMat( clothTexture );
+            },
+            function () {
+                console.log( 'Error: Image load failed. Je me rends!' );
+                setFlagMat(
+                    THREE.ImageUtils.generateDataTexture( 4, 4, new THREE.Color( 0xffffff ) )
+                );
+            }
+        );
+
+    }
+
+    function setFlagMat ( clothTexture ) {
+
+        var flagMaterial;
+
         //clothTexture.image.crossOrigin = 'anonymous';
+        //THREE.MTLLoader.ensurePowerOfTwo();
         clothTexture.wrapS = clothTexture.wrapT = THREE.RepeatWrapping;
         clothTexture.anisotropy = 16;
 
