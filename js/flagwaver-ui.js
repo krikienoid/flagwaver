@@ -61,6 +61,9 @@
             $setImgLink.val( imgSrc );
             setImg( flagData );
         }
+        else {
+            setImg( { src : 'img/NZ.2b.png' } );
+        }
     }
 
     // Set hash data

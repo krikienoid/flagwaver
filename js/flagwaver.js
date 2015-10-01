@@ -492,15 +492,11 @@
         cloth = new Cloth(); // tmp cloth to init animation
         animate();
 
-        // Set flag
-        setFlagImg();
-
     }
 
     function setFlagImg ( imageDataVal ) {
 
-        var imgSrc = 'img/NZ.2b.png',
-            testImg;
+        var imgSrc, testImg;
 
         // Get image data
         if ( imageDataVal ) imageData = imageDataVal;
