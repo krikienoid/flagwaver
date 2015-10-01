@@ -56,25 +56,25 @@
 ;(function ( window, document, THREE, undefined ) {
 
     //
-    // Global Settings
+    // Global settings
     //
 
-    // Physics Settings
+    // Physics settings
     var DAMPING = 0.03,
         DRAG    = 1 - DAMPING,
         MASS    = .1,
         GRAVITY = 981 * 1.4;
 
-    // Time Settings
+    // Time settings
     var TIMESTEP    = 18 / 1000,
         TIMESTEP_SQ = TIMESTEP * TIMESTEP;
 
-    // Wind Settings
+    // Wind settings
     var wind         = true,
         windStrength = 300,
         windForce    = new THREE.Vector3( 0, 0, 0 );
 
-    // Ball Settings
+    // Ball settings
     var ballPosition = new THREE.Vector3( 0, -45, 0 ),
         ballSize     = 60; //40
 
@@ -84,13 +84,11 @@
         diff         = new THREE.Vector3(),
         lastTime;
 
-    // Objects
-    var cloth;
-
     //
-    // Classes
+    // Simulation classes
     //
 
+    // Particle constuctor
     function Particle ( x, y, z, plane, mass ) {
         this.position = plane( x, y ); // position
         this.previous = plane( x, y ); // previous
@@ -124,6 +122,7 @@
 
     }
 
+    // Cloth constuctor
     function Cloth ( xSegs, ySegs, restDistance ) {
 
         var particles   = [],
@@ -160,7 +159,7 @@
 
         // Particles
         for ( v = 0; v <= ySegs ; v++ ) {
-            for (u = 0; u <= xSegs; u++ ) {
+            for ( u = 0; u <= xSegs; u++ ) {
                 particles.push(
                     new Particle (
                         u / xSegs,
@@ -301,14 +300,43 @@
 
     }
 
-    // Simulate Cloth
+    // Helper function
+    function satisfyConstraints ( p1, p2, distance ) {
+
+        var currentDist,
+            correction,
+            correctionHalf;
+
+        diff.sub( p2.position, p1.position );
+        currentDist = diff.length();
+        if ( currentDist === 0 ) return; // prevents division by 0
+        correction = diff.multiplyScalar( 1 - distance / currentDist );
+        correctionHalf = correction.multiplyScalar( 0.5 );
+        p1.position.addSelf( correctionHalf );
+        p2.position.subSelf( correctionHalf );
+
+        // float difference = ( restingDistance - d ) / d
+        // im1 = 1 / p1.mass // inverse mass quantities
+        // im2 = 1 / p2.mass
+        // p1.position += delta * ( im1 / ( im1 + im2 ) ) * stiffness * difference
+
+    }
+
+    // Simulate cloth
     Cloth.prototype.simulate = function ( time ) {
 
         var particles   = this.particles,
             constraints = this.constraints,
-            i, il, particle, pt, constraint,
-            face, faces, normal;
+            faces       = this.geometry.faces,
+            pins        = this.pins,
+            particle, constraint,
+            face, normal,
+            i, il;
 
+        // if ( !lastTime ) {
+        //     lastTime = time;
+        //     return;
+        // }
         // TIMESTEP    = ( time - lastTime );
         // TIMESTEP    = ( TIMESTEP > 30 ) ? TIMESTEP / 1000 : 30 / 1000;
         // TIMESTEP_SQ = TIMESTEP * TIMESTEP;
@@ -317,11 +345,9 @@
 
         // Aerodynamic forces
         if ( wind ) {
-            faces = this.geometry.faces;
             for ( i = 0, il = faces.length; i < il; i++ ) {
                 face   = faces[ i ];
                 normal = face.normal;
-
                 tmpForce.copy( normal ).normalize().multiplyScalar( normal.dot( windForce ) );
                 particles[ face.a ].addForce( tmpForce );
                 particles[ face.b ].addForce( tmpForce );
@@ -346,13 +372,13 @@
             particle.integrate( TIMESTEP_SQ );
         }
 
-        // Start Constraints
+        // Start constraints
         for ( i = 0, il = constraints.length; i < il; i++ ) {
             constraint = constraints[ i ];
             satisfyConstraints( constraint[ 0 ], constraint[ 1 ], constraint[ 2 ] );
         }
 
-        // Ball Constraints
+        // Ball constraints
         ballPosition.z = -window.Math.sin( window.Date.now() / 300 ) * 90 ; //+ 40;
         ballPosition.x = window.Math.cos( window.Date.now() / 200 ) * 70
 
@@ -369,68 +395,36 @@
         //     }
         // }
 
-        // Pin Constraints
-        for ( i = 0, il = this.pins.length; i < il; i++ ) {
-            var xy = this.pins[ i ];
-            var p  = particles[ xy ];
-            p.position.copy( p.original );
-            p.previous.copy( p.original );
+        // Pin constraints
+        for ( i = 0, il = pins.length; i < il; i++ ) {
+            particle = particles[ pins[ i ] ];
+            particle.position.copy( particle.original );
+            particle.previous.copy( particle.original );
         }
 
     };
 
     //
-    // Simulation Functions
+    // Rendering
     //
 
-    function satisfyConstraints ( p1, p2, distance ) {
+    // Renderer settings
+    var granularity = 1,
+        poleOffset  = 300,
+        poleHeight  = 1000;
 
-        var currentDist,
-            correction,
-            correctionHalf;
-
-        diff.sub( p2.position, p1.position );
-        currentDist = diff.length();
-        if ( currentDist === 0 ) return; // prevents division by 0
-        correction = diff.multiplyScalar( 1 - distance / currentDist );
-        correctionHalf = correction.multiplyScalar(0.5);
-        p1.position.addSelf( correctionHalf );
-        p2.position.subSelf( correctionHalf );
-
-        // float difference = (restingDistance - d) / d
-        // im1 = 1 / p1.mass // inverse mass quantities
-        // im2 = 1 / p2.mass
-        // p1.position += delta * (im1 / (im1 + im2)) * stiffness * difference
-
-    }
-
-    function simulate ( time ) {
-
-        if ( !lastTime ) {
-            lastTime = time;
-            return;
-        }
-
-        cloth.simulate( time );
-
-    }
-
-    //
-    // Render Functions
-    //
-
-    var container, canvas, vertexShader, fragmentShader,
+    // Renderer variables
+    var vertexShader, fragmentShader,
         scene, camera, renderer, object,
+        cloth,
         imageData;
 
-    var GRANULARITY = 1,
-        POLE_OFFSET = 300,
-        POLE_HEIGHT = 1000;
+    function init () {
 
-    function init ( containerElem ) {
+        var light, d,
+            poleGeo, poleMat, poleMesh;
 
-        // Get DOM elements
-        container      = containerElem;
+        // Get shaders
         vertexShader   = document.getElementById( 'vertexShaderDepth' ).textContent;
         fragmentShader = document.getElementById( 'fragmentShaderDepth' ).textContent;
 
@@ -446,7 +440,6 @@
         scene.add( camera );
 
         // Init lights
-        var light, d = 300;
         scene.add( new THREE.AmbientLight( 0x666666 ) );
         light = new THREE.DirectionalLight( 0xffffff, 1.75 );
         light.color.setHSV( 0.6, 0.125, 1 );
@@ -455,6 +448,7 @@
         light.castShadow      = true;
         light.shadowMapWidth  = 2048;
         light.shadowMapHeight = 2048;
+        d = 300;
         light.shadowCameraLeft   = -d;
         light.shadowCameraRight  = d;
         light.shadowCameraTop    = d;
@@ -468,19 +462,19 @@
         scene.add( light );
 
         // Init flag pole
-        var poleGeo = new THREE.CubeGeometry( 14, POLE_HEIGHT, 2 ),
-            poleMat = new THREE.MeshPhongMaterial( {
-                color    : 0x4A4A4A,
-                specular : 0x111111,
-                shiness  : 0,
-                perPixel : true
-            } ),
-            mesh = new THREE.Mesh( poleGeo, poleMat );
-        mesh.position.y    = POLE_OFFSET - POLE_HEIGHT / 2;
-        mesh.position.x    = -4;
-        mesh.receiveShadow = true;
-        mesh.castShadow    = true;
-        scene.add( mesh );
+        poleGeo = new THREE.CubeGeometry( 14, poleHeight, 2 );
+        poleMat = new THREE.MeshPhongMaterial( {
+            color    : 0x4A4A4A,
+            specular : 0x111111,
+            shiness  : 0,
+            perPixel : true
+        } );
+        poleMesh = new THREE.Mesh( poleGeo, poleMat );
+        poleMesh.position.y    = poleOffset - poleHeight / 2;
+        poleMesh.position.x    = -4;
+        poleMesh.receiveShadow = true;
+        poleMesh.castShadow    = true;
+        scene.add( poleMesh );
 
         // Init renderer object
         renderer = new THREE.WebGLRenderer( { antialias : true } );
@@ -490,10 +484,6 @@
         renderer.physicallyBasedShading = true;
         renderer.shadowMapEnabled       = true;
 
-        // Append renderer to DOM
-        canvas = renderer.domElement;
-        container.appendChild( canvas );
-
         // Add event handlers
         window.addEventListener( 'resize', onResize );
         onResize();
@@ -502,14 +492,15 @@
         setFlagImg();
 
         // Begin animation
-        cloth = new Cloth();
+        cloth = new Cloth(); // tmp cloth for init
         animate();
 
     }
 
     function setFlagImg ( imageDataVal ) {
 
-        var DEFAULT      = 10 * GRANULARITY,
+        // Defaults
+        var defaultSize  = 10 * granularity,
             xSegs        = 15,
             ySegs        = 10,
             imgSrc       = 'img/NZ.2b.png',
@@ -530,12 +521,12 @@
             imgWidth  = this.width;
             imgHeight = this.height;
             if ( imgWidth / imgHeight < 1 ) { // vertical flag
-                xSegs = DEFAULT;
-                ySegs = window.Math.round( DEFAULT * imgHeight / imgWidth );
+                xSegs = defaultSize;
+                ySegs = window.Math.round( defaultSize * imgHeight / imgWidth );
             }
             else { // horizontal or square flag
-                xSegs = window.Math.round( DEFAULT * imgWidth / imgHeight );
-                ySegs = DEFAULT;
+                xSegs = window.Math.round( defaultSize * imgWidth / imgHeight );
+                ySegs = defaultSize;
             }
 
             // Get flag size from user input
@@ -546,7 +537,7 @@
             cloth = new Cloth(
                 xSegs,
                 ySegs,
-                20 / GRANULARITY
+                20 / granularity
             );
             setFlag( imgSrc );
 
@@ -594,7 +585,7 @@
         object = new THREE.Mesh( cloth.geometry, flagMaterial );
         object.position.set(
             0,
-            POLE_OFFSET - cloth.height,
+            poleOffset - cloth.height,
             0
         );
         object.castShadow    = true;
@@ -609,8 +600,13 @@
     }
 
     function setWind ( value ) {
-        if ( !window.isNaN( value ) ) windStrength = value;
-        else windStrength = 0;
+        if ( !window.isNaN( value ) ) {
+            windStrength = value;
+        }
+        else {
+            windStrength = 0;
+        }
+        wind = !!windStrength;
     }
 
     function onResize () {
@@ -637,15 +633,17 @@
             window.Math.sin( time / 1000 )
         ).normalize().multiplyScalar( windStrength );
         // windForce.set( 2000, 0, 1000 ).normalize().multiplyScalar( windStrength );
-        simulate( time );
+        cloth.simulate( time );
         render();
     }
 
     function render () {
-        var timer = window.Date.now() * 0.0002,
-            p     = cloth.particles;
-        for ( var i = 0, il = p.length; i < il; i ++ ) {
-            cloth.geometry.vertices[ i ].copy( p[ i ].position );
+        var timer     = window.Date.now() * 0.0002,
+            particles = cloth.particles,
+            vertices  = cloth.geometry.vertices,
+            i, il;
+        for ( i = 0, il = particles.length; i < il; i++ ) {
+            vertices[ i ].copy( particles[ i ].position );
         }
         cloth.geometry.computeFaceNormals();
         cloth.geometry.computeVertexNormals();
@@ -663,9 +661,8 @@
         init       : init,
         setWind    : setWind,
         setFlagImg : setFlagImg,
-        container  : container,
-        canvas     : canvas,
-        getFlagImg : function () {return imageData;}
+        get canvas () { return renderer.domElement; },
+        getFlagImg : function () { return imageData; }
     };
 
 }( window, document, THREE ));

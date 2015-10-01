@@ -130,8 +130,10 @@
         // Init
         //
 
-        // Init FlagWaver
-        flagWaver.init( $( '.js-flag-canvas' )[ 0 ] );
+        // Init flagWaver and append renderer to DOM
+        flagWaver.init();
+        $( '.js-flag-canvas' ).append( flagWaver.canvas );
+        window.dispatchEvent( new window.Event( 'resize' ) );
 
         // Load flag image from hash on page load
         fromHash();
