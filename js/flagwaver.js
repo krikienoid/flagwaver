@@ -102,7 +102,7 @@
 
     // Force -> Acceleration
     Particle.prototype.addForce = function ( force ) {
-        this.a.addSelf(
+        this.a.add(
             this.tmp2.copy( force ).multiplyScalar( this.invMass )
         );
     };
@@ -110,9 +110,9 @@
     // Performs verlet integration
     Particle.prototype.integrate = function ( timesq ) {
 
-        var newPos = this.tmp.sub( this.position, this.previous );
-        newPos.multiplyScalar( DRAG ).addSelf( this.position );
-        newPos.addSelf( this.a.multiplyScalar( timesq ) );
+        var newPos = this.tmp.subVectors( this.position, this.previous );
+        newPos.multiplyScalar( DRAG ).add( this.position );
+        newPos.add( this.a.multiplyScalar( timesq ) );
 
         this.tmp      = this.previous;
         this.previous = this.position;
@@ -307,13 +307,13 @@
             correction,
             correctionHalf;
 
-        diff.sub( p2.position, p1.position );
+        diff.subVectors( p2.position, p1.position );
         currentDist = diff.length();
         if ( currentDist === 0 ) return; // prevents division by 0
         correction = diff.multiplyScalar( 1 - distance / currentDist );
         correctionHalf = correction.multiplyScalar( 0.5 );
-        p1.position.addSelf( correctionHalf );
-        p2.position.subSelf( correctionHalf );
+        p1.position.add( correctionHalf );
+        p2.position.sub( correctionHalf );
 
         // float difference = ( restingDistance - d ) / d
         // im1 = 1 / p1.mass // inverse mass quantities
@@ -382,15 +382,15 @@
         ballPosition.z = -window.Math.sin( window.Date.now() / 300 ) * 90 ; //+ 40;
         ballPosition.x = window.Math.cos( window.Date.now() / 200 ) * 70
 
-        // if ( sphere.visible ) { 
+        // if ( sphere.visible ) {
         //     for ( i = 0, il = particles.length; i < il; i++ ) {
         //     	   particle = particles[ i ];
         //     	   pos = particle.position;
-        //     	   diff.sub( pos, ballPosition );
+        //     	   diff.subVectors( pos, ballPosition );
         //     	   if ( diff.length() < ballSize ) {
         //     	   	   // collided
         //     	   	   diff.normalize().multiplyScalar( ballSize );
-        //     	   	   pos.copy( ballPosition ).addSelf( diff );
+        //     	   	   pos.copy( ballPosition ).add( diff );
         //     	   }
         //     }
         // }
@@ -431,7 +431,7 @@
         // Init scene
         scene     = new THREE.Scene();
         scene.fog = new THREE.Fog( 0x000000, 1000, 10000 );
-        scene.fog.color.setHSV( 0.6, 0.2, 1 );
+        scene.fog.color.setHSL( 0.6, 0.2, 1 );
 
         // Init camera
         camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
@@ -442,7 +442,7 @@
         // Init lights
         scene.add( new THREE.AmbientLight( 0x666666 ) );
         light = new THREE.DirectionalLight( 0xffffff, 1.75 );
-        light.color.setHSV( 0.6, 0.125, 1 );
+        light.color.setHSL( 0.6, 0.125, 1 );
         light.position.set( 50, 175, 100 );
         light.position.multiplyScalar( 1.3 );
         light.castShadow      = true;
@@ -457,17 +457,16 @@
         light.shadowDarkness     = 0.5;
         scene.add( light );
         light = new THREE.DirectionalLight( 0xffffff, 0.35 );
-        light.color.setHSV( 0.3, 0.95, 1 );
+        light.color.setHSL( 0.3, 0.95, 1 );
         light.position.set( 0, -1, 0 );
         scene.add( light );
 
         // Init flag pole
-        poleGeo = new THREE.CubeGeometry( 14, poleHeight, 2 );
+        poleGeo = new THREE.BoxGeometry( 14, poleHeight, 2 );
         poleMat = new THREE.MeshPhongMaterial( {
-            color    : 0x4A4A4A,
-            specular : 0x111111,
-            shiness  : 0,
-            perPixel : true
+            color     : 0x4A4A4A,
+            specular  : 0x111111,
+            shininess : 0
         } );
         poleMesh = new THREE.Mesh( poleGeo, poleMat );
         poleMesh.position.y    = poleOffset - poleHeight / 2;
@@ -477,12 +476,14 @@
         scene.add( poleMesh );
 
         // Init renderer object
-        renderer = new THREE.WebGLRenderer( { antialias : true } );
+        renderer = new THREE.WebGLRenderer( { antialias : true, alpha : true } );
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.gammaInput             = true;
         renderer.gammaOutput            = true;
-        renderer.physicallyBasedShading = true;
         renderer.shadowMapEnabled       = true;
+
+        // Misc settings
+        THREE.ImageUtils.crossOrigin = 'anonymous';
 
         // Add event handlers
         window.addEventListener( 'resize', onResize );
@@ -560,6 +561,9 @@
             imgSrc,
             null,
             function () {
+                // clothTexture.generateMipmaps = false;
+                clothTexture.minFilter = THREE.LinearFilter;
+                clothTexture.magFilter = THREE.LinearFilter;
                 setFlagMat( clothTexture );
             },
             function () {
@@ -579,22 +583,20 @@
 
         var flagMaterial;
 
-        //THREE.MTLLoader.ensurePowerOfTwo();
-        clothTexture.wrapS = clothTexture.wrapT = THREE.RepeatWrapping;
+        clothTexture.wrapS = clothTexture.wrapT = THREE.ClampToEdgeWrapping;
         clothTexture.anisotropy = 16;
 
         flagMaterial = new THREE.MeshPhongMaterial( {
             alphaTest   : 0.5,
-            ambient     : 0xffffff,
             color       : 0xffffff,
             specular    : 0x030303,
-            emissive    : 0x111111,
-            shiness     : 10,
-            perPixel    : true,
+            emissive    : 0x010101,
+            shininess   : 0,
             metal       : false,
             map         : clothTexture,
-            doubleSided : true
+            side        : THREE.DoubleSide
         } );
+
         /*flagMaterial = new THREE.MeshBasicMaterial( {
             color       : 0xff0000,
             wireframe   : true,
@@ -604,7 +606,7 @@
 
         // Init cloth geometry
         var uniforms = {
-            texture : { type: "t", value: 0, texture : clothTexture }
+            texture : { type: "t", value: clothTexture }
         };
 
         // Init cloth mesh
