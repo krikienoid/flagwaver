@@ -53,7 +53,7 @@
 // Flag Waver Tool
 //
 
-;(function ( window, document, THREE, undefined ) {
+;( function ( window, document, THREE, undefined ) {
 
     //
     // Global settings
@@ -88,7 +88,7 @@
     // Simulation classes
     //
 
-    // Particle constuctor
+    // Particle constructor
     function Particle ( x, y, z, plane, mass ) {
         this.position = plane( x, y ); // position
         this.previous = plane( x, y ); // previous
@@ -122,7 +122,7 @@
 
     }
 
-    // Cloth constuctor
+    // Cloth constructor
     function Cloth ( xSegs, ySegs, restDistance ) {
 
         var particles   = [],
@@ -280,11 +280,6 @@
         // 	}
         // }
 
-        // Pins
-        for ( var j = 0; j <= ySegs; j++ ) {
-            pins.push( index( 0, j ) );
-        }
-
         // Public Properties and Methods
         this.xSegs        = xSegs;
         this.ySegs        = ySegs;
@@ -404,6 +399,117 @@
 
     };
 
+    // Flag constructor
+    function Flag ( xSegs, ySegs, restDistance ) {
+
+        this.cloth  = new Cloth( xSegs, ySegs, restDistance );
+        this.mesh   = null;
+        this.object = null;
+
+    }
+
+    // Set flag texture
+    Flag.prototype.initTexture = function ( texture ) {
+
+        var uniforms;
+
+        texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+        texture.anisotropy = 16;
+
+        this.mesh = new THREE.MeshPhongMaterial( {
+            alphaTest   : 0.5,
+            color       : 0xffffff,
+            specular    : 0x030303,
+            emissive    : 0x010101,
+            shininess   : 0,
+            metal       : false,
+            map         : texture,
+            side        : THREE.DoubleSide
+        } );
+
+        /*this.mesh = new THREE.MeshBasicMaterial( {
+            color       : 0xff0000,
+            wireframe   : true,
+            transparent : true,
+            opacity     : 0.9
+        } );*/
+
+        // Init cloth geometry
+        uniforms = {
+            texture : { type: "t", value: texture }
+        };
+
+        // Init cloth mesh
+        this.object = new THREE.Mesh( this.cloth.geometry, this.mesh );
+        this.object.castShadow    = true;
+        this.object.receiveShadow = true;
+        this.object.customDepthMaterial = new THREE.ShaderMaterial( {
+            uniforms       : uniforms,
+            vertexShader   : vertexShader,
+            fragmentShader : fragmentShader
+        } );
+
+    };
+
+    // Rotate the flag
+    Flag.prototype.setTop = function ( edge ) {};
+
+    // Pin the edge of a flag
+    Flag.prototype.pinEdge = function ( dir ) {
+        if ( dir === 'right' ) {
+            this.object.position.set(
+                -this.cloth.width,
+                poleOffset - this.cloth.height,
+                0
+            );
+            // Pin right edge
+            this.pin( 'right' );
+        }
+        else {
+            this.object.position.set(
+                0,
+                poleOffset - this.cloth.height,
+                0
+            );
+            // Pin left edge
+            this.pin( 'left' );
+        }
+    };
+
+    // Pin edges of cloth
+    Flag.prototype.pin = function ( edge, spacing ) {
+
+        var i, ii;
+
+        spacing = window.parseInt( spacing );
+        if ( window.isNaN( spacing ) || spacing < 1 ) spacing = 1;
+
+        if ( edge === 'top' ) {
+            for ( i = 0, ii = this.cloth.xSegs; i <= ii; i += spacing ) {
+                this.cloth.pins.push( this.cloth.index( i, this.cloth.ySegs ) );
+            }
+        }
+        else if ( edge === 'bottom' ) {
+            for ( i = 0, ii = this.cloth.xSegs; i <= ii; i += spacing ) {
+                this.cloth.pins.push( this.cloth.index( i, 0 ) );
+            }
+        }
+        else if ( edge === 'right' ) {
+            for ( i = 0, ii = this.cloth.ySegs; i <= ii; i += spacing ) {
+                this.cloth.pins.push( this.cloth.index( this.cloth.xSegs, i ) );
+            }
+        }
+        else {
+            for ( i = 0, ii = this.cloth.ySegs; i <= ii; i += spacing ) {
+                this.cloth.pins.push( this.cloth.index( 0, i ) );
+            }
+        }
+
+    };
+
+    // Remove pins from cloth
+    Flag.prototype.unpin = function () { this.cloth.pins = []; };
+
     //
     // Rendering
     //
@@ -413,10 +519,20 @@
         poleOffset  = 300,
         poleHeight  = 1000;
 
+    // Flag default settings
+    var defaultSettings = {
+        width    : null,   // w = 15
+        height   : 10,     // h = 10
+        hoistDir : 'left', // dir = left | right
+        hoistTop : 'top',  // top = top | left | bottom | right
+        src      : '',     // src = field.png
+        reverse  : ''      // reverse = 'field.png'
+    };
+
     // Renderer variables
     var vertexShader, fragmentShader,
         scene, camera, renderer, object,
-        cloth,
+        cloth, flagObject,
         imageData;
 
     function init () {
@@ -490,17 +606,22 @@
         onResize();
 
         // Begin animation
-        cloth = new Cloth(); // tmp cloth to init animation
+        flagObject = new Flag(); // tmp cloth to init animation
         animate();
 
     }
 
-    function setFlagImg ( imageDataVal ) {
+    function setFlagImg ( flagSettings ) {
 
         var imgSrc, testImg;
 
         // Get image data
-        if ( imageDataVal ) imageData = imageDataVal;
+        if ( flagSettings ) {
+            imageData = flagSettings;
+            if ( !flagSettings.hoistDir ) {
+                flagSettings.hoistDir = defaultSettings.hoistDir;
+            }
+        }
 
         // Get image src
         if ( imageData && imageData.src ) imgSrc = imageData.src;
@@ -533,7 +654,7 @@
             if ( imageData && imageData.h ) ySegs = window.Number( imageData.h );
 
             // Init flag cloth
-            cloth = new Cloth(
+            flagObject = new Flag(
                 xSegs,
                 ySegs,
                 20 / granularity
@@ -557,14 +678,14 @@
     }
 
     function setFlagTex ( imgSrc ) {
-        var clothTexture = THREE.ImageUtils.loadTexture(
+        var texture = THREE.ImageUtils.loadTexture(
             imgSrc,
             null,
             function () {
-                // clothTexture.generateMipmaps = false;
-                clothTexture.minFilter = THREE.LinearFilter;
-                clothTexture.magFilter = THREE.LinearFilter;
-                setFlagMat( clothTexture );
+                // texture.generateMipmaps = false;
+                texture.minFilter = THREE.LinearFilter;
+                texture.magFilter = THREE.LinearFilter;
+                setFlagMat( texture );
             },
             function () {
                 window.console.log( 'Error: FlagWaver: Failed to load image as texture.' );
@@ -579,53 +700,20 @@
         );
     }
 
-    function setFlagMat ( clothTexture ) {
+    function setFlagMat ( texture ) {
 
-        var flagMaterial;
+        flagObject.initTexture( texture );
+        flagObject.pinEdge();
+        flagObject.setTop( 'top' );
 
-        clothTexture.wrapS = clothTexture.wrapT = THREE.ClampToEdgeWrapping;
-        clothTexture.anisotropy = 16;
+        setFlag( flagObject );
 
-        flagMaterial = new THREE.MeshPhongMaterial( {
-            alphaTest   : 0.5,
-            color       : 0xffffff,
-            specular    : 0x030303,
-            emissive    : 0x010101,
-            shininess   : 0,
-            metal       : false,
-            map         : clothTexture,
-            side        : THREE.DoubleSide
-        } );
+    }
 
-        /*flagMaterial = new THREE.MeshBasicMaterial( {
-            color       : 0xff0000,
-            wireframe   : true,
-            transparent : true,
-            opacity     : 0.9
-        } );*/
-
-        // Init cloth geometry
-        var uniforms = {
-            texture : { type: "t", value: clothTexture }
-        };
-
-        // Init cloth mesh
+    function setFlag ( flag ) {
         scene.remove( object );
-        object = new THREE.Mesh( cloth.geometry, flagMaterial );
-        object.position.set(
-            0,
-            poleOffset - cloth.height,
-            0
-        );
-        object.castShadow    = true;
-        object.receiveShadow = true;
-        object.customDepthMaterial = new THREE.ShaderMaterial( {
-            uniforms       : uniforms,
-            vertexShader   : vertexShader,
-            fragmentShader : fragmentShader
-        } );
+        object = flag.object;
         scene.add( object );
-
     }
 
     function setWind ( value ) {
@@ -662,22 +750,22 @@
             window.Math.sin( time / 1000 )
         ).normalize().multiplyScalar( windStrength );
         // windForce.set( 2000, 0, 1000 ).normalize().multiplyScalar( windStrength );
-        cloth.simulate( time );
+        flagObject.cloth.simulate( time );
         render();
     }
 
     function render () {
         var timer     = window.Date.now() * 0.0002,
-            particles = cloth.particles,
-            vertices  = cloth.geometry.vertices,
+            particles = flagObject.cloth.particles,
+            vertices  = flagObject.cloth.geometry.vertices,
             i, il;
         for ( i = 0, il = particles.length; i < il; i++ ) {
             vertices[ i ].copy( particles[ i ].position );
         }
-        cloth.geometry.computeFaceNormals();
-        cloth.geometry.computeVertexNormals();
-        cloth.geometry.normalsNeedUpdate  = true;
-        cloth.geometry.verticesNeedUpdate = true;
+        flagObject.cloth.geometry.computeFaceNormals();
+        flagObject.cloth.geometry.computeVertexNormals();
+        flagObject.cloth.geometry.normalsNeedUpdate  = true;
+        flagObject.cloth.geometry.verticesNeedUpdate = true;
         camera.lookAt( scene.position );
         renderer.render( scene, camera );
     }
@@ -694,4 +782,4 @@
         getFlagImg : function () { return imageData; }
     };
 
-}( window, document, THREE ));
+} )( window, document, THREE );
