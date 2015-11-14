@@ -78,15 +78,15 @@
     var ballPosition = new THREE.Vector3( 0, -45, 0 ),
         ballSize     = 60; //40
 
-    // Simulation variables
+    //
+    // Simulation classes
+    //
+
+    // Cloth simulation variables
     var gravityForce = new THREE.Vector3( 0, -GRAVITY, 0 ).multiplyScalar( MASS ),
         tmpForce     = new THREE.Vector3(),
         diff         = new THREE.Vector3(),
         lastTime;
-
-    //
-    // Simulation classes
-    //
 
     // Particle constructor
     function Particle ( x, y, z, plane, mass ) {
@@ -120,7 +120,7 @@
 
         this.a.set( 0, 0, 0 );
 
-    }
+    };
 
     // Cloth constructor
     function Cloth ( xSegs, ySegs, restDistance ) {
@@ -317,6 +317,22 @@
 
     }
 
+    // Reset cloth to initial state
+    Cloth.prototype.reset = function () {
+
+        var i = 0, v, u;
+
+        for ( v = 0; v <= this.ySegs; v++ ) {
+            for ( u = 0; u <= this.xSegs; u++, i++ ) {
+                this.particles[ i ].position = this.plane(
+                    u / this.xSegs,
+                    v / this.ySegs
+                );
+            }
+        }
+
+    };
+
     // Simulate cloth
     Cloth.prototype.simulate = function ( time ) {
 
@@ -451,8 +467,43 @@
 
     };
 
+    // Set flag texture
+    Flag.prototype.setTexture = function ( texture ) {
+
+        this.mesh.map = texture;
+        this.mesh.needsUpdate = true;
+
+    };
+
     // Rotate the flag
-    Flag.prototype.setTop = function ( edge ) {};
+    Flag.prototype.setTop = function ( edge ) {
+
+        var axis = new THREE.Vector3( 0, 0, 1 ),
+            radians;
+
+        switch ( edge ) {
+            case 'bottom' :
+                radians = Math.PI;
+                gravityForce = new THREE.Vector3( 0, GRAVITY, 0 ).multiplyScalar( MASS );
+                break;
+            case 'left'   :
+                radians = Math.PI / 2;
+                gravityForce = new THREE.Vector3( -GRAVITY, 0, 0 ).multiplyScalar( MASS );
+                break;
+            case 'right'  :
+                radians = -Math.PI / 2;
+                gravityForce = new THREE.Vector3( GRAVITY, 0, 0 ).multiplyScalar( MASS );
+                break;
+            case 'top'    :
+            default       :
+                radians = 0;
+                gravityForce = new THREE.Vector3( 0, -GRAVITY, 0 ).multiplyScalar( MASS );
+                break;
+        }
+
+        this.object.rotateZ( radians );
+
+    };
 
     // Pin the edge of a flag
     Flag.prototype.pinEdge = function ( dir ) {
@@ -739,8 +790,16 @@
         renderer.setSize( window.innerWidth, h );
     }
 
+    var animationPaused = false;
+
     function animate () {
-        window.requestAnimationFrame( animate );
+        if ( !animationPaused ) {
+            window.requestAnimationFrame( animate );
+        }
+        animateFrame();
+    }
+
+    function animateFrame () {
         var time = window.Date.now();
         // windStrength = window.Math.cos( time / 7000 ) * 100 + 200;
         // windStrength = 100;
@@ -777,6 +836,18 @@
     window.flagWaver = {
         init       : init,
         setWind    : setWind,
+        animation  : {
+            start  : function () {
+                if ( animationPaused ) {
+                    animationPaused = false;
+                    animate();
+                }
+            },
+            stop   : function () { animationPaused = true; },
+            step   : function () { if ( animationPaused ) animateFrame(); },
+            reset  : function () { flagObject.cloth.reset(); render(); },
+            render : render
+        },
         setFlagImg : setFlagImg,
         get canvas () { return renderer.domElement; },
         getFlagImg : function () { return imageData; }
