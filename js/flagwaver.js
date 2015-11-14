@@ -127,7 +127,6 @@
 
         var particles   = [],
             constraints = [],
-            pins        = [],
             index,
             plane,
             geometry,
@@ -290,7 +289,6 @@
         this.geometry     = geometry;
         this.particles    = particles;
         this.constraints  = constraints;
-        this.pins         = pins;
 
     }
 
@@ -316,32 +314,12 @@
 
     }
 
-    // Reset cloth to initial state
-    Cloth.prototype.reset = function () {
-        for ( var i = 0, il = this.particles.length; i < il; i++ ) {
-            this.particles[ i ].position.copy( this.particles[ i ].original );
-        }
-    };
-
-    // Cloth rotation
-    Cloth.prototype.rotate = function ( axis, radians ) {
-        var quaternion = new THREE.Quaternion(),
-            i, il;
-        quaternion.setFromAxisAngle( axis, radians );
-        this.reset();
-        for ( i = 0, il = this.particles.length; i < il; i++ ) {
-            this.particles[ i ].position.applyQuaternion( quaternion );
-            this.particles[ i ].original.copy( this.particles[ i ].position );
-        }
-    };
-
     // Simulate cloth
     Cloth.prototype.simulate = function ( time ) {
 
         var particles   = this.particles,
             constraints = this.constraints,
             faces       = this.geometry.faces,
-            pins        = this.pins,
             particle, constraint,
             face, normal,
             i, il;
@@ -408,24 +386,28 @@
         //     }
         // }
 
-        // Pin constraints
-        for ( i = 0, il = pins.length; i < il; i++ ) {
-            particle = particles[ pins[ i ] ];
-            particle.position.copy( particle.original );
-            particle.previous.copy( particle.original );
-        }
-
     };
+
+    var HOISTING = { Dexter : 0, Sinister : 1 },
+        HANGING  = { Top : 0, Left : 1, Bottom : 2, Right : 3 },
+        ROTATE   = {
+            Top    : 0,
+            Left   : -Math.PI / 2,
+            Bottom : Math.PI,
+            Right  : Math.PI / 2
+        };
 
     // Flag constructor
     function Flag ( xSegs, ySegs, restDistance ) {
 
         this.cloth  = new Cloth( xSegs, ySegs, restDistance );
+        this.pins   = [];
         this.mesh   = null;
         this.object = null;
         this.position = new THREE.Vector3( 0, 0, 0 );
         this.original = new THREE.Vector3( 0, poleOffset - this.cloth.height, 0 );
-        this.radians  = 0;
+        this.hoisting = 'dexter';
+        this.hanging  = 'top';
 
     }
 
@@ -483,40 +465,32 @@
     // Rotate the flag
     Flag.prototype.setTop = function ( edge ) {
 
-        var axis = new THREE.Vector3( 0, 0, 1 ),
-            hoistEdge,
-            radians;
+        var hoistEdge;
 
         switch ( edge ) {
             case 'bottom' :
-                radians = Math.PI;
                 this.position.x = this.original.x + this.cloth.width;
                 this.position.y = this.original.y + this.cloth.height;
                 hoistEdge = 'right';
                 break;
             case 'left'   :
-                radians = -Math.PI / 2;
                 this.position.x = this.original.x;
                 this.position.y = this.original.y + this.cloth.height;
                 hoistEdge = 'bottom';
                 break;
             case 'right'  :
-                radians = Math.PI / 2;
                 this.position.x = this.original.x + this.cloth.height;
                 this.position.y = this.original.y + this.cloth.height - this.cloth.width;
                 hoistEdge = 'top';
                 break;
             case 'top'    :
             default       :
-                radians = 0;
                 this.position.x = this.original.x;
                 this.position.y = this.original.y;
                 hoistEdge = 'left';
                 break;
         }
 
-        this.cloth.rotate( axis, -this.radians );
-        this.cloth.rotate( axis, radians );
         this.object.position.set(
             this.position.x,
             this.position.y,
@@ -524,7 +498,7 @@
         );
         flagObject.unpin();
         flagObject.pin( hoistEdge );
-        this.radians = radians;
+        this.hanging = edge;
 
     };
 
@@ -540,7 +514,7 @@
         }
     };
 
-    // Pin edges of cloth
+    // Pin edges of flag cloth
     Flag.prototype.pin = function ( edge, spacing ) {
 
         var i, ii;
@@ -550,29 +524,84 @@
 
         if ( edge === 'top' ) {
             for ( i = 0, ii = this.cloth.xSegs; i <= ii; i += spacing ) {
-                this.cloth.pins.push( this.cloth.index( i, this.cloth.ySegs ) );
+                this.pins.push( this.cloth.index( i, this.cloth.ySegs ) );
             }
         }
         else if ( edge === 'bottom' ) {
             for ( i = 0, ii = this.cloth.xSegs; i <= ii; i += spacing ) {
-                this.cloth.pins.push( this.cloth.index( i, 0 ) );
+                this.pins.push( this.cloth.index( i, 0 ) );
             }
         }
         else if ( edge === 'right' ) {
             for ( i = 0, ii = this.cloth.ySegs; i <= ii; i += spacing ) {
-                this.cloth.pins.push( this.cloth.index( this.cloth.xSegs, i ) );
+                this.pins.push( this.cloth.index( this.cloth.xSegs, i ) );
             }
         }
         else {
             for ( i = 0, ii = this.cloth.ySegs; i <= ii; i += spacing ) {
-                this.cloth.pins.push( this.cloth.index( 0, i ) );
+                this.pins.push( this.cloth.index( 0, i ) );
             }
         }
 
     };
 
-    // Remove pins from cloth
-    Flag.prototype.unpin = function () { this.cloth.pins = []; };
+    // Remove pins from flag cloth
+    Flag.prototype.unpin = function () { this.pins = []; };
+
+    // Reset flag to initial state
+    Flag.prototype.reset = function () {
+
+        var particles  = this.cloth.particles,
+            quaternion = this.getQuaternion(),
+            i, il;
+
+        for ( i = 0, il = particles.length; i < il; i++ ) {
+            particles[ i ].position.copy(
+                particles[ i ].original
+            ).applyQuaternion( quaternion );
+        }
+
+    };
+
+    // Get quaternion for rotated flags
+    Flag.prototype.getQuaternion = function () {
+
+        var quaternion = new THREE.Quaternion(),
+            axis       = new THREE.Vector3( 0, 0, 1 ),
+            radians    = 0;
+
+        switch ( this.hanging ) {
+            case 'top'    : radians = ROTATE.Top;    break;
+            case 'left'   : radians = ROTATE.Left;   break;
+            case 'bottom' : radians = ROTATE.Bottom; break;
+            case 'right'  : radians = ROTATE.Right;  break;
+        }
+
+        quaternion.setFromAxisAngle( axis, radians );
+
+        return quaternion;
+
+    };
+
+    // Simulate flag cloth
+    Flag.prototype.simulate = function () {
+
+        var pins       = this.pins,
+            particles  = this.cloth.particles,
+            quaternion = this.getQuaternion(),
+            particle,
+            i, il;
+
+        this.cloth.simulate();
+
+        // Pin constraints
+        for ( i = 0, il = pins.length; i < il; i++ ) {
+            particle = particles[ pins[ i ] ];
+            particle.position.copy( particle.original ).applyQuaternion( quaternion );
+            particle.previous.copy( particle.position );
+        }
+
+    };
 
     //
     // Rendering
@@ -822,7 +851,7 @@
             window.Math.sin( time / 1000 )
         ).normalize().multiplyScalar( windStrength );
         // windForce.set( 2000, 0, 1000 ).normalize().multiplyScalar( windStrength );
-        flagObject.cloth.simulate( time );
+        flagObject.simulate( time );
         render();
     }
 
@@ -858,7 +887,7 @@
             },
             stop   : function () { animationPaused = true; },
             step   : function () { if ( animationPaused ) animateFrame(); },
-            reset  : function () { flagObject.cloth.reset(); render(); },
+            reset  : function () { flagObject.reset(); render(); },
             render : render
         },
         get flag () { return flagObject; },
