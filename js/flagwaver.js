@@ -333,6 +333,17 @@
 
     };
 
+    // Cloth rotation
+    Cloth.prototype.rotate = function ( radians ) {
+        var axis       = new THREE.Vector3( 0, 0, 1 ),
+            quaternion = new THREE.Quaternion(),
+            i, il;
+        quaternion.setFromAxisAngle( axis, radians );
+        for ( i = 0, il = this.particles.length; i < il; i++ ) {
+            this.particles[ i ].position.applyQuaternion( quaternion );
+        }
+    };
+
     // Simulate cloth
     Cloth.prototype.simulate = function ( time ) {
 
