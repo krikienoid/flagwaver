@@ -462,32 +462,52 @@
 
     };
 
-    // Rotate the flag
-    Flag.prototype.setTop = function ( edge ) {
+    // Recalculate flag position and reset pins
+    Flag.prototype.rehoist = function () {
 
-        var hoistEdge;
+        var isFlipped = ( this.hoisting === 'sinister' ),
+            w = this.cloth.width,
+            h = this.cloth.height,
+            hoistEdge;
 
-        switch ( edge ) {
+        // Determine hoist edge based on rotation
+        if ( isFlipped ) {
+            switch ( this.hanging ) {
+                case 'left'   : hoistEdge = 'top';    break;
+                case 'bottom' : hoistEdge = 'left';   break;
+                case 'right'  : hoistEdge = 'bottom'; break;
+                case 'top'    :
+                default       : hoistEdge = 'right';  break;
+            }
+        }
+        else {
+            switch ( this.hanging ) {
+                case 'left'   : hoistEdge = 'bottom'; break;
+                case 'bottom' : hoistEdge = 'right';  break;
+                case 'right'  : hoistEdge = 'top';    break;
+                case 'top'    :
+                default       : hoistEdge = 'left';   break;
+            }
+        }
+
+        // Determine position offset based on rotation
+        switch ( this.hanging ) {
             case 'bottom' :
-                this.position.x = this.original.x + this.cloth.width;
-                this.position.y = this.original.y + this.cloth.height;
-                hoistEdge = 'right';
+                this.position.x = this.original.x + ( ( isFlipped )? 0 : w );
+                this.position.y = this.original.y + h;
                 break;
             case 'left'   :
-                this.position.x = this.original.x;
-                this.position.y = this.original.y + this.cloth.height;
-                hoistEdge = 'bottom';
+                this.position.x = this.original.x + ( ( isFlipped )? -h : 0 );
+                this.position.y = this.original.y + h;
                 break;
             case 'right'  :
-                this.position.x = this.original.x + this.cloth.height;
-                this.position.y = this.original.y + this.cloth.height - this.cloth.width;
-                hoistEdge = 'top';
+                this.position.x = this.original.x + ( ( isFlipped )? 0 : h );
+                this.position.y = this.original.y + h - w;
                 break;
             case 'top'    :
             default       :
-                this.position.x = this.original.x;
+                this.position.x = this.original.x + ( ( isFlipped )? -w : 0 );
                 this.position.y = this.original.y;
-                hoistEdge = 'left';
                 break;
         }
 
@@ -496,22 +516,22 @@
             this.position.y,
             0
         );
-        flagObject.unpin();
-        flagObject.pin( hoistEdge );
-        this.hanging = edge;
+
+        this.unpin();
+        this.pin( hoistEdge );
 
     };
 
-    // Pin the edge of a flag
-    Flag.prototype.pinEdge = function ( dir ) {
-        if ( dir === 'right' ) {
-            // Pin right edge
-            this.pin( 'right' );
-        }
-        else {
-            // Pin left edge
-            this.pin( 'left' );
-        }
+    // Rotate the flag
+    Flag.prototype.setTop = function ( edge ) {
+        this.hanging = edge.toLowerCase();
+        this.rehoist();
+    };
+
+    // Set the hoisting to dexter or sinister
+    Flag.prototype.setHoisting = function ( hoisting ) {
+        this.hoisting = hoisting.toLowerCase();
+        this.rehoist();
     };
 
     // Pin edges of flag cloth
@@ -567,17 +587,24 @@
     Flag.prototype.getQuaternion = function () {
 
         var quaternion = new THREE.Quaternion(),
-            axis       = new THREE.Vector3( 0, 0, 1 ),
-            radians    = 0;
+            yAxis      = new THREE.Vector3( 0, 1, 0 ),
+            zAxis      = new THREE.Vector3( 0, 0, 1 ),
+            yRadians   = 0,
+            zRadians   = 0;
 
-        switch ( this.hanging ) {
-            case 'top'    : radians = ROTATE.Top;    break;
-            case 'left'   : radians = ROTATE.Left;   break;
-            case 'bottom' : radians = ROTATE.Bottom; break;
-            case 'right'  : radians = ROTATE.Right;  break;
+        if ( this.hoisting === 'sinister' ) {
+            yRadians = Math.PI;
         }
 
-        quaternion.setFromAxisAngle( axis, radians );
+        switch ( this.hanging ) {
+            case 'top'    : zRadians = ROTATE.Top;    break;
+            case 'left'   : zRadians = ROTATE.Left;   break;
+            case 'bottom' : zRadians = ROTATE.Bottom; break;
+            case 'right'  : zRadians = ROTATE.Right;  break;
+        }
+
+        quaternion.setFromAxisAngle( yAxis, yRadians );
+        quaternion.setFromAxisAngle( zAxis, zRadians );
 
         return quaternion;
 
@@ -797,7 +824,6 @@
 
         flagObject.initTexture( texture );
         flagObject.setTop( 'top' );
-        // flagObject.pinEdge();
 
         setFlag( flagObject );
 
