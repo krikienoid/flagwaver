@@ -319,7 +319,7 @@
     // Reset cloth to initial state
     Cloth.prototype.reset = function () {
         for ( var i = 0, il = this.particles.length; i < il; i++ ) {
-            this.particles[ i ].position = this.particles[ i ].original;
+            this.particles[ i ].position.copy( this.particles[ i ].original );
         }
     };
 
@@ -328,8 +328,10 @@
         var quaternion = new THREE.Quaternion(),
             i, il;
         quaternion.setFromAxisAngle( axis, radians );
+        this.reset();
         for ( i = 0, il = this.particles.length; i < il; i++ ) {
             this.particles[ i ].position.applyQuaternion( quaternion );
+            this.particles[ i ].original.copy( this.particles[ i ].position );
         }
     };
 
@@ -421,6 +423,8 @@
         this.cloth  = new Cloth( xSegs, ySegs, restDistance );
         this.mesh   = null;
         this.object = null;
+        this.position = new THREE.Vector3( 0, 0, 0 );
+        this.original = new THREE.Vector3( 0, poleOffset - this.cloth.height, 0 );
 
     }
 
@@ -479,46 +483,55 @@
     Flag.prototype.setTop = function ( edge ) {
 
         var axis = new THREE.Vector3( 0, 0, 1 ),
+            hoistEdge,
             radians;
 
         switch ( edge ) {
             case 'bottom' :
                 radians = Math.PI;
+                this.position.x = this.original.x + this.cloth.width;
+                this.position.y = this.original.y + this.cloth.height;
+                hoistEdge = 'right';
                 break;
             case 'left'   :
                 radians = -Math.PI / 2;
+                this.position.x = this.original.x;
+                this.position.y = this.original.y + this.cloth.height;
+                hoistEdge = 'bottom';
                 break;
             case 'right'  :
                 radians = Math.PI / 2;
+                this.position.x = this.original.x + this.cloth.height;
+                this.position.y = this.original.y + this.cloth.height - this.cloth.width;
+                hoistEdge = 'top';
                 break;
             case 'top'    :
             default       :
                 radians = 0;
+                this.position.x = this.original.x;
+                this.position.y = this.original.y;
+                hoistEdge = 'left';
                 break;
         }
 
-        this.cloth.reset();
         this.cloth.rotate( axis, radians );
+        this.object.position.set(
+            this.position.x,
+            this.position.y,
+            0
+        );
+        flagObject.unpin();
+        flagObject.pin( hoistEdge );
 
     };
 
     // Pin the edge of a flag
     Flag.prototype.pinEdge = function ( dir ) {
         if ( dir === 'right' ) {
-            this.object.position.set(
-                -this.cloth.width,
-                poleOffset - this.cloth.height,
-                0
-            );
             // Pin right edge
             this.pin( 'right' );
         }
         else {
-            this.object.position.set(
-                0,
-                poleOffset - this.cloth.height,
-                0
-            );
             // Pin left edge
             this.pin( 'left' );
         }
@@ -751,8 +764,8 @@
     function setFlagMat ( texture ) {
 
         flagObject.initTexture( texture );
-        flagObject.pinEdge();
         flagObject.setTop( 'top' );
+        // flagObject.pinEdge();
 
         setFlag( flagObject );
 
