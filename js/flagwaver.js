@@ -93,7 +93,7 @@
         this.position = plane( x, y ); // position
         this.previous = plane( x, y ); // previous
         this.original = plane( x, y );
-        this.a        = new THREE.Vector3( 0, 0, 0 ); // acceleration
+        this.accel    = new THREE.Vector3( 0, 0, 0 ); // acceleration
         this.mass     = mass;
         this.invMass  = 1 / mass;
         this.tmp      = new THREE.Vector3();
@@ -102,7 +102,7 @@
 
     // Force -> Acceleration
     Particle.prototype.addForce = function ( force ) {
-        this.a.add(
+        this.accel.add(
             this.tmp2.copy( force ).multiplyScalar( this.invMass )
         );
     };
@@ -112,13 +112,13 @@
 
         var newPos = this.tmp.subVectors( this.position, this.previous );
         newPos.multiplyScalar( DRAG ).add( this.position );
-        newPos.add( this.a.multiplyScalar( timesq ) );
+        newPos.add( this.accel.multiplyScalar( timesq ) );
 
         this.tmp      = this.previous;
         this.previous = this.position;
         this.position = newPos;
 
-        this.a.set( 0, 0, 0 );
+        this.accel.set( 0, 0, 0 );
 
     };
 
