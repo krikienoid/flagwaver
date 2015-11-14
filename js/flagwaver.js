@@ -425,6 +425,7 @@
         this.object = null;
         this.position = new THREE.Vector3( 0, 0, 0 );
         this.original = new THREE.Vector3( 0, poleOffset - this.cloth.height, 0 );
+        this.radians  = 0;
 
     }
 
@@ -514,6 +515,7 @@
                 break;
         }
 
+        this.cloth.rotate( axis, -this.radians );
         this.cloth.rotate( axis, radians );
         this.object.position.set(
             this.position.x,
@@ -522,6 +524,7 @@
         );
         flagObject.unpin();
         flagObject.pin( hoistEdge );
+        this.radians = radians;
 
     };
 
@@ -858,6 +861,7 @@
             reset  : function () { flagObject.cloth.reset(); render(); },
             render : render
         },
+        get flag () { return flagObject; },
         setFlagImg : setFlagImg,
         get canvas () { return renderer.domElement; },
         getFlagImg : function () { return imageData; }
