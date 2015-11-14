@@ -128,6 +128,7 @@
         var particles   = [],
             constraints = [],
             pins        = [],
+            index,
             plane,
             geometry,
             width, height,
@@ -139,20 +140,18 @@
         width        = restDistance * xSegs;
         height       = restDistance * ySegs;
 
-        // Index
-        function index ( u, v ) {
-            return u + v * ( xSegs + 1 );
-        }
+        // Index get function
+        index = function ( u, v ) { return u + v * ( xSegs + 1 ); };
 
-        // Cloth Plane
-        plane = function plane ( u, v ) {
+        // Cloth plane function
+        plane = function ( u, v ) {
             var x = u * width, //( u - 0.5 )
                 y = v * height,
                 z = 0;
             return new THREE.Vector3( x, y, z );
         };
 
-        // Cloth Geometry
+        // Cloth geometry
         geometry = new THREE.ParametricGeometry( plane, xSegs, ySegs, true );
         geometry.dynamic = true;
         geometry.computeFaceNormals();
@@ -172,7 +171,7 @@
             }
         }
 
-        // Structural Constraints
+        // Structural constraints
 
         for ( v = 0; v < ySegs; v++ ) {
             for ( u = 0; u < xSegs; u++ ) {
@@ -194,7 +193,7 @@
 
         for ( u = xSegs, v = 0; v < ySegs; v++ ) {
             constraints.push( [
-                particles[ index( u, v  ) ],
+                particles[ index( u, v ) ],
                 particles[ index( u, v + 1 ) ],
                 restDistance
 
@@ -280,7 +279,7 @@
         // 	}
         // }
 
-        // Public Properties and Methods
+        // Public properties and methods
         this.xSegs        = xSegs;
         this.ySegs        = ySegs;
         this.width        = width;
@@ -319,24 +318,14 @@
 
     // Reset cloth to initial state
     Cloth.prototype.reset = function () {
-
-        var i = 0, v, u;
-
-        for ( v = 0; v <= this.ySegs; v++ ) {
-            for ( u = 0; u <= this.xSegs; u++, i++ ) {
-                this.particles[ i ].position = this.plane(
-                    u / this.xSegs,
-                    v / this.ySegs
-                );
-            }
+        for ( var i = 0, il = this.particles.length; i < il; i++ ) {
+            this.particles[ i ].position = this.particles[ i ].original;
         }
-
     };
 
     // Cloth rotation
-    Cloth.prototype.rotate = function ( radians ) {
-        var axis       = new THREE.Vector3( 0, 0, 1 ),
-            quaternion = new THREE.Quaternion(),
+    Cloth.prototype.rotate = function ( axis, radians ) {
+        var quaternion = new THREE.Quaternion(),
             i, il;
         quaternion.setFromAxisAngle( axis, radians );
         for ( i = 0, il = this.particles.length; i < il; i++ ) {
@@ -495,24 +484,21 @@
         switch ( edge ) {
             case 'bottom' :
                 radians = Math.PI;
-                gravityForce = new THREE.Vector3( 0, GRAVITY, 0 ).multiplyScalar( MASS );
                 break;
             case 'left'   :
-                radians = Math.PI / 2;
-                gravityForce = new THREE.Vector3( -GRAVITY, 0, 0 ).multiplyScalar( MASS );
+                radians = -Math.PI / 2;
                 break;
             case 'right'  :
-                radians = -Math.PI / 2;
-                gravityForce = new THREE.Vector3( GRAVITY, 0, 0 ).multiplyScalar( MASS );
+                radians = Math.PI / 2;
                 break;
             case 'top'    :
             default       :
                 radians = 0;
-                gravityForce = new THREE.Vector3( 0, -GRAVITY, 0 ).multiplyScalar( MASS );
                 break;
         }
 
-        this.object.rotateZ( radians );
+        this.cloth.reset();
+        this.cloth.rotate( axis, radians );
 
     };
 
