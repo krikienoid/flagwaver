@@ -420,12 +420,12 @@
             Right  : { name : 'right',  radians : window.Math.PI / 2  }
         };
 
-    // Cardinal directions
+    // Edge relations
     // c = clockwise, cc = counterclockwise, x = across
-    EDGE.Top.c    = EDGE.Bottom.cc = EDGE.Left.x   = EDGE.Right;
-    EDGE.Right.c  = EDGE.Left.cc   = EDGE.Top.x    = EDGE.Bottom;
-    EDGE.Bottom.c = EDGE.Top.cc    = EDGE.Right.x  = EDGE.Left;
-    EDGE.Left.c   = EDGE.Right.cc  = EDGE.Bottom.x = EDGE.Top;
+    EDGE.Left.c   = EDGE.Bottom.x = EDGE.Right.cc  = EDGE.Top;
+    EDGE.Bottom.c = EDGE.Right.x  = EDGE.Top.cc    = EDGE.Left;
+    EDGE.Right.c  = EDGE.Top.x    = EDGE.Left.cc   = EDGE.Bottom;
+    EDGE.Top.c    = EDGE.Left.x   = EDGE.Bottom.cc = EDGE.Right;
 
     // Flag constructor
     function Flag ( xSegs, ySegs, restDistance ) {
