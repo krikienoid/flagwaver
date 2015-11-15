@@ -388,14 +388,20 @@
 
     };
 
-    var HOISTING = { Dexter : 0, Sinister : 1 },
-        HANGING  = { Top : 0, Left : 1, Bottom : 2, Right : 3 },
-        ROTATE   = {
-            Top    : 0,
-            Left   : -Math.PI / 2,
-            Bottom : Math.PI,
-            Right  : Math.PI / 2
+    var HOISTING = { Dexter : 'dexter', Sinister : 'sinister' },
+        EDGE     = {
+            Top    : { name : 'top',    radians : 0            },
+            Left   : { name : 'left',   radians : -Math.PI / 2 },
+            Bottom : { name : 'bottom', radians : Math.PI      },
+            Right  : { name : 'right',  radians : Math.PI / 2  }
         };
+
+    // Cardinal directions
+    // c = clockwise, cc = counterclockwise, x = across
+    EDGE.Top.c    = EDGE.Bottom.cc = EDGE.Left.x   = EDGE.Right;
+    EDGE.Right.c  = EDGE.Left.cc   = EDGE.Top.x    = EDGE.Bottom;
+    EDGE.Bottom.c = EDGE.Top.cc    = EDGE.Right.x  = EDGE.Left;
+    EDGE.Left.c   = EDGE.Right.cc  = EDGE.Bottom.x = EDGE.Top;
 
     // Flag constructor
     function Flag ( xSegs, ySegs, restDistance ) {
@@ -406,8 +412,9 @@
         this.object = null;
         this.position = new THREE.Vector3( 0, 0, 0 );
         this.original = new THREE.Vector3( 0, poleOffset - this.cloth.height, 0 );
-        this.hoisting = 'dexter';
-        this.hanging  = 'top';
+        this.hoisting = HOISTING.Dexter;
+        this.topEdge  = EDGE.Top;
+        this.quaternion = this.getQuaternion();
 
     }
 
@@ -439,7 +446,7 @@
 
         // Init cloth geometry
         uniforms = {
-            texture : { type: "t", value: texture }
+            texture : { type: 't', value: texture }
         };
 
         // Init cloth mesh
@@ -465,46 +472,30 @@
     // Recalculate flag position and reset pins
     Flag.prototype.rehoist = function () {
 
-        var isFlipped = ( this.hoisting === 'sinister' ),
+        var isFlipped = ( this.hoisting === HOISTING.Sinister ),
             w = this.cloth.width,
             h = this.cloth.height,
             hoistEdge;
 
         // Determine hoist edge based on rotation
-        if ( isFlipped ) {
-            switch ( this.hanging ) {
-                case 'left'   : hoistEdge = 'top';    break;
-                case 'bottom' : hoistEdge = 'left';   break;
-                case 'right'  : hoistEdge = 'bottom'; break;
-                case 'top'    :
-                default       : hoistEdge = 'right';  break;
-            }
-        }
-        else {
-            switch ( this.hanging ) {
-                case 'left'   : hoistEdge = 'bottom'; break;
-                case 'bottom' : hoistEdge = 'right';  break;
-                case 'right'  : hoistEdge = 'top';    break;
-                case 'top'    :
-                default       : hoistEdge = 'left';   break;
-            }
-        }
+        if ( isFlipped ) { hoistEdge = this.topEdge.c; }
+        else { hoistEdge = this.topEdge.cc; }
 
         // Determine position offset based on rotation
-        switch ( this.hanging ) {
-            case 'bottom' :
+        switch ( this.topEdge ) {
+            case EDGE.Bottom :
                 this.position.x = this.original.x + ( ( isFlipped )? 0 : w );
                 this.position.y = this.original.y + h;
                 break;
-            case 'left'   :
+            case EDGE.Left   :
                 this.position.x = this.original.x + ( ( isFlipped )? -h : 0 );
                 this.position.y = this.original.y + h;
                 break;
-            case 'right'  :
+            case EDGE.Right  :
                 this.position.x = this.original.x + ( ( isFlipped )? 0 : h );
                 this.position.y = this.original.y + h - w;
                 break;
-            case 'top'    :
+            case EDGE.Top    :
             default       :
                 this.position.x = this.original.x + ( ( isFlipped )? -w : 0 );
                 this.position.y = this.original.y;
@@ -520,17 +511,26 @@
         this.unpin();
         this.pin( hoistEdge );
 
+        this.quaternion = this.getQuaternion();
+
     };
 
     // Rotate the flag
     Flag.prototype.setTop = function ( edge ) {
-        this.hanging = edge.toLowerCase();
+        switch ( edge ) {
+            case 'left'   : this.topEdge = EDGE.Left;   break;
+            case 'bottom' : this.topEdge = EDGE.Bottom; break;
+            case 'right'  : this.topEdge = EDGE.Right;  break;
+            case 'top'    :
+            default       : this.topEdge = EDGE.Top;    break;
+        }
         this.rehoist();
     };
 
     // Set the hoisting to dexter or sinister
     Flag.prototype.setHoisting = function ( hoisting ) {
-        this.hoisting = hoisting.toLowerCase();
+        if ( hoisting !== HOISTING.Sinister ) hoisting = HOISTING.Dexter;
+        this.hoisting = hoisting;
         this.rehoist();
     };
 
@@ -542,17 +542,17 @@
         spacing = window.parseInt( spacing );
         if ( window.isNaN( spacing ) || spacing < 1 ) spacing = 1;
 
-        if ( edge === 'top' ) {
+        if ( edge === EDGE.Top ) {
             for ( i = 0, ii = this.cloth.xSegs; i <= ii; i += spacing ) {
                 this.pins.push( this.cloth.index( i, this.cloth.ySegs ) );
             }
         }
-        else if ( edge === 'bottom' ) {
+        else if ( edge === EDGE.Bottom ) {
             for ( i = 0, ii = this.cloth.xSegs; i <= ii; i += spacing ) {
                 this.pins.push( this.cloth.index( i, 0 ) );
             }
         }
-        else if ( edge === 'right' ) {
+        else if ( edge === EDGE.Right ) {
             for ( i = 0, ii = this.cloth.ySegs; i <= ii; i += spacing ) {
                 this.pins.push( this.cloth.index( this.cloth.xSegs, i ) );
             }
@@ -572,13 +572,12 @@
     Flag.prototype.reset = function () {
 
         var particles  = this.cloth.particles,
-            quaternion = this.getQuaternion(),
             i, il;
 
         for ( i = 0, il = particles.length; i < il; i++ ) {
             particles[ i ].position.copy(
                 particles[ i ].original
-            ).applyQuaternion( quaternion );
+            ).applyQuaternion( this.quaternion );
         }
 
     };
@@ -589,19 +588,8 @@
         var quaternion = new THREE.Quaternion(),
             yAxis      = new THREE.Vector3( 0, 1, 0 ),
             zAxis      = new THREE.Vector3( 0, 0, 1 ),
-            yRadians   = 0,
-            zRadians   = 0;
-
-        if ( this.hoisting === 'sinister' ) {
-            yRadians = Math.PI;
-        }
-
-        switch ( this.hanging ) {
-            case 'top'    : zRadians = ROTATE.Top;    break;
-            case 'left'   : zRadians = ROTATE.Left;   break;
-            case 'bottom' : zRadians = ROTATE.Bottom; break;
-            case 'right'  : zRadians = ROTATE.Right;  break;
-        }
+            yRadians   = ( this.hoisting === HOISTING.Sinister )? Math.PI : 0,
+            zRadians   = this.topEdge.radians;
 
         quaternion.setFromAxisAngle( yAxis, yRadians );
         quaternion.setFromAxisAngle( zAxis, zRadians );
@@ -615,7 +603,6 @@
 
         var pins       = this.pins,
             particles  = this.cloth.particles,
-            quaternion = this.getQuaternion(),
             particle,
             i, il;
 
@@ -624,7 +611,7 @@
         // Pin constraints
         for ( i = 0, il = pins.length; i < il; i++ ) {
             particle = particles[ pins[ i ] ];
-            particle.position.copy( particle.original ).applyQuaternion( quaternion );
+            particle.position.copy( particle.original ).applyQuaternion( this.quaternion );
             particle.previous.copy( particle.position );
         }
 
