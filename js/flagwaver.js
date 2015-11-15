@@ -95,10 +95,13 @@
         lastTime;
 
     // Particle constructor
-    function Particle ( x, y, z, plane, mass ) {
-        this.position = plane( x, y ); // position
-        this.previous = plane( x, y ); // previous
-        this.original = plane( x, y );
+    function Particle ( position, mass ) {
+        this.position = new THREE.Vector3(); // position
+        this.previous = new THREE.Vector3(); // previous
+        this.original = new THREE.Vector3();
+        this.position.copy( position );
+        this.previous.copy( position );
+        this.original.copy( position );
         this.accel    = new THREE.Vector3( 0, 0, 0 ); // acceleration
         this.mass     = mass;
         this.invMass  = 1 / mass;
@@ -165,13 +168,7 @@
         for ( v = 0; v <= ySegs ; v++ ) {
             for ( u = 0; u <= xSegs; u++ ) {
                 particles.push(
-                    new Particle (
-                        u / xSegs,
-                        v / ySegs,
-                        0,
-                        plane,
-                        MASS
-                    )
+                    new Particle( plane( u / xSegs, v / ySegs ), MASS )
                 );
             }
         }
@@ -400,6 +397,20 @@
 
     };
 
+    // Render cloth
+    Cloth.prototype.render = function () {
+        var particles = this.particles,
+            vertices  = this.geometry.vertices,
+            i, il;
+        for ( i = 0, il = particles.length; i < il; i++ ) {
+            vertices[ i ].copy( particles[ i ].position );
+        }
+        this.geometry.computeFaceNormals();
+        this.geometry.computeVertexNormals();
+        this.geometry.normalsNeedUpdate  = true;
+        this.geometry.verticesNeedUpdate = true;
+    };
+
     // Flag settings enum
     var HOISTING = { Dexter : 'dexter', Sinister : 'sinister' },
         EDGE     = {
@@ -427,7 +438,7 @@
         this.offset     = new THREE.Vector3( 0, 0, 0 );
         this.hoisting   = HOISTING.Dexter;
         this.topEdge    = EDGE.Top;
-        this.quaternion = this.getQuaternion();
+        this.updateQuaternion();
 
     }
 
@@ -475,29 +486,33 @@
     // Pin edges of flag cloth
     Flag.prototype.pin = function ( edge, spacing ) {
 
-        var i, ii;
+        var pins  = this.pins,
+            xSegs = this.cloth.xSegs,
+            ySegs = this.cloth.ySegs,
+            index = this.cloth.index,
+            i;
 
         spacing = window.parseInt( spacing );
         if ( window.isNaN( spacing ) || spacing < 1 ) spacing = 1;
 
         if ( edge === EDGE.Top ) {
-            for ( i = 0, ii = this.cloth.xSegs; i <= ii; i += spacing ) {
-                this.pins.push( this.cloth.index( i, this.cloth.ySegs ) );
+            for ( i = 0; i <= xSegs; i += spacing ) {
+                pins.push( index( i, ySegs ) );
             }
         }
         else if ( edge === EDGE.Bottom ) {
-            for ( i = 0, ii = this.cloth.xSegs; i <= ii; i += spacing ) {
-                this.pins.push( this.cloth.index( i, 0 ) );
+            for ( i = 0; i <= xSegs; i += spacing ) {
+                pins.push( index( i, 0 ) );
             }
         }
         else if ( edge === EDGE.Right ) {
-            for ( i = 0, ii = this.cloth.ySegs; i <= ii; i += spacing ) {
-                this.pins.push( this.cloth.index( this.cloth.xSegs, i ) );
+            for ( i = 0; i <= ySegs; i += spacing ) {
+                pins.push( index( xSegs, i ) );
             }
         }
         else {
-            for ( i = 0, ii = this.cloth.ySegs; i <= ii; i += spacing ) {
-                this.pins.push( this.cloth.index( 0, i ) );
+            for ( i = 0; i <= ySegs; i += spacing ) {
+                pins.push( index( 0, i ) );
             }
         }
 
@@ -506,39 +521,13 @@
     // Remove pins from flag cloth
     Flag.prototype.unpin = function () { this.pins = []; };
 
-    // Get quaternion for rotated flags
-    Flag.prototype.getQuaternion = function () {
-
-        var quaternion = new THREE.Quaternion(),
-            yAxis      = new THREE.Vector3( 0, 1, 0 ),
-            zAxis      = new THREE.Vector3( 0, 0, 1 ),
-            yRadians   = 0,
-            zRadians   = this.topEdge.radians;
-
-        if ( this.hoisting === HOISTING.Sinister ) {
-            yRadians = window.Math.PI;
-        }
-
-        quaternion.setFromAxisAngle( yAxis, yRadians );
-        quaternion.setFromAxisAngle( zAxis, zRadians );
-
-        return quaternion;
-
-    };
-
-    // Recalculate flag position and reset pins
-    Flag.prototype.rehoist = function () {
+    // Recalculate offset position when flag is rotated
+    Flag.prototype.updatePosition = function () {
 
         var isFlipped = ( this.hoisting === HOISTING.Sinister ),
             w = this.cloth.width,
-            h = this.cloth.height,
-            hoistEdge;
+            h = this.cloth.height;
 
-        // Determine hoist edge based on rotation
-        if ( isFlipped ) { hoistEdge = this.topEdge.c; }
-        else { hoistEdge = this.topEdge.cc; }
-
-        // Determine position offset based on rotation
         switch ( this.topEdge ) {
             case EDGE.Bottom :
                 this.offset.x = this.position.x + ( ( isFlipped )? 0 : w );
@@ -559,17 +548,44 @@
                 break;
         }
 
-        this.unpin();
-        this.pin( hoistEdge );
         this.object.position.set( this.offset.x, this.offset.y, 0 );
-        this.quaternion = this.getQuaternion();
 
     };
 
+    // Recalculate quaternion when flag is rotated
+    Flag.prototype.updateQuaternion = function () {
+
+        var quaternion = new THREE.Quaternion(),
+            yAxis      = new THREE.Vector3( 0, 1, 0 ),
+            zAxis      = new THREE.Vector3( 0, 0, 1 ),
+            yRadians   = 0,
+            zRadians   = this.topEdge.radians;
+
+        if ( this.hoisting === HOISTING.Sinister ) {
+            yRadians = window.Math.PI;
+        }
+
+        quaternion.setFromAxisAngle( yAxis, yRadians );
+        quaternion.setFromAxisAngle( zAxis, zRadians );
+
+        this.quaternion = quaternion;
+
+    };
+
+    // Determine hoist edge based on rotation and reapply pins
+    Flag.prototype.updatePins = function () {
+        this.unpin();
+        this.pin(
+            ( this.hoisting === HOISTING.Sinister )?
+            this.topEdge.c :
+            this.topEdge.cc
+        );
+    };
+
     // Set the flag's position
-    Flag.prototype.setPos = function ( x, y, z ) {
+    Flag.prototype.setPosition = function ( x, y, z ) {
         this.position.set( x, y, z );
-        this.rehoist();
+        this.updatePosition();
     };
 
     // Rotate the flag
@@ -581,14 +597,18 @@
             case 'top'    :
             default       : this.topEdge = EDGE.Top;    break;
         }
-        this.rehoist();
+        this.updatePins();
+        this.updatePosition();
+        this.updateQuaternion();
     };
 
     // Set the hoisting to dexter or sinister
     Flag.prototype.setHoisting = function ( hoisting ) {
         if ( hoisting !== HOISTING.Sinister ) hoisting = HOISTING.Dexter;
         this.hoisting = hoisting;
-        this.rehoist();
+        this.updatePins();
+        this.updatePosition();
+        this.updateQuaternion();
     };
 
     // Set flag texture
@@ -633,6 +653,9 @@
         }
 
     };
+
+    // Render flag cloth
+    Flag.prototype.render = function () { this.cloth.render(); };
 
     //
     // Rendering
@@ -839,7 +862,7 @@
         flagObject.initTexture( texture );
         flagObject.setTopEdge( 'top' );
         flagObject.setHoisting( 'dexter' );
-        flagObject.setPos( 0, poleOffset, 0 );
+        flagObject.setPosition( 0, poleOffset, 0 );
 
         setFlag( flagObject );
 
@@ -898,17 +921,8 @@
     }
 
     function render () {
-        var timer     = window.Date.now() * 0.0002,
-            particles = flagObject.cloth.particles,
-            vertices  = flagObject.cloth.geometry.vertices,
-            i, il;
-        for ( i = 0, il = particles.length; i < il; i++ ) {
-            vertices[ i ].copy( particles[ i ].position );
-        }
-        flagObject.cloth.geometry.computeFaceNormals();
-        flagObject.cloth.geometry.computeVertexNormals();
-        flagObject.cloth.geometry.normalsNeedUpdate  = true;
-        flagObject.cloth.geometry.verticesNeedUpdate = true;
+        var timer = window.Date.now() * 0.0002;
+        flagObject.render();
         camera.lookAt( scene.position );
         renderer.render( scene, camera );
     }
