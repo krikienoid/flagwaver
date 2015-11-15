@@ -432,55 +432,42 @@
 
         this.cloth      = new Cloth( xSegs, ySegs, restDistance );
         this.pins       = [];
-        this.mesh       = null;
-        this.object     = null;
         this.position   = new THREE.Vector3( 0, 0, 0 );
         this.offset     = new THREE.Vector3( 0, 0, 0 );
         this.hoisting   = HOISTING.Dexter;
         this.topEdge    = EDGE.Top;
         this.updateQuaternion();
 
-    }
-
-    // Set flag texture
-    Flag.prototype.initTexture = function ( texture ) {
-
-        var uniforms;
-
-        texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
-        texture.anisotropy = 16;
-
-        this.mesh = new THREE.MeshPhongMaterial( {
+        // Init cloth mesh
+        var material = new THREE.MeshPhongMaterial( {
             alphaTest   : 0.5,
             color       : 0xffffff,
             specular    : 0x030303,
             emissive    : 0x010101,
             shininess   : 0,
             metal       : false,
-            map         : texture,
             side        : THREE.DoubleSide
         } );
-
-        /*this.mesh = new THREE.MeshBasicMaterial( {
-            color       : 0xff0000,
-            wireframe   : true,
-            transparent : true,
-            opacity     : 0.9
-        } );*/
-
-        // Init cloth geometry
-        uniforms = { texture : { type: 't', value: texture } };
-
-        // Init cloth mesh
-        this.object = new THREE.Mesh( this.cloth.geometry, this.mesh );
+        this.object = new THREE.Mesh( this.cloth.geometry, material );
         this.object.castShadow    = true;
         this.object.receiveShadow = true;
-        this.object.customDepthMaterial = new THREE.ShaderMaterial( {
-            uniforms       : uniforms,
-            vertexShader   : vertexShader,
-            fragmentShader : fragmentShader
-        } );
 
+    }
+
+    // Set flag texture from image
+    Flag.prototype.loadTexture = function ( imgSrc ) {
+        var setTexture = this.setTexture.bind( this ),
+            texture    = THREE.ImageUtils.loadTexture(
+                imgSrc,
+                null,
+                function () { setTexture( texture ); },
+                function () {
+                    window.console.log(
+                        'Error: FlagWaver: Failed to load image as texture.'
+                    );
+                    setTexture( blankTexture );
+                }
+            );
     };
 
     // Pin edges of flag cloth
@@ -614,8 +601,28 @@
     // Set flag texture
     Flag.prototype.setTexture = function ( texture ) {
 
-        this.mesh.map = texture;
-        this.mesh.needsUpdate = true;
+        // texture.generateMipmaps = false;
+        texture.anisotropy = 16;
+        texture.minFilter  = THREE.LinearFilter;
+        texture.magFilter  = THREE.LinearFilter;
+        texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
+
+        /*material = new THREE.MeshBasicMaterial( {
+            color       : 0xff0000,
+            wireframe   : true,
+            transparent : true,
+            opacity     : 0.9
+        } );*/
+
+        this.object.material.map = texture;
+        this.object.material.needsUpdate = true;
+
+        // ?
+        this.object.customDepthMaterial = new THREE.ShaderMaterial( {
+            uniforms       : { texture : { type: 't', value: texture } },
+            vertexShader   : vertexShader,
+            fragmentShader : fragmentShader
+        } );
 
     };
 
@@ -676,9 +683,15 @@
         reverse  : ''        // reverse = 'field.png'
     };
 
+    var blankTexture = THREE.ImageUtils.generateDataTexture(
+        4,
+        4,
+        new THREE.Color( 0xffffff )
+    );
+
     // Renderer variables
     var vertexShader, fragmentShader,
-        scene, camera, renderer, object,
+        scene, camera, renderer,
         flagObject,
         imageData;
 
@@ -760,8 +773,15 @@
         window.addEventListener( 'resize', onResize );
         onResize();
 
+        // Init flag object
+        flagObject = new Flag( 15, 10, 20 );
+        flagObject.setTopEdge( 'top' );
+        flagObject.setHoisting( 'dexter' );
+        flagObject.setPosition( 0, poleOffset, 0 );
+        flagObject.setTexture( blankTexture );
+        scene.add( flagObject.object );
+
         // Begin animation
-        flagObject = new Flag(); // tmp cloth to init animation
         animate();
 
     }
@@ -809,14 +829,14 @@
             if ( imageData && imageData.h ) ySegs = window.parseInt( imageData.h );
 
             // Init flag cloth
-            flagObject = new Flag(
-                xSegs,
-                ySegs,
-                20 / granularity
-            );
+            // flagObject = new Flag(
+            //     xSegs,
+            //     ySegs,
+            //     20 / granularity
+            // );
 
             // Set flag texture
-            setFlagTex( imgSrc );
+            flagObject.loadTexture( imgSrc );
 
         };
 
@@ -830,48 +850,6 @@
         // Attempt to load image
         testImg.src = imgSrc;
 
-    }
-
-    function setFlagTex ( imgSrc ) {
-        var texture = THREE.ImageUtils.loadTexture(
-            imgSrc,
-            null,
-            function () {
-                // texture.generateMipmaps = false;
-                texture.minFilter = THREE.LinearFilter;
-                texture.magFilter = THREE.LinearFilter;
-                setFlagMat( texture );
-            },
-            function () {
-                window.console.log(
-                    'Error: FlagWaver: Failed to load image as texture.'
-                );
-                setFlagMat(
-                    THREE.ImageUtils.generateDataTexture(
-                        4,
-                        4,
-                        new THREE.Color( 0xffffff )
-                    )
-                );
-            }
-        );
-    }
-
-    function setFlagMat ( texture ) {
-
-        flagObject.initTexture( texture );
-        flagObject.setTopEdge( 'top' );
-        flagObject.setHoisting( 'dexter' );
-        flagObject.setPosition( 0, poleOffset, 0 );
-
-        setFlag( flagObject );
-
-    }
-
-    function setFlag ( flag ) {
-        scene.remove( object );
-        object = flag.object;
-        scene.add( object );
     }
 
     function setWind ( value ) {
