@@ -11,6 +11,7 @@
  * Making a quick tweaks to simulate the Singapore flag in the wind
  *
  */
+
 /*
  * Aug 3 2012
  *
@@ -36,16 +37,21 @@
  * Graphics Noob (aka @Blurspline, zz85)
  */
 
-// Suggested Readings
-
-// Advanced Character Physics by Thomas Jakobsen Character - http://web.archive.org/web/20070610223835/http:/www.teknikus.dk/tj/gdc2001.htm
-// http://freespace.virgin.net/hugo.elias/models/m_cloth.htm
-// http://en.wikipedia.org/wiki/Cloth_modeling
-// http://cg.alexandra.dk/tag/spring-mass-system/
-// Real-time Cloth Animation http://www.darwin3d.com/gamedev/articles/col0599.pdf
+/*
+ * Suggested Readings
+ *
+ * Advanced Character Physics by Thomas Jakobsen Character -
+ *     http://web.archive.org/web/20070610223835/http:/www.teknikus.dk/tj/gdc2001.htm
+ * http://freespace.virgin.net/hugo.elias/models/m_cloth.htm
+ * http://en.wikipedia.org/wiki/Cloth_modeling
+ * http://cg.alexandra.dk/tag/spring-mass-system/
+ * Real-time Cloth Animation -
+ *     http://www.darwin3d.com/gamedev/articles/col0599.pdf
+ */
 
 /*
- * Sep 12 2015
+ * Nov 14 2015
+ *
  * Modified by /u/krikienoid for use in Flag Waver.
  */
 
@@ -62,7 +68,7 @@
     // Physics settings
     var DAMPING = 0.03,
         DRAG    = 1 - DAMPING,
-        MASS    = .1,
+        MASS    = 0.1,
         GRAVITY = 981 * 1.4;
 
     // Time settings
@@ -339,7 +345,9 @@
             for ( i = 0, il = faces.length; i < il; i++ ) {
                 face   = faces[ i ];
                 normal = face.normal;
-                tmpForce.copy( normal ).normalize().multiplyScalar( normal.dot( windForce ) );
+                tmpForce.copy( normal ).normalize().multiplyScalar(
+                    normal.dot( windForce )
+                );
                 particles[ face.a ].addForce( tmpForce );
                 particles[ face.b ].addForce( tmpForce );
                 particles[ face.c ].addForce( tmpForce );
@@ -366,12 +374,16 @@
         // Start constraints
         for ( i = 0, il = constraints.length; i < il; i++ ) {
             constraint = constraints[ i ];
-            satisfyConstraints( constraint[ 0 ], constraint[ 1 ], constraint[ 2 ] );
+            satisfyConstraints(
+                constraint[ 0 ],
+                constraint[ 1 ],
+                constraint[ 2 ]
+            );
         }
 
         // Ball constraints
-        ballPosition.z = -window.Math.sin( window.Date.now() / 300 ) * 90 ; //+ 40;
-        ballPosition.x = window.Math.cos( window.Date.now() / 200 ) * 70
+        ballPosition.z = -window.Math.sin( window.Date.now() / 300 ) * 90; //+40
+        ballPosition.x = window.Math.cos( window.Date.now() / 200 ) * 70;
 
         // if ( sphere.visible ) {
         //     for ( i = 0, il = particles.length; i < il; i++ ) {
@@ -388,12 +400,13 @@
 
     };
 
+    // Flag settings enum
     var HOISTING = { Dexter : 'dexter', Sinister : 'sinister' },
         EDGE     = {
-            Top    : { name : 'top',    radians : 0            },
-            Left   : { name : 'left',   radians : -Math.PI / 2 },
-            Bottom : { name : 'bottom', radians : Math.PI      },
-            Right  : { name : 'right',  radians : Math.PI / 2  }
+            Top    : { name : 'top',    radians : 0                   },
+            Left   : { name : 'left',   radians : -window.Math.PI / 2 },
+            Bottom : { name : 'bottom', radians : window.Math.PI      },
+            Right  : { name : 'right',  radians : window.Math.PI / 2  }
         };
 
     // Cardinal directions
@@ -406,14 +419,14 @@
     // Flag constructor
     function Flag ( xSegs, ySegs, restDistance ) {
 
-        this.cloth  = new Cloth( xSegs, ySegs, restDistance );
-        this.pins   = [];
-        this.mesh   = null;
-        this.object = null;
-        this.position = new THREE.Vector3( 0, 0, 0 );
-        this.original = new THREE.Vector3( 0, poleOffset - this.cloth.height, 0 );
-        this.hoisting = HOISTING.Dexter;
-        this.topEdge  = EDGE.Top;
+        this.cloth      = new Cloth( xSegs, ySegs, restDistance );
+        this.pins       = [];
+        this.mesh       = null;
+        this.object     = null;
+        this.position   = new THREE.Vector3( 0, 0, 0 );
+        this.offset     = new THREE.Vector3( 0, 0, 0 );
+        this.hoisting   = HOISTING.Dexter;
+        this.topEdge    = EDGE.Top;
         this.quaternion = this.getQuaternion();
 
     }
@@ -445,9 +458,7 @@
         } );*/
 
         // Init cloth geometry
-        uniforms = {
-            texture : { type: 't', value: texture }
-        };
+        uniforms = { texture : { type: 't', value: texture } };
 
         // Init cloth mesh
         this.object = new THREE.Mesh( this.cloth.geometry, this.mesh );
@@ -459,79 +470,6 @@
             fragmentShader : fragmentShader
         } );
 
-    };
-
-    // Set flag texture
-    Flag.prototype.setTexture = function ( texture ) {
-
-        this.mesh.map = texture;
-        this.mesh.needsUpdate = true;
-
-    };
-
-    // Recalculate flag position and reset pins
-    Flag.prototype.rehoist = function () {
-
-        var isFlipped = ( this.hoisting === HOISTING.Sinister ),
-            w = this.cloth.width,
-            h = this.cloth.height,
-            hoistEdge;
-
-        // Determine hoist edge based on rotation
-        if ( isFlipped ) { hoistEdge = this.topEdge.c; }
-        else { hoistEdge = this.topEdge.cc; }
-
-        // Determine position offset based on rotation
-        switch ( this.topEdge ) {
-            case EDGE.Bottom :
-                this.position.x = this.original.x + ( ( isFlipped )? 0 : w );
-                this.position.y = this.original.y + h;
-                break;
-            case EDGE.Left   :
-                this.position.x = this.original.x + ( ( isFlipped )? -h : 0 );
-                this.position.y = this.original.y + h;
-                break;
-            case EDGE.Right  :
-                this.position.x = this.original.x + ( ( isFlipped )? 0 : h );
-                this.position.y = this.original.y + h - w;
-                break;
-            case EDGE.Top    :
-            default       :
-                this.position.x = this.original.x + ( ( isFlipped )? -w : 0 );
-                this.position.y = this.original.y;
-                break;
-        }
-
-        this.object.position.set(
-            this.position.x,
-            this.position.y,
-            0
-        );
-
-        this.unpin();
-        this.pin( hoistEdge );
-
-        this.quaternion = this.getQuaternion();
-
-    };
-
-    // Rotate the flag
-    Flag.prototype.setTop = function ( edge ) {
-        switch ( edge ) {
-            case 'left'   : this.topEdge = EDGE.Left;   break;
-            case 'bottom' : this.topEdge = EDGE.Bottom; break;
-            case 'right'  : this.topEdge = EDGE.Right;  break;
-            case 'top'    :
-            default       : this.topEdge = EDGE.Top;    break;
-        }
-        this.rehoist();
-    };
-
-    // Set the hoisting to dexter or sinister
-    Flag.prototype.setHoisting = function ( hoisting ) {
-        if ( hoisting !== HOISTING.Sinister ) hoisting = HOISTING.Dexter;
-        this.hoisting = hoisting;
-        this.rehoist();
     };
 
     // Pin edges of flag cloth
@@ -568,6 +506,99 @@
     // Remove pins from flag cloth
     Flag.prototype.unpin = function () { this.pins = []; };
 
+    // Get quaternion for rotated flags
+    Flag.prototype.getQuaternion = function () {
+
+        var quaternion = new THREE.Quaternion(),
+            yAxis      = new THREE.Vector3( 0, 1, 0 ),
+            zAxis      = new THREE.Vector3( 0, 0, 1 ),
+            yRadians   = 0,
+            zRadians   = this.topEdge.radians;
+
+        if ( this.hoisting === HOISTING.Sinister ) {
+            yRadians = window.Math.PI;
+        }
+
+        quaternion.setFromAxisAngle( yAxis, yRadians );
+        quaternion.setFromAxisAngle( zAxis, zRadians );
+
+        return quaternion;
+
+    };
+
+    // Recalculate flag position and reset pins
+    Flag.prototype.rehoist = function () {
+
+        var isFlipped = ( this.hoisting === HOISTING.Sinister ),
+            w = this.cloth.width,
+            h = this.cloth.height,
+            hoistEdge;
+
+        // Determine hoist edge based on rotation
+        if ( isFlipped ) { hoistEdge = this.topEdge.c; }
+        else { hoistEdge = this.topEdge.cc; }
+
+        // Determine position offset based on rotation
+        switch ( this.topEdge ) {
+            case EDGE.Bottom :
+                this.offset.x = this.position.x + ( ( isFlipped )? 0 : w );
+                this.offset.y = this.position.y;
+                break;
+            case EDGE.Left :
+                this.offset.x = this.position.x + ( ( isFlipped )? -h : 0 );
+                this.offset.y = this.position.y;
+                break;
+            case EDGE.Right :
+                this.offset.x = this.position.x + ( ( isFlipped )? 0 : h );
+                this.offset.y = this.position.y - w;
+                break;
+            case EDGE.Top :
+            default :
+                this.offset.x = this.position.x + ( ( isFlipped )? -w : 0 );
+                this.offset.y = this.position.y - h;
+                break;
+        }
+
+        this.unpin();
+        this.pin( hoistEdge );
+        this.object.position.set( this.offset.x, this.offset.y, 0 );
+        this.quaternion = this.getQuaternion();
+
+    };
+
+    // Set the flag's position
+    Flag.prototype.setPos = function ( x, y, z ) {
+        this.position.set( x, y, z );
+        this.rehoist();
+    };
+
+    // Rotate the flag
+    Flag.prototype.setTopEdge = function ( edge ) {
+        switch ( edge ) {
+            case 'left'   : this.topEdge = EDGE.Left;   break;
+            case 'bottom' : this.topEdge = EDGE.Bottom; break;
+            case 'right'  : this.topEdge = EDGE.Right;  break;
+            case 'top'    :
+            default       : this.topEdge = EDGE.Top;    break;
+        }
+        this.rehoist();
+    };
+
+    // Set the hoisting to dexter or sinister
+    Flag.prototype.setHoisting = function ( hoisting ) {
+        if ( hoisting !== HOISTING.Sinister ) hoisting = HOISTING.Dexter;
+        this.hoisting = hoisting;
+        this.rehoist();
+    };
+
+    // Set flag texture
+    Flag.prototype.setTexture = function ( texture ) {
+
+        this.mesh.map = texture;
+        this.mesh.needsUpdate = true;
+
+    };
+
     // Reset flag to initial state
     Flag.prototype.reset = function () {
 
@@ -579,22 +610,6 @@
                 particles[ i ].original
             ).applyQuaternion( this.quaternion );
         }
-
-    };
-
-    // Get quaternion for rotated flags
-    Flag.prototype.getQuaternion = function () {
-
-        var quaternion = new THREE.Quaternion(),
-            yAxis      = new THREE.Vector3( 0, 1, 0 ),
-            zAxis      = new THREE.Vector3( 0, 0, 1 ),
-            yRadians   = ( this.hoisting === HOISTING.Sinister )? Math.PI : 0,
-            zRadians   = this.topEdge.radians;
-
-        quaternion.setFromAxisAngle( yAxis, yRadians );
-        quaternion.setFromAxisAngle( zAxis, zRadians );
-
-        return quaternion;
 
     };
 
@@ -611,7 +626,9 @@
         // Pin constraints
         for ( i = 0, il = pins.length; i < il; i++ ) {
             particle = particles[ pins[ i ] ];
-            particle.position.copy( particle.original ).applyQuaternion( this.quaternion );
+            particle.position.copy( particle.original ).applyQuaternion(
+                this.quaternion
+            );
             particle.previous.copy( particle.position );
         }
 
@@ -628,18 +645,18 @@
 
     // Flag default settings
     var defaultSettings = {
-        width    : null,   // w = 15
-        height   : 10,     // h = 10
-        hoistDir : 'left', // dir = left | right
-        hoistTop : 'top',  // top = top | left | bottom | right
-        src      : '',     // src = field.png
-        reverse  : ''      // reverse = 'field.png'
+        width    : null,     // w = 15
+        height   : 10,       // h = 10
+        hoisting : 'dexter', // hoist = dexter | sinister
+        topEdge  : 'top',    // top = top | left | bottom | right
+        src      : '',       // src = field.png
+        reverse  : ''        // reverse = 'field.png'
     };
 
     // Renderer variables
     var vertexShader, fragmentShader,
         scene, camera, renderer, object,
-        cloth, flagObject,
+        flagObject,
         imageData;
 
     function init () {
@@ -657,7 +674,12 @@
         scene.fog.color.setHSL( 0.6, 0.2, 1 );
 
         // Init camera
-        camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
+        camera = new THREE.PerspectiveCamera(
+            30,
+            window.innerWidth / window.innerHeight,
+            1,
+            10000
+        );
         camera.position.y = 50;
         camera.position.z = 2000;
         scene.add( camera );
@@ -699,7 +721,10 @@
         scene.add( poleMesh );
 
         // Init renderer object
-        renderer = new THREE.WebGLRenderer( { antialias : true, alpha : true } );
+        renderer = new THREE.WebGLRenderer( {
+            antialias : true,
+            alpha     : true
+        } );
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.gammaInput             = true;
         renderer.gammaOutput            = true;
@@ -725,8 +750,8 @@
         // Get image data
         if ( flagSettings ) {
             imageData = flagSettings;
-            if ( !flagSettings.hoistDir ) {
-                flagSettings.hoistDir = defaultSettings.hoistDir;
+            if ( !flagSettings.hoisting ) {
+                flagSettings.hoisting = defaultSettings.hoisting;
             }
         }
 
@@ -757,8 +782,8 @@
             }
 
             // Get flag size from user input
-            if ( imageData && imageData.w ) xSegs = window.Number( imageData.w );
-            if ( imageData && imageData.h ) ySegs = window.Number( imageData.h );
+            if ( imageData && imageData.w ) xSegs = window.parseInt( imageData.w );
+            if ( imageData && imageData.h ) ySegs = window.parseInt( imageData.h );
 
             // Init flag cloth
             flagObject = new Flag(
@@ -795,7 +820,9 @@
                 setFlagMat( texture );
             },
             function () {
-                window.console.log( 'Error: FlagWaver: Failed to load image as texture.' );
+                window.console.log(
+                    'Error: FlagWaver: Failed to load image as texture.'
+                );
                 setFlagMat(
                     THREE.ImageUtils.generateDataTexture(
                         4,
@@ -810,7 +837,9 @@
     function setFlagMat ( texture ) {
 
         flagObject.initTexture( texture );
-        flagObject.setTop( 'top' );
+        flagObject.setTopEdge( 'top' );
+        flagObject.setHoisting( 'dexter' );
+        flagObject.setPos( 0, poleOffset, 0 );
 
         setFlag( flagObject );
 
