@@ -430,23 +430,24 @@
     // Flag constructor
     function Flag ( xSegs, ySegs, restDistance ) {
 
-        this.cloth      = new Cloth( xSegs, ySegs, restDistance );
-        this.pins       = [];
-        this.position   = new THREE.Vector3( 0, 0, 0 );
-        this.offset     = new THREE.Vector3( 0, 0, 0 );
-        this.hoisting   = HOISTING.Dexter;
-        this.topEdge    = EDGE.Top;
+        this.cloth    = new Cloth( xSegs, ySegs, restDistance );
+        this.pins     = [];
+        this.position = new THREE.Vector3( 0, 0, 0 );
+        this.offset   = new THREE.Vector3( 0, 0, 0 );
+        this.hoisting = HOISTING.Dexter;
+        this.topEdge  = EDGE.Top;
+
         this.updateQuaternion();
 
         // Init cloth mesh
         var material = new THREE.MeshPhongMaterial( {
-            alphaTest   : 0.5,
-            color       : 0xffffff,
-            specular    : 0x030303,
-            emissive    : 0x010101,
-            shininess   : 0,
-            metal       : false,
-            side        : THREE.DoubleSide
+            alphaTest : 0.5,
+            color     : 0xffffff,
+            specular  : 0x030303,
+            emissive  : 0x010101,
+            shininess : 0,
+            metal     : false,
+            side      : THREE.DoubleSide
         } );
         this.object = new THREE.Mesh( this.cloth.geometry, material );
         this.object.castShadow    = true;
@@ -487,25 +488,28 @@
         spacing = window.parseInt( spacing );
         if ( window.isNaN( spacing ) || spacing < 1 ) spacing = 1;
 
-        if ( edge === EDGE.Top ) {
-            for ( i = 0; i <= xSegs; i += spacing ) {
-                pins.push( index( i, ySegs ) );
-            }
-        }
-        else if ( edge === EDGE.Bottom ) {
-            for ( i = 0; i <= xSegs; i += spacing ) {
-                pins.push( index( i, 0 ) );
-            }
-        }
-        else if ( edge === EDGE.Right ) {
-            for ( i = 0; i <= ySegs; i += spacing ) {
-                pins.push( index( xSegs, i ) );
-            }
-        }
-        else {
-            for ( i = 0; i <= ySegs; i += spacing ) {
-                pins.push( index( 0, i ) );
-            }
+        switch ( edge ) {
+            case EDGE.Top :
+                for ( i = 0; i <= xSegs; i += spacing ) {
+                    pins.push( index( i, ySegs ) );
+                }
+                break;
+            case EDGE.Bottom :
+                for ( i = 0; i <= xSegs; i += spacing ) {
+                    pins.push( index( i, 0 ) );
+                }
+                break;
+            case EDGE.Right :
+                for ( i = 0; i <= ySegs; i += spacing ) {
+                    pins.push( index( xSegs, i ) );
+                }
+                break;
+            case EDGE.Left :
+            default :
+                for ( i = 0; i <= ySegs; i += spacing ) {
+                    pins.push( index( 0, i ) );
+                }
+                break;
         }
 
     };
@@ -606,7 +610,7 @@
     // Set flag texture
     Flag.prototype.setTexture = function ( texture ) {
 
-        if ( !texture ) {
+        if ( !( texture instanceof THREE.Texture ) ) {
             window.console.log(
                 'Error: FlagWaver: Invalid texture object.'
             );
