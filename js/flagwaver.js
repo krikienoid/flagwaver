@@ -775,7 +775,7 @@
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderer.gammaInput             = true;
         renderer.gammaOutput            = true;
-        renderer.shadowMapEnabled       = true;
+        renderer.shadowMap.enabled      = true;
 
         // Misc settings
         THREE.ImageUtils.crossOrigin = 'anonymous';
