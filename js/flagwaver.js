@@ -153,10 +153,7 @@
 
         // Cloth plane function
         plane = function ( u, v ) {
-            var x = u * width, //( u - 0.5 )
-                y = v * height,
-                z = 0;
-            return new THREE.Vector3( x, y, z );
+            return new THREE.Vector3( u * width, v * height, 0 ); //( u - 0.5 )
         };
 
         // Cloth geometry
@@ -213,6 +210,7 @@
         // While many systems use shear and bend springs,
         // the relax constraints model seems to be just fine
         // using structural springs.
+
         // Shear
         var diagonalDist = window.Math.sqrt( restDistance * restDistance * 2 );
 
@@ -236,49 +234,51 @@
 
         // Bend
 
-        // var wlen = restDistance * 2;
-        // var hlen = restDistance * 2;
+        // var wlen = restDistance * 2,
+        //     hlen = restDistance * 2;
+
         // diagonalDist = window.Math.sqrt( wlen * wlen + hlen * hlen );
 
         // for ( v = 0; v < ySegs - 1; v++ ) {
-        // 	for ( u = 0; u < xSegs - 1; u++ ) {
-        // 		constraints.push( [
-        // 			particles[ index( u, v ) ],
-        // 			particles[ index( u + 2, v ) ],
-        // 			wlen
-        // 		] );
+        //     for ( u = 0; u < xSegs - 1; u++ ) {
 
-        // 		constraints.push( [
-        // 			particles[ index( u, v ) ],
-        // 			particles[ index( u, v + 2 ) ],
-        // 			hlen
-        // 		] );
+        //         constraints.push( [
+        //             particles[ index( u, v ) ],
+        //             particles[ index( u + 2, v ) ],
+        //             wlen
+        //         ] );
 
-        // 		constraints.push( [
-        // 			particles[ index( u, v ) ],
-        // 			particles[ index( u + 2, v + 2 ) ],
-        // 			diagonalDist
-        // 		] );
+        //         constraints.push( [
+        //             particles[ index( u, v ) ],
+        //             particles[ index( u, v + 2 ) ],
+        //             hlen
+        //         ] );
 
-        // 		constraints.push( [
-        // 			particles[ index( u, v + 2 ) ],
-        // 			particles[ index( u + 2, v + 2 ) ],
-        // 			wlen
-        // 		] );
+        //         constraints.push( [
+        //             particles[ index( u, v ) ],
+        //             particles[ index( u + 2, v + 2 ) ],
+        //             diagonalDist
+        //         ] );
 
-        // 		constraints.push( [
-        // 			particles[ index( u + 2, v + 2 ) ],
-        // 			particles[ index( u + 2, v + 2 ) ],
-        // 			hlen
-        // 		] );
+        //         constraints.push( [
+        //             particles[ index( u, v + 2 ) ],
+        //             particles[ index( u + 2, v + 2 ) ],
+        //             wlen
+        //         ] );
 
-        // 		constraints.push( [
-        // 			particles[ index( u + 2,  v ) ],
-        // 			particles[ index( u , v + 2 ) ],
-        // 			diagonalDist
-        // 		] );
+        //         constraints.push( [
+        //             particles[ index( u + 2, v + 2 ) ],
+        //             particles[ index( u + 2, v + 2 ) ],
+        //             hlen
+        //         ] );
 
-        // 	}
+        //         constraints.push( [
+        //             particles[ index( u + 2,  v ) ],
+        //             particles[ index( u , v + 2 ) ],
+        //             diagonalDist
+        //         ] );
+
+        //     }
         // }
 
         // Public properties and methods
@@ -351,6 +351,7 @@
             }
         }
 
+        // Gravity force
         for ( i = 0, il = particles.length; i < il; i++ ) {
             particle = particles[ i ];
             particle.addForce( gravityForce );
@@ -384,14 +385,14 @@
 
         // if ( sphere.visible ) {
         //     for ( i = 0, il = particles.length; i < il; i++ ) {
-        //     	   particle = particles[ i ];
-        //     	   pos = particle.position;
-        //     	   diff.subVectors( pos, ballPosition );
-        //     	   if ( diff.length() < ballSize ) {
-        //     	   	   // collided
-        //     	   	   diff.normalize().multiplyScalar( ballSize );
-        //     	   	   pos.copy( ballPosition ).add( diff );
-        //     	   }
+        //         particle = particles[ i ];
+        //         pos = particle.position;
+        //         diff.subVectors( pos, ballPosition );
+        //         if ( diff.length() < ballSize ) {
+        //             // collided
+        //             diff.normalize().multiplyScalar( ballSize );
+        //             pos.copy( ballPosition ).add( diff );
+        //         }
         //     }
         // }
 
@@ -411,7 +412,7 @@
         this.geometry.verticesNeedUpdate = true;
     };
 
-    // Flag settings enum
+    // Flag settings enums
     var HOISTING = { Dexter : 'dexter', Sinister : 'sinister' },
         EDGE     = {
             Top    : { name : 'top',    radians : 0                   },
@@ -449,6 +450,7 @@
             metal     : false,
             side      : THREE.DoubleSide
         } );
+
         this.object = new THREE.Mesh( this.cloth.geometry, material );
         this.object.castShadow    = true;
         this.object.receiveShadow = true;
@@ -654,8 +656,8 @@
     // Simulate flag cloth
     Flag.prototype.simulate = function () {
 
-        var pins       = this.pins,
-            particles  = this.cloth.particles,
+        var pins      = this.pins,
+            particles = this.cloth.particles,
             particle,
             i, il;
 
