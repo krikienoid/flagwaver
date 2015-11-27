@@ -7,9 +7,9 @@
 
 /*
  * Aug 9 2012
+ *
  * Its Singapore's National Day, so
  * Making a quick tweaks to simulate the Singapore flag in the wind
- *
  */
 
 /*
@@ -742,11 +742,10 @@
         light.castShadow      = true;
         light.shadowMapWidth  = 2048;
         light.shadowMapHeight = 2048;
-        d = 300;
+        light.shadowCameraTop    = d = 300;
         light.shadowCameraLeft   = -d;
-        light.shadowCameraRight  = d;
-        light.shadowCameraTop    = d;
         light.shadowCameraBottom = -d;
+        light.shadowCameraRight  = d;
         light.shadowCameraFar    = 1000;
         light.shadowDarkness     = 0.5;
         scene.add( light );
