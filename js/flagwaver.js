@@ -415,10 +415,10 @@
     // Flag settings enums
     var HOISTING = { Dexter : 'dexter', Sinister : 'sinister' },
         EDGE     = {
-            Top    : { name : 'top',    radians : 0                   },
-            Left   : { name : 'left',   radians : -window.Math.PI / 2 },
-            Bottom : { name : 'bottom', radians : window.Math.PI      },
-            Right  : { name : 'right',  radians : window.Math.PI / 2  }
+            Top    : { name : 'top',    direction : 0                   },
+            Left   : { name : 'left',   direction : -window.Math.PI / 2 },
+            Bottom : { name : 'bottom', direction : window.Math.PI      },
+            Right  : { name : 'right',  direction : window.Math.PI / 2  }
         };
 
     // Edge relations
@@ -557,7 +557,7 @@
             yAxis      = new THREE.Vector3( 0, 1, 0 ),
             zAxis      = new THREE.Vector3( 0, 0, 1 ),
             yRadians   = 0,
-            zRadians   = this.topEdge.radians;
+            zRadians   = this.topEdge.direction;
 
         if ( this.hoisting === HOISTING.Sinister ) {
             yRadians = window.Math.PI;
@@ -840,7 +840,7 @@
     // Renderer variables
     var vertexShader, fragmentShader,
         scene, camera, renderer,
-        flagObject, publicFlag;
+        flag, publicFlag;
 
     function init () {
 
@@ -920,17 +920,16 @@
         onResize();
 
         // Init flag object
-        flagObject = new Flag( 15, 10, 20 );
-        flagObject.setTopEdge( 'top' );
-        flagObject.setHoisting( 'dexter' );
-        flagObject.setPosition( 0, poleOffset, 0 );
-        flagObject.setTexture( blankTexture );
-        scene.add( flagObject.object );
+        flag = new Flag( 15, 10, 20 );
+        flag.setTopEdge( 'top' );
+        flag.setHoisting( 'dexter' );
+        flag.setPosition( 0, poleOffset, 0 );
+        flag.setTexture( blankTexture );
+        scene.add( flag.object );
+        publicFlag = flag.createPublic();
 
         // Begin animation
         animate();
-
-        publicFlag = flagObject.createPublic();
 
     }
 
@@ -955,6 +954,7 @@
         camera.aspect = window.innerWidth / h;
         camera.updateProjectionMatrix();
         renderer.setSize( window.innerWidth, h );
+        renderer.render( scene, camera );
     }
 
     var animationPaused = false;
@@ -976,13 +976,13 @@
             window.Math.sin( time / 1000 )
         ).normalize().multiplyScalar( windStrength );
         // windForce.set( 2000, 0, 1000 ).normalize().multiplyScalar( windStrength );
-        flagObject.simulate( time );
+        flag.simulate( time );
         render();
     }
 
     function render () {
         var timer = window.Date.now() * 0.0002;
-        flagObject.render();
+        flag.render();
         camera.lookAt( scene.position );
         renderer.render( scene, camera );
     }
@@ -1003,7 +1003,7 @@
             },
             stop   : function () { animationPaused = true; },
             step   : function () { if ( animationPaused ) animateFrame(); },
-            reset  : function () { flagObject.reset(); render(); },
+            reset  : function () { flag.reset(); render(); },
             render : render
         },
         get flag () { return publicFlag; },
