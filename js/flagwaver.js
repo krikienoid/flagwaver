@@ -443,7 +443,6 @@
             alphaTest : 0.5,
             color     : 0xffffff,
             specular  : 0x030303,
-            emissive  : 0x010101,
             shininess : 0,
             metal     : false,
             side      : THREE.DoubleSide
@@ -868,7 +867,7 @@
         scene.add( camera );
 
         // Init lights
-        scene.add( new THREE.AmbientLight( 0x666666 ) );
+        scene.add( new THREE.AmbientLight( 0x222222 ) );
         light = new THREE.DirectionalLight( 0xffffff, 1.75 );
         light.color.setHSL( 0.6, 1, 0.9375 );
         light.position.set( 50, 175, 100 );
@@ -884,7 +883,7 @@
         light.shadowDarkness     = 0.5;
         scene.add( light );
         light = new THREE.DirectionalLight( 0xffffff, 0.35 );
-        light.color.setHSL( 0.3, 1, 0.525 );
+        light.color.setHSL( 0.3, 0.5, 0.75 );
         light.position.set( 0, -1, 0 );
         scene.add( light );
 
