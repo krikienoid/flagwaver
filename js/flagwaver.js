@@ -854,10 +854,7 @@
         // Init scene
         scene     = new THREE.Scene();
         scene.fog = new THREE.Fog( 0x000000, 1000, 10000 );
-        // scene.fog.color.setHSL( 0.6, 0.2, 1 );
-        scene.fog.color.r = 0.8;
-        scene.fog.color.g = 0.8800000000000001;
-        scene.fog.color.b = 1;
+        scene.fog.color.setHSL( 0.6, 1, 0.9 );
 
         // Init camera
         camera = new THREE.PerspectiveCamera(
@@ -873,10 +870,7 @@
         // Init lights
         scene.add( new THREE.AmbientLight( 0x666666 ) );
         light = new THREE.DirectionalLight( 0xffffff, 1.75 );
-        // light.color.setHSL( 0.6, 0.125, 1 );
-        light.color.r = 0.875;
-        light.color.g = 0.925;
-        light.color.b = 1;
+        light.color.setHSL( 0.6, 1, 0.9375 );
         light.position.set( 50, 175, 100 );
         light.position.multiplyScalar( 1.3 );
         light.castShadow      = true;
@@ -890,10 +884,7 @@
         light.shadowDarkness     = 0.5;
         scene.add( light );
         light = new THREE.DirectionalLight( 0xffffff, 0.35 );
-        // light.color.setHSL( 0.3, 0.95, 1 );
-        light.color.r = 0.2400000000000002;
-        light.color.g = 1;
-        light.color.b = 0.050000000000000044;
+        light.color.setHSL( 0.3, 1, 0.525 );
         light.position.set( 0, -1, 0 );
         scene.add( light );
 
