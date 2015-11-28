@@ -23,7 +23,7 @@
 
     // Set flag image
     function setImg ( flagData ) {
-        flagWaver.setFlagImg( flagData );
+        flagWaver.flag.setOpts( flagData );
     }
 
     // Get URI variables
@@ -61,11 +61,11 @@
         }
         if ( imgSrc ) {
             $setImgLink.val( imgSrc );
-            setImg( { src : imgSrc } );
+            setImg( { imgSrc : imgSrc } );
         }
         else {
             $setImgLink.val( '' );
-            setImg( { src : 'img/NZ.2b.png' } );
+            setImg( { imgSrc : 'img/NZ.2b.png' } );
         }
     }
 
@@ -111,7 +111,7 @@
         // Load flag image from user given url
         $setImgLink.on( 'change', function () {
             toHash();
-            setImg( { src : $setImgLink.val() } );
+            setImg( { imgSrc : $setImgLink.val() } );
         } );
 
         // Load flag image from file
@@ -123,7 +123,7 @@
                     $setImgLink.val( '' );
                     toHash();
                 }
-                setImg( { src : e.target.result } );
+                setImg( { imgSrc : e.target.result } );
             };
             reader.readAsDataURL( file );
         } );
