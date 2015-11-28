@@ -441,7 +441,7 @@
         this.updateQuaternion();
 
         // Init cloth mesh
-        var material = new THREE.MeshPhongMaterial( {
+        this.material = new THREE.MeshPhongMaterial( {
             alphaTest : 0.5,
             color     : 0xffffff,
             specular  : 0x030303,
@@ -451,7 +451,7 @@
             side      : THREE.DoubleSide
         } );
 
-        this.object = new THREE.Mesh( this.cloth.geometry, material );
+        this.object = new THREE.Mesh( this.cloth.geometry, this.material );
         this.object.castShadow    = true;
         this.object.receiveShadow = true;
         this.object.customDepthMaterial = new THREE.ShaderMaterial( {
@@ -609,8 +609,26 @@
         this.updateQuaternion();
     };
 
+    // Set new cloth object
+    Flag.prototype.setCloth = function ( xSegs, ySegs, restDistance ) {
+
+        var oldGeo = this.object.geometry;
+
+        this.cloth = new Cloth( xSegs, ySegs, restDistance );
+
+        this.object.geometry = this.cloth.geometry;
+
+        oldGeo.dispose();
+
+        this.updatePins();
+        this.updatePosition();
+
+    };
+
     // Set flag texture
     Flag.prototype.setTexture = function ( texture ) {
+
+        var oldTex;
 
         if ( !( texture instanceof THREE.Texture ) ) {
             window.console.log(
@@ -632,10 +650,14 @@
             opacity     : 0.9
         } );*/
 
+        oldTex = this.object.material.map
+
         this.object.material.map = texture;
         this.object.material.needsUpdate = true;
         this.object.customDepthMaterial.uniforms.texture.value = texture;
         this.object.customDepthMaterial.needsUpdate = true;
+
+        if ( oldTex ) oldTex.dispose();
 
     };
 
