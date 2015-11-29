@@ -22,14 +22,15 @@
     //
 
     // Set flag image
-    function setImg ( flagData ) {
+    function setFlagOpts ( flagData ) {
         flagWaver.flag.setOpts( flagData );
     }
 
     // Get URI variables
     function getURIVars () {
         var vars  = [],
-            pairs = window.location.href.slice( window.location.href.indexOf( '?' ) + 1 ).split( '&' ),
+            href  = window.location.href,
+            pairs = href.slice( href.indexOf( '?' ) + 1 ).split( '&' ),
             pair, i;
         for ( i = 0, ii = pairs.length; i < ii; i++ ) {
             pair = pairs[ i ].split( '=' );
@@ -61,11 +62,11 @@
         }
         if ( imgSrc ) {
             $setImgLink.val( imgSrc );
-            setImg( { imgSrc : imgSrc } );
+            setFlagOpts( { imgSrc : imgSrc } );
         }
         else {
             $setImgLink.val( '' );
-            setImg( { imgSrc : 'img/NZ.2b.png' } );
+            setFlagOpts( { imgSrc : 'img/NZ.2b.png' } );
         }
     }
 
@@ -111,7 +112,7 @@
         // Load flag image from user given url
         $setImgLink.on( 'change', function () {
             toHash();
-            setImg( { imgSrc : $setImgLink.val() } );
+            setFlagOpts( { imgSrc : $setImgLink.val() } );
         } );
 
         // Load flag image from file
@@ -123,7 +124,7 @@
                     $setImgLink.val( '' );
                     toHash();
                 }
-                setImg( { imgSrc : e.target.result } );
+                setFlagOpts( { imgSrc : e.target.result } );
             };
             reader.readAsDataURL( file );
         } );
