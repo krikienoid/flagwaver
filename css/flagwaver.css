@@ -101,38 +101,13 @@ p, a {
     text-shadow : 3px 3px 0px rgba(0, 0, 0, 0.5);
 }
 
-/* //// Bootstrap.css //// */
+/* //// Input Controls //// */
 
-/*!
- * Bootstrap v3.3.6 (http://getbootstrap.com)
- * Copyright 2011-2015 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- */
+/* Basic Input */
 
 [role="button"] {
     cursor : pointer;
 }
-
-.btn {
-    -ms-touch-action : manipulation;
-    touch-action     : manipulation;
-    cursor           : pointer;
-    -webkit-user-select : none;
-    -moz-user-select    : none;
-    -ms-user-select     : none;
-    user-select         : none;
-}
-
-.btn-group .dropdown-toggle:active,
-.btn-group.open .dropdown-toggle {
-    outline : 0;
-}
-
-.input-control-group > .input-control:focus {
-    z-index : 3;
-}
-
-/* //// Input Controls! //// */
 
 /* Basic Input Groups */
 
@@ -176,6 +151,16 @@ p, a {
     -webkit-transition : border-color ease-in-out .25s, color ease-in-out .25s, -webkit-box-shadow ease-in-out .25s;
     -o-transition      : border-color ease-in-out .25s, color ease-in-out .25s, box-shadow ease-in-out .25s;
     transition         : border-color ease-in-out .25s, color ease-in-out .25s, box-shadow ease-in-out .25s;
+}
+
+.input-btn {
+    cursor              : pointer;
+    -ms-touch-action    : manipulation;
+        touch-action    : manipulation;
+    -webkit-user-select : none;
+       -moz-user-select : none;
+        -ms-user-select : none;
+            user-select : none;
 }
 
 .input-control-group .input-control,
@@ -238,6 +223,11 @@ p, a {
     border-bottom-right-radius : 6px;
 }
 
+.input-control-group > .input-control:focus,
+.input-control-group > .input-btn:hover,
+.input-control-group > .input-btn:focus,
+.input-control-group > .input-btn:active,
+.input-control-group > .input-btn.active,
 .input-btn-group > .input-btn:hover,
 .input-btn-group > .input-btn:focus,
 .input-btn-group > .input-btn:active,
@@ -245,11 +235,20 @@ p, a {
     z-index : 2;
 }
 
+.input-control-group > .input-control + .input-control,
+.input-control-group > .input-control + .input-btn,
+.input-control-group > .input-control + .input-btn-group,
+.input-control-group > .input-btn + .input-control,
+.input-control-group > .input-btn + .input-btn,
+.input-control-group > .input-btn + .input-btn-group,
+.input-control-group > .input-btn-group + .input-control,
+.input-control-group > .input-btn-group + .input-btn,
+.input-control-group > .input-btn-group + .input-btn-group,
 .input-btn-group .input-btn + .input-btn,
 .input-btn-group .input-btn + .input-btn-group,
 .input-btn-group .input-btn-group + .input-btn,
 .input-btn-group .input-btn-group + .input-btn-group {
-    margin-left : -2px;
+    margin-left: -2px;
 }
 
 .input-control-group > .input-addon:first-child,
@@ -269,8 +268,8 @@ p, a {
 
 /* //// ??? //// */
 
-.btn:hover,
-.form-control:hover {
+.input-control:hover,
+.input-btn:hover {
     border-color : rgba(100%, 100%, 100%, 1);
     color        : rgba(100%, 100%, 100%, 1);
 }
@@ -278,39 +277,33 @@ p, a {
 /* //// Custom Inputs //// */
 
 .input-select {
-    height         : 36px;
-    /*margin         : 4px 2px;*/
     margin         : 0;
     /*padding        : 6px 12px;*/
     background     : inherit;
     border         : 0 none transparent;
     border-radius  : 0;
-    color          : rgba(100%, 100%, 100%, 0.75);
-    font-size      : 12pt;
-    text-align     : center;
-    vertical-align : middle;
-    white-space    : nowrap;
+
 }
 
-.form-control.file-input,
-.form-control.wind-input {
+.input-control.file-input,
+.input-control.wind-input {
     display  : inline-block;
     position : relative;
     overflow : visible;
     vertical-align : top;
 }
 
-.form-control.file-input {
+.input-control.file-input {
     width    : 216px;
 }
 
-.form-control.wind-input {
+.input-control.wind-input {
     width    : 108px;
     padding  : 0;
 }
 
-.form-control.file-input > input[type="file"],
-.form-control.wind-input > input[type="checkbox"] {
+.input-control.file-input > input[type="file"],
+.input-control.wind-input > input[type="checkbox"] {
     width    : 100%;
     position : absolute;
     top      : 0;
@@ -324,7 +317,7 @@ p, a {
     filter   : alpha(opacity=0);
 }
 
-.form-control.wind-input > label {
+.input-control.wind-input > label {
     position : absolute;
     top      : 0;
     left     : 0;
@@ -334,11 +327,11 @@ p, a {
     padding  : 6px 12px;
 }
 
-.form-control.wind-input > input[type="checkbox"] + label::after {
+.input-control.wind-input > input[type="checkbox"] + label::after {
     content : "Wind: Off";
 }
 
-.form-control.wind-input > input[type="checkbox"]:checked + label::after {
+.input-control.wind-input > input[type="checkbox"]:checked + label::after {
     content : "Wind: On";
 }
 
