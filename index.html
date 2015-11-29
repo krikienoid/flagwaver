@@ -44,19 +44,26 @@
             </main>
 
             <aside class="page-controls">
-                <input placeholder="Enter image URL ..." id="set-img-link" />
-                <div class="file-input">
-                    ... or upload from file
-                    <input type="file" accept="image/*" value="Open a file" id="open-img-file" />
+                <div class="page-controls-basic">
+                    <div class="page-controls-group">
+                        <input placeholder="Enter image URL ..." id="set-img-link" />
+                        <div class="file-input">
+                            ... or upload from file
+                            <input type="file" accept="image/*" value="Open a file" id="open-img-file" />
+                        </div>
+                        <div class="wind-input">
+                            <input id="wind-toggle" type="checkbox" checked="checked" />
+                            <label></label>
+                        </div>
+                    </div>
                 </div>
-                <div class="wind-input">
-                    <input id="wind-toggle" type="checkbox" checked="checked" />
-                    <label></label>
+                <div class="page-controls-more expandable">
+                    <div class="page-controls-group">
+                        <input placeholder="Enter image URL ..." id="Helo" />
+                    </div>
                 </div>
             </aside>
-            <aside class="page-controls-more">
-                <input placeholder="Enter image URL ..." id="Helo" />
-            </aside>
+
         </div>
 
     </body>

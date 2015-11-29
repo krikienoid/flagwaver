@@ -26,27 +26,38 @@ body,
 }
 
 .page-header,
-.page-controls,
-.page-controls-more {
+.page-controls {
     position : absolute;
     z-index  : 1;
-    padding  : 18px;
 }
 
 .page-controls {
     bottom : 0;
 }
 
+.page-controls,
+.page-controls-basic,
 .page-controls-more {
     width : 100%;
-    top   : 100%;
+}
+
+.page-controls-more {
     background-color : #888888;
     background-color : rgba(0,0,0,0.6);
 }
 
-.page-controls-more.show {
-    top    : initial;
-    bottom : 0;
+.expandable {
+    max-height : 0;
+}
+
+.expandable.expanded {
+    max-height : 500px;
+    transition : max-height 1s;
+}
+
+.page-header,
+.page-controls-group {
+    padding : 18px;
 }
 
 /* //// Typography and Style //// */
@@ -57,8 +68,7 @@ body {
 }
 
 .page-header,
-.page-controls,
-.page-controls-more {
+.page-controls {
     font-size : 12pt;
 }
 
