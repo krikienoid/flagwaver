@@ -16,6 +16,8 @@
 
 /* //// Layout //// */
 
+/* Main */
+
 html,
 body,
 .wrapper-page,
@@ -46,8 +48,16 @@ body,
     background-color : rgba(0,0,0,0.6);
 }
 
+.page-header,
+.page-controls-group {
+    padding : 18px;
+}
+
+/* Expandable */
+
 .expandable {
     max-height : 0;
+    transition : max-height 0.25s;
 }
 
 .expandable.expanded {
@@ -55,9 +65,9 @@ body,
     transition : max-height 1s;
 }
 
-.page-header,
-.page-controls-group {
-    padding : 18px;
+.expander.closed .expander-open,
+.expander.open .expander-closed {
+    display : none;
 }
 
 /* //// Typography and Style //// */

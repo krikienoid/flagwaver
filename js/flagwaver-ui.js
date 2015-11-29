@@ -130,6 +130,36 @@
         } );
 
         //
+        // Expandable controls
+        //
+
+        function setExpander ( $expander, $expandable ) {
+            if ( $expandable.hasClass( 'expanded' ) ) {
+                $expander.addClass( 'open' );
+                $expander.removeClass( 'closed' );
+            }
+            else {
+                $expander.addClass( 'closed' );
+                $expander.removeClass( 'open' );
+            }
+        }
+
+        $( '.expander' )
+            .on( 'click', function () {
+                var $this       = $( this ),
+                    $expandable = $( $this.data( 'for' ) );
+                $expandable.toggleClass( 'expanded' );
+                setExpander( $this, $expandable );
+            } )
+            .each( function ( i, elem ) {
+                var $elem = $( elem );
+                setExpander(
+                    $elem,
+                    $( $elem.data( 'for' ) )
+                );
+            } );
+
+        //
         // Settings
         //
 
