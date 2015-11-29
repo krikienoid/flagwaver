@@ -137,8 +137,8 @@ p, a {
 .input-addon {
     height     : 36px;
     background : inherit;
-    border     : 2px solid rgba(100%, 100%, 100%, 0.75);
-    color      : rgba(100%, 100%, 100%, 0.75);
+    border     : 2px solid #cccccc;
+    color      : #cccccc;
     font-size  : 12pt;
     text-align : center;
 }
@@ -266,19 +266,19 @@ p, a {
     margin-top : 0;
 }
 
-/* //// ??? //// */
+/* Input Styling */
 
 .input-control:hover,
-.input-btn:hover {
-    border-color : rgba(100%, 100%, 100%, 1);
-    color        : rgba(100%, 100%, 100%, 1);
+.input-btn:hover,
+.input-btn:focus {
+    border-color : #ffffff;
+    color        : #ffffff;
 }
 
 /* //// Custom Inputs //// */
 
 .input-select {
     margin         : 0;
-    /*padding        : 6px 12px;*/
     background     : inherit;
     border         : 0 none transparent;
     border-radius  : 0;
