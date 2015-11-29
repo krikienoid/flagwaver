@@ -47,11 +47,17 @@
             <aside class="page-controls">
                 <div class="page-controls-basic">
                     <div class="page-controls-group">
-                        <div class="input-group">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">Go!</button>
-                            </span>
-                            <input type="text" class="form-control" placeholder="Enter image URL ..." id="set-img-link">
+                        <div class="input-control-group">
+                            <div class="input-btn-group">
+                                <div class="input-control input-addon">
+                                    <select class="input-select">
+                                        <option value="url">Web</option>
+                                        <option value="file">File</option>
+                                    </select>
+                                </div>
+                                <button class="input-control input-btn">Go!</button>
+                            </div>
+                            <input type="text" class="input-control" placeholder="Enter image URL ..." id="set-img-link" />
                         </div>
                         <div class="form-control file-input">
                             ... or upload from file
