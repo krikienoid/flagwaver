@@ -14,9 +14,7 @@
 	-webkit-box-sizing : border-box;
 }
 
-/* //// Basic Structure //// */
-
-/* Main */
+/* //// Layout //// */
 
 html,
 body,
@@ -28,29 +26,49 @@ body,
 }
 
 .page-header,
-.page-controls {
+.page-controls,
+.page-controls-more {
     position : absolute;
     z-index  : 1;
     padding  : 18px;
-    color    : #ffffff;
-    font     : 12pt 'Open Sans', sans-serif;
 }
 
 .page-controls {
     bottom : 0;
 }
 
-/* //// Styles and Type //// */
+.page-controls-more {
+    width : 100%;
+    top   : 100%;
+    background-color : #888888;
+    background-color : rgba(0,0,0,0.6);
+}
 
-/* Header */
+.page-controls-more.show {
+    top    : initial;
+    bottom : 0;
+}
 
-.page-controls > h1 {
-    font        : 24pt 'Open Sans', sans-serif;
+/* //// Typography and Style //// */
+
+body {
+    color       : #ffffff;
+    font-family : 'Open Sans', Helvetica, Arial, sans-serif;
+}
+
+.page-header,
+.page-controls,
+.page-controls-more {
+    font-size : 12pt;
+}
+
+.page-header > h1 {
+    font-size   : 24pt;
     font-weight : 600;
     text-shadow : 3px 3px 0px rgba(0, 0, 0, 0.5);
 }
 
-/* Inputs */
+/* //// Input Controls //// */
 
 input,
 div.file-input,
