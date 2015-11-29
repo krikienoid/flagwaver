@@ -15,6 +15,7 @@
 
     var $setImgLink,
         $openImgFile,
+        $infoImgFile,
         $windToggle;
 
     //
@@ -100,6 +101,7 @@
 
         $setImgLink  = $( '#set-img-link' );
         $openImgFile = $( '#open-img-file' );
+        $infoImgFile = $( '#info-img-file' );
         $windToggle  = $( '#wind-toggle' );
 
         //
@@ -125,6 +127,7 @@
                     toHash();
                 }
                 setFlagOpts( { imgSrc : e.target.result } );
+                $infoImgFile.text( $openImgFile.val().split( '\\' ).pop() );
             };
             reader.readAsDataURL( file );
         } );
