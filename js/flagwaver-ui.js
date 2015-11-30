@@ -121,10 +121,12 @@
             if ( mode === 'web' ) {
                 $controlImgUpload.addClass( 'upload-mode-web' );
                 $controlImgUpload.removeClass( 'upload-mode-file' );
+                $controlImgUpload.append( $( '.input-img-web' ) );
             }
             else if ( mode === 'file' ) {
                 $controlImgUpload.addClass( 'upload-mode-file' );
                 $controlImgUpload.removeClass( 'upload-mode-web' );
+                $controlImgUpload.append( $( '.input-img-file' ) );
             }
         } ).trigger( 'change' );
 
