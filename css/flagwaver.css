@@ -277,7 +277,7 @@ p, a {
 
 /* //// Custom Inputs //// */
 
-.input-select {
+.input-select > select {
     margin         : 0;
     background     : inherit;
     border         : 0 none transparent;
