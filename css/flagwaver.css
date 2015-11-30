@@ -284,49 +284,42 @@ p, a {
     border-radius  : 0;
 }
 
-.input-control.wind-input {
-    display  : inline-block;
-    position : relative;
-    overflow : visible;
-    vertical-align : top;
+.input-control > input,
+.input-control > .input-cover {
+    cursor   : pointer;
 }
 
-.input-control.wind-input {
-    width    : 108px;
-    padding  : 0;
-}
-
-.input-control.input-file > input[type="file"],
-.input-control.wind-input > input[type="checkbox"] {
+.input-control > .input-cover {
     width    : 100%;
+    height   : 100%;
     position : absolute;
     top      : 0;
     left     : 0;
     bottom   : 0;
     right    : 0;
     margin   : 0;
-    padding  : 0;
-    cursor   : pointer;
+}
+
+.input-control > .input-cover.input-face {
+    z-index : -1;
+    padding : 6px 12px;
+}
+
+.input-control > .input-hidden {
     opacity  : 0;
     filter   : alpha(opacity=0);
 }
 
-.input-control.wind-input > label {
-    position : absolute;
-    top      : 0;
-    left     : 0;
-    right    : 0;
-    bottom   : 0;
-    z-index  : -1;
-    padding  : 6px 12px;
+.input-control.input-file,
+.input-control.input-switch {
+    min-width : 108px;
+    position  : relative;
+    padding   : 0;
 }
 
-.input-control.wind-input > input[type="checkbox"] + label::after {
-    content : "Wind: Off";
-}
-
-.input-control.wind-input > input[type="checkbox"]:checked + label::after {
-    content : "Wind: On";
+.input-control.input-switch > input[type="checkbox"]:checked + label > span.off,
+.input-control.input-switch > input[type="checkbox"]:not(:checked) + label > span.on {
+    display : none;
 }
 
 /* //// Background Image //// */

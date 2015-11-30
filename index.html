@@ -20,12 +20,12 @@
 
         <!-- Libraries -->
         <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css" />
+        <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" />
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r72/three.min.js"></script>
         <script type="text/javascript" src="js/modernizr.custom.95719.js"></script>
 
         <!-- Main -->
-        <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" />
         <link type="text/css" rel="stylesheet" href="css/flagwaver.css" />
         <script type="text/javascript" src="js/flagwaver.js"></script>
         <script type="text/javascript" src="js/flagwaver-ui.js"></script>
@@ -61,13 +61,16 @@
                         </div>
                         <div class="input-control-group">
                             <div class="input-control input-file">
-                                <span id="info-img-file">Open a file</span>
-                                <input type="file" accept="image/*" value="Open a file" id="open-img-file" />
+                                <span class="input-cover input-face" id="info-img-file">Open a file</span>
+                                <input type="file" class="input-cover input-hidden" accept="image/*" value="Open a file" id="open-img-file" />
                             </div>
                         </div>
-                        <div class="input-control wind-input">
-                            <input type="checkbox" class="btn" checked="checked" id="wind-toggle" />
-                            <label></label>
+                        <div class="input-control input-switch">
+                            <input type="checkbox" class="input-cover input-hidden" checked="checked" id="wind-toggle" />
+                            <label class="input-cover input-face">
+                                <span class="on">Wind: On</span>
+                                <span class="off">Wind: Off</span>
+                            </label>
                         </div>
                     </div>
                     <div class="page-controls-group">
