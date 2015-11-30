@@ -17,6 +17,8 @@
         $setImgUploadMode,
         $inputImgLink,
         $setImgLink,
+        $setHoisting,
+        $setTopEdge,
         $openImgFile,
         $infoImgFile,
         $windToggle;
@@ -106,6 +108,8 @@
         $setImgUploadMode = $( '#set-img-upload-mode' );
         $inputImgLink     = $( '#input-img-link' );
         $setImgLink       = $( '#set-img-link' );
+        $setHoisting      = $( '#set-hoisting' );
+        $setTopEdge       = $( '#set-top-edge' );
         $openImgFile      = $( '#open-img-file' );
         $infoImgFile      = $( '#info-img-file' );
         $windToggle       = $( '#wind-toggle' );
@@ -195,6 +199,18 @@
             else {
                 flagWaver.setWind( 0 );
             }
+        } );
+
+        $setHoisting.on( 'change', function () {
+            setFlagOpts( {
+                hoisting : $setHoisting.val()
+            } );
+        } );
+
+        $setTopEdge.on( 'change', function () {
+            setFlagOpts( {
+                topEdge : $setTopEdge.val()
+            } );
         } );
 
         //
