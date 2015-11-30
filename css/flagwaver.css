@@ -65,6 +65,10 @@ body,
     display : inline-block;
 }
 
+.page-controls-basic > .page-controls-group {
+    vertical-align : bottom;
+}
+
 /* Expandable */
 
 .expandable {
