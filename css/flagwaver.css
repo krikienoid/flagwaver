@@ -157,20 +157,21 @@ p, a {
 .input-control,
 .input-btn,
 .input-addon {
-    height     : 36px;
-    overflow   : hidden;
-    background : inherit;
-    border     : 2px solid #cccccc;
-    color      : #cccccc;
-    font-size  : 12pt;
-    text-align : center;
+    height      : 36px;
+    overflow    : hidden;
+    background  : inherit;
+    border      : 2px solid #cccccc;
+    color       : #cccccc;
+    font-size   : 12pt;
+    line-height : 24px;
+    text-align  : center;
 }
 
 .input-control,
 .input-btn {
     display            : inline-block;
     border-radius      : 6px;
-    padding            : 6px 12px;
+    padding            : 4px 12px;
     -webkit-transition : border-color ease-in-out .25s, color ease-in-out .25s, -webkit-box-shadow ease-in-out .25s;
     -o-transition      : border-color ease-in-out .25s, color ease-in-out .25s, box-shadow ease-in-out .25s;
     transition         : border-color ease-in-out .25s, color ease-in-out .25s, box-shadow ease-in-out .25s;
@@ -335,7 +336,7 @@ p, a {
 
 .input-control > .input-cover.input-face {
     z-index : -1;
-    padding : 6px 12px;
+    padding : 4px 12px;
 }
 
 .input-control > .input-hidden {
