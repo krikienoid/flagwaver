@@ -96,10 +96,18 @@ p, a {
     font-size : 12pt;
 }
 
-.page-header > h1 {
-    font-size   : 24pt;
+.page-header > h1,
+.page-controls-group > h2 {
     font-weight : 600;
     text-shadow : 3px 3px 0px rgba(0, 0, 0, 0.5);
+}
+
+.page-header > h1 {
+    font-size   : 24pt;
+}
+
+.page-controls-group > h2 {
+    font-size : 12pt;
 }
 
 /* //// Input Controls //// */
@@ -282,6 +290,7 @@ p, a {
 
 .input-select > select {
     margin         : 0;
+    margin-top     : -2px;
     background     : inherit;
     border         : 0 none transparent;
     border-radius  : 0;
