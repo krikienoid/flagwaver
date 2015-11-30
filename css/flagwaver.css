@@ -60,6 +60,11 @@ body,
     padding : 18px;
 }
 
+.page-controls-group {
+    max-width : 640px;
+    display : inline-block;
+}
+
 /* Expandable */
 
 .expandable {
