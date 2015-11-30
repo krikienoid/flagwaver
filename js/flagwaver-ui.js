@@ -13,7 +13,9 @@
 
 ;(function ( window, document, $, flagWaver, undefined ) {
 
-    var $setImgLink,
+    var $controlImgUpload,
+        $setImgUploadMode,
+        $setImgLink,
         $openImgFile,
         $infoImgFile,
         $windToggle;
@@ -99,10 +101,12 @@
         // Get DOM elements
         //
 
-        $setImgLink  = $( '#set-img-link' );
-        $openImgFile = $( '#open-img-file' );
-        $infoImgFile = $( '#info-img-file' );
-        $windToggle  = $( '#wind-toggle' );
+        $controlImgUpload = $( '#control-img-upload' );
+        $setImgUploadMode = $( '#set-img-upload-mode' );
+        $setImgLink       = $( '#set-img-link' );
+        $openImgFile      = $( '#open-img-file' );
+        $infoImgFile      = $( '#info-img-file' );
+        $windToggle       = $( '#wind-toggle' );
 
         //
         // Add event handlers
@@ -110,6 +114,19 @@
 
         // Load flag image from hash on user entered hash
         $( window ).on( 'popstate', fromHash );
+
+        // Determine file loading mode
+        $setImgUploadMode.on( 'change', function () {
+            var mode = $setImgUploadMode.val();
+            if ( mode === 'web' ) {
+                $controlImgUpload.addClass( 'upload-mode-web' );
+                $controlImgUpload.removeClass( 'upload-mode-file' );
+            }
+            else if ( mode === 'file' ) {
+                $controlImgUpload.addClass( 'upload-mode-file' );
+                $controlImgUpload.removeClass( 'upload-mode-web' );
+            }
+        } ).trigger( 'change' );
 
         // Load flag image from user given url
         $setImgLink.on( 'change', function () {

@@ -277,12 +277,21 @@ p, a {
 
 /* //// Custom Inputs //// */
 
+/* Select Upload Mode */
+
 .input-select > select {
     margin         : 0;
     background     : inherit;
     border         : 0 none transparent;
     border-radius  : 0;
 }
+
+.control-img-upload.upload-mode-web > .input-img-file,
+.control-img-upload.upload-mode-file > .input-img-web {
+    display : none;
+}
+
+/* Other Inputs */
 
 .input-control > input,
 .input-control > .input-cover {
