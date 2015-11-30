@@ -15,6 +15,7 @@
 
     var $controlImgUpload,
         $setImgUploadMode,
+        $inputImgLink,
         $setImgLink,
         $openImgFile,
         $infoImgFile,
@@ -64,22 +65,22 @@
             }
         }
         if ( imgSrc ) {
-            $setImgLink.val( imgSrc );
+            $inputImgLink.val( imgSrc );
             setFlagOpts( { imgSrc : imgSrc } );
         }
         else {
-            $setImgLink.val( '' );
+            $inputImgLink.val( '' );
             setFlagOpts( { imgSrc : 'img/NZ.2b.png' } );
         }
     }
 
     // Set hash data
     function toHash () {
-        if ( $setImgLink.val() ) {
+        if ( $inputImgLink.val() ) {
             window.history.pushState(
                 null,
                 null,
-                '#' + '?src=' + window.encodeURIComponent( $setImgLink.val() )
+                '#' + '?src=' + window.encodeURIComponent( $inputImgLink.val() )
             );
         }
         else {
@@ -103,6 +104,7 @@
 
         $controlImgUpload = $( '#control-img-upload' );
         $setImgUploadMode = $( '#set-img-upload-mode' );
+        $inputImgLink     = $( '#input-img-link' );
         $setImgLink       = $( '#set-img-link' );
         $openImgFile      = $( '#open-img-file' );
         $infoImgFile      = $( '#info-img-file' );
@@ -131,9 +133,9 @@
         } ).trigger( 'change' );
 
         // Load flag image from user given url
-        $setImgLink.on( 'change', function () {
+        $setImgLink.on( 'click', function () {
             toHash();
-            setFlagOpts( { imgSrc : $setImgLink.val() } );
+            setFlagOpts( { imgSrc : $inputImgLink.val() } );
         } );
 
         // Load flag image from file
@@ -141,8 +143,8 @@
             var file   = $openImgFile[ 0 ].files[ 0 ],
                 reader = new window.FileReader();
             reader.onload = function ( e ) {
-                if ( $setImgLink.val() || getHashData() ) {
-                    $setImgLink.val( '' );
+                if ( $inputImgLink.val() || getHashData() ) {
+                    $inputImgLink.val( '' );
                     toHash();
                 }
                 setFlagOpts( { imgSrc : e.target.result } );
