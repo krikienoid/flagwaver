@@ -62,11 +62,15 @@ body,
 
 .page-controls-group {
     max-width : 640px;
-    display : inline-block;
+    display   : inline-block;
 }
 
 .page-controls-basic > .page-controls-group {
     vertical-align : bottom;
+}
+
+.page-controls-wide {
+    width : 100%;
 }
 
 /* Expandable */
@@ -154,6 +158,7 @@ p, a {
 .input-btn,
 .input-addon {
     height     : 36px;
+    overflow   : hidden;
     background : inherit;
     border     : 2px solid #cccccc;
     color      : #cccccc;
