@@ -888,11 +888,12 @@
         scene.add( light );
 
         // Init flag pole
-        poleGeo = new THREE.BoxGeometry( 14, poleHeight, 2 );
+        poleGeo = new THREE.CylinderGeometry( 6, 6, poleHeight );
         poleMat = new THREE.MeshPhongMaterial( {
-            color     : 0x4A4A4A,
-            specular  : 0x111111,
-            shininess : 0
+            color     : 0x6A6A6A,
+            specular  : 0xffffff,
+            metal     : true,
+            shininess : 18
         } );
         poleMesh = new THREE.Mesh( poleGeo, poleMat );
         poleMesh.position.y    = poleOffset - poleHeight / 2;
