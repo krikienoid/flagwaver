@@ -303,12 +303,33 @@ p, a {
 
 /* Select Upload Mode */
 
+.input-control.input-select {
+    position : relative;
+    padding  : 0;
+}
+
+.input-select:before {
+    position     : absolute;
+    right        : 0;
+    margin-right : 10px;
+    line-height  : 30px;
+    content      : '\25BE';
+}
+
 .input-select > select {
+    height         : 100%;
+    position       : relative;
+    z-index        : 1;
     margin         : 0;
-    margin-top     : -2px;
-    background     : inherit;
+    padding        : 0 36px 0 12px;
+    background     : transparent;
     border         : 0 none transparent;
     border-radius  : 0;
+    text-indent    : 0.01px;
+    text-overflow  : '';
+    -webkit-appearance : none;
+       -moz-appearance : none;
+            appearance : none;
 }
 
 .control-img-upload.upload-mode-web > .input-img-file,
