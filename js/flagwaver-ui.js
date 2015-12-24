@@ -13,6 +13,8 @@
 
 ;(function ( window, document, $, flagWaver, undefined ) {
 
+    var isHistorySupported;
+
     var $controlImgUpload,
         $setImgUploadMode,
         $inputImgLink,
@@ -78,20 +80,26 @@
 
     // Set hash data
     function toHash () {
-        try {
-            if ( $inputImgLink.val() ) {
-                window.history.pushState(
-                    null,
-                    null,
-                    '#' + '?src=' + window.encodeURIComponent( $inputImgLink.val() )
+        if ( isHistorySupported ) {
+            try {
+                if ( $inputImgLink.val() ) {
+                    window.history.pushState(
+                        null,
+                        null,
+                        '#' + '?src=' + window.encodeURIComponent( $inputImgLink.val() )
+                    );
+                }
+                else {
+                    window.history.pushState( null, null, null );
+                }
+            }
+            catch (e) {
+                window.console.log( e.message );
+                window.console.log(
+                    'Error: FlagWaverUI: Cannot push states to history object.'
                 );
+                isHistorySupported = false;
             }
-            else {
-                window.history.pushState( null, null, null );
-            }
-        }
-        catch (e) {
-            window.console.log( e.message );
         }
     }
 
@@ -100,6 +108,12 @@
     //
 
     $( document ).ready( function () {
+
+        //
+        // Init Globals
+        //
+
+        isHistorySupported = !!(window.history && window.history.pushState);
 
         //
         // Get DOM elements
@@ -120,7 +134,7 @@
         //
 
         // Load flag image from hash on user entered hash
-        $( window ).on( 'popstate', fromHash );
+        if ( isHistorySupported ) $( window ).on( 'popstate', fromHash );
 
         // Determine file loading mode
         $setImgUploadMode.on( 'change', function () {
