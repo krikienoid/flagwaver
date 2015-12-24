@@ -78,19 +78,20 @@
 
     // Set hash data
     function toHash () {
-        if ( $inputImgLink.val() ) {
-            window.history.pushState(
-                null,
-                null,
-                '#' + '?src=' + window.encodeURIComponent( $inputImgLink.val() )
-            );
+        try {
+            if ( $inputImgLink.val() ) {
+                window.history.pushState(
+                    null,
+                    null,
+                    '#' + '?src=' + window.encodeURIComponent( $inputImgLink.val() )
+                );
+            }
+            else {
+                window.history.pushState( null, null, null );
+            }
         }
-        else {
-            window.history.pushState(
-                null,
-                null,
-                window.location.pathname
-            );
+        catch (e) {
+            window.console.log( e.message );
         }
     }
 
