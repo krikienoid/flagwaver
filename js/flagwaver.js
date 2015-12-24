@@ -463,8 +463,20 @@
 
     // Set flag texture from image
     Flag.prototype.loadTexture = function ( imgSrc ) {
+
         var setTexture = this.setTexture.bind( this ),
-            texture    = THREE.ImageUtils.loadTexture(
+            texture,
+            tmpImg;
+
+        if ( imgSrc.substr( 0, 5 ) === 'data:' ) {
+            tmpImg = document.createElement( 'img' );
+            tmpImg.src = imgSrc;
+            texture = new THREE.Texture( tmpImg );
+            texture.needsUpdate = true;
+            setTexture( texture );
+        }
+        else {
+            texture = THREE.ImageUtils.loadTexture(
                 imgSrc,
                 null,
                 function () { setTexture( texture ); },
@@ -475,6 +487,8 @@
                     setTexture( blankTexture );
                 }
             );
+        }
+
     };
 
     // Pin edges of flag cloth
