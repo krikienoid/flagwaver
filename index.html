@@ -35,7 +35,7 @@
 
     <body>
 
-        <div class="wrapper-page bg-sky" data-role="page">
+        <div class="wrapper-page bg-sky">
 
             <header class="page-header">
                 <h1>Flag Waver</h1>
@@ -52,16 +52,16 @@
                         <div class="input-control-group control-img-upload" id="control-img-upload">
                             <div class="input-btn-group">
                                 <div class="input-control input-select">
-                                    <select id="set-img-upload-mode">
+                                    <select aria-label="Upload image from" id="set-img-upload-mode">
                                         <option value="web">Web</option>
                                         <option value="file">File</option>
                                     </select>
                                 </div>
                             </div>
+                            <input type="text" class="input-control input-img-web" placeholder="Enter image URL" aria-label="Enter image URL" id="input-img-link" />
                             <div class="input-btn-group input-img-web">
                                 <button class="input-control input-btn" id="set-img-link">Go!</button>
                             </div>
-                            <input type="text" class="input-control input-img-web" placeholder="Enter URL" id="input-img-link" />
                             <div class="input-control input-file input-img-file">
                                 <label class="input-cover input-face" for="open-img-file" id="info-img-file">Open a file</label>
                                 <input type="file" class="input-cover input-hidden" accept="image/*" value="Open a file" id="open-img-file" />
@@ -69,13 +69,18 @@
                         </div>
                     </div>
                     <div class="page-controls-group">
-                        <a class="expander" data-for="#expandable-controls">
-                            <span class="expander-open">Hide Options</span>
-                            <span class="expander-closed">More Options</span>
-                        </a>
+                        <input
+                            type="button"
+                            class="expander input-control input-btn"
+                            data-target="#expandable-controls"
+                            data-text-open="Hide Options"
+                            data-text-closed="More Options"
+                            aria-expanded="false"
+                            aria-controls="expandable-controls"
+                        />
                     </div>
                 </div>
-                <div class="page-controls-more expandable" id="expandable-controls">
+                <div class="page-controls-more expandable" aria-hidden="true" id="expandable-controls">
                     <div class="page-controls-group">
                         <h2>Wind</h2>
                         <div class="input-control input-switch">
@@ -89,13 +94,13 @@
                     <div class="page-controls-group">
                         <h2>Hoisting</h2>
                         <div class="input-control input-select">
-                            <select id="set-hoisting">
+                            <select aria-label="Hoist side" id="set-hoisting">
                                 <option value="dexter">Dexter</option>
                                 <option value="sinister">Sinister</option>
                             </select>
                         </div>
                         <div class="input-control input-select">
-                            <select id="set-top-edge">
+                            <select aria-label="Hoist top edge" id="set-top-edge">
                                 <option value="top">Top</option>
                                 <option value="left">Left</option>
                                 <option value="bottom">Bottom</option>

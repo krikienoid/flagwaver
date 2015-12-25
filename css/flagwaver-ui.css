@@ -34,6 +34,11 @@ body,
     overflow : hidden;
 }
 
+html,
+body {
+    background-color : #222222;
+}
+
 .page-header,
 .page-controls {
     position : absolute;
@@ -77,17 +82,14 @@ body,
 
 .expandable {
     max-height : 0;
-    transition : max-height 0.25s;
+    visibility : hidden;
+    transition : max-height 0.25s, visibility 0.25s;
 }
 
 .expandable.expanded {
     max-height : 500px;
-    transition : max-height 1s;
-}
-
-.expander.closed .expander-open,
-.expander.open .expander-closed {
-    display : none;
+    visibility : visible;
+    transition : max-height 1s, visibility 0s;
 }
 
 /* //// Typography and Style //// */

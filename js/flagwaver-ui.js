@@ -180,17 +180,23 @@
             if ( $expandable.hasClass( 'expanded' ) ) {
                 $expander.addClass( 'open' );
                 $expander.removeClass( 'closed' );
+                $expander.val( $expander.data( 'text-open' ) );
+                $expander.attr( 'aria-expanded', 'true' );
+                $expandable.attr( 'aria-hidden', 'false' );
             }
             else {
                 $expander.addClass( 'closed' );
                 $expander.removeClass( 'open' );
+                $expander.val( $expander.data( 'text-closed' ) );
+                $expander.attr( 'aria-expanded', 'false' );
+                $expandable.attr( 'aria-hidden', 'true' );
             }
         }
 
-        $( '.expander' )
+        $( 'input[type="button"].expander' )
             .on( 'click', function () {
                 var $this       = $( this ),
-                    $expandable = $( $this.data( 'for' ) );
+                    $expandable = $( $this.data( 'target' ) );
                 $expandable.toggleClass( 'expanded' );
                 setExpander( $this, $expandable );
             } )
@@ -198,7 +204,7 @@
                 var $elem = $( elem );
                 setExpander(
                     $elem,
-                    $( $elem.data( 'for' ) )
+                    $( $elem.data( 'target' ) )
                 );
             } );
 
