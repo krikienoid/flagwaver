@@ -249,7 +249,10 @@ p, a {
     border-bottom-right-radius : 6px;
 }
 
+.input-control-group > .input-control:hover,
 .input-control-group > .input-control:focus,
+.input-control-group > .input-control:active,
+.input-control-group > .input-control.active,
 .input-control-group > .input-btn:hover,
 .input-control-group > .input-btn:focus,
 .input-control-group > .input-btn:active,
@@ -296,8 +299,12 @@ p, a {
 
 .input-control:hover,
 .input-control:focus,
+.input-control:active,
+.input-control.active,
 .input-btn:hover,
-.input-btn:focus {
+.input-btn:focus,
+.input-btn:active,
+.input-btn.active {
     border-color : #ffffff;
     color        : #ffffff;
 }
@@ -320,7 +327,8 @@ p, a {
 
 .input-control.input-select:hover,
 .input-control.input-select:focus,
-.input-control.input-select:active {
+.input-control.input-select:active,
+.input-control.input-select.active {
     background-image    : url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="36px" viewBox="0 0 30 36" xml:space="preserve"><polygon fill="rgb(255,255,255)" points="15,21 10,16 20,16" /></svg>');
 }
 

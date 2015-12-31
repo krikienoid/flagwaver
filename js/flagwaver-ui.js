@@ -201,12 +201,19 @@
         } );
 
         // Load flag image from file
-        $openImgFile.on( 'change', function () {
-            var file   = $openImgFile[ 0 ].files[ 0 ],
-                reader = new window.FileReader();
-            reader.onload = loadImgFile;
-            reader.readAsDataURL( file );
-        } );
+        $openImgFile
+            .on( 'change', function () {
+                var file   = $openImgFile[ 0 ].files[ 0 ],
+                    reader = new window.FileReader();
+                reader.onload = loadImgFile;
+                reader.readAsDataURL( file );
+            } )
+            .on( 'focus', function () {
+                $openImgFile.parent().addClass( 'active' );
+            } )
+            .on( 'blur', function () {
+                $openImgFile.parent().removeClass( 'active' );
+            } );
 
         $( 'input[type="button"].expander' ).on( 'click', function () {
             var $this = $( this );
