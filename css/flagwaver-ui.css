@@ -174,9 +174,9 @@ p, a {
     display            : inline-block;
     border-radius      : 6px;
     padding            : 4px 12px;
-    -webkit-transition : border-color ease-in-out .25s, color ease-in-out .25s, -webkit-box-shadow ease-in-out .25s;
-    -o-transition      : border-color ease-in-out .25s, color ease-in-out .25s, box-shadow ease-in-out .25s;
-    transition         : border-color ease-in-out .25s, color ease-in-out .25s, box-shadow ease-in-out .25s;
+    -webkit-transition : background-image ease-in-out 0.25s, border-color ease-in-out 0.25s, color ease-in-out 0.25s, -webkit-box-shadow ease-in-out 0.25s;
+    -o-transition      : background-image ease-in-out 0.25s, border-color ease-in-out 0.25s, color ease-in-out 0.25s, box-shadow ease-in-out 0.25s;
+    transition         : background-image ease-in-out 0.25s, border-color ease-in-out 0.25s, color ease-in-out 0.25s, box-shadow ease-in-out 0.25s;
 }
 
 .input-btn {
@@ -295,6 +295,7 @@ p, a {
 /* Input Styling */
 
 .input-control:hover,
+.input-control:focus,
 .input-btn:hover,
 .input-btn:focus {
     border-color : #ffffff;
@@ -306,32 +307,21 @@ p, a {
 /* Select Upload Mode */
 
 .input-control.input-select {
-    position : relative;
-    padding  : 0;
+    padding-right       : 36px;
+    background-image    : url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="36px" viewBox="0 0 30 36" xml:space="preserve"><polygon fill="rgb(204,204,204)" points="15,21 10,16 20,16" /></svg>');
+    background-repeat   : no-repeat;
+    background-position : right;
+    text-indent         : 0.01px;
+    text-overflow       : '';
+    -webkit-appearance  : none;
+       -moz-appearance  : none;
+            appearance  : none;
 }
 
-.input-select:before {
-    position     : absolute;
-    right        : 0;
-    margin-right : 10px;
-    line-height  : 30px;
-    content      : '\25BE';
-}
-
-.input-select > select {
-    height         : 100%;
-    position       : relative;
-    z-index        : 1;
-    margin         : 0;
-    padding        : 0 36px 0 12px;
-    background     : transparent;
-    border         : 0 none transparent;
-    border-radius  : 0;
-    text-indent    : 0.01px;
-    text-overflow  : '';
-    -webkit-appearance : none;
-       -moz-appearance : none;
-            appearance : none;
+.input-control.input-select:hover,
+.input-control.input-select:focus,
+.input-control.input-select:active {
+    background-image    : url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="30px" height="36px" viewBox="0 0 30 36" xml:space="preserve"><polygon fill="rgb(255,255,255)" points="15,21 10,16 20,16" /></svg>');
 }
 
 .control-img-upload.upload-mode-web > .input-img-file,
