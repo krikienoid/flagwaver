@@ -11,7 +11,7 @@
 // Flag Waver UI
 //
 
-;(function ( window, document, $, flagWaver, undefined ) {
+;( function ( window, document, $, flagWaver, undefined ) {
 
     //
     // Vars
@@ -103,7 +103,7 @@
                     window.history.pushState( null, null, null );
                 }
             }
-            catch (e) {
+            catch ( e ) {
                 window.console.log( e.message );
                 window.console.log(
                     'Error: FlagWaverUI: Cannot push states to history object.'
@@ -123,7 +123,7 @@
         // Init Globals
         //
 
-        isHistorySupported = !!(window.history && window.history.pushState);
+        isHistorySupported = !!( window.history && window.history.pushState );
 
         //
         // Get DOM elements
@@ -150,14 +150,16 @@
         $setImgUploadMode.on( 'change', function () {
             var mode = $setImgUploadMode.val();
             if ( mode === 'web' ) {
-                $controlImgUpload.addClass( 'upload-mode-web' );
-                $controlImgUpload.removeClass( 'upload-mode-file' );
-                $controlImgUpload.append( $( '.input-img-web' ) );
+                $controlImgUpload
+                    .removeClass( 'upload-mode-file' )
+                    .addClass( 'upload-mode-web' )
+                    .append( $( '.input-img-web' ) );
             }
             else if ( mode === 'file' ) {
-                $controlImgUpload.addClass( 'upload-mode-file' );
-                $controlImgUpload.removeClass( 'upload-mode-web' );
-                $controlImgUpload.append( $( '.input-img-file' ) );
+                $controlImgUpload
+                    .removeClass( 'upload-mode-web' )
+                    .addClass( 'upload-mode-file' )
+                    .append( $( '.input-img-file' ) );
             }
         } ).trigger( 'change' );
 
@@ -186,37 +188,32 @@
         // Expandable controls
         //
 
-        function setExpander ( $expander, $expandable ) {
+        function updateExpander ( $expander ) {
+            var $expandable = $( $expander.data( 'target' ) );
             if ( $expandable.hasClass( 'expanded' ) ) {
-                $expander.addClass( 'open' );
-                $expander.removeClass( 'closed' );
-                $expander.val( $expander.data( 'text-selected' ) );
-                $expander.attr( 'aria-expanded', 'true' );
+                $expander
+                    .removeClass( 'closed' )
+                    .addClass( 'open' )
+                    .val( $expander.data( 'text-selected' ) )
+                    .attr( 'aria-expanded', 'true' );
                 $expandable.attr( 'aria-hidden', 'false' );
             }
             else {
-                $expander.addClass( 'closed' );
-                $expander.removeClass( 'open' );
-                $expander.val( $expander.data( 'text-unselected' ) );
-                $expander.attr( 'aria-expanded', 'false' );
+                $expander
+                    .removeClass( 'open' )
+                    .addClass( 'closed' )
+                    .val( $expander.data( 'text-unselected' ) )
+                    .attr( 'aria-expanded', 'false' );
                 $expandable.attr( 'aria-hidden', 'true' );
             }
         }
 
         $( 'input[type="button"].expander' )
             .on( 'click', function () {
-                var $this       = $( this ),
-                    $expandable = $( $this.data( 'target' ) );
-                $expandable.toggleClass( 'expanded' );
-                setExpander( $this, $expandable );
-            } )
-            .each( function ( i, elem ) {
-                var $elem = $( elem );
-                setExpander(
-                    $elem,
-                    $( $elem.data( 'target' ) )
-                );
-            } );
+                var $this = $( this );
+                $( $this.data( 'target' ) ).toggleClass( 'expanded' );
+                updateExpander( $this );
+            } ).each( function ( i, elem ) { updateExpander( $( elem ) ); } );
 
         //
         // Settings
@@ -261,4 +258,4 @@
 
     } );
 
-}( window, document, jQuery, window.flagWaver ));
+} )( window, document, jQuery, window.flagWaver );
