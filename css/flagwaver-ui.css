@@ -174,9 +174,9 @@ p, a {
     display            : inline-block;
     border-radius      : 6px;
     padding            : 4px 12px;
-    -webkit-transition : background-image ease-in-out 0.25s, border-color ease-in-out 0.25s, color ease-in-out 0.25s, -webkit-box-shadow ease-in-out 0.25s;
-    -o-transition      : background-image ease-in-out 0.25s, border-color ease-in-out 0.25s, color ease-in-out 0.25s, box-shadow ease-in-out 0.25s;
-    transition         : background-image ease-in-out 0.25s, border-color ease-in-out 0.25s, color ease-in-out 0.25s, box-shadow ease-in-out 0.25s;
+    -webkit-transition : z-index 0s 0.25s, background-image ease-in-out 0.25s, border-color ease-in-out 0.25s, color ease-in-out 0.25s, -webkit-box-shadow ease-in-out 0.25s;
+    -o-transition      : z-index 0s 0.25s, background-image ease-in-out 0.25s, border-color ease-in-out 0.25s, color ease-in-out 0.25s, box-shadow ease-in-out 0.25s;
+    transition         : z-index 0s 0.25s, background-image ease-in-out 0.25s, border-color ease-in-out 0.25s, color ease-in-out 0.25s, box-shadow ease-in-out 0.25s;
 }
 
 .input-btn {
@@ -249,6 +249,13 @@ p, a {
     border-bottom-right-radius : 6px;
 }
 
+.input-control-group > .input-control,
+.input-control-group > .input-btn,
+.input-btn-group > .input-control,
+.input-btn-group > .input-btn {
+    z-index : 0;
+}
+
 .input-control-group > .input-control:hover,
 .input-control-group > .input-control:focus,
 .input-control-group > .input-control:active,
@@ -266,6 +273,9 @@ p, a {
 .input-btn-group > .input-btn:active,
 .input-btn-group > .input-btn.active {
     z-index : 2;
+    -webkit-transition : background-image ease-in-out 0.25s, border-color ease-in-out 0.25s, color ease-in-out 0.25s, -webkit-box-shadow ease-in-out 0.25s;
+    -o-transition      : background-image ease-in-out 0.25s, border-color ease-in-out 0.25s, color ease-in-out 0.25s, box-shadow ease-in-out 0.25s;
+    transition         : background-image ease-in-out 0.25s, border-color ease-in-out 0.25s, color ease-in-out 0.25s, box-shadow ease-in-out 0.25s;
 }
 
 .input-control-group > .input-control + .input-control,
@@ -281,7 +291,7 @@ p, a {
 .input-btn-group .input-btn + .input-btn-group,
 .input-btn-group .input-btn-group + .input-btn,
 .input-btn-group .input-btn-group + .input-btn-group {
-    margin-left: -2px;
+    margin-left : -2px;
 }
 
 .input-control-group > .input-addon:first-child,
