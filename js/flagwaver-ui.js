@@ -113,6 +113,37 @@
         }
     }
 
+    // Load flag image from file reader
+    function loadImgFile ( e ) {
+        if ( $inputImgLink.val() || getHashData() ) {
+            $inputImgLink.val( '' );
+            toHash();
+        }
+        setFlagOpts( { imgSrc : e.target.result } );
+        $infoImgFile.text( $openImgFile.val().split( '\\' ).pop() );
+    }
+
+    // Expandable controls
+    function updateExpander ( $expander ) {
+        var $expandable = $( $expander.data( 'target' ) );
+        if ( $expandable.hasClass( 'expanded' ) ) {
+            $expander
+                .removeClass( 'closed' )
+                .addClass( 'open' )
+                .val( $expander.data( 'text-selected' ) )
+                .attr( 'aria-expanded', 'true' );
+            $expandable.attr( 'aria-hidden', 'false' );
+        }
+        else {
+            $expander
+                .removeClass( 'open' )
+                .addClass( 'closed' )
+                .val( $expander.data( 'text-unselected' ) )
+                .attr( 'aria-expanded', 'false' );
+            $expandable.attr( 'aria-hidden', 'true' );
+        }
+    }
+
     //
     // Init
     //
@@ -173,47 +204,15 @@
         $openImgFile.on( 'change', function () {
             var file   = $openImgFile[ 0 ].files[ 0 ],
                 reader = new window.FileReader();
-            reader.onload = function ( e ) {
-                if ( $inputImgLink.val() || getHashData() ) {
-                    $inputImgLink.val( '' );
-                    toHash();
-                }
-                setFlagOpts( { imgSrc : e.target.result } );
-                $infoImgFile.text( $openImgFile.val().split( '\\' ).pop() );
-            };
+            reader.onload = loadImgFile;
             reader.readAsDataURL( file );
         } );
 
-        //
-        // Expandable controls
-        //
-
-        function updateExpander ( $expander ) {
-            var $expandable = $( $expander.data( 'target' ) );
-            if ( $expandable.hasClass( 'expanded' ) ) {
-                $expander
-                    .removeClass( 'closed' )
-                    .addClass( 'open' )
-                    .val( $expander.data( 'text-selected' ) )
-                    .attr( 'aria-expanded', 'true' );
-                $expandable.attr( 'aria-hidden', 'false' );
-            }
-            else {
-                $expander
-                    .removeClass( 'open' )
-                    .addClass( 'closed' )
-                    .val( $expander.data( 'text-unselected' ) )
-                    .attr( 'aria-expanded', 'false' );
-                $expandable.attr( 'aria-hidden', 'true' );
-            }
-        }
-
-        $( 'input[type="button"].expander' )
-            .on( 'click', function () {
-                var $this = $( this );
-                $( $this.data( 'target' ) ).toggleClass( 'expanded' );
-                updateExpander( $this );
-            } ).each( function ( i, elem ) { updateExpander( $( elem ) ); } );
+        $( 'input[type="button"].expander' ).on( 'click', function () {
+            var $this = $( this );
+            $( $this.data( 'target' ) ).toggleClass( 'expanded' );
+            updateExpander( $this );
+        } ).each( function ( i, elem ) { updateExpander( $( elem ) ); } );
 
         //
         // Settings
