@@ -13,6 +13,16 @@
 
 ;(function ( window, document, $, flagWaver, undefined ) {
 
+    //
+    // Vars
+    //
+
+    // Settings
+
+    var isWindOn = true;
+
+    // Controls
+
     var isHistorySupported;
 
     var $controlImgUpload,
@@ -180,14 +190,14 @@
             if ( $expandable.hasClass( 'expanded' ) ) {
                 $expander.addClass( 'open' );
                 $expander.removeClass( 'closed' );
-                $expander.val( $expander.data( 'text-open' ) );
+                $expander.val( $expander.data( 'text-selected' ) );
                 $expander.attr( 'aria-expanded', 'true' );
                 $expandable.attr( 'aria-hidden', 'false' );
             }
             else {
                 $expander.addClass( 'closed' );
                 $expander.removeClass( 'open' );
-                $expander.val( $expander.data( 'text-closed' ) );
+                $expander.val( $expander.data( 'text-unselected' ) );
                 $expander.attr( 'aria-expanded', 'false' );
                 $expandable.attr( 'aria-hidden', 'true' );
             }
@@ -213,14 +223,17 @@
         //
 
         // Turn wind on or off
-        $windToggle.on( 'change', function () {
-            if ( this.checked ) {
+        $windToggle.on( 'click', function () {
+            isWindOn = !isWindOn;
+            if ( isWindOn ) {
                 flagWaver.setWind( 300 );
+                $windToggle.val( $windToggle.data( 'text-selected' ) );
             }
             else {
                 flagWaver.setWind( 0 );
+                $windToggle.val( $windToggle.data( 'text-unselected' ) );
             }
-        } );
+        } ).val( $windToggle.data( 'text-selected' ) );
 
         $setHoisting.on( 'change', function () {
             setFlagOpts( {

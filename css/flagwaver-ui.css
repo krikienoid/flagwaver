@@ -366,16 +366,14 @@ p, a {
     filter   : alpha(opacity=0);
 }
 
-.input-control.input-file,
-.input-control.input-switch {
+.input-control.input-btn.input-btn-md,
+.input-control.input-file {
     min-width : 108px;
-    position  : relative;
-    padding   : 0;
 }
 
-.input-control.input-switch > input[type="checkbox"]:checked + label > span.off,
-.input-control.input-switch > input[type="checkbox"]:not(:checked) + label > span.on {
-    display : none;
+.input-control.input-file {
+    position  : relative;
+    padding   : 0;
 }
 
 /* //// Background Image //// */

@@ -60,7 +60,7 @@
                             </div>
                             <input type="text" class="input-control input-img-web" placeholder="Enter image URL" aria-label="Enter image URL" id="input-img-link" />
                             <div class="input-btn-group input-img-web">
-                                <button class="input-control input-btn" id="set-img-link">Go!</button>
+                                <input type="button" class="input-control input-btn" value="Go!" id="set-img-link" />
                             </div>
                             <div class="input-control input-file input-img-file">
                                 <label class="input-cover input-face" for="open-img-file" id="info-img-file">Open a file</label>
@@ -73,8 +73,8 @@
                             type="button"
                             class="expander input-control input-btn"
                             data-target="#expandable-controls"
-                            data-text-open="Hide Options"
-                            data-text-closed="More Options"
+                            data-text-selected="Hide Options"
+                            data-text-unselected="More Options"
                             aria-expanded="false"
                             aria-controls="expandable-controls"
                         />
@@ -83,13 +83,13 @@
                 <div class="page-controls-more expandable" aria-hidden="true" id="expandable-controls">
                     <div class="page-controls-group">
                         <h2>Wind</h2>
-                        <div class="input-control input-switch">
-                            <input type="checkbox" class="input-cover input-hidden" checked="checked" id="wind-toggle" />
-                            <label class="input-cover input-face" for="wind-toggle">
-                                <span class="on">Wind: On</span>
-                                <span class="off">Wind: Off</span>
-                            </label>
-                        </div>
+                        <input
+                            type="button"
+                            class="input-control input-btn input-btn-md"
+                            data-text-selected="Wind: On"
+                            data-text-unselected="Wind: Off"
+                            id="wind-toggle"
+                        />
                     </div>
                     <div class="page-controls-group">
                         <h2>Hoisting</h2>
