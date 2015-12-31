@@ -205,7 +205,7 @@ p, a {
     display : table-cell;
 }
 
-.input-control-group > .input-control {
+.input-control-group > .input-control.input-control-main {
     width : 100%;
 }
 
