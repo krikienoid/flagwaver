@@ -44,16 +44,21 @@
         flagWaver.flag.setOpts( flagData );
     }
 
-    // Get URI variables
-    function getURIVars () {
+    // Get hash variables
+    function getHashVars () {
         var vars  = [],
-            href  = window.location.href,
-            pairs = href.slice( href.indexOf( '?' ) + 1 ).split( '&' ),
+            url   = window.location.href,
+            pos   = url.search( /\#(\!|\?)/ ) + 2,
+            pairs = url.slice( pos ).split( '&' ),
             pair, i;
         for ( i = 0, ii = pairs.length; i < ii; i++ ) {
-            pair = pairs[ i ].split( '=' );
-            vars.push( pair[ 0 ] );
-            vars[ pair[ 0 ] ] = pair[ 1 ];
+            if ( pairs[ i ].length ) {
+                pair = pairs[ i ].split( '=' );
+                if ( pair.length && pair[ 0 ].length ) {
+                    vars.push( pair[ 0 ] );
+                    vars[ pair[ 0 ] ] = pair[ 1 ] || null;
+                }
+            }
         }
         return vars;
     }
@@ -68,8 +73,8 @@
         var hashData = getHashData(),
             imgSrc;
         if ( hashData ) {
-            if ( hashData[ 0 ] === '?' ) {
-                hashData = getURIVars()[ 'src' ];
+            if ( hashData[ 0 ] === '!' || hashData[ 0 ] === '?' ) {
+                hashData = getHashVars()[ 'src' ];
                 if ( hashData ) {
                     imgSrc = window.decodeURIComponent( hashData );
                 }
