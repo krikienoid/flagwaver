@@ -116,20 +116,31 @@
         }
     }
 
+    // Get hash data from flag options
+    function getHashFromFlagOpts () {
+        var vars = [];
+        if ( $inputImgLink.val() ) {
+            vars.push(
+                'src=' + window.encodeURIComponent( $inputImgLink.val() )
+            );
+        }
+        if ( vars.length && $inputImgLink.val() ) {
+            return '#!' + vars.join( '&' );
+        }
+        else {
+            return false;
+        }
+    }
+
     // Set hash data
     function toHash () {
         if ( isHistorySupported ) {
             try {
-                if ( $inputImgLink.val() ) {
-                    window.history.pushState(
-                        null,
-                        null,
-                        '#' + '?src=' + window.encodeURIComponent( $inputImgLink.val() )
-                    );
-                }
-                else {
-                    window.history.pushState( null, null, null );
-                }
+                window.history.pushState(
+                    null,
+                    null,
+                    getHashFromFlagOpts() || null
+                );
             }
             catch ( e ) {
                 window.console.log( e.message );
