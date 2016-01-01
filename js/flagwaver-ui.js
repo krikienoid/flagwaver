@@ -44,6 +44,22 @@
         flagWaver.flag.setOpts( flagData );
     }
 
+    // Get flag options from hash variables
+    function getFlagOptsFromHashVars ( hashVars ) {
+        var flagOpts = {};
+        hashVars = hashVars || getHashVars();
+        if ( hashVars.src ) { flagOpts.imgSrc = hashVars.src; }
+        if ( hashVars.hoisting ) {
+            if ( hashVars.hoisting.slice( 0, 3 ) === 'dex' ) {
+                flagOpts.hoisting = 'dexter';
+            }
+            else if ( hashVars.hoisting.slice( 0, 3 ) === 'sin' ) {
+                flagOpts.hoisting = 'sinister';
+            }
+        }
+        return flagOpts;
+    }
+
     // Get hash variables
     function getHashVars () {
         var vars  = [],
@@ -76,18 +92,20 @@
     // Get image src from hash data
     function fromHash () {
         var hashData = getHashData(),
-            imgSrc;
+            flagOpts = {};
         if ( hashData ) {
-            if ( hashData[ 0 ] === '!' || hashData[ 0 ] === '?' ) {
-                hashData = getHashVars()[ 'src' ];
-                if ( hashData ) {
-                    imgSrc = hashData;
-                }
+            if ( window.location.href.search( /\#(\!|\?)/ ) >= 0 ) {
+                flagOpts = getFlagOptsFromHashVars();
             }
             else { // Old version links
-                imgSrc = window.unescape( hashData );
+                flagOpts.imgSrc = window.unescape( hashData );
             }
         }
+        setImgSrc( flagOpts.imgSrc );
+    }
+
+    // Set flag image url
+    function setImgSrc ( imgSrc ) {
         if ( imgSrc ) {
             $inputImgLink.val( imgSrc );
             setFlagOpts( { imgSrc : imgSrc } );
