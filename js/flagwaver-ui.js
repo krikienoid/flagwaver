@@ -39,6 +39,8 @@
     // Functions
     //
 
+    // Flag options
+
     // Set flag image
     function setFlagOpts ( flagData ) {
         flagWaver.flag.setOpts( flagData );
@@ -56,16 +58,18 @@
         }
     }
 
+    // Hash data
+
     // Get hash data
-    function getHashData () {
+    function getHashFrag () {
         return window.location.hash.split( '#' )[ 1 ];
     }
 
     // Get hash variables
     function getHashVars () {
-        var vars  = [],
-            url   = window.location.href,
-            pos   = url.search( /\#(\!|\?)/ ),
+        var vars = [],
+            url  = window.location.href,
+            pos  = url.search( /\#(\!|\?)/ ),
             pairs, pair, i;
         if ( pos < 0 ) return vars;
         pairs = url.slice( pos + 2 ).split( '&' );
@@ -117,16 +121,18 @@
         }
     }
 
+    // Hash events
+
     // Get image src from hash data
     function fromHash () {
-        var hashData = getHashData(),
+        var hashFrag = getHashFrag(),
             flagOpts = {};
-        if ( hashData ) {
+        if ( hashFrag ) {
             if ( window.location.href.search( /\#(\!|\?)/ ) >= 0 ) {
                 flagOpts = getFlagOptsFromHashVars();
             }
             else { // Old version links
-                flagOpts.imgSrc = window.unescape( hashData );
+                flagOpts.imgSrc = window.unescape( hashFrag );
             }
         }
         setImgSrc( flagOpts.imgSrc );
@@ -152,9 +158,11 @@
         }
     }
 
+    // Misc events
+
     // Load flag image from file reader
     function loadImgFile ( e ) {
-        if ( $inputImgLink.val() || getHashData() ) {
+        if ( $inputImgLink.val() || getHashFrag() ) {
             $inputImgLink.val( '' );
             toHash();
         }
@@ -213,10 +221,16 @@
         // Add event handlers
         //
 
-        // Load flag image from hash on user entered hash
-        if ( isHistorySupported ) $( window ).on( 'popstate', fromHash );
+        // UI controls
 
-        // Determine file loading mode
+        // Expander control
+        $( 'input[type="button"].expander' ).on( 'click', function () {
+            var $this = $( this );
+            $( $this.data( 'target' ) ).toggleClass( 'expanded' );
+            updateExpander( $this );
+        } ).each( function ( i, elem ) { updateExpander( $( elem ) ); } );
+
+        // Select file loading mode
         $setImgUploadMode.on( 'change', function () {
             var mode = $setImgUploadMode.val();
             if ( mode === 'web' ) {
@@ -232,6 +246,11 @@
                     .append( $( '.input-img-file' ) );
             }
         } ).trigger( 'change' );
+
+        // Load flag image
+
+        // Load flag image from hash on user entered hash
+        if ( isHistorySupported ) $( window ).on( 'popstate', fromHash );
 
         // Load flag image from user given url
         $setImgLink.on( 'click', function () {
@@ -254,15 +273,7 @@
                 $openImgFile.parent().removeClass( 'active' );
             } );
 
-        $( 'input[type="button"].expander' ).on( 'click', function () {
-            var $this = $( this );
-            $( $this.data( 'target' ) ).toggleClass( 'expanded' );
-            updateExpander( $this );
-        } ).each( function ( i, elem ) { updateExpander( $( elem ) ); } );
-
-        //
         // Settings
-        //
 
         // Turn wind on or off
         $windToggle.on( 'click', function () {
@@ -277,12 +288,14 @@
             }
         } ).val( $windToggle.data( 'text-selected' ) );
 
+        // Hoist side
         $setHoisting.on( 'change', function () {
             setFlagOpts( {
                 hoisting : $setHoisting.val()
             } );
         } );
 
+        // Top edge
         $setTopEdge.on( 'change', function () {
             setFlagOpts( {
                 topEdge : $setTopEdge.val()
