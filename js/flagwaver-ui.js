@@ -48,15 +48,20 @@
     function getHashVars () {
         var vars  = [],
             url   = window.location.href,
-            pos   = url.search( /\#(\!|\?)/ ) + 2,
-            pairs = url.slice( pos ).split( '&' ),
-            pair, i;
+            pos   = url.search( /\#(\!|\?)/ ),
+            pairs, pair, i;
+        if ( pos < 0 ) return vars;
+        pairs = url.slice( pos + 2 ).split( '&' );
         for ( i = 0, ii = pairs.length; i < ii; i++ ) {
             if ( pairs[ i ].length ) {
                 pair = pairs[ i ].split( '=' );
                 if ( pair.length && pair[ 0 ].length ) {
                     vars.push( pair[ 0 ] );
-                    vars[ pair[ 0 ] ] = pair[ 1 ] || null;
+                    vars[ pair[ 0 ] ] = (
+                        ( pair.length > 1 )?
+                        window.decodeURIComponent( pair[ 1 ] ) :
+                        null
+                    );
                 }
             }
         }
@@ -76,7 +81,7 @@
             if ( hashData[ 0 ] === '!' || hashData[ 0 ] === '?' ) {
                 hashData = getHashVars()[ 'src' ];
                 if ( hashData ) {
-                    imgSrc = window.decodeURIComponent( hashData );
+                    imgSrc = hashData;
                 }
             }
             else { // Old version links
