@@ -44,20 +44,21 @@
         flagWaver.flag.setOpts( flagData );
     }
 
-    // Get flag options from hash variables
-    function getFlagOptsFromHashVars ( hashVars ) {
-        var flagOpts = {};
-        hashVars = hashVars || getHashVars();
-        if ( hashVars.src ) { flagOpts.imgSrc = hashVars.src; }
-        if ( hashVars.hoisting ) {
-            if ( hashVars.hoisting.slice( 0, 3 ) === 'dex' ) {
-                flagOpts.hoisting = 'dexter';
-            }
-            else if ( hashVars.hoisting.slice( 0, 3 ) === 'sin' ) {
-                flagOpts.hoisting = 'sinister';
-            }
+    // Set flag image url
+    function setImgSrc ( imgSrc ) {
+        if ( imgSrc ) {
+            $inputImgLink.val( imgSrc );
+            setFlagOpts( { imgSrc : imgSrc } );
         }
-        return flagOpts;
+        else {
+            $inputImgLink.val( '' );
+            setFlagOpts( { imgSrc : 'img/NZ.2b.png' } );
+        }
+    }
+
+    // Get hash data
+    function getHashData () {
+        return window.location.hash.split( '#' )[ 1 ];
     }
 
     // Get hash variables
@@ -84,36 +85,20 @@
         return vars;
     }
 
-    // Get hash data
-    function getHashData () {
-        return window.location.hash.split( '#' )[ 1 ];
-    }
-
-    // Get image src from hash data
-    function fromHash () {
-        var hashData = getHashData(),
-            flagOpts = {};
-        if ( hashData ) {
-            if ( window.location.href.search( /\#(\!|\?)/ ) >= 0 ) {
-                flagOpts = getFlagOptsFromHashVars();
+    // Get flag options from hash variables
+    function getFlagOptsFromHashVars ( hashVars ) {
+        var flagOpts = {};
+        hashVars = hashVars || getHashVars();
+        if ( hashVars.src ) { flagOpts.imgSrc = hashVars.src; }
+        if ( hashVars.hoisting ) {
+            if ( hashVars.hoisting.slice( 0, 3 ) === 'dex' ) {
+                flagOpts.hoisting = 'dexter';
             }
-            else { // Old version links
-                flagOpts.imgSrc = window.unescape( hashData );
+            else if ( hashVars.hoisting.slice( 0, 3 ) === 'sin' ) {
+                flagOpts.hoisting = 'sinister';
             }
         }
-        setImgSrc( flagOpts.imgSrc );
-    }
-
-    // Set flag image url
-    function setImgSrc ( imgSrc ) {
-        if ( imgSrc ) {
-            $inputImgLink.val( imgSrc );
-            setFlagOpts( { imgSrc : imgSrc } );
-        }
-        else {
-            $inputImgLink.val( '' );
-            setFlagOpts( { imgSrc : 'img/NZ.2b.png' } );
-        }
+        return flagOpts;
     }
 
     // Get hash data from flag options
@@ -130,6 +115,21 @@
         else {
             return false;
         }
+    }
+
+    // Get image src from hash data
+    function fromHash () {
+        var hashData = getHashData(),
+            flagOpts = {};
+        if ( hashData ) {
+            if ( window.location.href.search( /\#(\!|\?)/ ) >= 0 ) {
+                flagOpts = getFlagOptsFromHashVars();
+            }
+            else { // Old version links
+                flagOpts.imgSrc = window.unescape( hashData );
+            }
+        }
+        setImgSrc( flagOpts.imgSrc );
     }
 
     // Set hash data
