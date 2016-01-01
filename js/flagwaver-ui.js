@@ -58,6 +58,20 @@
         }
     }
 
+    // Set hoisting
+    function setHoisting ( value ) {
+        value = value || 'dexter';
+        $setHoisting.val( value );
+        setFlagOpts( { hoisting : value } );
+    }
+
+    // Set top edge
+    function setTopEdge ( value ) {
+        value = value || 'top';
+        $setTopEdge.val( value );
+        setFlagOpts( { topEdge : value } );
+    }
+
     // Hash data
 
     // Get hash data
@@ -70,15 +84,16 @@
         var vars = [],
             url  = window.location.href,
             pos  = url.search( /\#(\!|\?)/ ),
-            pairs, pair, i;
+            pairs, pair, i, key;
         if ( pos < 0 ) return vars;
         pairs = url.slice( pos + 2 ).split( '&' );
         for ( i = 0, ii = pairs.length; i < ii; i++ ) {
-            if ( pairs[ i ].length ) {
+            if ( pairs[ i ] ) {
                 pair = pairs[ i ].split( '=' );
-                if ( pair.length && pair[ 0 ].length ) {
-                    vars.push( pair[ 0 ] );
-                    vars[ pair[ 0 ] ] = (
+                if ( pair.length && pair[ 0 ] ) {
+                    key = pair[ 0 ].toLowerCase();
+                    vars.push( key );
+                    vars[ key ] = (
                         ( pair.length > 1 )?
                         window.decodeURIComponent( pair[ 1 ] ) :
                         null
@@ -95,13 +110,17 @@
         hashVars = hashVars || getHashVars();
         if ( hashVars.src ) { flagOpts.imgSrc = hashVars.src; }
         if ( hashVars.hoisting ) {
-            if ( hashVars.hoisting.slice( 0, 3 ) === 'dex' ) {
+            if ( hashVars.hoisting.toLowerCase().match( /^dex(ter)?$/g ) ) {
                 flagOpts.hoisting = 'dexter';
             }
-            else if ( hashVars.hoisting.slice( 0, 3 ) === 'sin' ) {
+            else if ( hashVars.hoisting.toLowerCase().match( /^sin(ister)?$/g ) ) {
                 flagOpts.hoisting = 'sinister';
             }
         }
+        if (
+            hashVars.topedge &&
+            hashVars.topedge.toLowerCase().match( /^(top|right|bottom|left)$/g )
+        ) { flagOpts.topEdge = hashVars.topedge; }
         return flagOpts;
     }
 
@@ -112,6 +131,12 @@
             vars.push(
                 'src=' + window.encodeURIComponent( $inputImgLink.val() )
             );
+        }
+        if ( $setHoisting.val() !== 'dexter' ) {
+            vars.push( 'hoisting=sin' );
+        }
+        if ( $setTopEdge.val() !== 'top' ) {
+            vars.push( 'topedge=' + $setTopEdge.val() );
         }
         if ( vars.length && $inputImgLink.val() ) {
             return '#!' + vars.join( '&' );
@@ -136,6 +161,8 @@
             }
         }
         setImgSrc( flagOpts.imgSrc );
+        setHoisting( flagOpts.hoisting );
+        setTopEdge( flagOpts.topEdge );
     }
 
     // Set hash data
