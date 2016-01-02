@@ -47,15 +47,9 @@
     }
 
     // Set flag image url
-    function setImgSrc ( imgSrc ) {
-        if ( imgSrc ) {
-            $inputImgLink.val( imgSrc );
-            setFlagOpts( { imgSrc : imgSrc } );
-        }
-        else {
-            $inputImgLink.val( '' );
-            setFlagOpts( { imgSrc : 'img/NZ.2b.png' } );
-        }
+    function setImgSrc ( value ) {
+        $inputImgLink.val( value || '' );
+        setFlagOpts( { imgSrc : value || 'img/NZ.2b.png' } );
     }
 
     // Set hoisting
