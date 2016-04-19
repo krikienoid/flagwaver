@@ -443,7 +443,7 @@
             alphaTest : 0.5,
             color     : 0xffffff,
             specular  : 0x030303,
-            shininess : 0,
+            shininess : 0.001, // https://github.com/mrdoob/three.js/issues/7252
             metal     : false,
             side      : THREE.DoubleSide
         } );
