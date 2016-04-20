@@ -25,9 +25,11 @@
         <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
         <script type="text/javascript" src="js/three.min.js"></script>
         <script type="text/javascript" src="js/modernizr.custom.95719.js"></script>
+        <script type="text/javascript" src="js/rivets.bundled.min.js"></script>
 
         <!-- Main -->
         <link type="text/css" rel="stylesheet" href="css/flagwaver-ui.css" />
+        <script type="text/javascript" src="js/hashvars.js"></script>
         <script type="text/javascript" src="js/flagwaver.js"></script>
         <script type="text/javascript" src="js/flagwaver-ui.js"></script>
 
@@ -51,7 +53,13 @@
                         <h2>Upload Image</h2>
                         <div class="input-control-group control-img-upload" id="control-img-upload">
                             <div class="input-btn-group">
-                                <select class="input-control input-btn input-select" aria-label="Upload image from" id="set-img-upload-mode">
+                                <select
+                                    class="input-control input-btn input-select"
+                                    aria-label="Upload image from"
+                                    data-rv-value="flagWaverOpts.flag.imgUploadMode"
+                                    data-rv-on-change="flagWaverControls.flag.setImgUploadMode"
+                                    id="set-img-upload-mode"
+                                >
                                     <option value="web">Web</option>
                                     <option value="file">File</option>
                                 </select>
@@ -61,18 +69,30 @@
                                 class="input-control input-control-main input-img-web"
                                 placeholder="Enter image URL"
                                 aria-label="Enter image URL"
+                                data-rv-value="flagWaverOpts.flag.imgURL"
                                 id="input-img-link"
                             />
                             <div class="input-btn-group input-img-web">
-                                <input type="button" class="input-control input-btn" value="Go!" id="set-img-link" />
+                                <input
+                                    type="button"
+                                    class="input-control input-btn"
+                                    value="Go!"
+                                    data-rv-on-click="flagWaverControls.flag.setImgURL"
+                                    id="set-img-link"
+                                />
                             </div>
                             <div class="input-control input-control-main input-file input-img-file">
-                                <label class="input-cover input-face" for="open-img-file" id="info-img-file">Open a file</label>
+                                <label
+                                    class="input-cover input-face"
+                                    for="open-img-file"
+                                    data-rv-text="flagWaverOpts.flag.imgFilePath | fileName 'Open a file'"
+                                    id="info-img-file"
+                                ></label>
                                 <input
                                     type="file"
                                     class="input-cover input-hidden"
                                     accept="image/*"
-                                    value="Open a file"
+                                    data-rv-on-change="flagWaverControls.flag.setImgFile"
                                     id="open-img-file"
                                 />
                             </div>
@@ -83,8 +103,8 @@
                             type="button"
                             class="expander input-control input-btn"
                             data-target="#expandable-controls"
-                            data-text-selected="Hide Options"
-                            data-text-unselected="More Options"
+                            data-text-expanded="Hide Options"
+                            data-text-collapsed="More Options"
                             aria-expanded="false"
                             aria-controls="expandable-controls"
                         />
@@ -98,16 +118,30 @@
                             class="input-control input-btn input-btn-md"
                             data-text-selected="Wind: On"
                             data-text-unselected="Wind: Off"
+                            data-rv-value="flagWaverOpts.isWindOn | onoff 'Wind On' 'Wind Off'"
+                            data-rv-on-click="flagWaverControls.toggleWind"
                             id="wind-toggle"
                         />
                     </div>
                     <div class="page-controls-group">
                         <h2>Hoisting</h2>
-                        <select class="input-control input-btn input-select" aria-label="Hoist side" id="set-hoisting">
+                        <select
+                            class="input-control input-btn input-select"
+                            aria-label="Hoist side"
+                            data-rv-value="flagWaverOpts.flag.hoisting"
+                            data-rv-on-change="flagWaverControls.flag.setHoisting"
+                            id="set-hoisting"
+                        >
                             <option value="dexter">Dexter</option>
                             <option value="sinister">Sinister</option>
                         </select>
-                        <select class="input-control input-btn input-select" aria-label="Hoist top edge" id="set-top-edge">
+                        <select
+                            class="input-control input-btn input-select"
+                            aria-label="Hoist top edge"
+                            data-rv-value="flagWaverOpts.flag.topEdge"
+                            data-rv-on-change="flagWaverControls.flag.setTopEdge"
+                            id="set-top-edge"
+                        >
                             <option value="top">Top</option>
                             <option value="left">Left</option>
                             <option value="bottom">Bottom</option>
