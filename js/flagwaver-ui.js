@@ -45,16 +45,7 @@
                 topEdge       : 'top'
             }
         },
-        flagWaverOpts = {
-            isWindOn : true,
-            flag     : {
-                imgUploadMode : 'web',
-                imgURL        : '',
-                imgFilePath   : '',
-                hoisting      : 'dexter',
-                topEdge       : 'top'
-            }
-        };
+        flagWaverOpts = $.extend( true, {}, flagWaverDefaults );
 
     var flagWaverControls = {
             toggleWind : function () {
@@ -125,26 +116,23 @@
 
     function fromHash () {
         var hashFrag = window.location.hash.split( '#' )[ 1 ],
-            flagOpts = {};
+            flagOpts = {},
+            flagData;
         if ( hashFrag ) {
             if ( window.location.href.search( /\#(\!|\?)/ ) >= 0 ) {
-                flagOpts = hashVars.getData(
+                flagData = hashVars.getData(
                     // Compatibility with old version links
                     window.location.hash.replace( /\#(\!|\?)/, '#?' )
                 );
+                flagOpts.imgURL   = flagData.src;
+                flagOpts.hoisting = flagData.hoisting;
+                flagOpts.topEdge  = flagData.topedge;
             }
             else { // Compatibility with old version links
                 flagOpts.imgURL = window.unescape( hashFrag );
             }
-            flagWaverOpts.flag.imgURL   = flagOpts.src;
-            flagWaverOpts.flag.hoisting = flagOpts.hoisting;
-            flagWaverOpts.flag.topEdge  = flagOpts.topedge;
         }
-        else {
-            flagWaverOpts.flag.imgURL   = flagWaverDefaults.flag.imgURL;
-            flagWaverOpts.flag.hoisting = flagWaverDefaults.flag.hoisting;
-            flagWaverOpts.flag.topEdge  = flagWaverDefaults.flag.topEdge;
-        }
+        $.extend( flagWaverOpts.flag, flagWaverDefaults.flag, flagOpts );
         setFlagOpts( {
             imgSrc : flagWaverOpts.flag.imgURL || 'img/NZ.2b.png',
             topEdge : flagWaverOpts.flag.topEdge,
