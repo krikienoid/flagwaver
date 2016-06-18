@@ -89,7 +89,7 @@
     //
 
     // Cloth simulation variables
-    var gravityForce = new THREE.Vector3( 0, -GRAVITY, 0 ).multiplyScalar( MASS ),
+    var gravityForce = new THREE.Vector3( 0, -GRAVITY, 0 ),
         tmpForce     = new THREE.Vector3(),
         diff         = new THREE.Vector3(),
         lastTime;
@@ -159,7 +159,7 @@
     };
 
     // Cloth constructor
-    function Cloth ( xSegs, ySegs, restDistance ) {
+    function Cloth ( xSegs, ySegs, restDistance, mass ) {
 
         var particles   = [],
             constraints = [],
@@ -192,7 +192,7 @@
         for ( v = 0; v <= ySegs ; v++ ) {
             for ( u = 0; u <= xSegs; u++ ) {
                 particles.push(
-                    new Particle( plane( u / xSegs, v / ySegs ), MASS )
+                    new Particle( plane( u / xSegs, v / ySegs ), mass )
                 );
             }
         }
@@ -319,6 +319,7 @@
         this.geometry     = geometry;
         this.particles    = particles;
         this.constraints  = constraints;
+        this.weightForce  = gravityForce.multiplyScalar( mass );
 
     }
 
@@ -328,6 +329,7 @@
         var particles   = this.particles,
             constraints = this.constraints,
             faces       = this.geometry.faces,
+            weightForce = this.weightForce,
             particle, constraint,
             face, normal,
             i, il;
@@ -359,7 +361,7 @@
         // Gravity force
         for ( i = 0, il = particles.length; i < il; i++ ) {
             particle = particles[ i ];
-            particle.addForce( gravityForce );
+            particle.addForce( weightForce );
 
             // var x = particle.position.x,
             //     y = particle.position.y,
@@ -428,10 +430,18 @@
     EDGE.Right.c  = EDGE.Top.x    = EDGE.Left.cc   = EDGE.Bottom;
     EDGE.Top.c    = EDGE.Left.x   = EDGE.Bottom.cc = EDGE.Right;
 
-    // Flag constructor
-    function Flag ( xSegs, ySegs, restDistance ) {
+    // Default flag options
+    var defaultOptions = {
+        width         : 300,
+        height        : 200,
+        mass          : MASS,
+        levelOfDetail : 10
+    };
 
-        this.cloth    = new Cloth( xSegs, ySegs, restDistance );
+    // Flag constructor
+    function Flag ( options ) {
+
+        this.cloth    = this.createCloth( options );
         this.pins     = [];
 
         this.position = new THREE.Vector3( 0, 0, 0 );
@@ -622,12 +632,43 @@
         this.updateQuaternion();
     };
 
+    // Init new cloth object
+    Flag.prototype.createCloth = function ( options ) {
+
+        var width,
+            height,
+            mass,
+            levelOfDetail,
+            restDistance,
+            xSegs,
+            ySegs;
+
+        if ( typeof options !== 'object' ) { options = defaultOptions; }
+
+        width  = window.Number( options.width  ) || defaultOptions.width;
+        height = window.Number( options.height ) || defaultOptions.height;
+        mass   = window.Number( options.mass   ) || defaultOptions.mass;
+        levelOfDetail = window.Math.round( options.levelOfDetail ) || defaultOptions.levelOfDetail;
+
+        this.width         = width;
+        this.height        = height;
+        this.mass          = mass;
+        this.levelOfDetail = levelOfDetail;
+
+        restDistance = height / levelOfDetail;
+        xSegs        = window.Math.round( width / restDistance );
+        ySegs        = window.Math.round( height / restDistance );
+
+        return new Cloth( xSegs, ySegs, restDistance, mass );
+
+    };
+
     // Set new cloth object
-    Flag.prototype.setCloth = function ( xSegs, ySegs, restDistance ) {
+    Flag.prototype.setCloth = function ( options ) {
 
         var oldGeo = this.object.geometry;
 
-        this.cloth = new Cloth( xSegs, ySegs, restDistance );
+        this.cloth = this.createCloth( options );
 
         this.object.geometry = this.cloth.geometry;
 
@@ -742,24 +783,42 @@
     // Public Flag interface constructor
     function PublicFlag ( flag ) {
 
-        var isDefaultSize = true;
-            xSegs         = 15,
-            ySegs         = 10,
+        var isDefaultSize = true,
+            options       = {
+                width         : flag.width,
+                height        : flag.height,
+                mass          : flag.mass,
+                levelOfDetail : flag.levelOfDetail
+            },
             imgSrc        = null;
+
+        function updateOptions () {
+            options.width         = flag.width;
+            options.height        = flag.height;
+            options.mass          = flag.mass;
+            options.levelOfDetail = flag.levelOfDetail;
+        }
 
         function setDefaultSize () {
             getImgSize( imgSrc, function ( w, h ) {
                 // Get flag size from image
-                var defaultSize = 10 * granularity;
+                var defaultSize = defaultOptions.height,
+                    width,
+                    height;
                 if ( w / h < 1 ) { // vertical flag
-                    xSegs = defaultSize;
-                    ySegs = window.Math.round( defaultSize * h / w );
+                    width  = defaultSize;
+                    height = defaultSize * h / w;
                 }
                 else { // horizontal or square flag
-                    xSegs = window.Math.round( defaultSize * w / h );
-                    ySegs = defaultSize;
+                    width  = defaultSize * w / h;
+                    height = defaultSize;
                 }
-                flag.setCloth( xSegs, ySegs, 20 / granularity );
+                flag.setCloth( {
+                    width         : width,
+                    height        : height,
+                    mass          : flag.mass,
+                    levelOfDetail : flag.levelOfDetail
+                } );
             } );
         }
 
@@ -777,23 +836,45 @@
                 if ( isDefaultSize ) setDefaultSize();
             },
 
-            get width () { return xSegs; },
+            get width () { return flag.width; },
             set width ( val ) {
-                val = window.parseInt( val );
+                val = window.Number( val );
                 if ( !window.isNaN( val ) && val > 0 ) {
-                    xSegs = val;
+                    updateOptions();
+                    options.width = val;
                     isDefaultSize = false;
-                    flag.setCloth( xSegs, ySegs, 20 / granularity );
+                    flag.setCloth( options );
                 }
             },
 
-            get height () { return ySegs; },
+            get height () { return flag.height; },
             set height ( val ) {
-                val = window.parseInt( val );
+                val = window.Number( val );
                 if ( !window.isNaN( val ) && val > 0 ) {
-                    ySegs = val;
+                    updateOptions();
+                    options.height = val;
                     isDefaultSize = false;
-                    flag.setCloth( xSegs, ySegs, 20 / granularity );
+                    flag.setCloth( options );
+                }
+            },
+
+            get mass () { return flag.mass; },
+            set mass ( val ) {
+                val = window.Number( val );
+                if ( !window.isNaN( val ) && val >= 0 ) {
+                    updateOptions();
+                    options.mass = val;
+                    flag.setCloth( options );
+                }
+            },
+
+            get levelOfDetail () { return flag.levelOfDetail; },
+            set levelOfDetail ( val ) {
+                val = window.Math.round( val );
+                if ( !window.isNaN( val ) && val > 0 ) {
+                    updateOptions();
+                    options.levelOfDetail = val;
+                    flag.setCloth( options );
                 }
             },
 
@@ -804,6 +885,8 @@
             }
 
         };
+
+        updateOptions();
 
     }
 
@@ -830,19 +913,8 @@
     //
 
     // Renderer settings
-    var granularity = 1,
-        poleOffset  = 300,
+    var poleOffset  = 300,
         poleHeight  = 1000;
-
-    // Flag default settings
-    var defaultSettings = {
-        width    : null,     // w = 15
-        height   : 10,       // h = 10
-        hoisting : 'dexter', // hoist = dexter | sinister
-        topEdge  : 'top',    // top = top | left | bottom | right
-        src      : '',       // src = field.png
-        reverse  : ''        // reverse = 'field.png'
-    };
 
     var blankTexture = THREE.ImageUtils.generateDataTexture(
         4,
@@ -934,7 +1006,7 @@
         onResize();
 
         // Init flag object
-        flag = new Flag( 15, 10, 20 );
+        flag = new Flag();
         flag.setTopEdge( 'top' );
         flag.setHoisting( 'dexter' );
         flag.setPosition( 0, poleOffset, 0 );
