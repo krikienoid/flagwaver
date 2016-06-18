@@ -166,6 +166,7 @@
             index,
             plane,
             geometry,
+            weightForce,
             width, height,
             u, v;
 
@@ -174,6 +175,9 @@
         restDistance = window.Math.round( restDistance ) || 20;
         width        = restDistance * xSegs;
         height       = restDistance * ySegs;
+
+        weightForce  = new THREE.Vector3();
+        weightForce.copy( gravityForce ).multiplyScalar( mass );
 
         // Index get function
         index = function ( u, v ) { return u + v * ( xSegs + 1 ); };
@@ -319,7 +323,7 @@
         this.geometry     = geometry;
         this.particles    = particles;
         this.constraints  = constraints;
-        this.weightForce  = gravityForce.multiplyScalar( mass );
+        this.weightForce  = weightForce;
 
     }
 
