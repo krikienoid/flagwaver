@@ -131,6 +131,33 @@
 
     };
 
+    // Constraint constructor
+    function Constraint ( p1, p2, restDistance ) {
+        this.p1 = p1;
+        this.p2 = p2;
+        this.restDistance = restDistance;
+    }
+
+    // Satisfy constraint
+    Constraint.prototype.satisfy = function () {
+
+        var p1 = this.p1,
+            p2 = this.p2,
+            distance = this.restDistance,
+            currentDist,
+            correction,
+            correctionHalf;
+
+        diff.subVectors( p2.position, p1.position );
+        currentDist = diff.length();
+        if ( currentDist === 0 ) return; // prevents division by 0
+        correction = diff.multiplyScalar( 1 - distance / currentDist );
+        correctionHalf = correction.multiplyScalar( 0.5 );
+        p1.position.add( correctionHalf );
+        p2.position.sub( correctionHalf );
+
+    };
+
     // Cloth constructor
     function Cloth ( xSegs, ySegs, restDistance ) {
 
@@ -175,36 +202,36 @@
         for ( v = 0; v < ySegs; v++ ) {
             for ( u = 0; u < xSegs; u++ ) {
 
-                constraints.push( [
+                constraints.push( new Constraint(
                     particles[ index( u, v ) ],
                     particles[ index( u, v + 1 ) ],
                     restDistance
-                ] );
+                ) );
 
-                constraints.push( [
+                constraints.push( new Constraint(
                     particles[ index( u, v ) ],
                     particles[ index( u + 1, v ) ],
                     restDistance
-                ] );
+                ) );
 
             }
         }
 
         for ( u = xSegs, v = 0; v < ySegs; v++ ) {
-            constraints.push( [
+            constraints.push( new Constraint(
                 particles[ index( u, v ) ],
                 particles[ index( u, v + 1 ) ],
                 restDistance
 
-            ] );
+            ) );
         }
 
         for ( v = ySegs, u = 0; u < xSegs; u++ ) {
-            constraints.push( [
+            constraints.push( new Constraint(
                 particles[ index( u, v ) ],
                 particles[ index( u + 1, v ) ],
                 restDistance
-            ] );
+            ) );
         }
 
         // While many systems use shear and bend springs,
@@ -217,17 +244,17 @@
         for ( v = 0; v < ySegs; v++ ) {
             for ( u = 0; u < xSegs; u++ ) {
 
-                constraints.push( [
+                constraints.push( new Constraint(
                     particles[ index( u, v ) ],
                     particles[ index( u + 1, v + 1 ) ],
                     diagonalDist
-                ] );
+                ) );
 
-                constraints.push( [
+                constraints.push( new Constraint(
                     particles[ index( u + 1, v ) ],
                     particles[ index( u, v + 1 ) ],
                     diagonalDist
-                ] );
+                ) );
 
             }
         }
@@ -242,41 +269,41 @@
         // for ( v = 0; v < ySegs - 1; v++ ) {
         //     for ( u = 0; u < xSegs - 1; u++ ) {
 
-        //         constraints.push( [
+        //         constraints.push( new Constraint(
         //             particles[ index( u, v ) ],
         //             particles[ index( u + 2, v ) ],
         //             wlen
-        //         ] );
+        //         ) );
 
-        //         constraints.push( [
+        //         constraints.push( new Constraint(
         //             particles[ index( u, v ) ],
         //             particles[ index( u, v + 2 ) ],
         //             hlen
-        //         ] );
+        //         ) );
 
-        //         constraints.push( [
+        //         constraints.push( new Constraint(
         //             particles[ index( u, v ) ],
         //             particles[ index( u + 2, v + 2 ) ],
         //             diagonalDist
-        //         ] );
+        //         ) );
 
-        //         constraints.push( [
+        //         constraints.push( new Constraint(
         //             particles[ index( u, v + 2 ) ],
         //             particles[ index( u + 2, v + 2 ) ],
         //             wlen
-        //         ] );
+        //         ) );
 
-        //         constraints.push( [
+        //         constraints.push( new Constraint(
         //             particles[ index( u + 2, v + 2 ) ],
         //             particles[ index( u + 2, v + 2 ) ],
         //             hlen
-        //         ] );
+        //         ) );
 
-        //         constraints.push( [
+        //         constraints.push( new Constraint(
         //             particles[ index( u + 2,  v ) ],
         //             particles[ index( u , v + 2 ) ],
         //             diagonalDist
-        //         ] );
+        //         ) );
 
         //     }
         // }
@@ -292,28 +319,6 @@
         this.geometry     = geometry;
         this.particles    = particles;
         this.constraints  = constraints;
-
-    }
-
-    // Helper function
-    function satisfyConstraints ( p1, p2, distance ) {
-
-        var currentDist,
-            correction,
-            correctionHalf;
-
-        diff.subVectors( p2.position, p1.position );
-        currentDist = diff.length();
-        if ( currentDist === 0 ) return; // prevents division by 0
-        correction = diff.multiplyScalar( 1 - distance / currentDist );
-        correctionHalf = correction.multiplyScalar( 0.5 );
-        p1.position.add( correctionHalf );
-        p2.position.sub( correctionHalf );
-
-        // float difference = ( restingDistance - d ) / d
-        // im1 = 1 / p1.mass // inverse mass quantities
-        // im2 = 1 / p2.mass
-        // p1.position += delta * ( im1 / ( im1 + im2 ) ) * stiffness * difference
 
     }
 
@@ -369,14 +374,9 @@
             particle.integrate( TIMESTEP_SQ );
         }
 
-        // Start constraints
+        // Satisfy constraints
         for ( i = 0, il = constraints.length; i < il; i++ ) {
-            constraint = constraints[ i ];
-            satisfyConstraints(
-                constraint[ 0 ],
-                constraint[ 1 ],
-                constraint[ 2 ]
-            );
+            constraints[ i ].satisfy();
         }
 
         // Ball constraints
