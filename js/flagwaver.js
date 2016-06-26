@@ -68,6 +68,7 @@
     // Physics settings
     var DAMPING = 0.03,
         DRAG    = 1 - DAMPING,
+        SLACK   = 1.2,
         MASS    = 0.1,
         GRAVITY = 981 * 1.4;
 
@@ -155,6 +156,25 @@
         correctionHalf = correction.multiplyScalar( 0.5 );
         p1.position.add( correctionHalf );
         p2.position.sub( correctionHalf );
+
+    };
+
+    // Satisfy constraint unidirectionally
+    Constraint.prototype.satisfyFixed = function () {
+
+        var p1 = this.p1,
+            p2 = this.p2,
+            distance = this.restDistance,
+            currentDist,
+            correction;
+
+        diff.subVectors( p1.position, p2.position );
+        currentDist = diff.length();
+        diff.normalize();
+        correction = diff.multiplyScalar( currentDist - distance );
+        if ( currentDist > distance ) {
+            p2.position.add( correction );
+        }
 
     };
 
@@ -445,13 +465,14 @@
     // Flag constructor
     function Flag ( options ) {
 
-        this.cloth    = this.createCloth( options );
-        this.pins     = [];
-
         this.position = new THREE.Vector3( 0, 0, 0 );
         this.offset   = new THREE.Vector3( 0, 0, 0 );
         this.hoisting = HOISTING.Dexter;
         this.topEdge  = EDGE.Top;
+
+        this.pins     = [];
+
+        this.createCloth( options );
 
         this.material = new THREE.MeshPhongMaterial( {
             alphaTest : 0.5,
@@ -636,6 +657,31 @@
         this.updateQuaternion();
     };
 
+    // Add fixed constraints to flag cloth
+    Flag.prototype.constrainCloth = function () {
+
+        var xSegs            = this.cloth.xSegs,
+            ySegs            = this.cloth.ySegs,
+            restDistance     = this.cloth.restDistance * SLACK,
+            particles        = this.cloth.particles,
+            index            = this.cloth.index,
+            fixedConstraints = [],
+            u, v;
+
+        for ( v = 0; v <= ySegs; v++ ) {
+            for ( u = 0; u < xSegs; u++ ) {
+                fixedConstraints.push( new Constraint(
+                    particles[ index( u, v ) ],
+                    particles[ index( u + 1, v ) ],
+                    restDistance
+                ) );
+            }
+        }
+
+        this.fixedConstraints = fixedConstraints;
+
+    }
+
     // Init new cloth object
     Flag.prototype.createCloth = function ( options ) {
 
@@ -663,7 +709,9 @@
         xSegs        = window.Math.round( width / restDistance );
         ySegs        = window.Math.round( height / restDistance );
 
-        return new Cloth( xSegs, ySegs, restDistance, mass );
+        this.cloth = new Cloth( xSegs, ySegs, restDistance, mass );
+
+        this.constrainCloth();
 
     };
 
@@ -672,7 +720,7 @@
 
         var oldGeo = this.object.geometry;
 
-        this.cloth = this.createCloth( options );
+        this.createCloth( options );
 
         this.object.geometry = this.cloth.geometry;
 
@@ -736,8 +784,9 @@
     // Simulate flag cloth
     Flag.prototype.simulate = function () {
 
-        var pins      = this.pins,
-            particles = this.cloth.particles,
+        var pins             = this.pins,
+            particles        = this.cloth.particles,
+            fixedConstraints = this.fixedConstraints,
             particle,
             i, il;
 
@@ -750,6 +799,11 @@
                 this.quaternion
             );
             particle.previous.copy( particle.position );
+        }
+
+        // Fixed flag constraints
+        for ( i = 0, il = fixedConstraints.length; i < il; i++ ) {
+            fixedConstraints[ i ].satisfyFixed();
         }
 
     };
