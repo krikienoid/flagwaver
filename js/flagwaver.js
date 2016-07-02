@@ -65,6 +65,9 @@
     // Global settings
     //
 
+    // Enable debug mode
+    var isDebugMode = false;
+
     // Physics settings
     var DAMPING = 0.03,
         DRAG    = 1 - DAMPING,
@@ -462,6 +465,90 @@
         levelOfDetail : 10
     };
 
+    // Load image
+    function loadImg ( imgSrc, callback ) {
+
+        // Create new image element
+        var img = new window.Image();
+
+        // Allow loading of CORS enabled images
+        img.crossOrigin = 'anonymous';
+
+        // If image is loaded successfully
+        img.onload = function () {
+            img.onload = null;
+            img.onerror = null;
+            if ( typeof callback === 'function' ) { callback( img ); }
+        };
+
+        // If image fails to load
+        img.onerror = function () {
+            window.console.log(
+                'Error: FlagWaver: Failed to load image from ' + imgSrc + '.'
+            );
+            if ( typeof callback === 'function' ) { callback( null ); }
+        };
+
+        // Attempt to load image
+        img.src = imgSrc;
+
+    }
+
+    // Use canvas to generate texture from image
+    function createTextureFromImg ( img, options ) {
+
+        var canvas       = document.createElement( 'canvas' ),
+            ctx          = canvas.getContext( '2d' ),
+            defaultSize  = defaultOptions.height,
+            imgWidth     = img.width,
+            imgHeight    = img.height,
+            canvasWidth  = canvas.width  = defaultSize * imgWidth / imgHeight,
+            canvasHeight = canvas.height = defaultSize;
+
+        if ( typeof options === 'object' ) {
+
+            // Translate
+            if ( !window.isNaN( options.translateX ) ) {
+                ctx.translate( options.translateX, 0 );
+            }
+            if ( !window.isNaN( options.translateY ) ) {
+                ctx.translate( 0, options.translateY );
+            }
+
+            // Reflect
+            if ( options.reflect ) {
+                ctx.translate( canvasWidth, 0 );
+                ctx.scale( -1, 1 );
+            }
+
+            // Rotate
+            if ( !window.isNaN( options.rotate ) ) {
+                ctx.translate( canvasWidth / 2, canvasHeight / 2 );
+                ctx.rotate( options.rotate );
+                ctx.translate( -canvasWidth / 2, -canvasHeight / 2 );
+            }
+
+        }
+
+        if ( isDebugMode ) {
+            window.console.log(
+                'FlagWaver: Image properties' +
+                '\n\t' + 'Image size: ' + imgWidth + 'x' + imgHeight +
+                '\n\t' + 'Canvas size: ' + window.Math.round( canvasWidth ) +
+                    'x' + window.Math.round( canvasHeight ) +
+                '\n\t' + 'Aspect ratio: ' +
+                    window.Number( ( imgWidth / imgHeight ).toFixed( 4 ) )
+            );
+        }
+
+        ctx.drawImage(
+            img, 0, 0, imgWidth, imgHeight, 0, 0, canvasWidth, canvasHeight
+        );
+
+        return new THREE.Texture( canvas );
+
+    }
+
     // Flag constructor
     function Flag ( options ) {
 
@@ -469,6 +556,7 @@
         this.offset   = new THREE.Vector3( 0, 0, 0 );
         this.hoisting = HOISTING.Dexter;
         this.topEdge  = EDGE.Top;
+        this.img      = null;
 
         this.pins     = [];
 
@@ -499,31 +587,25 @@
     // Set flag texture from image
     Flag.prototype.loadTexture = function ( imgSrc ) {
 
-        var setTexture = this.setTexture.bind( this ),
-            texture,
-            tmpImg;
+        var callback = function ( img ) {
+            if ( img ) {
+                this.img = img;
+                this.setTexture( createTextureFromImg( img ) );
+            }
+            else {
+                this.setTexture( blankTexture );
+            }
+        };
 
-        if ( imgSrc.substr( 0, 5 ) === 'data:' ) {
-            tmpImg = document.createElement( 'img' );
-            tmpImg.src = imgSrc;
-            texture = new THREE.Texture( tmpImg );
-            texture.needsUpdate = true;
-            setTexture( texture );
-        }
-        else {
-            texture = THREE.ImageUtils.loadTexture(
-                imgSrc,
-                null,
-                function () { setTexture( texture ); },
-                function () {
-                    window.console.log(
-                        'Error: FlagWaver: Failed to load image as texture.'
-                    );
-                    setTexture( blankTexture );
-                }
-            );
-        }
+        loadImg( imgSrc, callback.bind( this ) );
 
+    };
+
+    // Apply transforms to texture canvas
+    Flag.prototype.transformTexture = function ( options ) {
+        if ( this.img ) {
+            this.setTexture( createTextureFromImg( this.img, options ) );
+        }
     };
 
     // Pin edges of flag cloth
@@ -744,9 +826,10 @@
         }
 
         // texture.generateMipmaps = false;
-        texture.anisotropy = 16;
-        texture.minFilter  = THREE.LinearFilter;
-        texture.magFilter  = THREE.LinearFilter;
+        texture.needsUpdate = true;
+        texture.anisotropy  = 16;
+        texture.minFilter   = THREE.LinearFilter;
+        texture.magFilter   = THREE.LinearFilter;
         texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
 
         /*material = new THREE.MeshBasicMaterial( {
@@ -814,30 +897,6 @@
     // Public flag interface
     Flag.prototype.createPublic = function () { return new PublicFlag( this ); };
 
-    function getImgSize ( imgSrc, callback ) {
-
-        // Test load to get image size
-        var testImg = new window.Image();
-
-        // Load image and get size
-        testImg.onload = function () {
-            if ( typeof callback === 'function' ) {
-                callback( this.width, this.height );
-            }
-        };
-
-        // Do nothing if image fails to load
-        testImg.onerror = function () {
-            window.console.log(
-                'Error: FlagWaver: Failed to load image from ' + imgSrc + '.'
-            );
-        };
-
-        // Attempt to load image
-        testImg.src = imgSrc;
-
-    }
-
     // Public Flag interface constructor
     function PublicFlag ( flag ) {
 
@@ -858,17 +917,19 @@
         }
 
         function setDefaultSize () {
-            getImgSize( imgSrc, function ( w, h ) {
+            loadImg( imgSrc, function ( img ) {
                 // Get flag size from image
-                var defaultSize = defaultOptions.height,
+                var imgWidth    = ( img )? img.width  : defaultOptions.width,
+                    imgHeight   = ( img )? img.height : defaultOptinos.height,
+                    defaultSize = defaultOptions.height,
                     width,
                     height;
-                if ( w / h < 1 ) { // vertical flag
+                if ( imgWidth / imgHeight < 1 ) { // vertical flag
                     width  = defaultSize;
-                    height = defaultSize * h / w;
+                    height = defaultSize * imgHeight / imgWidth;
                 }
                 else { // horizontal or square flag
-                    width  = defaultSize * w / h;
+                    width  = defaultSize * imgWidth / imgHeight;
                     height = defaultSize;
                 }
                 flag.setCloth( {
@@ -943,6 +1004,8 @@
             }
 
         };
+
+        if ( isDebugMode ) { this._flag = flag; }
 
         updateOptions();
 
