@@ -495,37 +495,43 @@
     }
 
     // Use canvas to generate texture from image
-    function createTextureFromImg ( img, options ) {
+    function createTextureFromImg ( img, transform ) {
 
-        var canvas       = document.createElement( 'canvas' ),
-            ctx          = canvas.getContext( '2d' ),
-            defaultSize  = defaultOptions.height,
-            imgWidth     = img.width,
-            imgHeight    = img.height,
-            canvasWidth  = canvas.width  = defaultSize * imgWidth / imgHeight,
-            canvasHeight = canvas.height = defaultSize;
+        var canvas      = document.createElement( 'canvas' ),
+            ctx         = canvas.getContext( '2d' ),
+            defaultSize = defaultOptions.height,
+            srcWidth    = img.width,
+            srcHeight   = img.height,
+            destWidth   = canvas.width  = defaultSize * srcWidth / srcHeight,
+            destHeight  = canvas.height = defaultSize;
 
-        if ( typeof options === 'object' ) {
+        if ( typeof transform === 'object' ) {
 
-            // Translate
-            if ( !window.isNaN( options.translateX ) ) {
-                ctx.translate( options.translateX, 0 );
-            }
-            if ( !window.isNaN( options.translateY ) ) {
-                ctx.translate( 0, options.translateY );
+            // Swap X axis with Y axis
+            if ( transform.swapXY ) {
+                canvas.width  = destHeight;
+                canvas.height = destWidth;
             }
 
             // Reflect
-            if ( options.reflect ) {
-                ctx.translate( canvasWidth, 0 );
+            if ( transform.reflect ) {
+                ctx.translate( canvas.width, 0 );
                 ctx.scale( -1, 1 );
             }
 
             // Rotate
-            if ( !window.isNaN( options.rotate ) ) {
-                ctx.translate( canvasWidth / 2, canvasHeight / 2 );
-                ctx.rotate( options.rotate );
-                ctx.translate( -canvasWidth / 2, -canvasHeight / 2 );
+            if ( !window.isNaN( transform.rotate ) ) {
+                ctx.translate( canvas.width / 2, canvas.height / 2 );
+                ctx.rotate( transform.rotate );
+                ctx.translate( -canvas.width / 2, -canvas.height / 2 );
+            }
+
+            // Translate
+            if ( !window.isNaN( transform.translateX ) ) {
+                ctx.translate( transform.translateX, 0 );
+            }
+            if ( !window.isNaN( transform.translateY ) ) {
+                ctx.translate( 0, transform.translateY );
             }
 
         }
@@ -533,16 +539,18 @@
         if ( isDebugMode ) {
             window.console.log(
                 'FlagWaver: Image properties' +
-                '\n\t' + 'Image size: ' + imgWidth + 'x' + imgHeight +
-                '\n\t' + 'Canvas size: ' + window.Math.round( canvasWidth ) +
-                    'x' + window.Math.round( canvasHeight ) +
+                '\n\t' + 'Image size: ' + srcWidth + 'x' + srcHeight +
+                '\n\t' + 'Canvas size: ' + window.Math.round( destWidth ) +
+                    'x' + window.Math.round( destHeight ) +
                 '\n\t' + 'Aspect ratio: ' +
-                    window.Number( ( imgWidth / imgHeight ).toFixed( 4 ) )
+                    window.Number( ( srcWidth / srcHeight ).toFixed( 4 ) )
             );
+            ctx.fillStyle = '#ff00ff';
+            ctx.fillRect( 0, 0, canvas.width, canvas.height );
         }
 
         ctx.drawImage(
-            img, 0, 0, imgWidth, imgHeight, 0, 0, canvasWidth, canvasHeight
+            img, 0, 0, srcWidth, srcHeight, 0, 0, destWidth, destHeight
         );
 
         return new THREE.Texture( canvas );
@@ -558,7 +566,8 @@
         this.topEdge  = EDGE.Top;
         this.img      = null;
 
-        this.pins     = [];
+        this.pins      = [];
+        this.transform = {};
 
         this.createCloth( options );
 
@@ -580,8 +589,6 @@
             fragmentShader : fragmentShader
         } );
 
-        this.updateQuaternion();
-
     }
 
     // Set flag texture from image
@@ -602,9 +609,9 @@
     };
 
     // Apply transforms to texture canvas
-    Flag.prototype.transformTexture = function ( options ) {
+    Flag.prototype.transformTexture = function ( transform ) {
         if ( this.img ) {
-            this.setTexture( createTextureFromImg( this.img, options ) );
+            this.setTexture( createTextureFromImg( this.img, transform ) );
         }
     };
 
@@ -651,62 +658,10 @@
 
     // Recalculate offset position when flag is rotated
     Flag.prototype.updatePosition = function () {
-
-        var isFlipped = ( this.hoisting === HOISTING.Sinister ),
-            w = this.cloth.width,
-            h = this.cloth.height;
-
-        switch ( this.topEdge ) {
-            case EDGE.Bottom :
-                this.offset.x = this.position.x + ( ( isFlipped )? 0 : w );
-                this.offset.y = this.position.y;
-                break;
-            case EDGE.Left :
-                this.offset.x = this.position.x + ( ( isFlipped )? -h : 0 );
-                this.offset.y = this.position.y;
-                break;
-            case EDGE.Right :
-                this.offset.x = this.position.x + ( ( isFlipped )? 0 : h );
-                this.offset.y = this.position.y - w;
-                break;
-            case EDGE.Top :
-            default :
-                this.offset.x = this.position.x + ( ( isFlipped )? -w : 0 );
-                this.offset.y = this.position.y - h;
-                break;
-        }
-
-        this.object.position.set( this.offset.x, this.offset.y, 0 );
-
-    };
-
-    // Recalculate quaternion when flag is rotated
-    Flag.prototype.updateQuaternion = function () {
-
-        var quaternion = new THREE.Quaternion(),
-            yAxis      = new THREE.Vector3( 0, 1, 0 ),
-            zAxis      = new THREE.Vector3( 0, 0, 1 ),
-            yRadians   = 0,
-            zRadians   = this.topEdge.direction;
-
-        if ( this.hoisting === HOISTING.Sinister ) {
-            yRadians = window.Math.PI;
-        }
-
-        quaternion.setFromAxisAngle( yAxis, yRadians );
-        quaternion.setFromAxisAngle( zAxis, zRadians );
-
-        this.quaternion = quaternion;
-
-    };
-
-    // Determine hoist edge based on rotation and reapply pins
-    Flag.prototype.updatePins = function () {
-        this.unpin();
-        this.pin(
-            ( this.hoisting === HOISTING.Sinister )?
-            this.topEdge.c :
-            this.topEdge.cc
+        this.object.position.set(
+            this.position.x,
+            this.position.y - this.cloth.height,
+            0
         );
     };
 
@@ -716,8 +671,19 @@
         this.updatePosition();
     };
 
+    // Check if flag has been rotated into a vertical position
+    Flag.prototype.isVertical = function () {
+        return this.topEdge === EDGE.Left || this.topEdge === EDGE.Right;
+    };
+
     // Rotate the flag
     Flag.prototype.setTopEdge = function ( edge ) {
+
+        var transform = this.transform,
+            wasVertical = this.isVertical(),
+            isVertical,
+            offset;
+
         switch ( edge ) {
             case 'left'   : this.topEdge = EDGE.Left;   break;
             case 'bottom' : this.topEdge = EDGE.Bottom; break;
@@ -725,18 +691,46 @@
             case 'top'    :
             default       : this.topEdge = EDGE.Top;    break;
         }
-        this.updatePins();
-        this.updatePosition();
-        this.updateQuaternion();
+
+        isVertical = this.isVertical();
+
+        transform.rotate = this.topEdge.direction;
+
+        // Resize cloth
+        if ( wasVertical !== isVertical ) {
+            this.setCloth( {
+                width         : this.height,
+                height        : this.width,
+                mass          : this.mass,
+                levelOfDetail : this.levelOfDetail
+            } );
+        }
+
+        if ( isVertical ) {
+            offset = (
+                this.material.map.image.width - this.material.map.image.height
+            ) / 2;
+            if ( wasVertical === isVertical ) { offset *= -1; }
+            transform.translateX = -offset;
+            transform.translateY = offset;
+            transform.swapXY     = true;
+        }
+        else {
+            transform.translateX = 0;
+            transform.translateY = 0;
+            transform.swapXY     = false;
+        }
+
+        this.transformTexture( transform );
+
     };
 
     // Set the hoisting to dexter or sinister
     Flag.prototype.setHoisting = function ( hoisting ) {
         if ( hoisting !== HOISTING.Sinister ) hoisting = HOISTING.Dexter;
         this.hoisting = hoisting;
-        this.updatePins();
-        this.updatePosition();
-        this.updateQuaternion();
+        this.transform.reflect = hoisting === HOISTING.Sinister;
+        this.transformTexture( this.transform );
     };
 
     // Add fixed constraints to flag cloth
@@ -808,7 +802,9 @@
 
         oldGeo.dispose();
 
-        this.updatePins();
+        this.unpin();
+        this.pin();
+
         this.updatePosition();
 
     };
@@ -857,9 +853,7 @@
             i, il;
 
         for ( i = 0, il = particles.length; i < il; i++ ) {
-            particles[ i ].position.copy(
-                particles[ i ].original
-            ).applyQuaternion( this.quaternion );
+            particles[ i ].position.copy( particles[ i ].original );
         }
 
     };
@@ -878,9 +872,7 @@
         // Pin constraints
         for ( i = 0, il = pins.length; i < il; i++ ) {
             particle = particles[ pins[ i ] ];
-            particle.position.copy( particle.original ).applyQuaternion(
-                this.quaternion
-            );
+            particle.position.copy( particle.original );
             particle.previous.copy( particle.position );
         }
 
