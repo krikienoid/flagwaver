@@ -193,13 +193,10 @@
             width, height,
             u, v;
 
-        xSegs        = window.Math.round( xSegs ) || 15;
-        ySegs        = window.Math.round( ySegs ) || 10;
-        restDistance = window.Math.round( restDistance ) || 20;
-        width        = restDistance * xSegs;
-        height       = restDistance * ySegs;
-
-        weightForce  = new THREE.Vector3();
+        // Cloth properties
+        width       = restDistance * xSegs;
+        height      = restDistance * ySegs;
+        weightForce = new THREE.Vector3();
         weightForce.copy( gravityForce ).multiplyScalar( mass );
 
         // Index get function
@@ -249,7 +246,6 @@
                 particles[ index( u, v ) ],
                 particles[ index( u, v + 1 ) ],
                 restDistance
-
             ) );
         }
 
@@ -450,19 +446,40 @@
             Right  : { name : 'right',  direction : window.Math.PI / 2  }
         };
 
-    // Edge relations
-    // c = clockwise, cc = counterclockwise, x = across
-    EDGE.Left.c   = EDGE.Bottom.x = EDGE.Right.cc  = EDGE.Top;
-    EDGE.Bottom.c = EDGE.Right.x  = EDGE.Top.cc    = EDGE.Left;
-    EDGE.Right.c  = EDGE.Top.x    = EDGE.Left.cc   = EDGE.Bottom;
-    EDGE.Top.c    = EDGE.Left.x   = EDGE.Bottom.cc = EDGE.Right;
-
     // Default flag options
     var defaultOptions = {
         width         : 300,
         height        : 200,
         mass          : MASS,
         levelOfDetail : 10
+    };
+
+    // Utilties
+    var Util = {};
+
+    // Is valid number
+    Util.isNumeric = function ( n ) {
+        return !window.isNaN( window.parseFloat( n ) ) && window.isFinite( n );
+    };
+
+    // Copy object properties
+    Util.extend = function () {
+        var target = arguments[ 0 ],
+            options,
+            i, il;
+        if ( typeof target !== 'object' ) { target = {}; }
+        for ( i = 1, il = arguments.length; i < il; i++ ) {
+            options = arguments[ i ];
+            if ( typeof options === 'object' ) {
+                for ( var k in options ) {
+                    if (
+                        options.hasOwnProperty( k ) &&
+                        typeof options[ k ] !== 'undefined'
+                    ) { target[ k ] = options[ k ]; }
+                }
+            }
+        }
+        return target;
     };
 
     // Load image
@@ -520,17 +537,17 @@
             }
 
             // Rotate
-            if ( !window.isNaN( transform.rotate ) ) {
+            if ( Util.isNumeric( transform.rotate ) ) {
                 ctx.translate( canvas.width / 2, canvas.height / 2 );
                 ctx.rotate( transform.rotate );
                 ctx.translate( -canvas.width / 2, -canvas.height / 2 );
             }
 
             // Translate
-            if ( !window.isNaN( transform.translateX ) ) {
+            if ( Util.isNumeric( transform.translateX ) ) {
                 ctx.translate( transform.translateX, 0 );
             }
-            if ( !window.isNaN( transform.translateY ) ) {
+            if ( Util.isNumeric( transform.translateY ) ) {
                 ctx.translate( 0, transform.translateY );
             }
 
@@ -560,16 +577,19 @@
     // Flag constructor
     function Flag ( options ) {
 
-        this.position = new THREE.Vector3( 0, 0, 0 );
-        this.offset   = new THREE.Vector3( 0, 0, 0 );
-        this.hoisting = HOISTING.Dexter;
-        this.topEdge  = EDGE.Top;
-        this.img      = null;
+        this.position  = new THREE.Vector3( 0, 0, 0 );
+        this.offset    = new THREE.Vector3( 0, 0, 0 );
+
+        this.hoisting  = HOISTING.Dexter;
+        this.topEdge   = EDGE.Top;
+        this.img       = null;
 
         this.pins      = [];
         this.transform = {};
+        this.options   = Util.extend( {}, defaultOptions );
 
         this.createCloth( options );
+        this.pin();
 
         this.material = new THREE.MeshPhongMaterial( {
             alphaTest : 0.5,
@@ -592,19 +612,21 @@
     }
 
     // Set flag texture from image
-    Flag.prototype.loadTexture = function ( imgSrc ) {
+    Flag.prototype.loadTexture = function ( imgSrc, callback ) {
 
-        var callback = function ( img ) {
+        var onTextureLoaded = function ( img ) {
             if ( img ) {
                 this.img = img;
-                this.setTexture( createTextureFromImg( img ) );
+                this.setTexture( createTextureFromImg( img, this.transform ) );
+                this.updateTransform();
             }
             else {
                 this.setTexture( blankTexture );
             }
+            if ( typeof callback === 'function' ) { callback( img ); }
         };
 
-        loadImg( imgSrc, callback.bind( this ) );
+        loadImg( imgSrc, onTextureLoaded.bind( this ) );
 
     };
 
@@ -625,7 +647,7 @@
             i;
 
         spacing = window.parseInt( spacing );
-        if ( window.isNaN( spacing ) || spacing < 1 ) spacing = 1;
+        if ( !Util.isNumeric( spacing ) || spacing < 1 ) spacing = 1;
 
         switch ( edge ) {
             case EDGE.Top :
@@ -679,10 +701,7 @@
     // Rotate the flag
     Flag.prototype.setTopEdge = function ( edge ) {
 
-        var transform = this.transform,
-            wasVertical = this.isVertical(),
-            isVertical,
-            offset;
+        var wasVertical = this.isVertical();
 
         switch ( edge ) {
             case 'left'   : this.topEdge = EDGE.Left;   break;
@@ -692,25 +711,27 @@
             default       : this.topEdge = EDGE.Top;    break;
         }
 
-        isVertical = this.isVertical();
+        if ( wasVertical !== this.isVertical() ) { this.setOptions(); }
+
+        this.updateTransform();
+
+    };
+
+    // Recalculate texture transform based on image dimsensions and rotation
+    Flag.prototype.updateTransform = function () {
+
+        var transform = this.transform,
+            canvas,
+            offset;
+
+        if ( !this.img || !this.material.map ) { return; }
 
         transform.rotate = this.topEdge.direction;
 
-        // Resize cloth
-        if ( wasVertical !== isVertical ) {
-            this.setCloth( {
-                width         : this.height,
-                height        : this.width,
-                mass          : this.mass,
-                levelOfDetail : this.levelOfDetail
-            } );
-        }
-
-        if ( isVertical ) {
-            offset = (
-                this.material.map.image.width - this.material.map.image.height
-            ) / 2;
-            if ( wasVertical === isVertical ) { offset *= -1; }
+        if ( this.isVertical() ) {
+            canvas = this.material.map.image;
+            offset = ( canvas.width - canvas.height ) / 2;
+            if ( transform.swapXY ) { offset *= -1; }
             transform.translateX = -offset;
             transform.translateY = offset;
             transform.swapXY     = true;
@@ -761,46 +782,38 @@
     // Init new cloth object
     Flag.prototype.createCloth = function ( options ) {
 
-        var width,
-            height,
-            mass,
-            levelOfDetail,
+        var restDistance;
+
+        if ( !options ) { options = this.options; }
+        restDistance = options.height / options.levelOfDetail;
+
+        this.cloth = new Cloth(
+            window.Math.round( options.width / restDistance ),
+            window.Math.round( options.height / restDistance ),
             restDistance,
-            xSegs,
-            ySegs;
-
-        if ( typeof options !== 'object' ) { options = defaultOptions; }
-
-        width  = window.Number( options.width  ) || defaultOptions.width;
-        height = window.Number( options.height ) || defaultOptions.height;
-        mass   = window.Number( options.mass   ) || defaultOptions.mass;
-        levelOfDetail = window.Math.round( options.levelOfDetail ) || defaultOptions.levelOfDetail;
-
-        this.width         = width;
-        this.height        = height;
-        this.mass          = mass;
-        this.levelOfDetail = levelOfDetail;
-
-        restDistance = height / levelOfDetail;
-        xSegs        = window.Math.round( width / restDistance );
-        ySegs        = window.Math.round( height / restDistance );
-
-        this.cloth = new Cloth( xSegs, ySegs, restDistance, mass );
+            options.mass
+        );
 
         this.constrainCloth();
 
     };
 
-    // Set new cloth object
-    Flag.prototype.setCloth = function ( options ) {
+    // Apply options and create new cloth object
+    Flag.prototype.setOptions = function ( options ) {
 
-        var oldGeo = this.object.geometry;
+        options = Util.extend( this.options, options );
+
+        if ( this.isVertical() ) {
+            options = Util.extend( {}, options, {
+                width  : this.options.height,
+                height : this.options.width
+            } );
+        }
 
         this.createCloth( options );
 
+        this.object.geometry.dispose();
         this.object.geometry = this.cloth.geometry;
-
-        oldGeo.dispose();
 
         this.unpin();
         this.pin();
@@ -811,8 +824,6 @@
 
     // Set flag texture
     Flag.prototype.setTexture = function ( texture ) {
-
-        var oldTex;
 
         if ( !( texture instanceof THREE.Texture ) ) {
             window.console.log(
@@ -835,14 +846,12 @@
             opacity     : 0.9
         } );*/
 
-        oldTex = this.object.material.map
+        if ( this.object.material.map ) { this.object.material.map.dispose(); }
 
         this.object.material.map = texture;
         this.object.material.needsUpdate = true;
         this.object.customDepthMaterial.uniforms.texture.value = texture;
         this.object.customDepthMaterial.needsUpdate = true;
-
-        if ( oldTex ) oldTex.dispose();
 
     };
 
@@ -893,44 +902,23 @@
     function PublicFlag ( flag ) {
 
         var isDefaultSize = true,
-            options       = {
-                width         : flag.width,
-                height        : flag.height,
-                mass          : flag.mass,
-                levelOfDetail : flag.levelOfDetail
-            },
             imgSrc        = null;
 
-        function updateOptions () {
-            options.width         = flag.width;
-            options.height        = flag.height;
-            options.mass          = flag.mass;
-            options.levelOfDetail = flag.levelOfDetail;
-        }
-
-        function setDefaultSize () {
-            loadImg( imgSrc, function ( img ) {
-                // Get flag size from image
-                var imgWidth    = ( img )? img.width  : defaultOptions.width,
-                    imgHeight   = ( img )? img.height : defaultOptinos.height,
-                    defaultSize = defaultOptions.height,
-                    width,
-                    height;
-                if ( imgWidth / imgHeight < 1 ) { // vertical flag
-                    width  = defaultSize;
-                    height = defaultSize * imgHeight / imgWidth;
-                }
-                else { // horizontal or square flag
-                    width  = defaultSize * imgWidth / imgHeight;
-                    height = defaultSize;
-                }
-                flag.setCloth( {
-                    width         : width,
-                    height        : height,
-                    mass          : flag.mass,
-                    levelOfDetail : flag.levelOfDetail
-                } );
-            } );
+        function setDefaultSize ( img ) { // Get flag size from image
+            var imgWidth    = ( img )? img.width  : defaultOptions.width,
+                imgHeight   = ( img )? img.height : defaultOptions.height,
+                defaultSize = defaultOptions.height,
+                width,
+                height;
+            if ( imgWidth / imgHeight < 1 ) { // vertical flag
+                width  = defaultSize;
+                height = defaultSize * imgHeight / imgWidth;
+            }
+            else { // horizontal or square flag
+                width  = defaultSize * imgWidth / imgHeight;
+                height = defaultSize;
+            }
+            flag.setOptions( { width : width, height : height } );
         }
 
         this.options = {
@@ -944,62 +932,53 @@
             get isDefaultSize () { return isDefaultSize; },
             set isDefaultSize ( val ) {
                 isDefaultSize = !!val;
-                if ( isDefaultSize ) setDefaultSize();
+                if ( isDefaultSize ) { setDefaultSize( flag.img ); }
             },
 
-            get width () { return flag.width; },
+            get width () { return flag.options.width; },
             set width ( val ) {
                 val = window.Number( val );
-                if ( !window.isNaN( val ) && val > 0 ) {
-                    updateOptions();
-                    options.width = val;
+                if ( Util.isNumeric( val ) && val > 0 ) {
                     isDefaultSize = false;
-                    flag.setCloth( options );
+                    flag.setOptions( { width : val } );
                 }
             },
 
-            get height () { return flag.height; },
+            get height () { return flag.options.height; },
             set height ( val ) {
                 val = window.Number( val );
-                if ( !window.isNaN( val ) && val > 0 ) {
-                    updateOptions();
-                    options.height = val;
+                if ( Util.isNumeric( val ) && val > 0 ) {
                     isDefaultSize = false;
-                    flag.setCloth( options );
+                    flag.setOptions( { height : val } );
                 }
             },
 
-            get mass () { return flag.mass; },
+            get mass () { return flag.options.mass; },
             set mass ( val ) {
                 val = window.Number( val );
-                if ( !window.isNaN( val ) && val >= 0 ) {
-                    updateOptions();
-                    options.mass = val;
-                    flag.setCloth( options );
+                if ( Util.isNumeric( val ) && val >= 0 ) {
+                    flag.setOptions( { mass : val } );
                 }
             },
 
-            get levelOfDetail () { return flag.levelOfDetail; },
+            get levelOfDetail () { return flag.options.levelOfDetail; },
             set levelOfDetail ( val ) {
                 val = window.Math.round( val );
-                if ( !window.isNaN( val ) && val > 0 ) {
-                    updateOptions();
-                    options.levelOfDetail = val;
-                    flag.setCloth( options );
+                if ( Util.isNumeric( val ) && val > 0 ) {
+                    flag.setOptions( { levelOfDetail : val } );
                 }
             },
 
             get imgSrc () { return imgSrc; },
             set imgSrc ( src ) {
-                flag.loadTexture( imgSrc = src );
-                if ( isDefaultSize ) setDefaultSize();
+                var callback;
+                if ( isDefaultSize ) { callback = setDefaultSize; }
+                flag.loadTexture( imgSrc = src, callback );
             }
 
         };
 
         if ( isDebugMode ) { this._flag = flag; }
-
-        updateOptions();
 
     }
 
@@ -1133,7 +1112,7 @@
     }
 
     function setWind ( value ) {
-        if ( !window.isNaN( value ) ) {
+        if ( Util.isNumeric( value ) ) {
             windStrength = value;
         }
         else {
