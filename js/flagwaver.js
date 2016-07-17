@@ -85,7 +85,7 @@
 
     // Wind settings
     var wind         = true,
-        windStrength = 300,
+        windStrength = 200,
         windForce    = new THREE.Vector3( 0, 0, 0 );
 
     // Ball settings
@@ -175,7 +175,7 @@
             correction;
 
         diff.subVectors( p1.position, p2.position );
-        currentDist = diff.length();
+        currentDist = diff.length() / SLACK;
         diff.normalize();
         correction = diff.multiplyScalar( currentDist - distance );
         if ( currentDist > distance ) {
@@ -1106,7 +1106,7 @@
     }
 
     function setWind ( value ) {
-        if ( Util.isNumeric( value ) ) {
+        if ( Util.isNumeric( value ) && value > 0 ) {
             windStrength = value;
         }
         else {
