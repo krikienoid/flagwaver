@@ -76,8 +76,12 @@
         GRAVITY = 981 * 1.4;
 
     // Time settings
-    var TIMESTEP    = 18 / 1000,
-        TIMESTEP_SQ = TIMESTEP * TIMESTEP;
+    var FPS        = 60,
+        TIMESTEP   = 1 / FPS,
+        timestep   = TIMESTEP,
+        timestepSq = timestep * timestep,
+        time,
+        timePrev;
 
     // Wind settings
     var wind         = true,
@@ -95,8 +99,7 @@
     // Cloth simulation variables
     var gravityForce = new THREE.Vector3( 0, -GRAVITY, 0 ),
         tmpForce     = new THREE.Vector3(),
-        diff         = new THREE.Vector3(),
-        lastTime;
+        diff         = new THREE.Vector3();
 
     // Particle constructor
     function Particle ( position, mass ) {
@@ -121,11 +124,11 @@
     };
 
     // Performs verlet integration
-    Particle.prototype.integrate = function ( timesq ) {
+    Particle.prototype.integrate = function ( timestepSq ) {
 
         var newPos = this.tmp.subVectors( this.position, this.previous );
         newPos.multiplyScalar( DRAG ).add( this.position );
-        newPos.add( this.accel.multiplyScalar( timesq ) );
+        newPos.add( this.accel.multiplyScalar( timestepSq ) );
 
         this.tmp      = this.previous;
         this.previous = this.position;
@@ -347,7 +350,7 @@
     }
 
     // Simulate cloth
-    Cloth.prototype.simulate = function ( time ) {
+    Cloth.prototype.simulate = function () {
 
         var particles   = this.particles,
             constraints = this.constraints,
@@ -356,16 +359,6 @@
             particle, constraint,
             face, normal,
             i, il;
-
-        // if ( !lastTime ) {
-        //     lastTime = time;
-        //     return;
-        // }
-        // TIMESTEP    = ( time - lastTime );
-        // TIMESTEP    = ( TIMESTEP > 30 ) ? TIMESTEP / 1000 : 30 / 1000;
-        // TIMESTEP_SQ = TIMESTEP * TIMESTEP;
-        // lastTime    = time;
-        // console.log( TIMESTEP );
 
         // Aerodynamic forces
         if ( wind ) {
@@ -396,7 +389,7 @@
             //     window.Math.sin( window.Math.cos( 5 * x * y * z ) )
             // ).multiplyScalar( 100 );
             // particle.addForce( windForce );
-            particle.integrate( TIMESTEP_SQ );
+            particle.integrate( timestepSq );
         }
 
         // Satisfy constraints
@@ -1146,7 +1139,15 @@
     }
 
     function animateFrame () {
-        var time = window.Date.now();
+
+        timePrev = time;
+        time = window.Date.now();
+        if ( !timePrev ) { return; }
+
+        timestep = ( time - timePrev ) / 1000;
+        if ( timestep > TIMESTEP ) { timestep = TIMESTEP; }
+        timestepSq = timestep * timestep;
+
         // windStrength = window.Math.cos( time / 7000 ) * 100 + 200;
         // windStrength = 100;
         windForce.set(
@@ -1155,12 +1156,13 @@
             window.Math.sin( time / 1000 )
         ).normalize().multiplyScalar( windStrength );
         // windForce.set( 2000, 0, 1000 ).normalize().multiplyScalar( windStrength );
-        flag.simulate( time );
+
+        flag.simulate();
         render();
+
     }
 
     function render () {
-        var timer = window.Date.now() * 0.0002;
         flag.render();
         camera.lookAt( scene.position );
         renderer.render( scene, camera );
