@@ -454,6 +454,13 @@
         levelOfDetail : 10
     };
 
+    // Default flag texture
+    var blankTexture = THREE.ImageUtils.generateDataTexture(
+        4,
+        4,
+        new THREE.Color( 0xffffff )
+    );
+
     // Utilties
     var Util = {};
 
@@ -584,9 +591,9 @@
         this.topEdge   = EDGE.Top;
         this.img       = null;
 
-        this.pins      = [];
-        this.transform = {};
         this.options   = Util.extend( {}, defaultOptions );
+        this.transform = {};
+        this.pins      = [];
 
         this.createCloth( options );
         this.pin();
@@ -611,147 +618,9 @@
 
     }
 
-    // Set flag texture from image
-    Flag.prototype.loadTexture = function ( imgSrc, callback ) {
-
-        var onTextureLoaded = function ( img ) {
-            if ( img ) {
-                this.img = img;
-                this.setTexture( createTextureFromImg( img, this.transform ) );
-                this.updateTransform();
-            }
-            else {
-                this.setTexture( blankTexture );
-            }
-            if ( typeof callback === 'function' ) { callback( img ); }
-        };
-
-        loadImg( imgSrc, onTextureLoaded.bind( this ) );
-
-    };
-
-    // Apply transforms to texture canvas
-    Flag.prototype.transformTexture = function ( transform ) {
-        if ( this.img ) {
-            this.setTexture( createTextureFromImg( this.img, transform ) );
-        }
-    };
-
-    // Pin edges of flag cloth
-    Flag.prototype.pin = function ( edge, spacing ) {
-
-        var pins  = this.pins,
-            xSegs = this.cloth.xSegs,
-            ySegs = this.cloth.ySegs,
-            index = this.cloth.index,
-            i;
-
-        spacing = window.parseInt( spacing );
-        if ( !Util.isNumeric( spacing ) || spacing < 1 ) spacing = 1;
-
-        switch ( edge ) {
-            case EDGE.Top :
-                for ( i = 0; i <= xSegs; i += spacing ) {
-                    pins.push( index( i, ySegs ) );
-                }
-                break;
-            case EDGE.Bottom :
-                for ( i = 0; i <= xSegs; i += spacing ) {
-                    pins.push( index( i, 0 ) );
-                }
-                break;
-            case EDGE.Right :
-                for ( i = 0; i <= ySegs; i += spacing ) {
-                    pins.push( index( xSegs, i ) );
-                }
-                break;
-            case EDGE.Left :
-            default :
-                for ( i = 0; i <= ySegs; i += spacing ) {
-                    pins.push( index( 0, i ) );
-                }
-                break;
-        }
-
-    };
-
-    // Remove pins from flag cloth
-    Flag.prototype.unpin = function () { this.pins = []; };
-
-    // Recalculate offset position when flag is rotated
-    Flag.prototype.updatePosition = function () {
-        this.object.position.set(
-            this.position.x,
-            this.position.y - this.cloth.height,
-            0
-        );
-    };
-
-    // Set the flag's position
-    Flag.prototype.setPosition = function ( x, y, z ) {
-        this.position.set( x, y, z );
-        this.updatePosition();
-    };
-
     // Check if flag has been rotated into a vertical position
     Flag.prototype.isVertical = function () {
         return this.topEdge === EDGE.Left || this.topEdge === EDGE.Right;
-    };
-
-    // Rotate the flag
-    Flag.prototype.setTopEdge = function ( edge ) {
-
-        var wasVertical = this.isVertical();
-
-        switch ( edge ) {
-            case 'left'   : this.topEdge = EDGE.Left;   break;
-            case 'bottom' : this.topEdge = EDGE.Bottom; break;
-            case 'right'  : this.topEdge = EDGE.Right;  break;
-            case 'top'    :
-            default       : this.topEdge = EDGE.Top;    break;
-        }
-
-        if ( wasVertical !== this.isVertical() ) { this.setOptions(); }
-
-        this.updateTransform();
-
-    };
-
-    // Recalculate texture transform based on image dimsensions and rotation
-    Flag.prototype.updateTransform = function () {
-
-        var transform = this.transform,
-            canvas,
-            offset;
-
-        if ( !this.img || !this.material.map ) { return; }
-
-        transform.rotate = this.topEdge.direction;
-
-        if ( this.isVertical() ) {
-            canvas = this.material.map.image;
-            offset = ( canvas.width - canvas.height ) / 2;
-            if ( transform.swapXY ) { offset *= -1; }
-            transform.translateX = -offset;
-            transform.translateY = offset;
-            transform.swapXY     = true;
-        }
-        else {
-            transform.translateX = 0;
-            transform.translateY = 0;
-            transform.swapXY     = false;
-        }
-
-        this.transformTexture( transform );
-
-    };
-
-    // Set the hoisting to dexter or sinister
-    Flag.prototype.setHoisting = function ( hoisting ) {
-        if ( hoisting !== HOISTING.Sinister ) hoisting = HOISTING.Dexter;
-        this.hoisting = hoisting;
-        this.transform.reflect = hoisting === HOISTING.Sinister;
-        this.transformTexture( this.transform );
     };
 
     // Add fixed constraints to flag cloth
@@ -796,6 +665,62 @@
 
         this.constrainCloth();
 
+    };
+
+    // Pin edges of flag cloth
+    Flag.prototype.pin = function ( edge, spacing ) {
+
+        var pins  = this.pins,
+            xSegs = this.cloth.xSegs,
+            ySegs = this.cloth.ySegs,
+            index = this.cloth.index,
+            i;
+
+        spacing = window.parseInt( spacing );
+        if ( !Util.isNumeric( spacing ) || spacing < 1 ) { spacing = 1; }
+
+        switch ( edge ) {
+            case EDGE.Top :
+                for ( i = 0; i <= xSegs; i += spacing ) {
+                    pins.push( index( i, ySegs ) );
+                }
+                break;
+            case EDGE.Bottom :
+                for ( i = 0; i <= xSegs; i += spacing ) {
+                    pins.push( index( i, 0 ) );
+                }
+                break;
+            case EDGE.Right :
+                for ( i = 0; i <= ySegs; i += spacing ) {
+                    pins.push( index( xSegs, i ) );
+                }
+                break;
+            case EDGE.Left :
+            default :
+                for ( i = 0; i <= ySegs; i += spacing ) {
+                    pins.push( index( 0, i ) );
+                }
+                break;
+        }
+
+    };
+
+    // Remove pins from flag cloth
+    Flag.prototype.unpin = function () { this.pins = []; };
+
+    // Recalculate offset position when flag cloth is rotated
+    Flag.prototype.updatePosition = function () {
+        this.object.position.set(
+            this.position.x,
+            this.position.y - this.cloth.height,
+            0
+        );
+    };
+
+    // Set the flag's position
+    Flag.prototype.setPosition = function ( x, y, z ) {
+        this.position.set( x, y, z );
+        this.updatePosition();
     };
 
     // Apply options and create new cloth object
@@ -852,6 +777,88 @@
         this.object.material.needsUpdate = true;
         this.object.customDepthMaterial.uniforms.texture.value = texture;
         this.object.customDepthMaterial.needsUpdate = true;
+
+    };
+
+    // Apply transforms to flag texture
+    Flag.prototype.transformTexture = function ( transform ) {
+        if ( this.img ) {
+            this.setTexture( createTextureFromImg( this.img, transform ) );
+        }
+    };
+
+    // Recalculate texture transform based on image dimsensions and rotation
+    Flag.prototype.updateTransform = function () {
+
+        var transform = this.transform,
+            canvas,
+            offset;
+
+        if ( !this.img || !this.material.map ) { return; }
+
+        transform.rotate = this.topEdge.direction;
+
+        if ( this.isVertical() ) {
+            canvas = this.material.map.image;
+            offset = ( canvas.width - canvas.height ) / 2;
+            if ( transform.swapXY ) { offset *= -1; }
+            transform.translateX = -offset;
+            transform.translateY = offset;
+            transform.swapXY     = true;
+        }
+        else {
+            transform.translateX = 0;
+            transform.translateY = 0;
+            transform.swapXY     = false;
+        }
+
+        this.transformTexture( transform );
+
+    };
+
+    // Load new image as flag texture
+    Flag.prototype.loadTexture = function ( imgSrc, callback ) {
+
+        var onTextureLoaded = function ( img ) {
+            if ( img ) {
+                this.img = img;
+                this.setTexture( createTextureFromImg( img, this.transform ) );
+                this.updateTransform();
+            }
+            else {
+                this.setTexture( blankTexture );
+            }
+            if ( typeof callback === 'function' ) { callback( img ); }
+        };
+
+        loadImg( imgSrc, onTextureLoaded.bind( this ) );
+
+    };
+
+    // Set the hoisting to dexter or sinister
+    Flag.prototype.setHoisting = function ( hoisting ) {
+        if ( hoisting !== HOISTING.Sinister ) { hoisting = HOISTING.Dexter; }
+        this.hoisting = hoisting;
+        this.transform.reflect = hoisting === HOISTING.Sinister;
+        this.transformTexture( this.transform );
+    };
+
+    // Rotate the flag
+    Flag.prototype.setTopEdge = function ( edge ) {
+
+        var wasVertical = this.isVertical();
+
+        switch ( edge ) {
+            case 'left'   : this.topEdge = EDGE.Left;   break;
+            case 'bottom' : this.topEdge = EDGE.Bottom; break;
+            case 'right'  : this.topEdge = EDGE.Right;  break;
+            case 'top'    :
+            default       : this.topEdge = EDGE.Top;    break;
+        }
+
+        if ( wasVertical !== this.isVertical() ) { this.setOptions(); }
+
+        this.updateTransform();
 
     };
 
@@ -1007,12 +1014,6 @@
     // Renderer settings
     var poleOffset  = 300,
         poleHeight  = 1000;
-
-    var blankTexture = THREE.ImageUtils.generateDataTexture(
-        4,
-        4,
-        new THREE.Color( 0xffffff )
-    );
 
     // Renderer variables
     var vertexShader, fragmentShader,
