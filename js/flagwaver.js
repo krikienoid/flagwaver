@@ -519,15 +519,29 @@
             defaultSize = defaultOptions.height,
             srcWidth    = img.width,
             srcHeight   = img.height,
-            destWidth   = canvas.width  = defaultSize * srcWidth / srcHeight,
-            destHeight  = canvas.height = defaultSize;
+            destWidth   = defaultSize * srcWidth / srcHeight,
+            destHeight  = defaultSize;
 
         if ( typeof transform === 'object' ) {
+
+            // Set destination size
+            if ( transform.resize ) {
+                if ( transform.resize.width > 0 ) {
+                    destWidth = transform.resize.width;
+                }
+                if ( transform.resize.height > 0 ) {
+                    destHeight = transform.resize.height;
+                }
+            }
 
             // Swap X axis with Y axis
             if ( transform.swapXY ) {
                 canvas.width  = destHeight;
                 canvas.height = destWidth;
+            }
+            else {
+                canvas.width  = destWidth;
+                canvas.height = destHeight;
             }
 
             // Reflect
@@ -737,6 +751,7 @@
         this.pin();
 
         this.updatePosition();
+        this.updateTransform();
 
     };
 
@@ -788,6 +803,11 @@
             offset;
 
         if ( !this.img || !this.material.map ) { return; }
+
+        transform.resize = {
+            width  : this.options.width,
+            height : this.options.height
+        };
 
         transform.rotate = this.topEdge.direction;
 
