@@ -31,12 +31,16 @@
         $setTopEdge,
         $openImgFile,
         $infoImgFile,
-        $windToggle;
+        $windToggle,
+        $windToggleRandom;
 
     // Settings
 
     var flagWaverDefaults = {
             isWindOn : true,
+            isWindRandom : false,
+            windDirection : false,
+
             flag     : {
                 imgUploadMode : 'web',
                 imgURL        : '',
@@ -55,6 +59,15 @@
                 }
                 else {
                     flagWaver.setWind( 0.001 );
+                }
+            },
+            toggleWindRandom : function () {
+                flagWaverOpts.isWindRandom = !flagWaverOpts.isWindRandom;
+                if ( flagWaverOpts.isWindRandom ) {
+                    flagWaver.setWindDirection( 90 );
+                }
+                else {
+                    flagWaver.setWindDirection( false );
                 }
             },
             flag : {
@@ -246,6 +259,7 @@
         $openImgFile      = $( '#open-img-file' );
         $infoImgFile      = $( '#info-img-file' );
         $windToggle       = $( '#wind-toggle' );
+        $windToggleRandom = $( '#wind-toggle-random' );
 
         //
         // Init
@@ -299,6 +313,7 @@
 
         // Settings
         rivets.bind( $windToggle,  flagWaverModel );
+        rivets.bind( $windToggleRandom,  flagWaverModel );
         rivets.bind( $setHoisting, flagWaverModel );
         rivets.bind( $setTopEdge,  flagWaverModel );
 

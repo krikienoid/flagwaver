@@ -26,6 +26,7 @@
         <script type="text/javascript" src="js/three.min.js"></script>
         <script type="text/javascript" src="js/modernizr.custom.95719.js"></script>
         <script type="text/javascript" src="js/rivets.bundled.min.js"></script>
+        <script type="text/javascript" src="js/jquery.knob.min.js"></script>
 
         <!-- Main -->
         <link type="text/css" rel="stylesheet" href="css/flagwaver-ui.css" />
@@ -121,6 +122,21 @@
                             data-rv-value="flagWaverOpts.isWindOn | onoff 'Wind On' 'Wind Off'"
                             data-rv-on-click="flagWaverControls.toggleWind"
                             id="wind-toggle"
+                        />
+                        <input
+                            type="button"
+                            class="input-control input-btn input-btn-md"
+                            data-text-selected="Wind: Random"
+                            data-text-unselected="Wind: Fixed"
+                            data-rv-value="flagWaverOpts.isWindRandom | onoff 'Random' 'Fixed'"
+                            data-rv-on-click="flagWaverControls.toggleWindRandom"
+                            id="wind-toggle-random"
+                        />
+                        <input 
+                            type="text" 
+                            value="0" 
+                            class="input-control input-btn input-btn-md"
+                            id="wind-control-direction"
                         />
                     </div>
                     <div class="page-controls-group">

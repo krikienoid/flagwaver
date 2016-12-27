@@ -86,6 +86,7 @@
     // Wind settings
     var wind         = true,
         windStrength = 200,
+        windDirection = false,
         windForce    = new THREE.Vector3( 0, 0, 0 );
 
     // Ball settings
@@ -1115,6 +1116,15 @@
         wind = !!windStrength;
     }
 
+    function setWindDirection ( value ) {
+        if ( Util.isNumeric( value ) ) {
+            windDirection = value * Math.PI / 180.0;
+        }
+        else {
+            windDirection = false;
+        }
+    }
+
     function onResize () {
         var h;
         if ( renderer.domElement.parentElement ) {
@@ -1150,12 +1160,15 @@
 
         // windStrength = window.Math.cos( time / 7000 ) * 100 + 200;
         // windStrength = 100;
-        windForce.set(
-            window.Math.sin( time / 2000 ),
-            window.Math.cos( time / 3000 ),
-            window.Math.sin( time / 1000 )
-        ).normalize().multiplyScalar( windStrength );
-        // windForce.set( 2000, 0, 1000 ).normalize().multiplyScalar( windStrength );
+        if (windDirection) {
+            windForce.set( 2000, 0, 1000 ).normalize().multiplyScalar( windStrength );
+        } else {
+            windForce.set(
+                window.Math.sin( time / 2000 ),
+                window.Math.cos( time / 3000 ),
+                window.Math.sin( time / 1000 )
+            ).normalize().multiplyScalar( windStrength );
+        }
 
         flag.simulate();
         render();
@@ -1173,19 +1186,20 @@
     //
 
     window.flagWaver = {
-        init       : init,
-        setWind    : setWind,
-        animation  : {
-            start  : function () {
+        init             : init,
+        setWind          : setWind,
+        setWindDirection : setWindDirection,
+        animation        : {
+            start        : function () {
                 if ( animationPaused ) {
                     animationPaused = false;
                     animate();
                 }
             },
-            stop   : function () { animationPaused = true; },
-            step   : function () { if ( animationPaused ) animateFrame(); },
-            reset  : function () { flag.reset(); render(); },
-            render : render
+            stop         : function () { animationPaused = true; },
+            step         : function () { if ( animationPaused ) animateFrame(); },
+            reset        : function () { flag.reset(); render(); },
+            render       : render
         },
         get flag () { return publicFlag; },
         get canvas () { return renderer.domElement; }
