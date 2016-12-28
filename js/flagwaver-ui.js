@@ -32,7 +32,8 @@
         $openImgFile,
         $infoImgFile,
         $windToggle,
-        $windToggleRandom;
+        $windToggleRandom,
+        $windDirectionControl;
 
     // Settings
 
@@ -250,16 +251,17 @@
         // Get DOM elements
         //
 
-        $controlImgUpload = $( '#control-img-upload' );
-        $setImgUploadMode = $( '#set-img-upload-mode' );
-        $inputImgLink     = $( '#input-img-link' );
-        $setImgLink       = $( '#set-img-link' );
-        $setHoisting      = $( '#set-hoisting' );
-        $setTopEdge       = $( '#set-top-edge' );
-        $openImgFile      = $( '#open-img-file' );
-        $infoImgFile      = $( '#info-img-file' );
-        $windToggle       = $( '#wind-toggle' );
-        $windToggleRandom = $( '#wind-toggle-random' );
+        $controlImgUpload     = $( '#control-img-upload' );
+        $setImgUploadMode     = $( '#set-img-upload-mode' );
+        $inputImgLink         = $( '#input-img-link' );
+        $setImgLink           = $( '#set-img-link' );
+        $setHoisting          = $( '#set-hoisting' );
+        $setTopEdge           = $( '#set-top-edge' );
+        $openImgFile          = $( '#open-img-file' );
+        $infoImgFile          = $( '#info-img-file' );
+        $windToggle           = $( '#wind-toggle' );
+        $windToggleRandom     = $( '#wind-toggle-random' );
+        $windDirectionControl = $( '#wind-direction-control' );
 
         //
         // Init
@@ -296,8 +298,8 @@
         if ( isHistorySupported ) { $( window ).on( 'popstate', fromHash ); }
 
         // Load flag image from url
-        rivets.bind( $inputImgLink, flagWaverModel );
-        rivets.bind( $setImgLink,   flagWaverModel );
+        rivets.bind( $inputImgLink,         flagWaverModel );
+        rivets.bind( $setImgLink,           flagWaverModel );
 
         // Load flag image from file
         $openImgFile
@@ -308,14 +310,15 @@
                 $openImgFile.parent().removeClass( 'active' );
             } );
 
-        rivets.bind( $openImgFile, flagWaverModel );
-        rivets.bind( $infoImgFile, flagWaverModel );
+        rivets.bind( $openImgFile,          flagWaverModel );
+        rivets.bind( $infoImgFile,          flagWaverModel );
 
         // Settings
-        rivets.bind( $windToggle,  flagWaverModel );
-        rivets.bind( $windToggleRandom,  flagWaverModel );
-        rivets.bind( $setHoisting, flagWaverModel );
-        rivets.bind( $setTopEdge,  flagWaverModel );
+        rivets.bind( $windToggle,           flagWaverModel );
+        rivets.bind( $windToggleRandom,     flagWaverModel );
+        rivets.bind( $windDirectionControl, flagWaverModel );
+        rivets.bind( $setHoisting,          flagWaverModel );
+        rivets.bind( $setTopEdge,           flagWaverModel );
 
     } );
 
