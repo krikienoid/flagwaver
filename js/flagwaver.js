@@ -1118,7 +1118,7 @@
 
     function setWindDirection ( value ) {
         if ( Util.isNumeric( value ) ) {
-            windDirection = value * Math.PI / 180.0;
+            windDirection = value * window.Math.PI / 180.0;
         }
         else {
             windDirection = false;
@@ -1160,8 +1160,12 @@
 
         // windStrength = window.Math.cos( time / 7000 ) * 100 + 200;
         // windStrength = 100;
-        if (windDirection) {
-            windForce.set( 2000, 0, 1000 ).normalize().multiplyScalar( windStrength );
+        if ( windDirection ) {
+            windForce.set( 
+                -2 * window.Math.sin( windDirection ),
+                0,
+                2 * window.Math.cos( windDirection )
+            ).normalize().multiplyScalar( windStrength );
         } else {
             windForce.set(
                 window.Math.sin( time / 2000 ),

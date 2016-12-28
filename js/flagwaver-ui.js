@@ -39,7 +39,7 @@
     var flagWaverDefaults = {
             isWindOn : true,
             isWindRandom : false,
-            windDirection : false,
+            windDirection : 270,
 
             flag     : {
                 imgUploadMode : 'web',
@@ -64,7 +64,7 @@
             toggleWindRandom : function () {
                 flagWaverOpts.isWindRandom = !flagWaverOpts.isWindRandom;
                 if ( flagWaverOpts.isWindRandom ) {
-                    flagWaver.setWindDirection( 90 );
+                    flagWaver.setWindDirection( flagWaverOpts.windDirection );
                 }
                 else {
                     flagWaver.setWindDirection( false );
