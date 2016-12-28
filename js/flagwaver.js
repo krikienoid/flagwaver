@@ -1160,7 +1160,7 @@
 
         // windStrength = window.Math.cos( time / 7000 ) * 100 + 200;
         // windStrength = 100;
-        if ( windDirection ) {
+        if ( Util.isNumeric( windDirection ) ) {
             windForce.set( 
                 -2 * window.Math.sin( windDirection ),
                 0,
