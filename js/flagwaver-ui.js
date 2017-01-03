@@ -72,9 +72,8 @@
                 }
             },
             changeWindDirection : function () {
-                if ( !flagWaverOpts.isWindRandom ) {
-                    flagWaver.setWindDirection( flagWaverOpts.windDirection );
-                }
+                flagWaverOpts.isWindRandom = false;
+                flagWaver.setWindDirection( flagWaverOpts.windDirection );
             },
             flag : {
                 setImgUploadMode : function () {
