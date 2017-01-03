@@ -1162,9 +1162,9 @@
         // windStrength = 100;
         if ( Util.isNumeric( windDirection ) ) {
             windForce.set( 
-                -2 * window.Math.sin( windDirection ),
+                2 * window.Math.sin( windDirection ),
                 0,
-                2 * window.Math.cos( windDirection )
+                -2 * window.Math.cos( windDirection )
             ).normalize().multiplyScalar( windStrength );
         } else {
             windForce.set(

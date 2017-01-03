@@ -279,6 +279,17 @@
         // Load settings from hash vars on page load
         fromHash();
 
+        // Make knob from wind direction control
+        $windDirectionControl.knob({
+            'min' :     0,
+            'max' :     360,
+            'stopper' : false,
+            'change' : function(v) {
+                flagWaverOpts.windDirection = v;
+                $windDirectionControl.trigger('change');
+            }
+        });
+
         //
         // Bind event handlers
         //
