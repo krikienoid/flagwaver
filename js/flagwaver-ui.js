@@ -39,7 +39,7 @@
 
     var flagWaverDefaults = {
             isWindOn : true,
-            isWindRandom : false,
+            isWindRandom : true,
             windDirection : 270,
 
             flag     : {
@@ -65,17 +65,17 @@
             toggleWindRandom : function () {
                 flagWaverOpts.isWindRandom = !flagWaverOpts.isWindRandom;
                 if ( flagWaverOpts.isWindRandom ) {
-                    flagWaver.setWindDirection( flagWaverOpts.windDirection );
+                    flagWaver.setWindDirection( false );
                 }
                 else {
-                    flagWaver.setWindDirection( false );
+                    flagWaver.setWindDirection( flagWaverOpts.windDirection );
                 }
             },
             changeWindDirection : function () {
                 if ( !flagWaverOpts.isWindRandom ) {
                     flagWaver.setWindDirection( flagWaverOpts.windDirection );
                 }
-            }
+            },
             flag : {
                 setImgUploadMode : function () {
                     if ( flagWaverOpts.flag.imgUploadMode === 'web' ) {
