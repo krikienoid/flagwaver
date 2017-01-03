@@ -71,6 +71,11 @@
                     flagWaver.setWindDirection( false );
                 }
             },
+            changeWindDirection : function () {
+                if ( !flagWaverOpts.isWindRandom ) {
+                    flagWaver.setWindDirection( flagWaverOpts.windDirection );
+                }
+            }
             flag : {
                 setImgUploadMode : function () {
                     if ( flagWaverOpts.flag.imgUploadMode === 'web' ) {
