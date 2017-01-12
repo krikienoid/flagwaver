@@ -133,12 +133,14 @@ p, a {
 
 .input-control-group,
 .input-control,
-.input-btn {
+.input-btn,
+.input-dial {
     margin : 4px 2px;
 }
 
 .input-control,
 .input-btn,
+.input-dial,
 .input-addon,
 .input-btn-group {
     vertical-align : middle;
@@ -147,6 +149,7 @@ p, a {
 
 .input-control,
 .input-btn,
+.input-dial,
 .input-addon {
     height      : 36px;
     overflow    : hidden;
@@ -159,7 +162,8 @@ p, a {
 }
 
 .input-control,
-.input-btn {
+.input-btn,
+.input-dial {
     display            : inline-block;
     border-radius      : 6px;
     padding            : 4px 12px;
@@ -168,7 +172,8 @@ p, a {
     transition         : z-index 0s 0.25s, background-image ease-in-out 0.25s, border-color ease-in-out 0.25s, color ease-in-out 0.25s, box-shadow ease-in-out 0.25s;
 }
 
-.input-btn {
+.input-btn,
+.input-dial {
     cursor              : pointer;
     -ms-touch-action    : manipulation;
         touch-action    : manipulation;
@@ -377,6 +382,7 @@ p, a {
 }
 
 .input-control.input-btn.input-btn-md,
+.input-control.input-dial.input-dial-md,
 .input-control.input-file {
     min-width : 108px;
 }
