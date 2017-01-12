@@ -281,13 +281,22 @@
 
         // Make knob from wind direction control
         $windDirectionControl.knob({
-            'min' :     0,
-            'max' :     360,
-            'stopper' : false,
-            'change' : function(v) {
+            'min'           : 0,
+            'max'           : 360,
+            'stopper'       : false,
+            'width'         : 36,
+            'height'        : 36,
+            'cursor'        : 12.0,
+            'thickness'     : 1.0,
+            'bgColor'       : '#999999',
+            'fgColor'       : '#ffffff',
+            'change'        : function(v) {
                 flagWaverOpts.windDirection = v;
                 $windDirectionControl.trigger('change');
             }
+        });
+        $windDirectionControl.trigger('configure', {
+            'displayInput' : false
         });
 
         //
