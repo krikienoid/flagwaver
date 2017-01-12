@@ -284,17 +284,21 @@
             'min'           : 0,
             'max'           : 360,
             'stopper'       : false,
-            'width'         : 36,
-            'height'        : 36,
+            'width'         : 32,
+            'height'        : 32,
             'cursor'        : 12.0,
             'thickness'     : 1.0,
             'bgColor'       : '#999999',
             'fgColor'       : '#ffffff',
+            'inline'        : false,
             'change'        : function(v) {
                 flagWaverOpts.windDirection = v;
                 $windDirectionControl.trigger('change');
             }
         });
+
+        // Hacks for jQuery Knob :(
+        $windDirectionControl.parent().addClass('input-control-group dial-group');
         $windDirectionControl.val(flagWaverOpts.windDirection).trigger('change');
         $windDirectionControl.trigger('configure', {
             'displayInput' : false

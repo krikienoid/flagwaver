@@ -173,7 +173,7 @@ p, a {
 }
 
 .input-btn,
-.input-dial {
+.dial-group {
     cursor              : pointer;
     -ms-touch-action    : manipulation;
         touch-action    : manipulation;
@@ -390,6 +390,12 @@ p, a {
 .input-control.input-file {
     position  : relative;
     padding   : 0;
+}
+
+.input-control-group.dial-group {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 /* //// Background Image //// */
