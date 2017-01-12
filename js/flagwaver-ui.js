@@ -40,7 +40,7 @@
     var flagWaverDefaults = {
             isWindOn : true,
             isWindRandom : true,
-            windDirection : 270,
+            windDirection : 90,
 
             flag     : {
                 imgUploadMode : 'web',
@@ -295,6 +295,7 @@
                 $windDirectionControl.trigger('change');
             }
         });
+        $windDirectionControl.val(flagWaverOpts.windDirection).trigger('change');
         $windDirectionControl.trigger('configure', {
             'displayInput' : false
         });
