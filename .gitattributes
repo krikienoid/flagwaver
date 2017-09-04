@@ -1,0 +1,52 @@
+* text=auto
+
+# Source Code
+*.html  text eol=lf
+*.css   text eol=lf
+*.scss  text eol=lf
+*.js    text eol=lf
+*.json  text eol=lf
+*.xml   text eol=lf
+*.glsl  text eol=lf
+*.sh    text eol=lf
+
+# Documentation
+*.md    text eol=lf
+*.txt   text eol=lf
+
+# Configs
+.browserslistrc     text eol=lf
+.editorconfig       text eol=lf
+.gitattributes      text eol=lf
+.gitconfig          text eol=lf
+.gitignore          text eol=lf
+.htaccess           text eol=lf
+*.npmignore         text eol=lf
+package-lock.json   text eol=lf -diff
+*.yml               text eol=lf
+browserslist        text eol=lf
+yarn.lock           text eol=lf -diff
+
+# Graphics
+*.gif   binary
+*.ico   binary
+*.jpg   binary
+*.jpeg  binary
+*.pdf   binary
+*.png   binary
+*.svg   text eol=lf
+*.wbmp  binary
+*.webp  binary
+
+# Fonts
+*.eot   binary
+*.otf   binary
+*.ttf   binary
+*.woff  binary
+*.woff2 binary
+
+# Media
+*.mov   binary
+*.mp4   binary
+*.mp3   binary
+*.webm  binary

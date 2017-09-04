@@ -140,7 +140,7 @@
         $.extend(flagWaverOpts.flag, flagWaverDefaults.flag, flagOpts);
 
         setFlagOpts({
-            imgSrc: flagWaverOpts.flag.imgURL || 'img/NZ.2b.png',
+            imgSrc: flagWaverOpts.flag.imgURL || './assets/img/NZ.2b.png',
             topEdge: flagWaverOpts.flag.topEdge,
             hoisting: flagWaverOpts.flag.hoisting
         });

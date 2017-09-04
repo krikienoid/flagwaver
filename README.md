@@ -1,18 +1,38 @@
-# Flag Waver
+# FlagWaver
 
-###### Simulate a flag waving in the breeze right in your browser window.
+> A web app for simulating a waving flag.
 
+[krikienoid.github.io/flagwaver](https://krikienoid.github.io/flagwaver/)
 
-[LINK](http://krikienoid.github.io/flagwaver/)
+## Features
 
+- Upload images from the web or from your computer.
+- Supports flag cloths with different aspect ratios.
+- Set the hoist side and flag orientation.
 
-## Info
+## Development
 
-This is an online flag waving simulator.
+This project uses a Gulp-powered build system with these features:
 
-It is based on code written by Graphics Noob (aka @Blurspline, zz85) and the flagtest.nz website.
+- Sass compilation and prefixing
+- Rollup JavaScript bundler
+- Built-in BrowserSync server
+- For production builds:
+  - CSS compression
+  - JavaScript compression
 
-Some additional features include:
+### Build
 
-+ The ability to use images from the web as well as from a desktop
-+ Flag that matches the aspect ratio of the image
+- Run ```npm install``` to install dependencies after pulling down the repository for the first time.
+- Run ```npm start``` to build the project and run the website locally. The finished site will be created in a folder called ```dist``` and will be viewable in the browser at ```http://localhost:8000```.
+- Run ```npm run build``` to build the project to the ```dist``` directory with production ready assets.
+
+## Resources
+
+- [Advanced Character Physics by Thomas Jakobsen Character](http://web.archive.org/web/20070610223835/http:/www.teknikus.dk/tj/gdc2001.htm)
+- [Cloth modeling - Wikipedia](https://en.wikipedia.org/wiki/Cloth_modeling)
+- [Real-time Cloth Animation](http://www.darwin3d.com/gamedev/articles/col0599.pdf)
+
+## Credits
+
+Written by [krikienoid](https://github.com/krikienoid/flagwaver). Based on previous work by [flagtest.nz](http://flagtest.nz/) and [Joshua Koo](https://github.com/zz85).
