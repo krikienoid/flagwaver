@@ -1,78 +1,31 @@
-/**
- * Flag Waver
- *
- * Simulate a flag waving in the breeze right in your browser window.
- *
+/*!
+ * FlagWaver - Core
+ * @author krikienoid / https://github.com/krikienoid
  */
 
-/*
- * Aug 9 2012
- *
- * Its Singapore's National Day, so
- * Making a quick tweaks to simulate the Singapore flag in the wind
- */
-
-/*
- * Aug 3 2012
- *
- * Since I started working for a new startup not too long ago,
- * I commute between home and work for over 2 hours a day.
- * Although this means less time on three.js,
- * I try getting a little coding on the train.
- *
- * This set of experiments started from a simple hook's law doodle,
- * to spring simulation, string simulation, and I realized
- * I once again stepped onto physics and particle simulation,
- * this time, more specifically soft body physics.
- *
- * Based on the "Advanced Character Physics" article,
- * this experiment attempts to use a "massless"
- * cloth simulation model. It's somewhat similiar
- * but simplier to most cloth simulations I found.
- *
- * This was coded out fairly quickly, so expect more to come
- * meanwhile feel free to experiment yourself and share
- *
- * Cheers,
- * Graphics Noob (aka @Blurspline, zz85)
- */
-
-/*
- * Suggested Readings
- *
- * Advanced Character Physics by Thomas Jakobsen Character -
- *     http://web.archive.org/web/20070610223835/http:/www.teknikus.dk/tj/gdc2001.htm
- * http://freespace.virgin.net/hugo.elias/models/m_cloth.htm
- * http://en.wikipedia.org/wiki/Cloth_modeling
- * http://cg.alexandra.dk/tag/spring-mass-system/
- * Real-time Cloth Animation -
- *     http://www.darwin3d.com/gamedev/articles/col0599.pdf
- */
-
-/*
- * Nov 14 2015
- *
- * Modified by /u/krikienoid for use in Flag Waver.
- */
-
-//
-// Flag Waver Tool
-//
+import THREE from 'three';
+import {
+    DEBUG,
+    DAMPING,
+    DRAG,
+    G,
+    Hoisting,
+    Side,
+    Face,
+    FlagpoleType
+} from './constants';
+import Utils from './utils/Utils';
+import ShaderChunk from './webgl/ShaderChunk';
+import Orientation from './abstracts/Orientation';
 
 ;(function (window, document, THREE, undefined) {
     //
     // Global settings
     //
 
-    // Enable debug mode
-    var isDebugMode = false;
-
-    // Physics settings
-    var DAMPING = 0.03;
-    var DRAG    = 1 - DAMPING;
     var SLACK   = 1.2;
     var MASS    = 0.1;
-    var GRAVITY = 981 * 1.4;
+    var GRAVITY = G * 100 * 1.4;
 
     // Time settings
     var FPS        = 60;
@@ -434,19 +387,6 @@
         this.geometry.verticesNeedUpdate = true;
     };
 
-    // Flag settings enums
-    var HOISTING = {
-        Dexter: 'dexter',
-        Sinister: 'sinister'
-    };
-
-    var EDGE = {
-        Top:    { name: 'top',    direction: 0            },
-        Left:   { name: 'left',   direction: -Math.PI / 2 },
-        Bottom: { name: 'bottom', direction: Math.PI      },
-        Right:  { name: 'right',  direction: Math.PI / 2  }
-    };
-
     // Default flag options
     var defaultOptions = {
         width:         300,
@@ -458,38 +398,6 @@
     // Default flag texture
     var blankTexture = THREE.ImageUtils
         .generateDataTexture(4, 4, new THREE.Color(0xffffff));
-
-    // Utilties
-    var Util = {};
-
-    // Is valid number
-    Util.isNumeric = function (n) {
-        return !isNaN(parseFloat(n)) && isFinite(n);
-    };
-
-    // Copy object properties
-    Util.extend = function () {
-        var target = arguments[0];
-        var options;
-        var i, il;
-
-        if (typeof target !== 'object') { target = {}; }
-
-        for (i = 1, il = arguments.length; i < il; i++) {
-            options = arguments[i];
-
-            if (typeof options === 'object') {
-                for (var k in options) {
-                    if (
-                        options.hasOwnProperty(k) &&
-                        typeof options[k] !== 'undefined'
-                    ) { target[k] = options[k]; }
-                }
-            }
-        }
-
-        return target;
-    };
 
     // Load image
     function loadImg(imgSrc, callback) {
@@ -562,23 +470,23 @@
             }
 
             // Rotate
-            if (Util.isNumeric(transform.rotate)) {
+            if (Utils.isNumeric(transform.rotate)) {
                 ctx.translate(canvas.width / 2, canvas.height / 2);
                 ctx.rotate(transform.rotate);
                 ctx.translate(-canvas.width / 2, -canvas.height / 2);
             }
 
             // Translate
-            if (Util.isNumeric(transform.translateX)) {
+            if (Utils.isNumeric(transform.translateX)) {
                 ctx.translate(transform.translateX, 0);
             }
 
-            if (Util.isNumeric(transform.translateY)) {
+            if (Utils.isNumeric(transform.translateY)) {
                 ctx.translate(0, transform.translateY);
             }
         }
 
-        if (isDebugMode) {
+        if (DEBUG) {
             console.log(
                 'FlagWaver: Image properties' +
                 '\n\t' + 'Image size: ' + srcWidth + 'x' + srcHeight +
@@ -604,11 +512,11 @@
         this.position  = new THREE.Vector3(0, 0, 0);
         this.offset    = new THREE.Vector3(0, 0, 0);
 
-        this.hoisting  = HOISTING.Dexter;
-        this.topEdge   = EDGE.Top;
+        this.hoisting  = Hoisting.DEXTER;
+        this.topEdge   = Side.TOP;
         this.img       = null;
 
-        this.options   = Util.extend({}, defaultOptions);
+        this.options   = Object.assign({}, defaultOptions);
         this.transform = {};
         this.pins      = [];
 
@@ -630,14 +538,14 @@
         this.object.receiveShadow = true;
         this.object.customDepthMaterial = new THREE.ShaderMaterial({
             uniforms:       { texture: { type: 't', value: blankTexture } },
-            vertexShader:   vertexShader,
-            fragmentShader: fragmentShader
+            vertexShader:   ShaderChunk.depth_vert,
+            fragmentShader: ShaderChunk.depth_frag
         });
     }
 
     // Check if flag has been rotated into a vertical position
     Flag.prototype.isVertical = function () {
-        return this.topEdge === EDGE.Left || this.topEdge === EDGE.Right;
+        return this.topEdge === Side.LEFT || this.topEdge === Side.RIGHT;
     };
 
     // Add fixed constraints to flag cloth
@@ -691,31 +599,31 @@
 
         spacing = parseInt(spacing);
 
-        if (!Util.isNumeric(spacing) || spacing < 1) { spacing = 1; }
+        if (!Utils.isNumeric(spacing) || spacing < 1) { spacing = 1; }
 
         switch (edge) {
-            case EDGE.Top:
+            case Side.TOP:
                 for (i = 0; i <= xSegs; i += spacing) {
                     pins.push(index(i, ySegs));
                 }
 
                 break;
 
-            case EDGE.Bottom:
+            case Side.BOTTOM:
                 for (i = 0; i <= xSegs; i += spacing) {
                     pins.push(index(i, 0));
                 }
 
                 break;
 
-            case EDGE.Right:
+            case Side.RIGHT:
                 for (i = 0; i <= ySegs; i += spacing) {
                     pins.push(index(xSegs, i));
                 }
 
                 break;
 
-            case EDGE.Left:
+            case Side.LEFT:
             default:
                 for (i = 0; i <= ySegs; i += spacing) {
                     pins.push(index(0, i));
@@ -745,10 +653,10 @@
 
     // Apply options and create new cloth object
     Flag.prototype.setOptions = function (options) {
-        options = Util.extend(this.options, options);
+        options = Object.assign(this.options, options);
 
         if (this.isVertical()) {
-            options = Util.extend({}, options, {
+            options = Object.assign({}, options, {
                 width:  this.options.height,
                 height: this.options.width
             });
@@ -818,7 +726,7 @@
             height: this.options.height
         };
 
-        transform.rotate = this.topEdge.direction;
+        transform.rotate = Orientation.from(this.topEdge).angle;
 
         if (this.isVertical()) {
             canvas = this.material.map.image;
@@ -859,10 +767,10 @@
 
     // Set the hoisting to dexter or sinister
     Flag.prototype.setHoisting = function (hoisting) {
-        if (hoisting !== HOISTING.Sinister) { hoisting = HOISTING.Dexter; }
+        if (hoisting !== Hoisting.SINISTER) { hoisting = Hoisting.DEXTER; }
 
         this.hoisting = hoisting;
-        this.transform.reflect = hoisting === HOISTING.Sinister;
+        this.transform.reflect = hoisting === Hoisting.SINISTER;
         this.transformTexture(this.transform);
     };
 
@@ -871,11 +779,11 @@
         var wasVertical = this.isVertical();
 
         switch (edge) {
-            case 'left':   this.topEdge = EDGE.Left;   break;
-            case 'bottom': this.topEdge = EDGE.Bottom; break;
-            case 'right':  this.topEdge = EDGE.Right;  break;
+            case 'left':   this.topEdge = Side.LEFT;   break;
+            case 'bottom': this.topEdge = Side.BOTTOM; break;
+            case 'right':  this.topEdge = Side.RIGHT;  break;
             case 'top':
-            default:       this.topEdge = EDGE.Top;    break;
+            default:       this.topEdge = Side.TOP;    break;
         }
 
         if (wasVertical !== this.isVertical()) { this.setOptions(); }
@@ -946,7 +854,7 @@
         }
 
         this.options = {
-            get topEdge() { return flag.topEdge.name; },
+            get topEdge() { return flag.topEdge; },
             set topEdge(val) { flag.setTopEdge(val); },
 
             get hoisting() { return flag.hoisting; },
@@ -963,7 +871,7 @@
             set width(val) {
                 val = Number(val);
 
-                if (Util.isNumeric(val) && val > 0) {
+                if (Utils.isNumeric(val) && val > 0) {
                     isDefaultSize = false;
                     flag.setOptions({ width: val });
                 }
@@ -973,7 +881,7 @@
             set height(val) {
                 val = Number(val);
 
-                if (Util.isNumeric(val) && val > 0) {
+                if (Utils.isNumeric(val) && val > 0) {
                     isDefaultSize = false;
                     flag.setOptions({ height: val });
                 }
@@ -983,7 +891,7 @@
             set mass(val) {
                 val = Number(val);
 
-                if (Util.isNumeric(val) && val >= 0) {
+                if (Utils.isNumeric(val) && val >= 0) {
                     flag.setOptions({ mass: val });
                 }
             },
@@ -992,7 +900,7 @@
             set levelOfDetail(val) {
                 val = Math.round(val);
 
-                if (Util.isNumeric(val) && val > 0) {
+                if (Utils.isNumeric(val) && val > 0) {
                     flag.setOptions({ levelOfDetail: val });
                 }
             },
@@ -1007,7 +915,7 @@
             }
         };
 
-        if (isDebugMode) { this._flag = flag; }
+        if (DEBUG) { this._flag = flag; }
     }
 
     PublicFlag.prototype.setOpts = function (o) {
@@ -1039,7 +947,6 @@
     var poleHeight = 1000;
 
     // Renderer variables
-    var vertexShader, fragmentShader;
     var scene;
     var camera;
     var renderer;
@@ -1052,10 +959,6 @@
         var poleGeo;
         var poleMat;
         var poleMesh;
-
-        // Get shaders
-        vertexShader   = document.getElementById('vertexShaderDepth').textContent;
-        fragmentShader = document.getElementById('fragmentShaderDepth').textContent;
 
         // Init scene
         scene     = new THREE.Scene();
@@ -1156,7 +1059,7 @@
     }
 
     function setWind(value) {
-        if (Util.isNumeric(value) && value > 0) {
+        if (Utils.isNumeric(value) && value > 0) {
             windStrength = value;
         } else {
             windStrength = 0;
