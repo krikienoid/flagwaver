@@ -17,6 +17,13 @@ import {
 import Utils from './utils/Utils';
 import ShaderChunk from './webgl/ShaderChunk';
 import Orientation from './abstracts/Orientation';
+import Particle from './subjects/Particle';
+import Constraint from './subjects/Constraint';
+import Cloth from './subjects/Cloth';
+import Wind from './subjects/Wind';
+import WindModifiers from './subjects/WindModifiers';
+import applyWindForceToCloth from './interactions/applyWindForceToCloth';
+import applyGravityToCloth from './interactions/applyGravityToCloth';
 
 ;(function (window, document, THREE, undefined) {
     //
@@ -25,7 +32,6 @@ import Orientation from './abstracts/Orientation';
 
     var SLACK   = 1.2;
     var MASS    = 0.1;
-    var GRAVITY = G * 100 * 1.4;
 
     // Time settings
     var FPS        = 60;
@@ -35,88 +41,12 @@ import Orientation from './abstracts/Orientation';
     var time;
     var timePrev;
 
-    // Wind settings
-    var wind         = true;
-    var windStrength = 200;
-    var windForce    = new THREE.Vector3(0, 0, 0);
-
-    // Ball settings
-    var ballPosition = new THREE.Vector3(0, -45, 0);
-    var ballSize     = 60; // 40
-
     //
     // Simulation classes
     //
 
     // Cloth simulation variables
-    var gravityForce = new THREE.Vector3(0, -GRAVITY, 0);
-    var tmpForce     = new THREE.Vector3();
     var diff         = new THREE.Vector3();
-
-    // Particle constructor
-    function Particle(position, mass) {
-        this.position = new THREE.Vector3(); // position
-        this.previous = new THREE.Vector3(); // previous
-        this.original = new THREE.Vector3();
-        this.position.copy(position);
-        this.previous.copy(position);
-        this.original.copy(position);
-        this.accel    = new THREE.Vector3(); // acceleration
-        this.mass     = mass;
-        this.invMass  = 1 / mass;
-        this.tmp      = new THREE.Vector3();
-        this.tmp2     = new THREE.Vector3();
-    }
-
-    // Force -> Acceleration
-    Particle.prototype.addForce = function (force) {
-        this.accel.add(
-            this.tmp2.copy(force).multiplyScalar(this.invMass)
-        );
-    };
-
-    // Performs verlet integration
-    Particle.prototype.integrate = function (timestepSq) {
-        var newPos = this.tmp.subVectors(this.position, this.previous);
-
-        newPos.multiplyScalar(DRAG).add(this.position);
-        newPos.add(this.accel.multiplyScalar(timestepSq));
-
-        this.tmp      = this.previous;
-        this.previous = this.position;
-        this.position = newPos;
-
-        this.accel.set(0, 0, 0);
-    };
-
-    // Constraint constructor
-    function Constraint(p1, p2, restDistance) {
-        this.p1 = p1;
-        this.p2 = p2;
-        this.restDistance = restDistance;
-    }
-
-    // Satisfy constraint
-    Constraint.prototype.satisfy = function () {
-        var p1 = this.p1;
-        var p2 = this.p2;
-        var distance = this.restDistance;
-
-        var currentDist;
-        var correction;
-        var correctionHalf;
-
-        diff.subVectors(p2.position, p1.position);
-        currentDist = diff.length();
-
-        if (currentDist === 0) { return; } // prevents division by 0
-
-        correction = diff.multiplyScalar(1 - distance / currentDist);
-        correctionHalf = correction.multiplyScalar(0.5);
-
-        p1.position.add(correctionHalf);
-        p2.position.sub(correctionHalf);
-    };
 
     // Satisfy constraint unidirectionally
     Constraint.prototype.satisfyFixed = function () {
@@ -138,261 +68,12 @@ import Orientation from './abstracts/Orientation';
         }
     };
 
-    // Cloth constructor
-    function Cloth(xSegs, ySegs, restDistance, mass) {
-        var particles   = [];
-        var constraints = [];
-        var index;
-        var plane;
-        var geometry;
-        var weightForce;
-        var width, height;
-        var u, v;
-
-        // Cloth properties
-        width       = restDistance * xSegs;
-        height      = restDistance * ySegs;
-        weightForce = new THREE.Vector3();
-        weightForce.copy(gravityForce).multiplyScalar(mass);
-
-        // Index get function
-        index = function (u, v) {
-            return u + v * (xSegs + 1);
-        };
-
-        // Cloth plane function
-        plane = function (u, v) {
-            return new THREE.Vector3(u * width, v * height, 0); // (u - 0.5)
-        };
-
-        // Cloth geometry
-        geometry = new THREE.ParametricGeometry(plane, xSegs, ySegs, true);
-        geometry.dynamic = true;
-        geometry.computeFaceNormals();
-
-        // Particles
-        for (v = 0; v <= ySegs; v++) {
-            for (u = 0; u <= xSegs; u++) {
-                particles.push(
-                    new Particle(plane(u / xSegs, v / ySegs), mass)
-                );
-            }
-        }
-
-        // Structural constraints
-
-        for (v = 0; v < ySegs; v++) {
-            for (u = 0; u < xSegs; u++) {
-                constraints.push(new Constraint(
-                    particles[index(u, v)],
-                    particles[index(u, v + 1)],
-                    restDistance
-                ));
-
-                constraints.push(new Constraint(
-                    particles[index(u, v)],
-                    particles[index(u + 1, v)],
-                    restDistance
-                ));
-            }
-        }
-
-        for (u = xSegs, v = 0; v < ySegs; v++) {
-            constraints.push(new Constraint(
-                particles[index(u, v)],
-                particles[index(u, v + 1)],
-                restDistance
-            ));
-        }
-
-        for (v = ySegs, u = 0; u < xSegs; u++) {
-            constraints.push(new Constraint(
-                particles[index(u, v)],
-                particles[index(u + 1, v)],
-                restDistance
-            ));
-        }
-
-        // While many systems use shear and bend springs,
-        // the relax constraints model seems to be just fine
-        // using structural springs.
-
-        // Shear
-        var diagonalDist = Math.sqrt(restDistance * restDistance * 2);
-
-        for (v = 0; v < ySegs; v++) {
-            for (u = 0; u < xSegs; u++) {
-                constraints.push(new Constraint(
-                    particles[index(u, v)],
-                    particles[index(u + 1, v + 1)],
-                    diagonalDist
-                ));
-
-                constraints.push(new Constraint(
-                    particles[index(u + 1, v)],
-                    particles[index(u, v + 1)],
-                    diagonalDist
-                ));
-            }
-        }
-
-        // Bend
-
-        // var wlen = restDistance * 2;
-        // var hlen = restDistance * 2;
-
-        // diagonalDist = Math.sqrt(wlen * wlen + hlen * hlen);
-
-        // for (v = 0; v < ySegs - 1; v++) {
-        //     for (u = 0; u < xSegs - 1; u++) {
-        //         constraints.push(new Constraint(
-        //             particles[index(u, v)],
-        //             particles[index(u + 2, v)],
-        //             wlen
-        //         ));
-
-        //         constraints.push(new Constraint(
-        //             particles[index(u, v)],
-        //             particles[index(u, v + 2)],
-        //             hlen
-        //         ));
-
-        //         constraints.push(new Constraint(
-        //             particles[index(u, v)],
-        //             particles[index(u + 2, v + 2)],
-        //             diagonalDist
-        //         ));
-
-        //         constraints.push(new Constraint(
-        //             particles[index(u, v + 2)],
-        //             particles[index(u + 2, v + 2)],
-        //             wlen
-        //         ));
-
-        //         constraints.push(new Constraint(
-        //             particles[index(u + 2, v + 2)],
-        //             particles[index(u + 2, v + 2)],
-        //             hlen
-        //         ));
-
-        //         constraints.push(new Constraint(
-        //             particles[index(u + 2,  v)],
-        //             particles[index(u , v + 2)],
-        //             diagonalDist
-        //         ));
-        //     }
-        // }
-
-        // Public properties and methods
-        this.xSegs        = xSegs;
-        this.ySegs        = ySegs;
-        this.width        = width;
-        this.height       = height;
-        this.restDistance = restDistance;
-        this.index        = index;
-        this.plane        = plane;
-        this.geometry     = geometry;
-        this.particles    = particles;
-        this.constraints  = constraints;
-        this.weightForce  = weightForce;
-    }
-
-    // Simulate cloth
-    Cloth.prototype.simulate = function () {
-        var particles   = this.particles;
-        var constraints = this.constraints;
-        var faces       = this.geometry.faces;
-        var weightForce = this.weightForce;
-        var particle;
-        var constraint;
-        var face, normal;
-        var i, il;
-
-        // Aerodynamic forces
-        if (wind) {
-            for (i = 0, il = faces.length; i < il; i++) {
-                face   = faces[i];
-                normal = face.normal;
-
-                tmpForce.copy(normal).normalize().multiplyScalar(
-                    normal.dot(windForce)
-                );
-
-                particles[face.a].addForce(tmpForce);
-                particles[face.b].addForce(tmpForce);
-                particles[face.c].addForce(tmpForce);
-            }
-        }
-
-        // Gravity force
-        for (i = 0, il = particles.length; i < il; i++) {
-            particle = particles[i];
-
-            particle.addForce(weightForce);
-
-            // var x = particle.position.x;
-            // var y = particle.position.y;
-            // var z = particle.position.z;
-            // var t = Date.now() / 1000;
-
-            // windForce.set(
-            //     Math.sin(x * y * t),
-            //     Math.cos(z * t),
-            //     Math.sin(Math.cos(5 * x * y * z))
-            // ).multiplyScalar(100);
-
-            // particle.addForce(windForce);
-
-            particle.integrate(timestepSq);
-        }
-
-        // Satisfy constraints
-        for (i = 0, il = constraints.length; i < il; i++) {
-            constraints[i].satisfy();
-        }
-
-        // Ball constraints
-        ballPosition.z = -Math.sin(Date.now() / 300) * 90; // +40
-        ballPosition.x = Math.cos(Date.now() / 200) * 70;
-
-        // if (sphere.visible) {
-        //     for (i = 0, il = particles.length; i < il; i++) {
-        //         particle = particles[i];
-        //         pos = particle.position;
-
-        //         diff.subVectors(pos, ballPosition);
-
-        //         if (diff.length() < ballSize) {
-        //             // collided
-        //             diff.normalize().multiplyScalar(ballSize);
-        //             pos.copy(ballPosition).add(diff);
-        //         }
-        //     }
-        // }
-    };
-
-    // Render cloth
-    Cloth.prototype.render = function () {
-        var particles = this.particles;
-        var vertices  = this.geometry.vertices;
-        var i, il;
-
-        for (i = 0, il = particles.length; i < il; i++) {
-            vertices[i].copy(particles[i].position);
-        }
-
-        this.geometry.computeFaceNormals();
-        this.geometry.computeVertexNormals();
-        this.geometry.normalsNeedUpdate  = true;
-        this.geometry.verticesNeedUpdate = true;
-    };
-
     // Default flag options
     var defaultOptions = {
         width:         300,
         height:        200,
         mass:          MASS,
-        levelOfDetail: 10
+        granularity:   10
     };
 
     // Default flag texture
@@ -550,19 +231,18 @@ import Orientation from './abstracts/Orientation';
 
     // Add fixed constraints to flag cloth
     Flag.prototype.constrainCloth = function () {
-        var xSegs            = this.cloth.xSegs;
-        var ySegs            = this.cloth.ySegs;
+        var xSegments        = this.cloth.xSegments;
+        var ySegments        = this.cloth.ySegments;
         var restDistance     = this.cloth.restDistance * SLACK;
-        var particles        = this.cloth.particles;
-        var index            = this.cloth.index;
+        var particleAt       = this.cloth.particleAt;
         var fixedConstraints = [];
         var u, v;
 
-        for (v = 0; v <= ySegs; v++) {
-            for (u = 0; u < xSegs; u++) {
+        for (v = 0; v <= ySegments; v++) {
+            for (u = 0; u < xSegments; u++) {
                 fixedConstraints.push(new Constraint(
-                    particles[index(u, v)],
-                    particles[index(u + 1, v)],
+                    particleAt(u, v),
+                    particleAt(u + 1, v),
                     restDistance
                 ));
             }
@@ -577,7 +257,7 @@ import Orientation from './abstracts/Orientation';
 
         if (!options) { options = this.options; }
 
-        restDistance = options.height / options.levelOfDetail;
+        restDistance = options.height / options.granularity;
 
         this.cloth = new Cloth(
             Math.round(options.width / restDistance),
@@ -592,9 +272,9 @@ import Orientation from './abstracts/Orientation';
     // Pin edges of flag cloth
     Flag.prototype.pin = function (edge, spacing) {
         var pins  = this.pins;
-        var xSegs = this.cloth.xSegs;
-        var ySegs = this.cloth.ySegs;
-        var index = this.cloth.index;
+        var xSegments  = this.cloth.xSegments;
+        var ySegments  = this.cloth.ySegments;
+        var particleAt = this.cloth.particleAt;
         var i;
 
         spacing = parseInt(spacing);
@@ -603,30 +283,30 @@ import Orientation from './abstracts/Orientation';
 
         switch (edge) {
             case Side.TOP:
-                for (i = 0; i <= xSegs; i += spacing) {
-                    pins.push(index(i, ySegs));
+                for (i = 0; i <= xSegments; i += spacing) {
+                    pins.push(particleAt(i, ySegments));
                 }
 
                 break;
 
             case Side.BOTTOM:
-                for (i = 0; i <= xSegs; i += spacing) {
-                    pins.push(index(i, 0));
+                for (i = 0; i <= xSegments; i += spacing) {
+                    pins.push(particleAt(i, 0));
                 }
 
                 break;
 
             case Side.RIGHT:
-                for (i = 0; i <= ySegs; i += spacing) {
-                    pins.push(index(xSegs, i));
+                for (i = 0; i <= ySegments; i += spacing) {
+                    pins.push(particleAt(xSegments, i));
                 }
 
                 break;
 
             case Side.LEFT:
             default:
-                for (i = 0; i <= ySegs; i += spacing) {
-                    pins.push(index(0, i));
+                for (i = 0; i <= ySegments; i += spacing) {
+                    pins.push(particleAt(0, i));
                 }
 
                 break;
@@ -802,18 +482,18 @@ import Orientation from './abstracts/Orientation';
     };
 
     // Simulate flag cloth
-    Flag.prototype.simulate = function () {
+    Flag.prototype.simulate = function (deltaTime) {
         var pins             = this.pins;
         var particles        = this.cloth.particles;
         var fixedConstraints = this.fixedConstraints;
         var particle;
         var i, il;
 
-        this.cloth.simulate();
+        this.cloth.simulate(deltaTime);
 
         // Pin constraints
         for (i = 0, il = pins.length; i < il; i++) {
-            particle = particles[pins[i]];
+            particle = pins[i];
 
             particle.position.copy(particle.original);
             particle.previous.copy(particle.position);
@@ -896,12 +576,12 @@ import Orientation from './abstracts/Orientation';
                 }
             },
 
-            get levelOfDetail() { return flag.options.levelOfDetail; },
-            set levelOfDetail(val) {
+            get granularity() { return flag.options.granularity; },
+            set granularity(val) {
                 val = Math.round(val);
 
                 if (Utils.isNumeric(val) && val > 0) {
-                    flag.setOptions({ levelOfDetail: val });
+                    flag.setOptions({ granularity: val });
                 }
             },
 
@@ -950,6 +630,7 @@ import Orientation from './abstracts/Orientation';
     var scene;
     var camera;
     var renderer;
+    var wind;
     var flag;
     var publicFlag;
 
@@ -1054,18 +735,20 @@ import Orientation from './abstracts/Orientation';
 
         publicFlag = flag.createPublic();
 
+        wind = new Wind({
+            directionModifier: WindModifiers.rotatingDirection
+        });
+
         // Begin animation
         animate();
     }
 
     function setWind(value) {
         if (Utils.isNumeric(value) && value > 0) {
-            windStrength = value;
+            wind.speed = value;
         } else {
-            windStrength = 0;
+            wind.speed = 0;
         }
-
-        wind = !!windStrength;
     }
 
     function onResize() {
@@ -1103,16 +786,10 @@ import Orientation from './abstracts/Orientation';
         if (timestep > TIMESTEP) { timestep = TIMESTEP; }
         timestepSq = timestep * timestep;
 
-        // windStrength = Math.cos(time / 7000) * 100 + 200;
-        // windStrength = 100;
-        windForce.set(
-            Math.sin(time / 2000),
-            Math.cos(time / 3000),
-            Math.sin(time / 1000)
-        ).normalize().multiplyScalar(windStrength);
-        // windForce.set(2000, 0, 1000).normalize().multiplyScalar(windStrength);
-
-        flag.simulate();
+        wind.update(timestep);
+        applyWindForceToCloth(flag.cloth, wind);
+        applyGravityToCloth(flag.cloth);
+        flag.simulate(timestep);
         render();
     }
 
