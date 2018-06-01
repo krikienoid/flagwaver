@@ -408,3 +408,7 @@ p, a {
         background-image : url('../img/Sky_over_Washington_Monument-1600x1200px.jpg');
     }
 }
+
+.input-select option {
+    color: black;
+}
