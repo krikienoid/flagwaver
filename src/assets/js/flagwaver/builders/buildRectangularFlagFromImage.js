@@ -1,0 +1,223 @@
+import THREE from 'three';
+import { DEBUG, Hoisting, Side } from '../constants';
+import Utils from '../utils/Utils';
+import Orientation from '../abstracts/Orientation';
+import Flag from '../subjects/Flag';
+
+/**
+ * @function buildRectangularFlagFromImage
+ *
+ * @description Helper for generating flags from rectangular designs
+ * that can be rotated and flipped.
+ *
+ * @param {HTMLImageElement} image
+ * @param {Object} [options]
+ */
+var buildRectangularFlagFromImage = (function () {
+    var defaults = {
+        width: 'auto',
+        height: 'auto',
+        hoisting: Hoisting.DEXTER,
+        topEdge: Side.TOP
+    };
+
+    // Calculate width and/or height from image if either is set to 'auto'
+    function computeSizeFromImage(image, options) {
+        var crossWidth;
+
+        if (options.width === 'auto' && options.height === 'auto') {
+            crossWidth = Flag.defaults.height;
+
+            if (image.width < image.height) {
+                // Vertical
+                return {
+                    width:  crossWidth,
+                    height: crossWidth * image.height / image.width
+                };
+            } else {
+                // Horizontal or square
+                return {
+                    width:  crossWidth * image.width / image.height,
+                    height: crossWidth
+                };
+            }
+        } else if (options.width === 'auto' && Utils.isNumeric(options.height)) {
+            return {
+                width:  options.height * image.width / image.height,
+                height: options.height
+            };
+        } else if (Utils.isNumeric(options.width) && options.height === 'auto') {
+            return {
+                width:  options.width,
+                height: options.width * image.height / image.width
+            };
+        } else {
+            return {
+                width:  options.width,
+                height: options.height
+            };
+        }
+    }
+
+    // Compute a numeric width and height from options
+    function computeSize(image, options) {
+        var size = {
+            width:  options.width,
+            height: options.height
+        };
+
+        if (image) {
+            size = computeSizeFromImage(image, size);
+        }
+
+        if (Utils.isNumeric(size.width) && Utils.isNumeric(size.height)) {
+            return size;
+        } else {
+            return {
+                width:  Flag.defaults.width,
+                height: Flag.defaults.height
+            };
+        }
+    }
+
+    // Check if flag has been rotated into a vertical position
+    function isVertical(options) {
+        return options.topEdge === Side.LEFT || options.topEdge === Side.RIGHT;
+    }
+
+    // Compute values needed to apply texture onto mesh
+    function computeTextureArgs(options) {
+        var orientation = Orientation.from(options.topEdge);
+        var result = {};
+        var offset;
+
+        result.width = options.width;
+        result.height = options.height;
+        result.reflect = options.hoisting === Hoisting.SINISTER;
+        result.rotate = orientation.angle;
+
+        if (isVertical(options)) {
+            offset = (options.width - options.height) / 2;
+
+            result.translateX = -offset;
+            result.translateY = offset;
+            result.flipXY = true;
+        } else {
+            result.translateX = 0;
+            result.translateY = 0;
+            result.flipXY = false;
+        }
+
+        return result;
+    }
+
+    // Generate transformed texture from image using HTML canvas
+    // (Requires images to be CORS enabled)
+    function createTextureFromImage(image, options) {
+        var canvas = document.createElementNS(
+            'http://www.w3.org/1999/xhtml',
+            'canvas'
+        );
+
+        var ctx        = canvas.getContext('2d');
+        var srcWidth   = image.width;
+        var srcHeight  = image.height;
+        var destWidth  = srcWidth;
+        var destHeight = srcHeight;
+
+        if (Utils.isObject(options)) {
+            // Set destination size
+            if (options.width  > 0) { destWidth  = options.width;  }
+            if (options.height > 0) { destHeight = options.height; }
+
+            // Swap X axis with Y axis
+            if (options.flipXY) {
+                canvas.width  = destHeight;
+                canvas.height = destWidth;
+            } else {
+                canvas.width  = destWidth;
+                canvas.height = destHeight;
+            }
+
+            // Reflect
+            if (options.reflect) {
+                ctx.translate(canvas.width, 0);
+                ctx.scale(-1, 1);
+            }
+
+            // Rotate around center
+            if (Utils.isNumeric(options.rotate)) {
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                ctx.rotate(options.rotate);
+                ctx.translate(-canvas.width / 2, -canvas.height / 2);
+            }
+
+            // Translate X
+            if (Utils.isNumeric(options.translateX)) {
+                ctx.translate(options.translateX, 0);
+            }
+
+            // Translate Y
+            if (Utils.isNumeric(options.translateY)) {
+                ctx.translate(0, options.translateY);
+            }
+        } else {
+            // Set canvas size
+            canvas.width  = destWidth;
+            canvas.height = destHeight;
+        }
+
+        if (DEBUG) {
+            console.log(
+                'FlagWaver.buildRectangularFlagFromImage: Image texture created.' +
+                '\n  ' + 'Natural size: ' +
+                    srcWidth + 'x' + srcHeight +
+                '\n  ' + 'Texture size: ' +
+                    Math.round(canvas.width) + 'x' + Math.round(canvas.height) +
+                '\n  ' + 'Natural aspect ratio: ' +
+                    Number((srcWidth / srcHeight).toFixed(4)) +
+                '\n  ' + 'Texture aspect ratio: ' +
+                    Number((canvas.width / canvas.height).toFixed(4))
+            );
+
+            ctx.fillStyle = '#ff00ff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        ctx.drawImage(
+            image, 0, 0, srcWidth, srcHeight, 0, 0, destWidth, destHeight
+        );
+
+        return new THREE.Texture(canvas);
+    }
+
+    // Compute values needed to create new flag
+    function computeFlagArgs(image, options) {
+        var result = Object.assign({}, options);
+
+        if (isVertical(options)) {
+            result.width  = options.height;
+            result.height = options.width;
+        }
+
+        if (image) {
+            result.texture = createTextureFromImage(
+                image,
+                computeTextureArgs(options)
+            );
+        }
+
+        return result;
+    }
+
+    // Init models and create meshes once images(s) have loaded
+    return function buildRectangularFlagFromImage(image, options) {
+        var settings = Object.assign({}, defaults, options);
+
+        Object.assign(settings, computeSize(image, settings));
+
+        return new Flag(computeFlagArgs(image, settings));
+    };
+})();
+
+export default buildRectangularFlagFromImage;

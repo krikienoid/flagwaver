@@ -192,6 +192,22 @@ function Cloth(xSegments, ySegments, restDistance, mass) {
 }
 
 Object.assign(Cloth.prototype, {
+    reset: function () {
+        var particles = this.particles;
+        var particle;
+        var i, il;
+
+        for (i = 0, il = particles.length; i < il; i++) {
+            particle = particles[i];
+
+            particle.previous.copy(
+                particle.position.copy(
+                    particle.original
+                )
+            );
+        }
+    },
+
     simulate: function (deltaTime) {
         var particles   = this.particles;
         var constraints = this.constraints;
