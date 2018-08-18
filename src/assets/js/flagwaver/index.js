@@ -20,6 +20,7 @@ import Wind from './subjects/Wind';
 import WindModifiers from './subjects/WindModifiers';
 import loadImage from './helpers/loadImage';
 import buildFlag from './builders/buildFlag';
+import buildFlagpole from './builders/buildFlagpole';
 import applyWindForceToCloth from './interactions/applyWindForceToCloth';
 import applyGravityToCloth from './interactions/applyGravityToCloth';
 
@@ -167,10 +168,6 @@ import applyGravityToCloth from './interactions/applyGravityToCloth';
     // Rendering
     //
 
-    // Renderer settings
-    var poleOffset = 300;
-    var poleHeight = 1000;
-
     // Renderer variables
     var scene;
     var camera;
@@ -181,9 +178,6 @@ import applyGravityToCloth from './interactions/applyGravityToCloth';
     function init() {
         var light;
         var d;
-        var poleGeo;
-        var poleMat;
-        var poleMesh;
 
         // Init scene
         scene     = new THREE.Scene();
@@ -231,24 +225,6 @@ import applyGravityToCloth from './interactions/applyGravityToCloth';
 
         scene.add(light);
 
-        // Init flag pole
-        poleGeo = new THREE.CylinderGeometry(6, 6, poleHeight);
-        poleMat = new THREE.MeshPhongMaterial({
-            color:     0x6A6A6A,
-            specular:  0xffffff,
-            metal:     true,
-            shininess: 18
-        });
-
-        poleMesh = new THREE.Mesh(poleGeo, poleMat);
-
-        poleMesh.position.y    = poleOffset - poleHeight / 2;
-        poleMesh.position.x    = -4;
-        poleMesh.receiveShadow = true;
-        poleMesh.castShadow    = true;
-
-        scene.add(poleMesh);
-
         // Init renderer object
         renderer = new THREE.WebGLRenderer({
             antialias: true,
@@ -270,7 +246,9 @@ import applyGravityToCloth from './interactions/applyGravityToCloth';
             hoisting: 'dexter'
         });
 
-        flag.object.position.set(0, poleOffset, 0);
+        var flagpole = buildFlagpole({}, flag);
+
+        scene.add(flagpole.mesh);
 
         publicFlag = new PublicFlag(flag);
 
