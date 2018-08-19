@@ -175,17 +175,17 @@ import applyGravityToCloth from './interactions/applyGravityToCloth';
     var wind;
     var publicFlag;
 
-    function init() {
-        var light;
-        var d;
+    function buildScene() {
+        var scene = new THREE.Scene();
 
-        // Init scene
-        scene     = new THREE.Scene();
         scene.fog = new THREE.Fog(0x000000, 1000, 10000);
         scene.fog.color.setHSL(0.6, 1, 0.9);
 
-        // Init camera
-        camera = new THREE.PerspectiveCamera(
+        return scene;
+    }
+
+    function buildCamera() {
+        var camera = new THREE.PerspectiveCamera(
             30,
             window.innerWidth / window.innerHeight,
             1,
@@ -194,6 +194,33 @@ import applyGravityToCloth from './interactions/applyGravityToCloth';
 
         camera.position.y = 50;
         camera.position.z = 2000;
+
+        return camera;
+    }
+
+    function buildRenderer() {
+        var renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha:     true
+        });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.gammaInput        = true;
+        renderer.gammaOutput       = true;
+        renderer.shadowMap.enabled = true;
+
+        return renderer;
+    }
+
+    function init() {
+        var light;
+        var d;
+
+        // Init scene
+        scene     = buildScene();
+
+        // Init camera
+        camera = buildCamera();
 
         scene.add(camera);
 
@@ -226,15 +253,7 @@ import applyGravityToCloth from './interactions/applyGravityToCloth';
         scene.add(light);
 
         // Init renderer object
-        renderer = new THREE.WebGLRenderer({
-            antialias: true,
-            alpha:     true
-        });
-
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.gammaInput        = true;
-        renderer.gammaOutput       = true;
-        renderer.shadowMap.enabled = true;
+        renderer = buildRenderer();
 
         // Add event handlers
         window.addEventListener('resize', onResize);
