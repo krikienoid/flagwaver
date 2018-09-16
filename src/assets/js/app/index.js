@@ -113,7 +113,7 @@
     //
 
     function setFlagOpts(flagData) {
-        flagWaver.flag.setOpts(flagData);
+        flagWaver.app.module('flagGroupModule').flag.setOptions(flagData);
     }
 
     function fromHash() {
