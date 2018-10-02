@@ -7,6 +7,8 @@
  *
  */
 
+import './main';
+
 //
 // Flag Waver UI
 //
