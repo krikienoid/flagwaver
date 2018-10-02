@@ -7,13 +7,15 @@
  *
  */
 
-import './main';
+import initFlagWaverApp from './main';
+
+var app;
 
 //
 // Flag Waver UI
 //
 
-;(function (window, document, $, rivets, flagWaver, hashVars, undefined) {
+;(function (window, document, $, rivets, hashVars, undefined) {
     //
     // Vars
     //
@@ -51,9 +53,9 @@ import './main';
             flagWaverOpts.isWindOn = !flagWaverOpts.isWindOn;
 
             if (flagWaverOpts.isWindOn) {
-                flagWaver.setWind(200);
+                setWind(200);
             } else {
-                flagWaver.setWind(0.001);
+                setWind(0.001);
             }
         },
         flag: {
@@ -115,7 +117,12 @@ import './main';
     //
 
     function setFlagOpts(flagData) {
-        flagWaver.app.module('flagGroupModule').flag.setOptions(flagData);
+        app.module('flagGroupModule').flag.setOptions(flagData);
+    }
+
+    function setWind(value) {
+        app.module('windModule').setOptions({ speed: value });
+        app.module('windForceModule').needsUpdate = true;
     }
 
     function fromHash() {
@@ -262,8 +269,9 @@ import './main';
         //
 
         // Init flagWaver and append renderer to DOM
-        flagWaver.init();
-        $('.js-flag-canvas').append(flagWaver.canvas);
+        app = initFlagWaverApp();
+        window.FW_App = app;
+        $('.js-flag-canvas').append(app.renderer.domElement);
         window.dispatchEvent(new window.Event('resize'));
 
         // Load settings from hash vars on page load
@@ -318,4 +326,4 @@ import './main';
         rivets.bind($setHoisting, flagWaverModel);
         rivets.bind($setTopEdge,  flagWaverModel);
     });
-})(window, document, jQuery, rivets, flagWaver, hashVars);
+})(window, document, jQuery, rivets, hashVars);
