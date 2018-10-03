@@ -2,6 +2,7 @@ import path                     from 'path';
 
 import yargs                    from 'yargs';
 
+import babel                    from 'rollup-plugin-babel';
 import resolve                  from 'rollup-plugin-node-resolve';
 import replace                  from 'rollup-plugin-replace';
 
@@ -63,6 +64,27 @@ export default {
   plugins: [
     resolve(),
     glsl(),
+    babel({
+      /*
+       * Do not use config settings defined in .babelrc as it is targeted
+       * for use with Gulp scripts. Config settings targeted for use with
+       * Rollup should be kept separate.
+       */
+      babelrc: false,
+      presets: [
+        ['@babel/preset-env', {
+          modules: false,
+          targets: {
+            browsers: config.compatibility
+          },
+          useBuiltIns: 'entry'
+        }]
+      ],
+      plugins: [
+        '@babel/plugin-external-helpers',
+        ['@babel/plugin-proposal-class-properties', { 'loose': true }],
+      ]
+    }),
     replace({
       'process.env.NODE_ENV': JSON.stringify(
         PRODUCTION ? 'production' : 'development'
