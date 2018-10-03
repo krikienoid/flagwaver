@@ -16,8 +16,8 @@ import THREE from 'three';
  *
  * @param {Object} options
  */
-function createPoleGeometryTypeI(options) {
-    var geometry = new THREE.CylinderGeometry(
+export function createPoleGeometryTypeI(options) {
+    const geometry = new THREE.CylinderGeometry(
         options.poleWidth,
         options.poleWidth,
         options.poleLength
@@ -37,7 +37,3 @@ function createPoleGeometryTypeI(options) {
 
     return geometry;
 }
-
-export {
-    createPoleGeometryTypeI
-};

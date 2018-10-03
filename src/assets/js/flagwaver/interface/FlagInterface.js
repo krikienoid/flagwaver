@@ -10,36 +10,34 @@ import buildFlag from '../builders/buildFlag';
  * @param {Object} [options] - Options passed to buildFlag
  *   @param {string} [options.imgSrc] - Image to generate flag from
  */
-function FlagInterface(options) {
-    this.flag = null;
-    this.object = new THREE.Object3D();
+export default class FlagInterface {
+    constructor(options) {
+        this.flag = null;
+        this.object = new THREE.Object3D();
 
-    this.setOptions(options);
-}
+        this.setOptions(options);
+    }
 
-Object.assign(FlagInterface.prototype, {
-    destroy: function () {
+    destroy() {
         if (this.flag) {
             this.object.remove(this.flag.object);
             this.flag.destroy();
         }
-    },
+    }
 
-    setOptions: function (options, callback) {
-        var self = this;
+    setOptions(options, callback) {
+        const settings = Object.assign({}, options);
+        const src = settings.imgSrc;
 
-        var settings = Object.assign({}, options);
-        var src = settings.imgSrc;
-
-        function replace(flag) {
-            self.destroy();
-            self.flag = flag;
-            self.object.add(flag.object);
+        const replace = (flag) => {
+            this.destroy();
+            this.flag = flag;
+            this.object.add(flag.object);
 
             if (callback) {
                 callback(flag);
             }
-        }
+        };
 
         replace(buildFlag(null, settings));
 
@@ -49,23 +47,21 @@ Object.assign(FlagInterface.prototype, {
          */
 
         if (src) {
-            loadImage(src, function (image) {
+            loadImage(src, (image) => {
                 replace(buildFlag(image, settings));
             });
         }
-    },
+    }
 
-    reset: function () {
+    reset() {
         this.flag.reset();
-    },
+    }
 
-    simulate: function (deltaTime) {
+    simulate(deltaTime) {
         this.flag.simulate(deltaTime);
-    },
+    }
 
-    render: function () {
+    render() {
         this.flag.render();
     }
-});
-
-export default FlagInterface;
+}

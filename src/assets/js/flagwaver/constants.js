@@ -3,12 +3,12 @@
 //
 
 // Flag to enable debug mode, false by default
-var DEBUG   = false;
+const DEBUG     = false;
 
 // Physics constants
-var DAMPING = 0.03;
-var DRAG    = 1 - DAMPING;
-var G       = 9.81;
+const DAMPING   = 0.03;
+const DRAG      = 1 - DAMPING;
+const G         = 9.81;
 
 /**
  * Enum for flag hoisting side.
@@ -17,7 +17,7 @@ var G       = 9.81;
  * @enum {string}
  * @typedef {string} Hoisting
  */
-var Hoisting = {
+const Hoisting = {
     DEXTER:   'dexter',
     SINISTER: 'sinister'
 };
@@ -29,7 +29,7 @@ var Hoisting = {
  * @enum {string}
  * @typedef {string} Side
  */
-var Side = {
+const Side = {
     TOP:    'top',
     LEFT:   'left',
     BOTTOM: 'bottom',
@@ -43,7 +43,7 @@ var Side = {
  * @enum {string}
  * @typedef {string} Face
  */
-var Face = {
+const Face = {
     OBVERSE: 'obverse',
     REVERSE: 'reverse'
 };
@@ -55,7 +55,7 @@ var Face = {
  * @enum {string}
  * @typedef {string} FlagpoleType
  */
-var FlagpoleType = {
+const FlagpoleType = {
     VERTICAL:   'vertical',
     HORIZONTAL: 'horizontal',
     OUTRIGGER:  'outrigger',

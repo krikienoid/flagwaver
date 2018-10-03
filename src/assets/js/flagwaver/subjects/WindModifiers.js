@@ -4,14 +4,14 @@
  * @description A collection of optional functions for customizing
  * wind behavior.
  */
-var WindModifiers = {
-    noEffect: function () {},
+const WindModifiers = {
+    noEffect: () => {},
 
-    blowFromLeftDirection: function (wind) {
+    blowFromLeftDirection: (wind) => {
         wind.force.set(2000, 0, 1000);
     },
 
-    rotatingDirection: function (wind, time) {
+    rotatingDirection: (wind, time) => {
         wind.force.set(
             Math.sin(time / 2000),
             Math.cos(time / 3000),
@@ -19,11 +19,11 @@ var WindModifiers = {
         );
     },
 
-    constantSpeed: function (wind) {
+    constantSpeed: (wind) => {
         wind.force.multiplyScalar(wind.speed);
     },
 
-    variableSpeed: function (wind, time) {
+    variableSpeed: (wind, time) => {
         wind.force.multiplyScalar(
             Math.cos(time / 7000) * (wind.speed / 2) + wind.speed
         );

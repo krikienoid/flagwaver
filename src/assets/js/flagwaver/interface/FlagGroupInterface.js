@@ -9,40 +9,37 @@ import FlagInterface from './FlagInterface';
  *
  * @param {Object} [options] - Options passed to buildFlag and buildFlagpole
  */
-function FlagGroupInterface(options) {
-    var self = this;
-    var setFlagOptions;
+export default class FlagGroupInterface {
+    constructor(options) {
+        this.object = new THREE.Object3D();
 
-    this.object = new THREE.Object3D();
+        this.flagpole = null;
+        this.flagInterface = new FlagInterface(options);
 
-    this.flagpole = null;
-    this.flagInterface = new FlagInterface(options);
+        const setFlagOptions = this.flagInterface.setOptions.bind(this.flagInterface);
 
-    setFlagOptions = this.flagInterface.setOptions.bind(this.flagInterface);
+        // Wrapper method
+        this.flagInterface.setOptions = (options, callback) => {
+            setFlagOptions(options, (flag) => {
+                if (this.flagpole) {
+                    this.flagpole.needsUpdate = true;
+                }
 
-    // Wrapper method
-    this.flagInterface.setOptions = function (options, callback) {
-        setFlagOptions(options, function (flag) {
-            if (self.flagpole) {
-                self.flagpole.needsUpdate = true;
-            }
+                if (callback) {
+                    callback(flag);
+                }
+            });
+        };
 
-            if (callback) {
-                callback(flag);
-            }
-        });
-    };
+        this.object.add(this.flagInterface.object);
 
-    this.object.add(this.flagInterface.object);
+        this.setFlagpoleOptions(options);
+        this.setFlagOptions(options);
+    }
 
-    this.setFlagpoleOptions(options);
-    this.setFlagOptions(options);
-}
+    static FlagInterface = FlagInterface;
 
-FlagGroupInterface.FlagInterface = FlagInterface;
-
-Object.assign(FlagGroupInterface.prototype, {
-    destroy: function () {
+    destroy() {
         if (this.flagpole) {
             this.object.remove(this.flagpole.object);
             this.flagpole.destroy();
@@ -52,13 +49,13 @@ Object.assign(FlagGroupInterface.prototype, {
             this.object.remove(this.flagInterface.object);
             this.flagInterface.destroy();
         }
-    },
+    }
 
-    setFlagpoleOptions: function (options, callback) {
-        var settings = Object.assign({}, options);
+    setFlagpoleOptions(options, callback) {
+        const settings = Object.assign({}, options);
 
-        var flagInterface = this.flagInterface;
-        var flagpole = buildFlagpole(settings, this.flagInterface.flag);
+        const flagInterface = this.flagInterface;
+        const flagpole = buildFlagpole(settings, this.flagInterface.flag);
 
         if (this.flagpole) {
             this.object.remove(this.flagpole.object);
@@ -76,23 +73,21 @@ Object.assign(FlagGroupInterface.prototype, {
         if (callback) {
             callback(flagpole);
         }
-    },
+    }
 
-    setFlagOptions: function (options, callback) {
+    setFlagOptions(options, callback) {
         this.flagInterface.setOptions(options, callback);
-    },
+    }
 
-    reset: function () {
-    },
+    reset() {
+    }
 
-    simulate: function (deltaTime) {
-    },
+    simulate(deltaTime) {
+    }
 
-    render: function () {
+    render() {
         if (this.flagpole.needsUpdate) {
             this.setFlagpoleOptions();
         }
     }
-});
-
-export default FlagGroupInterface;
+}

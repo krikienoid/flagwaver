@@ -12,18 +12,20 @@ import ControlModule from './ControlModule';
  * @param {Object} [subject]
  * @param {THREE.Object3D} [context]
  */
-function FlagModule(subject, context) {
-    this.subject = subject || null;
-    this.context = context || null;
-    this.configOptions = Object.assign({}, this.Subject.defaults);
-}
+export default class FlagModule extends ControlModule {
+    constructor(subject, context) {
+        super();
 
-FlagModule.prototype = Object.create(ControlModule.prototype);
-FlagModule.prototype.constructor = FlagModule;
+        this.subject = subject || null;
+        this.context = context || null;
+        this.configOptions = Object.assign({}, this.constructor.Subject.defaults);
+    }
 
-Object.assign(FlagModule, {
-    validate: createPropertyValidator({
-        topEdge: function (value) {
+    static displayName = 'flagModule';
+    static Subject = FlagInterface;
+
+    static validate = createPropertyValidator({
+        topEdge: (value) => {
             if (Utils.hasValue(Side, value)) {
                 return value;
             } else {
@@ -31,7 +33,7 @@ Object.assign(FlagModule, {
             }
         },
 
-        hoisting: function (value) {
+        hoisting: (value) => {
             if (Utils.hasValue(Hoisting, value)) {
                 return value;
             } else {
@@ -39,8 +41,8 @@ Object.assign(FlagModule, {
             }
         },
 
-        width: function (value) {
-            var n = Number(value);
+        width: (value) => {
+            const n = Number(value);
 
             if (Utils.isNumeric(value) && n > 0) {
                 return n;
@@ -51,8 +53,8 @@ Object.assign(FlagModule, {
             }
         },
 
-        height: function (value) {
-            var n = Number(value);
+        height: (value) => {
+            const n = Number(value);
 
             if (Utils.isNumeric(value) && n > 0) {
                 return n;
@@ -63,8 +65,8 @@ Object.assign(FlagModule, {
             }
         },
 
-        mass: function (value) {
-            var n = Number(value);
+        mass: (value) => {
+            const n = Number(value);
 
             if (Utils.isNumeric(value) && n >= 0) {
                 return n;
@@ -73,8 +75,8 @@ Object.assign(FlagModule, {
             }
         },
 
-        granularity: function (value) {
-            var n = Math.round(value);
+        granularity: (value) => {
+            const n = Math.round(value);
 
             if (Utils.isNumeric(value) && n > 0) {
                 return n;
@@ -83,7 +85,7 @@ Object.assign(FlagModule, {
             }
         },
 
-        imgSrc: function (value) {
+        imgSrc: (value) => {
             if (typeof value === 'string') {
                 return value;
             } else {
@@ -91,62 +93,53 @@ Object.assign(FlagModule, {
             }
         },
 
-        flagpoleType: function (value) {
+        flagpoleType: (value) => {
             if (Utils.hasValue(FlagpoleType, value)) {
                 return value;
             } else {
                 console.error('FlagWaver.FlagModule.option: Invalid value.');
             }
         }
-    })
-});
+    });
 
-Object.assign(FlagModule.prototype, {
-    displayName: 'flagModule',
-    Subject: FlagInterface,
-
-    init: function (app) {
-        this.subject = this.subject || new this.Subject();
+    init(app) {
+        this.subject = this.subject || new this.constructor.Subject();
 
         if (!this.context) {
             app.scene.add(this.subject.object);
         }
-    },
+    }
 
-    deinit: function (app) {
+    deinit(app) {
         if (!this.context) {
             app.scene.remove(this.subject.object);
             this.subject.destroy();
         }
-    },
+    }
 
-    reset: function () {
+    reset() {
         this.subject.reset();
         this.subject.render();
-    },
+    }
 
-    update: function (deltaTime) {
+    update(deltaTime) {
         this.subject.simulate(deltaTime);
         this.subject.render();
-    },
+    }
 
-    setOptions: function (options, callback) {
-        var self = this;
-
+    setOptions(options, callback) {
         if (Utils.isObject(options)) {
             this.subject.setOptions(
                 Object.assign(
                     this.configOptions,
-                    FlagModule.validate(options)
+                    this.constructor.validate(options)
                 ),
-                function (flag) {
+                (flag) => {
                     if (callback) {
-                        callback(self.configOptions);
+                        callback(this.configOptions);
                     }
                 }
             );
         }
     }
-});
-
-export default FlagModule;
+}

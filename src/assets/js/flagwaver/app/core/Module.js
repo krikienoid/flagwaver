@@ -9,15 +9,10 @@
  * Each module should have an `init` method and a `deinit` method which
  * should be called whenever it is added to or removed from a scene.
  */
-function Module() {
+export default class Module {
+    static displayName = 'module';
+
+    init() {}
+
+    deinit() {}
 }
-
-Object.assign(Module.prototype, {
-    displayName: 'module',
-
-    init: function () {},
-
-    deinit: function () {}
-});
-
-export default Module;

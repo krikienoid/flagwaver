@@ -5,50 +5,48 @@ import Module from '../core/Module';
  *
  * @classdesc Allow animation to be paused and continued.
  */
-function AnimationModule() {
-    this.app = null;
-}
+export default class AnimationModule extends Module {
+    constructor() {
+        super();
 
-AnimationModule.prototype = Object.create(Module.prototype);
-AnimationModule.prototype.constructor = AnimationModule;
+        this.app = null;
+    }
 
-Object.assign(AnimationModule.prototype, {
-    displayName: 'animationModule',
+    static displayName = 'animationModule';
 
-    init: function (app) {
+    init(app) {
         this.app = app;
-    },
+    }
 
-    deinit: function () {
+    deinit() {
         if (this.play) {
             this.play();
         }
-    },
+    }
 
-    play: function () {
-        var clock = this.app.clock;
+    play() {
+        const { clock } = this.app;
 
         if (!clock.running) {
             clock.start();
         }
-    },
+    }
 
-    pause: function () {
+    pause() {
         this.app.clock.stop();
-    },
+    }
 
-    step: function () {
-        var clock = this.app.clock;
-        var timestep = this.app.timestep;
+    step() {
+        const { clock, timestep } = this.app;
 
         if (!clock.running) {
             clock.elapsedTime += timestep;
             this.app.update(timestep);
         }
-    },
+    }
 
-    reset: function () {
-        var clock = this.app.clock;
+    reset() {
+        const { clock } = this.app;
 
         clock.startTime = 0;
         clock.oldTime = 0;
@@ -56,6 +54,4 @@ Object.assign(AnimationModule.prototype, {
 
         this.app.start();
     }
-});
-
-export default AnimationModule;
+}

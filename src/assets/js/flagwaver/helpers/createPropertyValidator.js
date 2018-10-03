@@ -1,22 +1,21 @@
 import Utils from '../utils/Utils';
 
-function PropertyValidator(validators) {
-    this.validators = validators || {};
-}
+class PropertyValidator {
+    constructor(validators) {
+        this.validators = validators || {};
+    }
 
-Object.assign(PropertyValidator.prototype, {
-    validate: function (options, strict) {
-        var validators = this.validators;
-        var hasOptions = Utils.isObject(options);
-        var result = {};
-        var key, validated;
+    validate(options, strict) {
+        const validators = this.validators;
+        const hasOptions = Utils.isObject(options);
+        const result = {};
 
         if (hasOptions) {
-            for (key in options) {
+            for (const key in options) {
                 if (Utils.hasProperty(options, key)) {
                     if (typeof options[key] !== 'undefined') {
                         if (validators[key]) {
-                            validated = validators[key](options[key]);
+                            const validated = validators[key](options[key]);
 
                             if (validated != null) {
                                 result[key] = validated;
@@ -31,14 +30,10 @@ Object.assign(PropertyValidator.prototype, {
 
         return result;
     }
-});
-
-function createPropertyValidator(validators) {
-    var propertyValidator = new PropertyValidator(validators);
-
-    return function (options, strict) {
-        return propertyValidator.validate(options, strict);
-    };
 }
 
-export default createPropertyValidator;
+export default function createPropertyValidator(validators) {
+    const propertyValidator = new PropertyValidator(validators);
+
+    return (options, strict) => propertyValidator.validate(options, strict);
+}

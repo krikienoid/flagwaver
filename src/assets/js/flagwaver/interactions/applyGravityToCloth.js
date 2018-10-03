@@ -2,6 +2,8 @@ import THREE from 'three';
 import { G } from '../constants';
 import localizeForce from './localizeForce';
 
+const gravity = new THREE.Vector3(0, -G * 140, 0);
+
 /**
  * @function applyGravityToCloth
  *
@@ -10,19 +12,11 @@ import localizeForce from './localizeForce';
  * @param {Cloth} cloth
  * @param {THREE.Object3D} [object]
  */
-var applyGravityToCloth = (function () {
-    var gravity = new THREE.Vector3(0, -G * 140, 0);
+export default function applyGravityToCloth(cloth, object) {
+    const particles = cloth.particles;
+    const force = localizeForce(gravity, object);
 
-    return function applyGravityToCloth(cloth, object) {
-        var particles = cloth.particles;
-        var force = localizeForce(gravity, object);
-
-        var i, il;
-
-        for (i = 0, il = particles.length; i < il; i++) {
-            particles[i].acceleration.add(force);
-        }
-    };
-})();
-
-export default applyGravityToCloth;
+    for (let i = 0, il = particles.length; i < il; i++) {
+        particles[i].acceleration.add(force);
+    }
+}

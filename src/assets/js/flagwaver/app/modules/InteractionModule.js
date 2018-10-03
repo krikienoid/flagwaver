@@ -9,92 +9,78 @@ import Module from '../core/Module';
  * @param {string[]} [subjectTypes] - Modules of subjects that are acted upon.
  * @param {string[]} [actionTypes] - Modules that cause an action on subjects.
  */
-function InteractionModule(subjectTypes, actionTypes) {
-    this.app = null;
-    this.subjectTypes = subjectTypes || [];
-    this.actionTypes = actionTypes || [];
-    this.subjects = [];
-    this.actions = [];
-    this.needsUpdate = false;
-}
+export default class InteractionModule extends Module {
+    constructor(subjectTypes, actionTypes) {
+        super();
 
-InteractionModule.prototype = Object.create(Module.prototype);
-InteractionModule.prototype.constructor = InteractionModule;
+        this.app = null;
+        this.subjectTypes = subjectTypes || [];
+        this.actionTypes = actionTypes || [];
+        this.subjects = [];
+        this.actions = [];
+        this.needsUpdate = false;
+    }
 
-Object.assign(InteractionModule.prototype, {
-    displayName: 'interactionModule',
+    static displayName = 'interactionModule';
 
-    updateModulesList: function () {
-        var app = this.app;
+    updateModulesList() {
+        const app = this.app;
 
         if (!app) { return; }
 
-        var modules = app.modules;
+        const { modules } = app;
 
-        var subjectTypes = this.subjectTypes;
-        var actionTypes = this.actionTypes;
-        var subjects = [];
-        var actions = [];
+        const subjectTypes = this.subjectTypes;
+        const actionTypes = this.actionTypes;
+        const subjects = [];
+        const actions = [];
 
-        var i, il;
-        var module;
+        for (let i = 0, il = modules.length; i < il; i++) {
+            const module = modules[i];
 
-        for (i = 0, il = modules.length; i < il; i++) {
-            module = modules[i];
-
-            if (subjectTypes.indexOf(module.displayName) >= 0) {
+            if (subjectTypes.indexOf(module.constructor.displayName) >= 0) {
                 subjects.push(module.subject);
             }
 
-            if (actionTypes.indexOf(module.displayName) >= 0) {
+            if (actionTypes.indexOf(module.constructor.displayName) >= 0) {
                 actions.push(module.subject);
             }
         }
 
         this.subjects = subjects;
         this.actions = actions;
-    },
+    }
 
-    init: function (app) {
+    init(app) {
         this.app = app;
 
         this.updateModulesList();
-    },
+    }
 
-    interact: function (subject, action) {
-    },
+    interact(subject, action) {
+    }
 
-    update: function (deltaTime) {
-        var interact = this.interact;
-
-        var subjects;
-        var actions;
-
-        var i, il, j, jl;
-        var action;
+    update(deltaTime) {
+        const interact = this.interact;
 
         if (this.needsUpdate) {
             this.updateModulesList();
             this.needsUpdate = false;
         }
 
-        subjects = this.subjects;
-        actions = this.actions;
+        const subjects = this.subjects;
+        const actions = this.actions;
 
         if (actions.length) {
-            for (i = 0, il = actions.length; i < il; i++) {
-                action = actions[i];
-
-                for (j = 0, jl = subjects.length; j < jl; j++) {
-                    interact(subjects[j], action);
+            for (let i = 0, il = actions.length; i < il; i++) {
+                for (let j = 0, jl = subjects.length; j < jl; j++) {
+                    interact(subjects[j], actions[i]);
                 }
             }
         } else {
-            for (j = 0, jl = subjects.length; j < jl; j++) {
+            for (let j = 0, jl = subjects.length; j < jl; j++) {
                 interact(subjects[j]);
             }
         }
     }
-});
-
-export default InteractionModule;
+}

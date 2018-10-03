@@ -1,8 +1,8 @@
 import THREE from 'three';
 import ModuleSystem from './ModuleSystem';
 
-var FPS = 60;
-var TIME_STEP = 1 / FPS;
+const FPS = 60;
+const TIME_STEP = 1 / FPS;
 
 /**
  * @class App
@@ -16,102 +16,88 @@ var TIME_STEP = 1 / FPS;
  *   @param {Function} [options.onStart]
  *   @param {Function} [options.onUpdate]
  */
-function App(options) {
-    ModuleSystem.call(this);
+export default class App extends ModuleSystem {
+    constructor(options) {
+        super();
 
-    var self = this;
+        const settings = Object.assign({}, this.constructor.defaults, options);
 
-    var settings = Object.assign({}, App.defaults, options);
+        const { scene, camera, renderer } = settings;
 
-    var scene = settings.scene;
-    var camera = settings.camera;
-    var renderer = settings.renderer;
+        const onStart = settings.onStart.bind(this);
+        const onUpdate = settings.onUpdate.bind(this);
 
-    var onStart = settings.onStart.bind(this);
-    var onUpdate = settings.onUpdate.bind(this);
+        const clock = new THREE.Clock();
+        const timestep = TIME_STEP;
 
-    var clock = new THREE.Clock();
-    var timestep = TIME_STEP;
+        const startModules = () => {
+            const modules = this.modules;
 
-    function startModules() {
-        var modules = self.modules;
-        var i, il;
-        var module;
+            for (let i = 0, il = modules.length; i < il; i++) {
+                const module = modules[i];
 
-        for (i = 0, il = modules.length; i < il; i++) {
-            module = modules[i];
-
-            if (module.subject && module.reset) {
-                module.reset();
+                if (module.subject && module.reset) {
+                    module.reset();
+                }
             }
-        }
-    }
+        };
 
-    function updateModules(deltaTime) {
-        var modules = self.modules;
-        var i, il;
-        var module;
+        const updateModules = (deltaTime) => {
+            const modules = this.modules;
 
-        for (i = 0, il = modules.length; i < il; i++) {
-            module = modules[i];
+            for (let i = 0, il = modules.length; i < il; i++) {
+                const module = modules[i];
 
-            if ((module.subject || module.interact) && module.update) {
-                module.update(deltaTime);
+                if ((module.subject || module.interact) && module.update) {
+                    module.update(deltaTime);
+                }
             }
-        }
+        };
+
+        const render = () => {
+            camera.lookAt(scene.position);
+            renderer.render(scene, camera);
+        };
+
+        const start = () => {
+            onStart();
+            startModules();
+            render();
+        };
+
+        const update = (deltaTime) => {
+            onUpdate(deltaTime);
+            updateModules(deltaTime);
+            render();
+        };
+
+        const loop = () => {
+            requestAnimationFrame(loop);
+
+            if (clock.running) {
+                update(Math.min(clock.getDelta(), timestep));
+            }
+        };
+
+        // Init
+        scene.add(camera);
+        clock.start();
+        start();
+        loop();
+
+        // Public properties and methods
+        this.scene = scene;
+        this.renderer = renderer;
+        this.camera = camera;
+        this.canvas = renderer.domElement;
+        this.clock = clock;
+        this.timestep = timestep;
+        this.start = start;
+        this.update = update;
     }
 
-    function render() {
-        camera.lookAt(scene.position);
-        renderer.render(scene, camera);
-    }
-
-    function start() {
-        onStart();
-        startModules();
-        render();
-    }
-
-    function update(deltaTime) {
-        onUpdate(deltaTime);
-        updateModules(deltaTime);
-        render();
-    }
-
-    function loop() {
-        requestAnimationFrame(loop);
-
-        if (clock.running) {
-            update(Math.min(clock.getDelta(), timestep));
-        }
-    }
-
-    // Init
-    ModuleSystem.call(this);
-    scene.add(camera);
-    clock.start();
-    start();
-    loop();
-
-    // Public properties and methods
-    this.scene = scene;
-    this.renderer = renderer;
-    this.camera = camera;
-    this.canvas = renderer.domElement;
-    this.clock = clock;
-    this.timestep = timestep;
-    this.start = start;
-    this.update = update;
+    static defaults = {
+        onStart: () => {},
+        onUpdate: () => {}
+    };
 }
-
-App.prototype = Object.create(ModuleSystem.prototype);
-App.prototype.constructor = App;
-
-Object.assign(App, {
-    defaults: {
-        onStart: function () {},
-        onUpdate: function () {}
-    }
-});
-
-export default App;

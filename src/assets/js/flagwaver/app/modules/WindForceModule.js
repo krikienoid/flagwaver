@@ -6,19 +6,10 @@ import InteractionModule from './InteractionModule';
  *
  * @classdesc Applies wind to subjects.
  */
-function WindForceModule() {
-    InteractionModule.apply(this, arguments);
-}
+export default class WindForceModule extends InteractionModule {
+    static displayName = 'windForceModule';
 
-WindForceModule.prototype = Object.create(InteractionModule.prototype);
-WindForceModule.prototype.constructor = WindForceModule;
-
-Object.assign(WindForceModule.prototype, {
-    displayName: 'windForceModule',
-
-    interact: function (subject, wind) {
+    interact(subject, wind) {
         applyWindForceToCloth(subject.flag.cloth, wind, subject.flag.object);
     }
-});
-
-export default WindForceModule;
+}

@@ -1,32 +1,22 @@
+const hasOwnProperty = Object.prototype.hasOwnProperty;
+
 /**
  * @module Utils
  */
-var Utils = {
+const Utils = {
     // Is valid number
-    isNumeric: function (value) {
-        return !isNaN(parseFloat(value)) && isFinite(value);
-    },
+    isNumeric: value => !isNaN(parseFloat(value)) && isFinite(value),
 
     // Is an object
-    isObject: function (object) {
-        return !!(object && typeof object === 'object');
-    },
+    isObject: object => !!(object && typeof object === 'object'),
 
     // Object has property
-    hasProperty: (function () {
-        var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-        return function hasProperty(object, key) {
-            return hasOwnProperty.call(object, key);
-        };
-    })(),
+    hasProperty: (object, key) => hasOwnProperty.call(object, key),
 
     // Object has value
-    hasValue: function (object, value) {
-        var key;
-
+    hasValue: (object, value) => {
         if (Utils.isObject(object)) {
-            for (key in object) {
+            for (const key in object) {
                 if (Utils.hasProperty(object, key)) {
                     if (object[key] === value) {
                         return true;
@@ -39,10 +29,8 @@ var Utils = {
     },
 
     // Is a function
-    isFunction: function (object) {
-        return typeof object === 'function' &&
-            typeof object.nodeType !== 'number';
-    }
+    isFunction: object => typeof object === 'function' &&
+        typeof object.nodeType !== 'number'
 };
 
 export default Utils;

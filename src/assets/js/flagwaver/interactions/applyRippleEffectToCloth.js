@@ -1,5 +1,7 @@
 import THREE from 'three';
 
+const tmp = new THREE.Vector3();
+
 /**
  * @function applyRippleEffectToCloth
  *
@@ -7,34 +9,23 @@ import THREE from 'three';
  *
  * @param {Cloth} cloth
  */
-var applyRippleEffectToCloth = (function () {
-    var tmp = new THREE.Vector3();
+export default function applyRippleEffectToCloth(cloth) {
+    const particles = cloth.particles;
+    const strength = 100;
+    const t = Date.now() / 1000;
 
-    return function applyRippleEffectToCloth(cloth) {
-        var particles = cloth.particles;
-        var strength = 100;
-        var t = Date.now() / 1000;
+    for (let i = 0, il = particles.length; i < il; i++) {
+        const particle = particles[i];
+        const { x, y, z } = particle.position;
 
-        var i, il;
-        var particle, x, y, z;
+        tmp
+            .set(
+                Math.sin(x * y * t),
+                Math.cos(z * t),
+                Math.sin(Math.cos(5 * x * y * z))
+            )
+            .multiplyScalar(strength);
 
-        for (i = 0, il = particles.length; i < il; i++) {
-            particle = particles[i];
-            x = particle.position.x;
-            y = particle.position.y;
-            z = particle.position.z;
-
-            tmp
-                .set(
-                    Math.sin(x * y * t),
-                    Math.cos(z * t),
-                    Math.sin(Math.cos(5 * x * y * z))
-                )
-                .multiplyScalar(strength);
-
-            particle.applyForce(tmp);
-        }
-    };
-})();
-
-export default applyRippleEffectToCloth;
+        particle.applyForce(tmp);
+    }
+}

@@ -1,5 +1,9 @@
 import THREE from 'three';
 
+const loader = new THREE.ImageLoader();
+
+loader.setCrossOrigin('anonymous');
+
 /**
  * @function loadImage
  *
@@ -9,22 +13,14 @@ import THREE from 'three';
  * @param {Function} [callback]
  * @param {Function} [error]
  */
-var loadImage = (function () {
-    var loader = new THREE.ImageLoader();
+export default function loadImage(src, callback, error) {
+    loader.load(src, callback, null, (e) => {
+        console.error(
+            `FlagWaver.loadImage: Failed to load image from ${src}.`
+        );
 
-    loader.setCrossOrigin('anonymous');
-
-    return function loadImage(src, callback, error) {
-        loader.load(src, callback, null, function (e) {
-            console.error(
-                'FlagWaver.loadImage: Failed to load image from ' + src + '.'
-            );
-
-            if (error) {
-                error(e);
-            }
-        });
-    };
-})();
-
-export default loadImage;
+        if (error) {
+            error(e);
+        }
+    });
+}

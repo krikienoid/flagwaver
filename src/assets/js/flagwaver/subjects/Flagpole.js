@@ -17,37 +17,33 @@ import { createPoleGeometryTypeI } from './FlagpoleGeometryUtils';
  *   @param {number} [options.crossbarCapSize]
  *   @param {number} [options.poleTopOffset]
  */
-function Flagpole(options) {
-    var settings = Object.assign({}, Flagpole.defaults, options);
+export default class Flagpole {
+    constructor(options) {
+        const settings = Object.assign({}, this.constructor.defaults, options);
 
-    var geometry;
-    var material;
-    var mesh;
+        // Geometry
+        const geometry = this.buildGeometry(settings);
 
-    // Geometry
-    geometry = this.buildGeometry(settings);
+        // Material
+        const material = new THREE.MeshPhongMaterial({
+            color:     0x6A6A6A,
+            specular:  0xffffff,
+            metal:     true,
+            shininess: 18
+        });
 
-    // Material
-    material = new THREE.MeshPhongMaterial({
-        color:     0x6A6A6A,
-        specular:  0xffffff,
-        metal:     true,
-        shininess: 18
-    });
+        // Mesh
+        const mesh = new THREE.Mesh(geometry, material);
 
-    // Mesh
-    mesh = new THREE.Mesh(geometry, material);
+        mesh.receiveShadow = true;
+        mesh.castShadow    = true;
 
-    mesh.receiveShadow = true;
-    mesh.castShadow    = true;
+        this.mesh = mesh;
+        this.object = this.mesh;
+    }
 
-    this.mesh = mesh;
-    this.object = this.mesh;
-}
-
-Object.assign(Flagpole, {
-    defaults: (function () {
-        var o = {};
+    static defaults = (() => {
+        const o = {};
 
         o.flagpoleType    = FlagpoleType.VERTICAL;
         o.poleWidth       = 6;
@@ -59,26 +55,22 @@ Object.assign(Flagpole, {
         o.poleTopOffset   = 60;
 
         return o;
-    })()
-});
+    })();
 
-Object.assign(Flagpole.prototype, {
-    destroy: function () {
+    destroy() {
         if (this.mesh instanceof THREE.Mesh) {
             this.mesh.material.dispose();
             this.mesh.geometry.dispose();
         }
-    },
+    }
 
-    buildGeometry: function (options) {
+    buildGeometry(options) {
         return createPoleGeometryTypeI(options);
-    },
+    }
 
-    addFlag: function (flag) {
+    addFlag(flag) {
         flag.unpin();
         flag.pin({ edges: [Side.LEFT] });
         flag.setLengthConstraints(Side.LEFT);
     }
-});
-
-export default Flagpole;
+}

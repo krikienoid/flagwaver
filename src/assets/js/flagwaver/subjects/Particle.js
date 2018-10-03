@@ -9,26 +9,26 @@ import { DRAG } from '../constants';
  * @param {THREE.Vector3} position
  * @param {number} mass
  */
-function Particle(position, mass) {
-    this.position       = position.clone();
-    this.previous       = position.clone();
-    this.original       = position.clone();
-    this.mass           = mass;
-    this.inverseMass    = 1 / mass;
-    this.acceleration   = new THREE.Vector3();
-    this.tmp            = new THREE.Vector3();
-}
+export default class Particle {
+    constructor(position, mass) {
+        this.position       = position.clone();
+        this.previous       = position.clone();
+        this.original       = position.clone();
+        this.mass           = mass;
+        this.inverseMass    = 1 / mass;
+        this.acceleration   = new THREE.Vector3();
+        this.tmp            = new THREE.Vector3();
+    }
 
-Object.assign(Particle.prototype, {
     // Apply force
-    applyForce: function (force) {
+    applyForce(force) {
         this.acceleration.addScaledVector(force, this.inverseMass);
-    },
+    }
 
     // Compute new position
-    integrate: function (deltaTimeSq) {
+    integrate(deltaTimeSq) {
         // Perform verlet integration
-        var tmp = this.tmp
+        const tmp = this.tmp
             .subVectors(this.position, this.previous)
             .multiplyScalar(DRAG)
             .add(this.position)
@@ -40,6 +40,4 @@ Object.assign(Particle.prototype, {
 
         this.acceleration.set(0, 0, 0);
     }
-});
-
-export default Particle;
+}

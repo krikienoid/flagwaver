@@ -1,5 +1,8 @@
 import THREE from 'three';
 
+const tmp = new THREE.Vector3();
+const worldPosition = new THREE.Vector3();
+
 /**
  * @function localizeForce
  *
@@ -8,7 +11,7 @@ import THREE from 'three';
  * @param {THREE.Vector3} force - Vector representing a force
  * @param {THREE.Object3D} [object] - Local object
  */
-var localizeForce = (function () {
+export default function localizeForce(force, object) {
     /*
      * Converts the direction and magnitude of a given vector from
      * world coordinate space to the local space of the given object.
@@ -16,22 +19,15 @@ var localizeForce = (function () {
      * only, it does not represent a position in 3D space.
      */
 
-    var tmp = new THREE.Vector3();
-    var worldPosition = new THREE.Vector3();
+    tmp.copy(force);
 
-    return function localizeForce(force, object) {
-        tmp.copy(force);
+    if (object instanceof THREE.Object3D) {
+        // Discard world position information
+        worldPosition.setFromMatrixPosition(object.matrixWorld);
+        tmp.add(worldPosition);
 
-        if (object instanceof THREE.Object3D) {
-            // Discard world position information
-            worldPosition.setFromMatrixPosition(object.matrixWorld);
-            tmp.add(worldPosition);
+        object.worldToLocal(tmp);
+    }
 
-            object.worldToLocal(tmp);
-        }
-
-        return tmp;
-    };
-})();
-
-export default localizeForce;
+    return tmp;
+}

@@ -5,47 +5,43 @@ import Module from '../core/Module';
  *
  * @classdesc Updates canvas size on window resize.
  */
-function ResizeModule() {
-    this.app = null;
-    this.resize = this.resize.bind(this);
-}
+export default class ResizeModule extends Module {
+    constructor() {
+        super();
 
-ResizeModule.prototype = Object.create(Module.prototype);
-ResizeModule.prototype.constructor = ResizeModule;
+        this.app = null;
+        this.resize = this.resize.bind(this);
+    }
 
-Object.assign(ResizeModule.prototype, {
-    displayName: 'resizeModule',
+    static displayName = 'resizeModule';
 
-    init: function (app) {
+    init(app) {
         this.app = app;
 
         window.addEventListener('resize', this.resize);
         this.resize();
-    },
+    }
 
-    deinit: function () {
+    deinit() {
         window.removeEventListener('resize', this.resize);
-    },
+    }
 
-    resize: function () {
-        var scene = this.app.scene;
-        var renderer = this.app.renderer;
-        var camera = this.app.camera;
-
-        var canvasHeight = 1;
-        var canvasWidth = 1;
+    resize() {
+        const { scene, camera, renderer } = this.app;
+        const parentElement = renderer.domElement.parentElement;
+        let canvasHeight = 1;
+        let canvasWidth = 1;
 
         // If canvas is added to DOM
-        if (renderer.domElement.parentElement) {
-            canvasWidth = renderer.domElement.parentElement.clientWidth;
-            canvasHeight = renderer.domElement.parentElement.clientHeight;
+        if (parentElement) {
+            canvasWidth = parentElement.clientWidth;
+            canvasHeight = parentElement.clientHeight;
         }
 
+        // Update scene
         camera.aspect = canvasWidth / canvasHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(canvasWidth, canvasHeight);
         renderer.render(scene, camera);
     }
-});
-
-export default ResizeModule;
+}

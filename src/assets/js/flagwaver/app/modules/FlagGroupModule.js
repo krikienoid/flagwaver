@@ -10,21 +10,20 @@ import FlagModule from './FlagModule';
  * @param {Object} [subject]
  * @param {THREE.Object3D} [context]
  */
-function FlagGroupModule(subject, context) {
-    this.subject = subject || null;
-    this.context = context || null;
-    this.flag = null;
-}
+export default class FlagGroupModule extends ControlModule {
+    constructor(subject, context) {
+        super();
 
-FlagGroupModule.prototype = Object.create(ControlModule.prototype);
-FlagGroupModule.prototype.constructor = FlagGroupModule;
+        this.subject = subject || null;
+        this.context = context || null;
+        this.flag = null;
+    }
 
-Object.assign(FlagGroupModule.prototype, {
-    displayName: 'flagGroupModule',
-    Subject: FlagGroupInterface,
+    static displayName = 'flagGroupModule';
+    static Subject = FlagGroupInterface;
 
-    init: function (app) {
-        this.subject = new this.Subject();
+    init(app) {
+        this.subject = new this.constructor.Subject();
 
         if (!this.context) {
             app.scene.add(this.subject.object);
@@ -33,26 +32,24 @@ Object.assign(FlagGroupModule.prototype, {
         this.flag = new FlagModule(this.subject.flagInterface, this.subject.object);
 
         app.add(this.flag);
-    },
+    }
 
-    deinit: function (app) {
+    deinit(app) {
         app.remove(this.flag);
 
         if (!this.context) {
             app.scene.remove(this.subject.object);
             this.subject.destroy();
         }
-    },
+    }
 
-    reset: function () {
+    reset() {
         this.subject.reset();
         this.subject.render();
-    },
+    }
 
-    update: function (deltaTime) {
+    update(deltaTime) {
         this.subject.simulate(deltaTime);
         this.subject.render();
     }
-});
-
-export default FlagGroupModule;
+}

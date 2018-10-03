@@ -1,7 +1,9 @@
 import THREE from 'three';
 import Constraint from './Constraint';
 
-var SLACK = 1.2;
+const SLACK = 1.2;
+
+const diff = new THREE.Vector3();
 
 /**
  * @class FixedConstraint
@@ -13,37 +15,23 @@ var SLACK = 1.2;
  * @param {Particle} p2
  * @param {number} restDistance
  */
-function FixedConstraint() {
-    Constraint.apply(this, arguments);
-}
-
-FixedConstraint.prototype = Object.create(Constraint.prototype);
-FixedConstraint.prototype.constructor = FixedConstraint;
-
-Object.assign(FixedConstraint.prototype, {
+export default class FixedConstraint extends Constraint {
     // Satisfy constraint unidirectionally
-    resolve: (function () {
-        var diff = new THREE.Vector3();
+    resolve() {
+        const p1 = this.p1;
+        const p2 = this.p2;
+        const restDistance = this.restDistance * SLACK;
 
-        return function resolve() {
-            var p1 = this.p1;
-            var p2 = this.p2;
-            var restDistance = this.restDistance * SLACK;
+        diff.subVectors(p1.position, p2.position);
 
-            var currentDistance;
-            var correction;
+        const currentDistance = diff.length() / SLACK;
 
-            diff.subVectors(p1.position, p2.position);
-            currentDistance = diff.length() / SLACK;
-            diff.normalize();
+        diff.normalize();
 
-            correction = diff.multiplyScalar(currentDistance - restDistance);
+        const correction = diff.multiplyScalar(currentDistance - restDistance);
 
-            if (currentDistance > restDistance) {
-                p2.position.add(correction);
-            }
-        };
-    })()
-});
-
-export default FixedConstraint;
+        if (currentDistance > restDistance) {
+            p2.position.add(correction);
+        }
+    }
+}

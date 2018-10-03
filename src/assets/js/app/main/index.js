@@ -11,10 +11,10 @@ import FlagWaver, {
     WindForceModule
 } from '../../flagwaver';
 
-var initialized = false;
+let initialized = false;
 
 function buildScene() {
-    var scene = new THREE.Scene();
+    const scene = new THREE.Scene();
 
     scene.fog = new THREE.Fog(0x000000, 1000, 10000);
     scene.fog.color.setHSL(0.6, 1, 0.9);
@@ -23,7 +23,7 @@ function buildScene() {
 }
 
 function buildCamera() {
-    var camera = new THREE.PerspectiveCamera(
+    const camera = new THREE.PerspectiveCamera(
         30,
         window.innerWidth / window.innerHeight,
         1,
@@ -37,7 +37,7 @@ function buildCamera() {
 }
 
 function buildRenderer() {
-    var renderer = new THREE.WebGLRenderer({
+    const renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha:     true
     });
@@ -51,12 +51,12 @@ function buildRenderer() {
 }
 
 function initLights(app) {
-    var scene = app.scene;
+    const scene = app.scene;
 
     scene.add(new THREE.AmbientLight(0x222222));
 
-    var light1 = new THREE.DirectionalLight(0xffffff, 1.75);
-    var d = 300;
+    const light1 = new THREE.DirectionalLight(0xffffff, 1.75);
+    const d = 300;
 
     light1.color.setHSL(0.6, 1, 0.9375);
     light1.position.set(50, 175, 100);
@@ -73,7 +73,7 @@ function initLights(app) {
 
     scene.add(light1);
 
-    var light2 = new THREE.DirectionalLight(0xffffff, 0.35);
+    const light2 = new THREE.DirectionalLight(0xffffff, 0.35);
 
     light2.color.setHSL(0.3, 0.5, 0.75);
     light2.position.set(0, -1, 0);
@@ -82,7 +82,7 @@ function initLights(app) {
 }
 
 function buildApp() {
-    var app = new App({
+    const app = new App({
         scene: buildScene(),
         camera: buildCamera(),
         renderer: buildRenderer()
@@ -102,13 +102,13 @@ function buildApp() {
     return app;
 }
 
-function init() {
+export default function init() {
     // Prevent multiple initialization
     if (initialized) {
         throw new Error('Already initialized.');
     }
 
-    var app = buildApp();
+    const app = buildApp();
 
     app.module('windModule').setOptions({
         directionModifier: WindModifiers.rotatingDirection
@@ -120,5 +120,3 @@ function init() {
 
     return app;
 }
-
-export default init;

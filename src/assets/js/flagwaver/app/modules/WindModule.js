@@ -22,18 +22,20 @@ function getModifierFnFromOption(value, defaultValue) {
  *
  * @param {Wind} wind
  */
-function WindModule() {
-    this.subject = new this.Subject();
-    this.configOptions = Object.assign({}, this.Subject.defaults);
-}
+export default class WindModule extends ControlModule {
+    constructor() {
+        super();
 
-WindModule.prototype = Object.create(ControlModule.prototype);
-WindModule.prototype.constructor = WindModule;
+        this.subject = new this.constructor.Subject();
+        this.configOptions = Object.assign({}, this.constructor.Subject.defaults);
+    }
 
-Object.assign(WindModule, {
-    validate: createPropertyValidator({
-        speed: function (value) {
-            var n = Number(value);
+    static displayName = 'windModule';
+    static Subject = Wind;
+
+    static validate = createPropertyValidator({
+        speed: (value) => {
+            const n = Number(value);
 
             if (Utils.isNumeric(value) && n >= 0) {
                 return n;
@@ -41,23 +43,16 @@ Object.assign(WindModule, {
                 console.error('FlagWaver.WindModule.option: Invalid value.');
             }
         }
-    })
-});
+    });
 
-Object.assign(WindModule.prototype, {
-    displayName: 'windModule',
-    Subject: Wind,
-
-    update: function (deltaTime) {
+    update(deltaTime) {
         this.subject.update(deltaTime);
-    },
+    }
 
-    setOptions: function (options) {
-        this.subject = new this.Subject(Object.assign(
+    setOptions(options) {
+        this.subject = new this.constructor.Subject(Object.assign(
             this.configOptions,
-            WindModule.validate(options)
+            this.constructor.validate(options)
         ));
     }
-});
-
-export default WindModule;
+}

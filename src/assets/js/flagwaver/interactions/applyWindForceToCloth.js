@@ -1,6 +1,8 @@
 import THREE from 'three';
 import localizeForce from './localizeForce';
 
+const tmp = new THREE.Vector3();
+
 /**
  * @function applyWindForceToCloth
  *
@@ -10,35 +12,25 @@ import localizeForce from './localizeForce';
  * @param {Wind} wind
  * @param {THREE.Object3D} [object]
  */
-var applyWindForceToCloth = (function () {
-    var tmp = new THREE.Vector3();
+export default function applyWindForceToCloth(cloth, wind, object) {
+    const particles = cloth.particles;
+    const faces = cloth.geometry.faces;
 
-    return function applyWindForceToCloth(cloth, wind, object) {
-        var particles = cloth.particles;
-        var faces = cloth.geometry.faces;
-        var force;
+    if (wind) {
+        const force = localizeForce(wind.force, object);
 
-        var i, il;
-        var face, normal;
+        for (let i = 0, il = faces.length; i < il; i++) {
+            const face   = faces[i];
+            const normal = face.normal;
 
-        if (wind) {
-            force = localizeForce(wind.force, object);
+            tmp
+                .copy(normal)
+                .normalize()
+                .multiplyScalar(normal.dot(force));
 
-            for (i = 0, il = faces.length; i < il; i++) {
-                face   = faces[i];
-                normal = face.normal;
-
-                tmp
-                    .copy(normal)
-                    .normalize()
-                    .multiplyScalar(normal.dot(force));
-
-                particles[face.a].applyForce(tmp);
-                particles[face.b].applyForce(tmp);
-                particles[face.c].applyForce(tmp);
-            }
+            particles[face.a].applyForce(tmp);
+            particles[face.b].applyForce(tmp);
+            particles[face.c].applyForce(tmp);
         }
-    };
-})();
-
-export default applyWindForceToCloth;
+    }
+}

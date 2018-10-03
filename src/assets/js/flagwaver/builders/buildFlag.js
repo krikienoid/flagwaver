@@ -3,7 +3,7 @@ import Flag from '../subjects/Flag';
 import buildRectangularFlagFromImage from './buildRectangularFlagFromImage';
 
 function ensureNumericSize(options) {
-    var result = Object.assign({}, options);
+    const result = Object.assign({}, options);
 
     if (!Utils.isNumeric(result.width)) {
         result.width = Flag.defaults.width;
@@ -25,12 +25,10 @@ function ensureNumericSize(options) {
  * @param {HTMLImageElement} image
  * @param {Object} [options]
  */
-function buildFlag(image, options) {
+export default function buildFlag(image, options) {
     if (image) {
         return buildRectangularFlagFromImage(image, options);
     }
 
     return new Flag(ensureNumericSize(options));
 }
-
-export default buildFlag;

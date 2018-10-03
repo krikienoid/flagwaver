@@ -8,13 +8,11 @@ import Flagpole from '../subjects/Flagpole';
  * @param {Object} [options]
  * @param {Flag} flag
  */
-function buildFlagpole(options, flag) {
-    var settings = Object.assign({}, options);
-    var flagpole;
+export default function buildFlagpole(options, flag) {
+    const settings = Object.assign({}, options);
+    let flagpole;
 
     flagpole = new Flagpole(settings);
 
     return flagpole;
 }
-
-export default buildFlagpole;

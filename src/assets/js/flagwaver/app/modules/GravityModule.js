@@ -6,19 +6,10 @@ import InteractionModule from './InteractionModule';
  *
  * @classdesc Applies gravity to subjects.
  */
-function GravityModule() {
-    InteractionModule.apply(this, arguments);
-}
+export default class GravityModule extends InteractionModule {
+    static displayName = 'gravityModule';
 
-GravityModule.prototype = Object.create(InteractionModule.prototype);
-GravityModule.prototype.constructor = GravityModule;
-
-Object.assign(GravityModule.prototype, {
-    displayName: 'gravityModule',
-
-    interact: function (subject) {
+    interact(subject) {
         applyGravityToCloth(subject.flag.cloth, subject.flag.object);
     }
-});
-
-export default GravityModule;
+}
