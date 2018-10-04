@@ -2,9 +2,6 @@
 // Static constants
 //
 
-// Flag to enable debug mode, false by default
-const DEBUG     = false;
-
 // Physics constants
 const DAMPING   = 0.03;
 const DRAG      = 1 - DAMPING;
@@ -64,7 +61,6 @@ const FlagpoleType = {
 };
 
 export {
-    DEBUG,
     DAMPING,
     DRAG,
     G,

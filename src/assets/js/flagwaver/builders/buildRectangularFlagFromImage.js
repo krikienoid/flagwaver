@@ -1,5 +1,5 @@
 import THREE from 'three';
-import { DEBUG, Hoisting, Side } from '../constants';
+import { Hoisting, Side } from '../constants';
 import Utils from '../utils/Utils';
 import Orientation from '../abstracts/Orientation';
 import Flag from '../subjects/Flag';
@@ -154,7 +154,7 @@ function createTextureFromImage(image, options) {
         canvas.height = destHeight;
     }
 
-    if (DEBUG) {
+    if (process.env.NODE_ENV === 'development') {
         console.log(
             'FlagWaver.buildRectangularFlagFromImage: Image texture created.' +
             '\n  ' + 'Natural size: ' +
