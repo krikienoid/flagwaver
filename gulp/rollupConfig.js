@@ -3,6 +3,7 @@ import path                     from 'path';
 import yargs                    from 'yargs';
 
 import babel                    from 'rollup-plugin-babel';
+import commonjs                 from 'rollup-plugin-commonjs';
 import resolve                  from 'rollup-plugin-node-resolve';
 import replace                  from 'rollup-plugin-replace';
 
@@ -63,6 +64,9 @@ export default {
   },
   plugins: [
     resolve(),
+    commonjs({
+      include: 'node_modules/**'
+    }),
     glsl(),
     babel({
       /*
