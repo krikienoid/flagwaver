@@ -5,9 +5,6 @@
  * A web app for simulating a waving flag.
  */
 
-// URL params utility
-import './lib/hashvars';
-
 // FlagWaver - Core
 import './flagwaver';
 

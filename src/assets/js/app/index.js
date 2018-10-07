@@ -7,6 +7,7 @@
  *
  */
 
+import HashState, { isHistorySupported } from './helpers/HashState';
 import initFlagWaverApp from './main';
 
 var app;
@@ -15,13 +16,10 @@ var app;
 // Flag Waver UI
 //
 
-;(function (window, document, $, rivets, hashVars, undefined) {
+;(function (window, document, $, rivets, undefined) {
     //
     // Vars
     //
-
-    // Browser support
-    var isHistorySupported = !!(window.history && window.history.pushState);
 
     // DOM elements
     var $controlImgUpload;
@@ -77,21 +75,19 @@ var app;
 
                 if (flagWaverOpts.flag.imgURL) {
                     setFlagOpts({ imgSrc: flagWaverOpts.flag.imgURL });
-                    toHash(true);
+                    toHash();
                 }
             },
             setImgFile: function () {
                 var file = this.files[0];
                 var reader = new window.FileReader();
-                var isNewState = false;
 
                 flagWaverOpts.flag.imgFilePath = this.value;
 
                 reader.onload = function (e) {
-                    isNewState = !!flagWaverOpts.flag.imgURL;
                     flagWaverOpts.flag.imgURL = '';
                     setFlagOpts({ imgSrc: e.target.result });
-                    toHash(isNewState);
+                    toHash();
                 };
 
                 reader.readAsDataURL(file);
@@ -111,6 +107,33 @@ var app;
         flagWaverOpts: flagWaverOpts,
         flagWaverControls: flagWaverControls
     };
+
+    var hashState = new HashState({
+        'src': {
+            defaultValue: '',
+            parse: value => decodeURIComponent(value),
+            stringify: value => encodeURIComponent(value)
+        },
+        'hoisting': {
+            defaultValue: 'dexter',
+            parse: (string) => {
+                if (string.match(/^dex(ter)?$/gi)) {
+                    return 'dexter';
+                } else if (string.match(/^sin(ister)?$/gi)) {
+                    return 'sinister';
+                }
+            },
+            stringify: value => 'sin'
+        },
+        'topedge': {
+            defaultValue: 'top',
+            parse: (string) => {
+                if (string.match(/^(top|right|bottom|left)$/gi)) {
+                    return string.toLowerCase();
+                }
+            }
+        }
+    });
 
     //
     // Functions
@@ -132,10 +155,7 @@ var app;
 
         if (hashFrag) {
             if (window.location.href.search(/\#(\!|\?)/) >= 0) {
-                flagData = hashVars.getData(
-                    // Compatibility with old version links
-                    window.location.hash.replace(/\#(\!|\?)/, '#?')
-                );
+                flagData = hashState.getState();
 
                 flagOpts.imgURL   = flagData.src;
                 flagOpts.hoisting = flagData.hoisting;
@@ -155,18 +175,16 @@ var app;
         });
     }
 
-    function toHash(isNewState) {
-        hashVars.setData(
-            {
+    function toHash() {
+        if (flagWaverOpts.flag.imgURL) {
+            hashState.setState({
                 src:      flagWaverOpts.flag.imgURL,
                 hoisting: flagWaverOpts.flag.hoisting,
                 topedge:  flagWaverOpts.flag.topEdge
-            },
-            {
-                isNewState: isNewState,
-                clearHash:  !flagWaverOpts.flag.imgURL
-            }
-        );
+            });
+        } else {
+            hashState.setState(null);
+        }
     }
 
     function updateExpander($expander) {
@@ -209,41 +227,6 @@ var app;
     rivets.formatters.fileName = function (value, defaultText) {
         return (value) ? value.split('\\').pop() : defaultText || '';
     };
-
-    //
-    // Create HashVars
-    //
-
-    hashVars.create({
-        key: 'src',
-        defaultValue: '',
-        encode: function (data) {
-            return window.encodeURIComponent(data);
-        }
-    });
-
-    hashVars.create({
-        key: 'hoisting',
-        defaultValue: 'dexter',
-        decode: function (value) {
-            if (value.toLowerCase().match(/^dex(ter)?$/g)) {
-                return 'dexter';
-            } else if (value.toLowerCase().match(/^sin(ister)?$/g)) {
-                return 'sinister';
-            }
-        },
-        encode: function (data) { return 'sin'; }
-    });
-
-    hashVars.create({
-        key: 'topedge',
-        defaultValue: 'top',
-        decode: function (value) {
-            if (value.toLowerCase().match(/^(top|right|bottom|left)$/g)) {
-                return value;
-            }
-        }
-    });
 
     //
     // Init
@@ -326,4 +309,4 @@ var app;
         rivets.bind($setHoisting, flagWaverModel);
         rivets.bind($setTopEdge,  flagWaverModel);
     });
-})(window, document, jQuery, rivets, hashVars);
+})(window, document, jQuery, rivets);
