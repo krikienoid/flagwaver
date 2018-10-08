@@ -3,9 +3,9 @@
 //
 
 // Physics constants
-const DAMPING   = 0.03;
-const DRAG      = 1 - DAMPING;
-const G         = 9.81;
+export const DAMPING    = 0.03;
+export const DRAG       = 1 - DAMPING;
+export const G          = 9.81;
 
 /**
  * Enum for flag hoisting side.
@@ -14,7 +14,7 @@ const G         = 9.81;
  * @enum {string}
  * @typedef {string} Hoisting
  */
-const Hoisting = {
+export const Hoisting = {
     DEXTER:   'dexter',
     SINISTER: 'sinister'
 };
@@ -26,7 +26,7 @@ const Hoisting = {
  * @enum {string}
  * @typedef {string} Side
  */
-const Side = {
+export const Side = {
     TOP:    'top',
     LEFT:   'left',
     BOTTOM: 'bottom',
@@ -40,7 +40,7 @@ const Side = {
  * @enum {string}
  * @typedef {string} Face
  */
-const Face = {
+export const Face = {
     OBVERSE: 'obverse',
     REVERSE: 'reverse'
 };
@@ -52,20 +52,10 @@ const Face = {
  * @enum {string}
  * @typedef {string} FlagpoleType
  */
-const FlagpoleType = {
+export const FlagpoleType = {
     VERTICAL:   'vertical',
     HORIZONTAL: 'horizontal',
     OUTRIGGER:  'outrigger',
     CROSSBAR:   'crossbar',
     GALLERY:    'gallery'
-};
-
-export {
-    DAMPING,
-    DRAG,
-    G,
-    Hoisting,
-    Side,
-    Face,
-    FlagpoleType
 };

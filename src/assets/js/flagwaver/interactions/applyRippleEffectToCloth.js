@@ -14,7 +14,7 @@ export default function applyRippleEffectToCloth(cloth) {
     const strength = 100;
     const t = Date.now() / 1000;
 
-    for (let i = 0, il = particles.length; i < il; i++) {
+    for (let i = 0, ii = particles.length; i < ii; i++) {
         const particle = particles[i];
         const { x, y, z } = particle.position;
 

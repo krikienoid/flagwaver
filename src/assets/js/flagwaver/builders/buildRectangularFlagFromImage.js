@@ -1,6 +1,6 @@
 import THREE from 'three';
 import { Hoisting, Side } from '../constants';
-import Utils from '../utils/Utils';
+import { isNumeric, isObject } from '../utils/TypeUtils';
 import Orientation from '../abstracts/Orientation';
 import Flag from '../subjects/Flag';
 
@@ -29,12 +29,12 @@ function computeSizeFromImage(image, options) {
                 height: crossWidth
             };
         }
-    } else if (options.width === 'auto' && Utils.isNumeric(options.height)) {
+    } else if (options.width === 'auto' && isNumeric(options.height)) {
         return {
             width:  options.height * image.width / image.height,
             height: options.height
         };
-    } else if (Utils.isNumeric(options.width) && options.height === 'auto') {
+    } else if (isNumeric(options.width) && options.height === 'auto') {
         return {
             width:  options.width,
             height: options.width * image.height / image.width
@@ -58,7 +58,7 @@ function computeSize(image, options) {
         size = computeSizeFromImage(image, size);
     }
 
-    if (Utils.isNumeric(size.width) && Utils.isNumeric(size.height)) {
+    if (isNumeric(size.width) && isNumeric(size.height)) {
         return size;
     } else {
         return {
@@ -112,7 +112,7 @@ function createTextureFromImage(image, options) {
     let destWidth       = srcWidth;
     let destHeight      = srcHeight;
 
-    if (Utils.isObject(options)) {
+    if (isObject(options)) {
         // Set destination size
         if (options.width  > 0) { destWidth  = options.width;  }
         if (options.height > 0) { destHeight = options.height; }
@@ -133,19 +133,19 @@ function createTextureFromImage(image, options) {
         }
 
         // Rotate around center
-        if (Utils.isNumeric(options.rotate)) {
+        if (isNumeric(options.rotate)) {
             ctx.translate(canvas.width / 2, canvas.height / 2);
             ctx.rotate(options.rotate);
             ctx.translate(-canvas.width / 2, -canvas.height / 2);
         }
 
         // Translate X
-        if (Utils.isNumeric(options.translateX)) {
+        if (isNumeric(options.translateX)) {
             ctx.translate(options.translateX, 0);
         }
 
         // Translate Y
-        if (Utils.isNumeric(options.translateY)) {
+        if (isNumeric(options.translateY)) {
             ctx.translate(0, options.translateY);
         }
     } else {

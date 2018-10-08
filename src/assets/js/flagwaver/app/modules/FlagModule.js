@@ -1,5 +1,5 @@
 import { Hoisting, Side, FlagpoleType } from '../../constants';
-import Utils from '../../utils/Utils';
+import { isNumeric, isObject, hasValue } from '../../utils/TypeUtils';
 import createPropertyValidator from '../../helpers/createPropertyValidator';
 import FlagInterface from '../../interface/FlagInterface';
 import ControlModule from './ControlModule';
@@ -26,7 +26,7 @@ export default class FlagModule extends ControlModule {
 
     static validate = createPropertyValidator({
         topEdge: (value) => {
-            if (Utils.hasValue(Side, value)) {
+            if (hasValue(Side, value)) {
                 return value;
             } else {
                 console.error('FlagWaver.FlagModule.option: Invalid value.');
@@ -34,7 +34,7 @@ export default class FlagModule extends ControlModule {
         },
 
         hoisting: (value) => {
-            if (Utils.hasValue(Hoisting, value)) {
+            if (hasValue(Hoisting, value)) {
                 return value;
             } else {
                 console.error('FlagWaver.FlagModule.option: Invalid value.');
@@ -44,7 +44,7 @@ export default class FlagModule extends ControlModule {
         width: (value) => {
             const n = Number(value);
 
-            if (Utils.isNumeric(value) && n > 0) {
+            if (isNumeric(value) && n > 0) {
                 return n;
             } else if (value === 'auto') {
                 return value;
@@ -56,7 +56,7 @@ export default class FlagModule extends ControlModule {
         height: (value) => {
             const n = Number(value);
 
-            if (Utils.isNumeric(value) && n > 0) {
+            if (isNumeric(value) && n > 0) {
                 return n;
             } else if (value === 'auto') {
                 return value;
@@ -68,7 +68,7 @@ export default class FlagModule extends ControlModule {
         mass: (value) => {
             const n = Number(value);
 
-            if (Utils.isNumeric(value) && n >= 0) {
+            if (isNumeric(value) && n >= 0) {
                 return n;
             } else {
                 console.error('FlagWaver.FlagModule.option: Invalid value.');
@@ -78,7 +78,7 @@ export default class FlagModule extends ControlModule {
         granularity: (value) => {
             const n = Math.round(value);
 
-            if (Utils.isNumeric(value) && n > 0) {
+            if (isNumeric(value) && n > 0) {
                 return n;
             } else {
                 console.error('FlagWaver.FlagModule.option: Invalid value.');
@@ -94,7 +94,7 @@ export default class FlagModule extends ControlModule {
         },
 
         flagpoleType: (value) => {
-            if (Utils.hasValue(FlagpoleType, value)) {
+            if (hasValue(FlagpoleType, value)) {
                 return value;
             } else {
                 console.error('FlagWaver.FlagModule.option: Invalid value.');
@@ -128,7 +128,7 @@ export default class FlagModule extends ControlModule {
     }
 
     setOptions(options, callback) {
-        if (Utils.isObject(options)) {
+        if (isObject(options)) {
             this.subject.setOptions(
                 Object.assign(
                     this.configOptions,

@@ -19,7 +19,7 @@ export default function applyWindForceToCloth(cloth, wind, object) {
     if (wind) {
         const force = localizeForce(wind.force, object);
 
-        for (let i = 0, il = faces.length; i < il; i++) {
+        for (let i = 0, ii = faces.length; i < ii; i++) {
             const face   = faces[i];
             const normal = face.normal;
 

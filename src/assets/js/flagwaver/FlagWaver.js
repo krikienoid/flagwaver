@@ -1,5 +1,5 @@
-// Utils
-export { default as Utils } from './utils/Utils';
+// Constants
+export * from './constants';
 
 // Subjects
 export { default as Flag } from './subjects/Flag';

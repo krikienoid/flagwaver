@@ -186,7 +186,7 @@ export default class Cloth {
     reset() {
         const particles = this.particles;
 
-        for (let i = 0, il = particles.length; i < il; i++) {
+        for (let i = 0, ii = particles.length; i < ii; i++) {
             const particle = particles[i];
 
             particle.previous.copy(
@@ -203,12 +203,12 @@ export default class Cloth {
         const deltaTimeSq = deltaTime * deltaTime;
 
         // Compute new particle positions
-        for (let i = 0, il = particles.length; i < il; i++) {
+        for (let i = 0, ii = particles.length; i < ii; i++) {
             particles[i].integrate(deltaTimeSq);
         }
 
         // Resolve constraints
-        for (let i = 0, il = constraints.length; i < il; i++) {
+        for (let i = 0, ii = constraints.length; i < ii; i++) {
             constraints[i].resolve();
         }
     }
@@ -218,7 +218,7 @@ export default class Cloth {
         const geometry  = this.geometry;
         const vertices  = geometry.vertices;
 
-        for (let i = 0, il = particles.length; i < il; i++) {
+        for (let i = 0, ii = particles.length; i < ii; i++) {
             vertices[i].copy(particles[i].position);
         }
 

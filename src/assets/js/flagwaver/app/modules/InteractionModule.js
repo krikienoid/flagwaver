@@ -35,7 +35,7 @@ export default class InteractionModule extends Module {
         const subjects = [];
         const actions = [];
 
-        for (let i = 0, il = modules.length; i < il; i++) {
+        for (let i = 0, ii = modules.length; i < ii; i++) {
             const module = modules[i];
 
             if (subjectTypes.indexOf(module.constructor.displayName) >= 0) {
@@ -72,7 +72,7 @@ export default class InteractionModule extends Module {
         const actions = this.actions;
 
         if (actions.length) {
-            for (let i = 0, il = actions.length; i < il; i++) {
+            for (let i = 0, ii = actions.length; i < ii; i++) {
                 for (let j = 0, jl = subjects.length; j < jl; j++) {
                     interact(subjects[j], actions[i]);
                 }

@@ -33,7 +33,7 @@ export default class App extends ModuleSystem {
         const startModules = () => {
             const modules = this.modules;
 
-            for (let i = 0, il = modules.length; i < il; i++) {
+            for (let i = 0, ii = modules.length; i < ii; i++) {
                 const module = modules[i];
 
                 if (module.subject && module.reset) {
@@ -45,7 +45,7 @@ export default class App extends ModuleSystem {
         const updateModules = (deltaTime) => {
             const modules = this.modules;
 
-            for (let i = 0, il = modules.length; i < il; i++) {
+            for (let i = 0, ii = modules.length; i < ii; i++) {
                 const module = modules[i];
 
                 if ((module.subject || module.interact) && module.update) {

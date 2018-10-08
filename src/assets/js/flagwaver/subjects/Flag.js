@@ -1,6 +1,6 @@
 import THREE from 'three';
 import { Side } from '../constants';
-import Utils from '../utils/Utils';
+import { isNumeric } from '../utils/TypeUtils';
 import ShaderChunk from '../webgl/ShaderChunk';
 import Cloth from './Cloth';
 import FixedConstraint from './FixedConstraint';
@@ -86,7 +86,7 @@ const pin = (() => {
     };
 
     function ensureValidSpacing(spacing) {
-        if (Utils.isNumeric(spacing) && spacing >= 1) {
+        if (isNumeric(spacing) && spacing >= 1) {
             return Math.floor(spacing);
         } else {
             return defaults.spacing;
@@ -142,7 +142,7 @@ const pin = (() => {
             pinEdge(cloth, pins, edges, settings);
         } else if (edges && edges.length) {
             // If edges is an array
-            for (let i = 0, il = edges.length; i < il; i++) {
+            for (let i = 0, ii = edges.length; i < ii; i++) {
                 pinEdge(cloth, pins, edges[i], settings);
             }
         }
@@ -257,7 +257,7 @@ export default class Flag {
         this.cloth.simulate(deltaTime);
 
         // Pin constraints
-        for (let i = 0, il = pins.length; i < il; i++) {
+        for (let i = 0, ii = pins.length; i < ii; i++) {
             const particle = pins[i];
 
             particle.previous.copy(
@@ -268,7 +268,7 @@ export default class Flag {
         }
 
         // Length constraints
-        for (let i = 0, il = lengthConstraints.length; i < il; i++) {
+        for (let i = 0, ii = lengthConstraints.length; i < ii; i++) {
             lengthConstraints[i].resolve();
         }
     }

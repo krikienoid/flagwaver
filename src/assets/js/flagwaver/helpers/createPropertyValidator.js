@@ -1,4 +1,4 @@
-import Utils from '../utils/Utils';
+import { isObject } from '../utils/TypeUtils';
 
 class PropertyValidator {
     constructor(validators) {
@@ -7,28 +7,28 @@ class PropertyValidator {
 
     validate(options, strict) {
         const validators = this.validators;
-        const hasOptions = Utils.isObject(options);
-        const result = {};
 
-        if (hasOptions) {
-            for (const key in options) {
-                if (Utils.hasProperty(options, key)) {
-                    if (typeof options[key] !== 'undefined') {
-                        if (validators[key]) {
-                            const validated = validators[key](options[key]);
+        if (isObject(options)) {
+            return Object.keys(options).reduce((result, key) => {
+                const value = options[key];
 
-                            if (validated != null) {
-                                result[key] = validated;
-                            }
-                        } else if (!strict) {
-                            result[key] = options[key];
+                if (typeof value !== 'undefined') {
+                    if (validators[key]) {
+                        const validated = validators[key](value);
+
+                        if (validated != null) {
+                            result[key] = validated;
                         }
+                    } else if (!strict) {
+                        result[key] = value;
                     }
                 }
-            }
+
+                return result;
+            }, {});
         }
 
-        return result;
+        return {};
     }
 }
 

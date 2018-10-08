@@ -16,7 +16,7 @@ export default function applyGravityToCloth(cloth, object) {
     const particles = cloth.particles;
     const force = localizeForce(gravity, object);
 
-    for (let i = 0, il = particles.length; i < il; i++) {
+    for (let i = 0, ii = particles.length; i < ii; i++) {
         particles[i].acceleration.add(force);
     }
 }

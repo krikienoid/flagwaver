@@ -1,15 +1,15 @@
-import Utils from '../utils/Utils';
+import { isNumeric } from '../utils/TypeUtils';
 import Flag from '../subjects/Flag';
 import buildRectangularFlagFromImage from './buildRectangularFlagFromImage';
 
 function ensureNumericSize(options) {
     const result = Object.assign({}, options);
 
-    if (!Utils.isNumeric(result.width)) {
+    if (!isNumeric(result.width)) {
         result.width = Flag.defaults.width;
     }
 
-    if (!Utils.isNumeric(result.height)) {
+    if (!isNumeric(result.height)) {
         result.height = Flag.defaults.height;
     }
 

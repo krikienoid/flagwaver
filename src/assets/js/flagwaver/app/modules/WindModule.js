@@ -1,11 +1,11 @@
-import Utils from '../../utils/Utils';
+import { isNumeric, isFunction } from '../../utils/TypeUtils';
 import createPropertyValidator from '../../helpers/createPropertyValidator';
 import Wind from '../../subjects/Wind';
 import WindModifiers from '../../subjects/WindModifiers';
 import ControlModule from './ControlModule';
 
 function getModifierFnFromOption(value, defaultValue) {
-    if (Utils.isFunction(value)) {
+    if (isFunction(value)) {
         return value;
     } else if (WindModifiers[value]) {
         return WindModifiers[value];
@@ -37,7 +37,7 @@ export default class WindModule extends ControlModule {
         speed: (value) => {
             const n = Number(value);
 
-            if (Utils.isNumeric(value) && n >= 0) {
+            if (isNumeric(value) && n >= 0) {
                 return n;
             } else {
                 console.error('FlagWaver.WindModule.option: Invalid value.');
