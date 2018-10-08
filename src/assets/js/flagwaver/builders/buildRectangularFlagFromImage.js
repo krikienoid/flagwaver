@@ -1,7 +1,7 @@
 import THREE from 'three';
 import { Hoisting, Side } from '../constants';
+import getAngleOfSide from '../utils/getAngleOfSide';
 import { isNumeric, isObject } from '../utils/TypeUtils';
-import Orientation from '../abstracts/Orientation';
 import Flag from '../subjects/Flag';
 
 const defaults = {
@@ -75,13 +75,12 @@ function isVertical(options) {
 
 // Compute values needed to apply texture onto mesh
 function computeTextureArgs(options) {
-    const orientation = Orientation.from(options.topEdge);
     const result = {};
 
     result.width = options.width;
     result.height = options.height;
     result.reflect = options.hoisting === Hoisting.SINISTER;
-    result.rotate = orientation.angle;
+    result.rotate = getAngleOfSide(options.topEdge);
 
     if (isVertical(options)) {
         const offset = (options.width - options.height) / 2;
