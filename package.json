@@ -40,6 +40,7 @@
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
     "rivets": "^0.9.6",
+    "spectre.css": "^0.5.3",
     "three": "^0.72.0"
   },
   "devDependencies": {
