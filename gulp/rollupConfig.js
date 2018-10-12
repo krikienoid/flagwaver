@@ -65,7 +65,17 @@ export default {
   plugins: [
     resolve(),
     commonjs({
-      include: 'node_modules/**'
+      include: 'node_modules/**',
+      namedExports: {
+        'node_modules/react/index.js': [
+          'Children', 'createRef', 'Component', 'PureComponent',
+          'createContext', 'forwardRef', 'Fragment', 'StrictMode',
+          'createElement', 'cloneElement', 'createFactory', 'isValidElement'
+        ],
+        'node_modules/react-dom/index.js': [
+          'createPortal', 'findDOMNode', 'hydrate', 'render'
+        ]
+      }
     }),
     glsl(),
     babel({
@@ -82,8 +92,10 @@ export default {
             browsers: config.compatibility
           },
           useBuiltIns: 'entry'
-        }]
+        }],
+        '@babel/preset-react'
       ],
+      exclude: 'node_modules/**',
       plugins: [
         '@babel/plugin-external-helpers',
         ['@babel/plugin-proposal-class-properties', { 'loose': true }],
