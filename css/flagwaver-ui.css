@@ -420,3 +420,7 @@ p, a {
         background-image : url('../img/Sky_over_Washington_Monument-1600x1200px.jpg');
     }
 }
+
+option {
+    color: black;
+}
