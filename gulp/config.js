@@ -27,9 +27,7 @@ export default {
     deps: {
       js: [
         'node_modules/three/three.min.js',
-        'node_modules/stats.js/build/stats.min.js',
-        'node_modules/jquery/dist/jquery.min.js',
-        'node_modules/rivets/dist/rivets.bundled.min.js'
+        'node_modules/stats.js/build/stats.min.js'
       ]
     }
   },

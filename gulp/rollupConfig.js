@@ -51,16 +51,10 @@ export default {
   sourcemap: !PRODUCTION,
   banner: banner('FlagWaver - App'),
   external: [
-    'three',
-    'jquery',
-    'rivets',
-    'hashvars'
+    'three'
   ],
   globals: {
-    three: 'THREE',
-    jquery: 'jQuery',
-    rivets: 'rivets',
-    hashvars: 'HashVars'
+    'three': 'THREE'
   },
   plugins: [
     resolve(),

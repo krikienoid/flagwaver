@@ -11,131 +11,19 @@
         <meta name="keywords" content="FlagWaver, Flag, Waving, Vexillology, THREE.js, WebGL, 3D, JavaScript" />
 
         <!-- BEGIN CSS -->
-        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" />
         <link rel="stylesheet" type="text/css" href="./assets/css/main.css" />
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" />
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:900i&text=FlagWaver" />
         <!-- END CSS -->
+    </head>
+
+    <body>
+        <div id="root"></div>
 
         <!-- BEGIN JS -->
-        <script type="text/javascript" src="./assets/js/jquery.min.js"></script>
-        <script type="text/javascript" src="./assets/js/three.min.js"></script>
         <script type="text/javascript" src="./assets/js/modernizr-custom.js"></script>
-        <script type="text/javascript" src="./assets/js/rivets.bundled.min.js"></script>
+        <script type="text/javascript" src="./assets/js/three.min.js"></script>
         <script type="text/javascript" src="./assets/js/app.js"></script>
         <!-- END JS -->
-    </head>
-    <body>
-        <div class="wrapper-page bg-sky">
-            <header class="page-header">
-                <h1>Flag Waver</h1>
-            </header>
-
-            <main class="page-main">
-                <div class="js-flag-canvas"></div>
-            </main>
-
-            <aside class="page-controls">
-                <div class="page-controls-basic">
-                    <div class="page-controls-group page-controls-wide">
-                        <h2>Upload Image</h2>
-                        <div class="input-control-group control-img-upload" id="control-img-upload">
-                            <div class="input-btn-group">
-                                <select
-                                    class="input-control input-btn input-select"
-                                    aria-label="Upload image from"
-                                    data-rv-value="flagWaverOpts.flag.imgUploadMode"
-                                    data-rv-on-change="flagWaverControls.flag.setImgUploadMode"
-                                    id="set-img-upload-mode"
-                                >
-                                    <option value="web">Web</option>
-                                    <option value="file">File</option>
-                                </select>
-                            </div>
-                            <input
-                                type="text"
-                                class="input-control input-control-main input-img-web"
-                                placeholder="Enter image URL"
-                                aria-label="Enter image URL"
-                                data-rv-value="flagWaverOpts.flag.imgURL"
-                                id="input-img-link"
-                            />
-                            <div class="input-btn-group input-img-web">
-                                <input
-                                    type="button"
-                                    class="input-control input-btn"
-                                    value="Go!"
-                                    data-rv-on-click="flagWaverControls.flag.setImgURL"
-                                    id="set-img-link"
-                                />
-                            </div>
-                            <div class="input-control input-control-main input-file input-img-file">
-                                <label
-                                    class="input-cover input-face"
-                                    for="open-img-file"
-                                    data-rv-text="flagWaverOpts.flag.imgFilePath | fileName 'Open a file'"
-                                    id="info-img-file"
-                                ></label>
-                                <input
-                                    type="file"
-                                    class="input-cover input-hidden"
-                                    accept="image/*"
-                                    data-rv-on-change="flagWaverControls.flag.setImgFile"
-                                    id="open-img-file"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="page-controls-group">
-                        <input
-                            type="button"
-                            class="expander input-control input-btn"
-                            data-target="#expandable-controls"
-                            data-text-expanded="Hide Options"
-                            data-text-collapsed="More Options"
-                            aria-expanded="false"
-                            aria-controls="expandable-controls"
-                        />
-                    </div>
-                </div>
-                <div class="page-controls-more expandable" aria-hidden="true" id="expandable-controls">
-                    <div class="page-controls-group">
-                        <h2>Wind</h2>
-                        <input
-                            type="button"
-                            class="input-control input-btn input-btn-md"
-                            data-text-selected="Wind: On"
-                            data-text-unselected="Wind: Off"
-                            data-rv-value="flagWaverOpts.isWindOn | onoff 'Wind On' 'Wind Off'"
-                            data-rv-on-click="flagWaverControls.toggleWind"
-                            id="wind-toggle"
-                        />
-                    </div>
-                    <div class="page-controls-group">
-                        <h2>Hoisting</h2>
-                        <select
-                            class="input-control input-btn input-select"
-                            aria-label="Hoist side"
-                            data-rv-value="flagWaverOpts.flag.hoisting"
-                            data-rv-on-change="flagWaverControls.flag.setHoisting"
-                            id="set-hoisting"
-                        >
-                            <option value="dexter">Dexter</option>
-                            <option value="sinister">Sinister</option>
-                        </select>
-                        <select
-                            class="input-control input-btn input-select"
-                            aria-label="Hoist top edge"
-                            data-rv-value="flagWaverOpts.flag.topEdge"
-                            data-rv-on-change="flagWaverControls.flag.setTopEdge"
-                            id="set-top-edge"
-                        >
-                            <option value="top">Top</option>
-                            <option value="left">Left</option>
-                            <option value="bottom">Bottom</option>
-                            <option value="right">Right</option>
-                        </select>
-                    </div>
-                </div>
-            </aside>
-        </div>
     </body>
 </html>

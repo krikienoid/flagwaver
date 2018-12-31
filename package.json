@@ -32,15 +32,14 @@
   },
   "dependencies": {
     "core-js": "^2.5.7",
-    "jquery": "^3.2.1",
     "normalize-css": "^2.3.1",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
-    "rivets": "^0.9.6",
     "spectre.css": "^0.5.3",
+    "stats.js": "^0.17.0",
     "three": "^0.72.0"
   },
   "devDependencies": {
@@ -71,7 +70,6 @@
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-replace": "^2.0.0",
     "rollup-stream": "^1.24.1",
-    "stats.js": "^0.17.0",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
   }
