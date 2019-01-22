@@ -1,0 +1,15 @@
+//
+// Font smoothing
+//
+
+// TIP: Use this when you have white text on a dark or colored background.
+
+@mixin font-smoothing {
+     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@mixin no-font-smoothing {
+     -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+}

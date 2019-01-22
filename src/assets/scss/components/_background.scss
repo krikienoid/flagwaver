@@ -1,0 +1,20 @@
+//
+// Background
+//
+
+.bg-sky {
+    background-attachment: fixed;
+    background-color: #566c73;
+    background-image: url("../img/Sky_over_Washington_Monument-480x640px.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    @media only screen and (min-width: 480px) {
+        background-image: url("../img/Sky_over_Washington_Monument-800x600px.jpg");
+    }
+
+    @media only screen and (min-width: 800px) {
+        background-image: url("../img/Sky_over_Washington_Monument-1600x1200px.jpg");
+    }
+}

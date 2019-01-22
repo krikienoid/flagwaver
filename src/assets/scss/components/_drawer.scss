@@ -1,0 +1,37 @@
+//
+// Drawer
+//
+
+$drawer-width: rem(320px);
+$drawer-zindex: $zindex-fixed;
+
+.drawer {
+    width: $drawer-width;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: $drawer-zindex;
+    background-color: $white;
+    transform: translateX(-$drawer-width);
+    transition: transform $transition-style;
+
+    &.open {
+        transform: translateX(0);
+    }
+}
+
+.drawer-overlay {
+    visibility: hidden;
+    @include block-full;
+    z-index: $drawer-zindex;
+    background-color: $white;
+    opacity: 0;
+    transition: opacity $transition-style, visibility 0s $transition-duration;
+
+    &.open {
+        visibility: visible;
+        opacity: 0.5;
+        transition: opacity $transition-style, visibility 0s 0s;
+    }
+}

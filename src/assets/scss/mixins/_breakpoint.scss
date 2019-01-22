@@ -1,0 +1,59 @@
+//
+// Breakpoint
+//
+
+$grid-breakpoints: (
+    xs: 0,
+    sm: 480px,
+    md: 640px,
+    lg: 960px,
+    xl: 1200px,
+    xxl: 1440px
+) !default;
+
+@function get-breakpoint-value($value, $breakpoints: ()) {
+    $type: type-of($value);
+
+    @if $type == number and $value > 0 {
+        @return $value;
+    } @else if $type == string {
+        @return get-breakpoint-value(map-get($breakpoints, $value));
+    }
+
+    @return null;
+}
+
+@mixin breakpoint($query, $breakpoints: $grid-breakpoints) {
+    $min: $query;
+    $max: null;
+
+    @if length($query) == 2 {
+        $min: nth($query, 1);
+        $max: nth($query, 2);
+    }
+
+    $min: get-breakpoint-value($min, $breakpoints);
+    $max: get-breakpoint-value($max, $breakpoints);
+
+    @if $max != null {
+        $max: $max - 0.02;
+    }
+
+    @if $min != null and $max != null {
+        @media (min-width: $min) and (max-width: $max) {
+            @content;
+        }
+    } @else if $min != null and $max == null {
+        @media (min-width: $min) {
+            @content;
+        }
+    } @else if $min == null and $max != null {
+        @media (max-width: $max) {
+            @content;
+        }
+    } @else {
+        @warn "\"#{$query}\" is not a valid breakpoint.";
+
+        @content;
+    }
+}

@@ -1,0 +1,41 @@
+//
+// Typography
+//
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+    font-family: $font-family-base;
+    font-weight: bold;
+    line-height: 1.25;
+}
+
+p {
+    margin: 0 0 (1rem * $line-height-base);
+}
+
+a {
+    font-weight: 500;
+    text-decoration: $link-decoration;
+
+    &:focus,
+    &:hover,
+    &:active,
+    &.active {
+        text-decoration: $link-hover-decoration;
+    }
+}
+
+hr {
+    margin: 1rem 0;
+    border: 0;
+    border-top: 0.0625rem solid $brand-gray-light;
+}
+
+.text-inverse {
+    color: $text-inverse-color;
+    @include font-smoothing;
+}

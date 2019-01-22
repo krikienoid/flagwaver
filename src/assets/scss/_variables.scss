@@ -1,0 +1,197 @@
+//
+// Variables
+//
+
+// Colors
+
+$black:                         #000;
+$white:                         #fff;
+
+$brand-red:                     #d0112b;
+$brand-blue:                    #1946ba;
+$brand-blue-light:              #4392f1;
+$brand-green-light:             #3ec300;
+$brand-yellow:                  #e89005;
+$brand-smoky-gray:              #8d99ae;
+
+$brand-gray-darker:             #262626;
+$brand-gray-dark:               #4d4d4d;
+$brand-gray-medium:             #747474;
+$brand-gray-light:              #c3c3c3;
+$brand-gray-lighter:            #dedede;
+$brand-gray-lightest:           #ebebeb;
+
+$brand-overlay-white:           rgba($white, 0.8);
+
+$primary:                       $brand-blue;
+$secondary:                     $brand-gray-medium;
+
+
+// Spacing
+
+$spacer:                        1rem;
+
+
+// Body
+
+$text-color:                    $brand-gray-dark;
+$text-inverse-color:            $white;
+
+
+// Links
+
+$link-color:                    $primary;
+$link-decoration:               underline;
+$link-hover-color:              darken($link-color, 10%);
+$link-hover-decoration:         underline;
+
+$link-inverse-color:            $white;
+$link-inverse-hover-color:      lighten($brand-blue, 40%);
+
+
+// Grid
+
+$grid-breakpoints: (
+    xs: 480px,
+    sm: 600px,
+    md: 840px,
+    lg: 960px,
+    xl: 1200px,
+    xxl: 1440px
+);
+
+$grid-gutter-width:             1.25rem;
+$grid-gutter-half:              $grid-gutter-width / 2;
+
+
+// Z-index
+
+$zindex-fixed:                  1000;
+
+
+// Typography
+
+$font-size-root:                16px;
+
+$font-family-helvetica:         Helvetica, Arial, sans-serif;
+$font-family-montserrat:        "Montserrat", $font-family-helvetica;
+
+$font-family-base:              $font-family-montserrat;
+$font-family-primary:           $font-family-base;
+$font-family-secondary:         $font-family-base;
+
+$font-size-base:                1rem;
+$font-size-sm:                  0.75rem;
+$font-size-lg:                  1.25rem;
+
+$line-height-base:              1.5;
+
+
+// Transitions
+
+$transition-duration:           200ms;
+$transition-timing-function:    ease-in-out;
+$transition-style:              $transition-duration $transition-timing-function;
+
+
+//
+// Spectre.css
+//
+
+// Core colors
+
+$primary-color:                 $primary;
+$primary-color-dark:            darken($primary-color, 10%);
+$primary-color-light:           lighten($primary-color, 10%);
+
+$secondary-color:               $secondary;
+$secondary-color-dark:          darken($secondary-color, 10%);
+$secondary-color-light:         lighten($secondary-color, 10%);
+
+
+// Gray colors
+
+$dark-color:                    $brand-gray-darker;
+$light-color:                   $white;
+$gray-color:                    $brand-gray-light;
+$gray-color-dark:               $brand-gray-medium;
+$gray-color-light:              $brand-gray-lightest;
+
+$border-color:                  $brand-gray-lighter;
+$border-color-dark:             $brand-gray-light;
+$bg-color:                      $brand-gray-lighter;
+$bg-color-dark:                 $brand-gray-lightest;
+$bg-color-light:                $light-color;
+
+
+// Control colors
+
+$success-color:                 $brand-green-light;
+$warning-color:                 $brand-yellow;
+$error-color:                   $brand-red;
+
+
+// Other colors
+
+$body-bg:                       $white;
+$body-font-color:               $text-color;
+
+
+// Fonts
+
+$fallback-font-family:          $font-family-helvetica;
+$body-font-family:              $font-family-base;
+
+
+// Unit sizes
+
+$unit-o:                        0.0625rem;
+$unit-h:                        0.125rem;
+$unit-1:                        0.25rem;
+$unit-2:                        0.5rem;
+$unit-3:                        0.75rem;
+$unit-4:                        1rem;
+$unit-5:                        1.25rem;
+$unit-6:                        1.5rem;
+$unit-7:                        1.75rem;
+$unit-8:                        2rem;
+$unit-9:                        2.25rem;
+$unit-10:                       2.5rem;
+$unit-12:                       3rem;
+$unit-16:                       4rem;
+
+
+// Font sizes
+
+$html-font-size:                $font-size-root;
+$html-line-height:              $line-height-base;
+
+$font-size:                     $font-size-base;
+$line-height:                   1rem * $line-height-base;
+
+
+// Sizes
+
+$layout-spacing:                $unit-2;
+$layout-spacing-sm:             $unit-1;
+$layout-spacing-lg:             $unit-4;
+$border-radius:                 $unit-1;
+
+$control-size:                  2.5rem;
+
+$control-padding-x:             0.75rem;
+$control-padding-y:             0.5rem;
+
+$control-icon-size:             1rem;
+
+
+// Responsive breakpoints
+
+$size-xs:                       map-get($grid-breakpoints, xs);
+$size-sm:                       map-get($grid-breakpoints, sm);
+$size-md:                       map-get($grid-breakpoints, md);
+$size-lg:                       map-get($grid-breakpoints, lg);
+$size-xl:                       map-get($grid-breakpoints, xl);
+$size-2x:                       map-get($grid-breakpoints, xxl);
+
+$responsive-breakpoint:         $size-sm;

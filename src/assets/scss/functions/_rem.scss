@@ -1,0 +1,9 @@
+//
+// px to rem unit converter
+//
+
+$font-size-root: 16px !default;
+
+@function rem($n) {
+    @return $n / $font-size-root * 1rem;
+}

@@ -1,0 +1,17 @@
+//
+// Layout
+//
+
+html,
+body,
+#root,
+.site-main {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.app-bg,
+.app-canvas {
+    @include block-full;
+}

@@ -1,0 +1,33 @@
+//
+// Panel
+//
+
+$panel-outer-padding-x: $grid-gutter-width;
+$panel-outer-padding-y: $grid-gutter-width;
+
+.panel {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.panel-header,
+.panel-body {
+    padding: $panel-outer-padding-y $panel-outer-padding-x;
+}
+
+.panel-header {
+    flex: 0 0 auto;
+    background-color: $brand-gray-lightest;
+}
+
+.panel-body {
+    flex: 0 1 auto;
+    overflow-y: scroll;
+
+    .btn-group,
+    .input-group {
+        width: 100%;
+    }
+}

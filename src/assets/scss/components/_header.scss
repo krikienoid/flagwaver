@@ -1,0 +1,135 @@
+//
+// Header
+//
+
+$site-header-btn-width: 1.75rem;
+$site-header-btn-height: 1.5rem;
+
+.site-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    padding: 0.5rem 0.625rem 0;
+    color: $text-inverse-color;
+    @include font-smoothing;
+
+    @include breakpoint(sm) {
+        padding: 1rem $grid-gutter-width 0;
+    }
+}
+
+.site-header-layout {
+    display: flex;
+    margin-left: -$grid-gutter-half;
+    margin-right: -$grid-gutter-half;
+
+    .site-header-center,
+    .site-header-left,
+    .site-header-right {
+        padding-left: $grid-gutter-half;
+        padding-right: $grid-gutter-half;
+    }
+
+    .site-header-left,
+    .site-header-right {
+        width: $site-header-btn-width + $grid-gutter-width;
+        flex: 0 0 auto;
+    }
+
+    .site-header-left {
+        order: 0;
+    }
+
+    .site-header-right {
+        order: 2;
+    }
+
+    .site-header-center {
+        flex: 1 1 auto;
+        order: 1;
+        text-align: center;
+
+        @include breakpoint(sm) {
+            text-align: left;
+        }
+    }
+}
+
+.site-header-btn {
+    @include button-icon($site-header-btn-width, $site-header-btn-height);
+    margin: 0.125rem 0;
+    color: $link-inverse-color;
+    cursor: pointer;
+    transition: color $transition-style;
+
+    @include breakpoint(sm) {
+        margin: 0.25rem 0;
+    }
+
+    .icon-bars {
+        $bar-height: 0.25rem;
+        $bar-gap: 0.3125rem;
+
+        width: $site-header-btn-width;
+        display: inline-block;
+
+        .icon-bar {
+            width: 100%;
+            height: $bar-height;
+            display: block;
+            background-color: $link-inverse-color;
+            border-radius: 0.0625rem;
+            transition: background-color $transition-style;
+
+            + .icon-bar {
+                margin-top: $bar-gap;
+            }
+        }
+    }
+
+    .icon-dots {
+        $dot-height: 0.375rem;
+        $dot-gap: 0.1875rem;
+
+        width: $site-header-btn-width;
+        display: inline-block;
+
+        .icon-dot {
+            width: $dot-height;
+            height: $dot-height;
+            display: block;
+            margin: 0 auto;
+            background-color: $link-inverse-color;
+            border-radius: 50%;
+            transition: background-color $transition-style;
+
+            + .icon-dot {
+                margin-top: $dot-gap;
+            }
+        }
+    }
+
+    &:hover {
+        .icon-bar,
+        .icon-dot {
+            background-color: $link-inverse-hover-color;
+        }
+    }
+}
+
+.site-headline {
+    margin: 0;
+    font-size: 1.75rem;
+    font-style: italic;
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    white-space: nowrap;
+    user-select: none;
+
+    @include breakpoint(sm) {
+        font-size: 2rem;
+    }
+}

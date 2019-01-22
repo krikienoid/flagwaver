@@ -1,0 +1,24 @@
+//
+// Button resets
+//
+
+@mixin button-unstyled {
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: 0;
+    appearance: none;
+}
+
+@mixin button-icon-size($width, $height: $width) {
+    width: $width;
+    height: $height;
+    font-size: $height;
+}
+
+@mixin button-icon($width, $height: $width) {
+    @include button-icon-size($width, $height);
+    @include button-unstyled;
+    line-height: 1;
+    text-align: center;
+}
