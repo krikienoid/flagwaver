@@ -32,6 +32,7 @@ export default class App extends Component {
     }
 
     componentWillUnmount() {
+        this.app.destroy();
         window.removeEventListener('hashchange', this.handleHashChange);
     }
 

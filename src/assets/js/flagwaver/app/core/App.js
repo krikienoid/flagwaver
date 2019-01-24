@@ -13,8 +13,6 @@ const TIME_STEP = 1 / FPS;
  *   @param {THREE.Scene} options.scene
  *   @param {THREE.Camera} options.camera
  *   @param {THREE.WebGLRenderer} options.renderer
- *   @param {Function} [options.onStart]
- *   @param {Function} [options.onUpdate]
  */
 export default class App extends ModuleSystem {
     constructor(options) {
@@ -24,11 +22,16 @@ export default class App extends ModuleSystem {
 
         const { scene, camera, renderer } = settings;
 
-        const onStart = settings.onStart.bind(this);
-        const onUpdate = settings.onUpdate.bind(this);
-
         const clock = new THREE.Clock();
         const timestep = TIME_STEP;
+
+        const removeModules = () => {
+            const modules = this.modules;
+
+            for (let i = 0, ii = modules.length; i < ii; i++) {
+                this.remove(modules[i]);
+            }
+        };
 
         const startModules = () => {
             const modules = this.modules;
@@ -38,6 +41,18 @@ export default class App extends ModuleSystem {
 
                 if (module.subject && module.reset) {
                     module.reset();
+                }
+            }
+        };
+
+        const markModulesNeedsUpdate = (value) => {
+            const modules = this.modules;
+
+            for (let i = 0, ii = modules.length; i < ii; i++) {
+                const module = modules[i];
+
+                if ('needsUpdate' in module) {
+                    module.needsUpdate = value;
                 }
             }
         };
@@ -60,13 +75,16 @@ export default class App extends ModuleSystem {
         };
 
         const start = () => {
-            onStart();
             startModules();
             render();
         };
 
         const update = (deltaTime) => {
-            onUpdate(deltaTime);
+            if (this.needsUpdate) {
+                markModulesNeedsUpdate(true);
+                this.needsUpdate = false;
+            }
+
             updateModules(deltaTime);
             render();
         };
@@ -77,6 +95,12 @@ export default class App extends ModuleSystem {
             if (clock.running) {
                 update(Math.min(clock.getDelta(), timestep));
             }
+        };
+
+        const destroy = () => {
+            clock.stop();
+            removeModules();
+            cancelAnimationFrame(loop);
         };
 
         // Init
@@ -92,12 +116,9 @@ export default class App extends ModuleSystem {
         this.canvas = renderer.domElement;
         this.clock = clock;
         this.timestep = timestep;
+        this.destroy = destroy;
         this.start = start;
         this.update = update;
+        this.needsUpdate = false;
     }
-
-    static defaults = {
-        onStart: () => {},
-        onUpdate: () => {}
-    };
 }
