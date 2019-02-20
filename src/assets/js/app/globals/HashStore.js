@@ -1,3 +1,4 @@
+import { setFileRecord } from '../redux/modules/fileRecord';
 import flagGroup, { setFlagGroupOptions } from '../redux/modules/flagGroup';
 import HashState from '../helpers/HashState';
 
@@ -50,6 +51,10 @@ function mapStateToHash(state) {
 
 function mapStateFromHash(state) {
     return {
+        fileRecord: {
+            url: state.src,
+            file: null
+        },
         flagGroup: assignDefaults(flagGroupDefaults, {
             imgSrc: state.src,
             hoisting: state.hoisting,
@@ -59,8 +64,8 @@ function mapStateFromHash(state) {
 }
 
 function isValidState(state) {
-    // Has image
-    return !!state.flagGroup.imgSrc;
+    // Has an image and is not a local file
+    return !!state.flagGroup.imgSrc && !state.fileRecord.file;
 }
 
 function withLegacyFallback(state) {
@@ -87,5 +92,6 @@ export function toHash(store) {
 export function fromHash(store) {
     const state = mapStateFromHash(withLegacyFallback(hashState.getState()));
 
+    store.dispatch(setFileRecord(state.fileRecord));
     store.dispatch(setFlagGroupOptions(state.flagGroup));
 }
