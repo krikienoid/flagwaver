@@ -90,8 +90,6 @@ function buildApp() {
     app.add(new ResizeModule());
     app.add(new AnimationModule());
 
-    app.add(new WindModule());
-
     app.add(new GravityModule(['flagModule']));
     app.add(new WindForceModule(['flagModule'], ['windModule']));
 

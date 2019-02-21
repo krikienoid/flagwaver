@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 
 import fileRecord from './fileRecord';
 import flagGroup from './flagGroup';
+import wind from './wind';
 
 // Action Types
 
@@ -19,7 +20,8 @@ export function resetApp() {
 
 const appReducer = combineReducers({
     fileRecord: fileRecord,
-    flagGroup: flagGroup
+    flagGroup: flagGroup,
+    wind: wind
 });
 
 export default function rootReducer(state, action) {

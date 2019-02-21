@@ -8,6 +8,7 @@ import Drawer from '../components/Drawer';
 import Panel from '../components/Panel';
 import FlagGroupBarContainer from '../containers/FlagGroupBarContainer';
 import FlagGroupPaneContainer from '../containers/FlagGroupPaneContainer';
+import WindBarContainer from '../containers/WindBarContainer';
 import AppContext from '../contexts/AppContext';
 import store from '../redux/store';
 
@@ -124,6 +125,8 @@ export default class App extends Component {
 
                     <div className="bottom-app-bar">
                         <FlagGroupBarContainer />
+
+                        <WindBarContainer />
                     </div>
                 </main>
             </AppContext.Provider>
