@@ -1,7 +1,6 @@
 import THREE from 'three';
 
 import FlagWaver, {
-    WindModifiers,
     App,
     AnimationModule,
     ResizeModule,
@@ -10,8 +9,6 @@ import FlagWaver, {
     GravityModule,
     WindForceModule
 } from '../../flagwaver';
-
-let initialized = false;
 
 function buildScene() {
     const scene = new THREE.Scene();
@@ -102,20 +99,5 @@ function buildApp() {
 }
 
 export default function init() {
-    // Prevent multiple initialization
-    if (initialized) {
-        throw new Error('Already initialized.');
-    }
-
-    const app = buildApp();
-
-    app.module('windModule').setOptions({
-        directionModifier: WindModifiers.rotatingDirection
-    });
-
-    app.module('windForceModule').needsUpdate = true;
-
-    initialized = true;
-
-    return app;
+    return buildApp();
 }
