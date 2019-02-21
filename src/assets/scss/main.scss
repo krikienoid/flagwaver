@@ -15,13 +15,19 @@
 @import "~spectre.css/src/normalize";
 @import "~spectre.css/src/base";
 
+@import "~spectre.css/src/buttons";
+@import "~spectre.css/src/forms";
+
 /*! Main styles */
 
 @import "components/typography";
 @import "components/layout";
+@import "components/button";
+@import "components/form";
 @import "components/header";
 
 @import "components/background";
+@import "components/bottom-app-bar";
 @import "components/drawer";
 @import "components/panel";
 

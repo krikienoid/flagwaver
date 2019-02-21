@@ -1,0 +1,59 @@
+//
+// Bottom app bar
+//
+
+.bottom-app-bar {
+    $bottom-app-bar-padding-x: 0.5 * $spacer;
+    $bottom-app-bar-padding-y: 0.5 * $spacer;
+    $bottom-app-bar-sm-padding-x: $grid-gutter-width;
+    $bottom-app-bar-sm-padding-y: $grid-gutter-half;
+
+    display: flex;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding: $bottom-app-bar-padding-y $bottom-app-bar-padding-x;
+    background: $brand-overlay-white;
+
+    @include breakpoint(sm) {
+        padding: $bottom-app-bar-sm-padding-y $bottom-app-bar-sm-padding-x;
+    }
+
+    .form-section {
+        margin-right: $grid-gutter-width;
+    }
+
+    .form-group {
+        &:not(:last-child) {
+            margin-bottom: 0;
+            margin-right: 0.5 * $spacer;
+        }
+    }
+
+    .form-label {
+        @include sr-only;
+    }
+
+    .field-group {
+        position: relative;
+        margin: 0;
+    }
+
+    .field-group-legend {
+        position: absolute;
+        bottom: 100%;
+        margin-bottom: $bottom-app-bar-padding-y;
+        padding-bottom: 0.25rem;
+        color: $text-inverse-color;
+        @include font-smoothing;
+
+        @include breakpoint(sm) {
+            margin-bottom: $bottom-app-bar-sm-padding-y;
+        }
+    }
+
+    .field-group-body {
+        display: flex;
+    }
+}

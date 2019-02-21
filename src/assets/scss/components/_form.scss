@@ -1,0 +1,28 @@
+//
+// Form
+//
+
+.form-group {
+    &:not(:last-child) {
+        margin-bottom: $spacer;
+    }
+}
+
+legend {
+    color: $brand-gray-darker;
+    font-weight: bold;
+}
+
+.form-label {
+    width: fit-content;
+    margin-bottom: 0.5em;
+    padding: 0;
+    color: $brand-gray-darker;
+    font-size: 0.75rem;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.form-input {
+    font-weight: normal;
+}
