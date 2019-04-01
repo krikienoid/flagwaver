@@ -34,6 +34,8 @@ export default class SwitchInput extends Component {
 
                     <label htmlFor={id}>
                         {label}
+
+                        <div className="form-icon-target"></div>
                     </label>
                 </div>
             </div>

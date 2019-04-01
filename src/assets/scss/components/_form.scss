@@ -26,3 +26,18 @@ legend {
 .form-input {
     font-weight: normal;
 }
+
+.form-switch {
+    label {
+        .form-icon-target {
+            width: $unit-8;
+            height: $unit-4 + $border-width * 2;
+            position: absolute;
+            top: ($control-size-sm - $unit-4) / 2 - $border-width;
+            left: 0;
+            z-index: 1;
+            border-radius: $unit-2 + $border-width;
+            cursor: pointer;
+        }
+    }
+}
