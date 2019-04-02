@@ -5,29 +5,20 @@
  * wind behavior.
  */
 const WindModifiers = {
-    noEffect: () => {},
+    noEffect: x => x,
 
-    blowFromLeftDirection: (wind) => {
-        wind.force.set(2000, 0, 1000);
-    },
+    blowFromLeftDirection: (direction, time) => direction.set(2000, 0, 1000),
 
-    rotatingDirection: (wind, time) => {
-        wind.force.set(
+    rotatingDirection: (direction, time) =>
+        direction.set(
             Math.sin(time / 2000),
             Math.cos(time / 3000),
             Math.sin(time / 1000)
-        );
-    },
+        ),
 
-    constantSpeed: (wind) => {
-        wind.force.multiplyScalar(wind.speed);
-    },
+    constantSpeed: (speed, time) => speed,
 
-    variableSpeed: (wind, time) => {
-        wind.force.multiplyScalar(
-            Math.cos(time / 7000) * (wind.speed / 2) + wind.speed
-        );
-    }
+    variableSpeed: (speed, time) => Math.cos(time / 7000) * (speed / 2) + speed
 };
 
 export default WindModifiers;

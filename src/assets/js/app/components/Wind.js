@@ -47,9 +47,9 @@ class Wind extends Component {
 
         if (module) {
             module.setOptions({
-                speed: options.enabled ? options.speed : 0.001,
+                speed: options.enabled ? options.speed : 0,
                 direction: getDirectionVector(options.direction),
-                directionModifier: WindModifiers.noEffect
+                directionFn: WindModifiers.noEffect
             });
 
             app.needsUpdate = true;
