@@ -15,6 +15,7 @@ export function setWindOptions(value) {
 
 const initialState = {
     enabled: true,
+    direction: 90,
     speed: 200
 };
 
