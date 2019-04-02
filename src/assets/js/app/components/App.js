@@ -9,6 +9,7 @@ import Panel from '../components/Panel';
 import FlagGroupBarContainer from '../containers/FlagGroupBarContainer';
 import FlagGroupPaneContainer from '../containers/FlagGroupPaneContainer';
 import WindBarContainer from '../containers/WindBarContainer';
+import WindPaneContainer from '../containers/WindPaneContainer';
 import AppContext from '../contexts/AppContext';
 import store from '../redux/store';
 
@@ -120,6 +121,10 @@ export default class App extends Component {
                     <Drawer id="drawer" open={isDrawerOpen}>
                         <Panel title="Edit Flag">
                             <FlagGroupPaneContainer />
+
+                            <hr />
+
+                            <WindPaneContainer />
                         </Panel>
                     </Drawer>
 
