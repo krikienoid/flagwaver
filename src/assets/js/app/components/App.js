@@ -129,9 +129,25 @@ export default class App extends Component {
                     </Drawer>
 
                     <div className="bottom-app-bar">
-                        <FlagGroupBarContainer />
+                        <div className="bottom-app-bar-primary">
+                            <FlagGroupBarContainer />
+                        </div>
 
-                        <WindBarContainer />
+                        <div className="bottom-app-bar-secondary">
+                            <WindBarContainer />
+                        </div>
+
+                        <div className="bottom-app-bar-tertiary">
+                            <div className="form-section">
+                                <button
+                                    type="button"
+                                    className="btn btn-link"
+                                    onClick={this.openDrawer}
+                                >
+                                    All options
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </main>
             </AppContext.Provider>

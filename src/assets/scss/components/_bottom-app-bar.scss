@@ -2,13 +2,19 @@
 // Bottom app bar
 //
 
+.bottom-app-bar,
+.bottom-app-bar-primary,
+.bottom-app-bar-secondary,
+.bottom-app-bar-tertiary {
+    display: flex;
+}
+
 .bottom-app-bar {
     $bottom-app-bar-padding-x: 0.5 * $spacer;
     $bottom-app-bar-padding-y: 0.5 * $spacer;
     $bottom-app-bar-sm-padding-x: $grid-gutter-width;
     $bottom-app-bar-sm-padding-y: $grid-gutter-half;
 
-    display: flex;
     position: absolute;
     left: 0;
     bottom: 0;
@@ -55,5 +61,25 @@
 
     .field-group-body {
         display: flex;
+    }
+}
+
+.bottom-app-bar-primary {
+    @include breakpoint(0 sm) {
+        .form-section {
+            margin: 0;
+        }
+    }
+}
+
+.bottom-app-bar-secondary {
+    @include breakpoint(0 sm) {
+        display: none;
+    }
+}
+
+.bottom-app-bar-tertiary {
+    @include breakpoint(0 md) {
+        display: none;
     }
 }
