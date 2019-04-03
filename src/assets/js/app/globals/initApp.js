@@ -34,12 +34,14 @@ function buildCamera() {
 }
 
 function buildRenderer() {
+    const dpr = (window.devicePixelRatio) ? window.devicePixelRatio : 1;
     const renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha:     true
     });
 
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(dpr);
     renderer.gammaInput        = true;
     renderer.gammaOutput       = true;
     renderer.shadowMap.enabled = true;
