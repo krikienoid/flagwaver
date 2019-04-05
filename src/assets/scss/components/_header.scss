@@ -64,6 +64,11 @@ $site-header-btn-height: 1.5rem;
     cursor: pointer;
     transition: color $transition-style;
 
+    &:focus {
+        outline: 0;
+        @include control-shadow;
+    }
+
     @include breakpoint(sm) {
         margin: 0.25rem 0;
     }

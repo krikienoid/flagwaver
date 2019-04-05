@@ -108,7 +108,8 @@ export default class FilePickerInput extends Component {
                             label="From"
                             value={inputMode}
                             onChange={this.handleModeChange}
-                            buttonClassName="btn btn-outline-secondary"
+                            buttonClassName="btn"
+                            buttonSelectedClassName="btn-primary"
                             options={[
                                 {
                                     label: 'Web',

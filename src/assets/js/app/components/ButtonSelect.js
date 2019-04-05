@@ -74,7 +74,7 @@ export default class ButtonSelect extends Component {
         labelClassName: PropTypes.string,
         buttonGroupClassName: PropTypes.string,
         buttonClassName: PropTypes.string,
-        buttonActiveClassName: PropTypes.string,
+        buttonSelectedClassName: PropTypes.string,
         options: HelperPropTypes.and([
             PropTypes.arrayOf(PropTypes.shape({
                 label: PropTypes.node,
@@ -102,7 +102,7 @@ export default class ButtonSelect extends Component {
         labelClassName: 'form-label',
         buttonGroupClassName: 'btn-group',
         buttonClassName: 'btn',
-        buttonActiveClassName: 'active',
+        buttonSelectedClassName: 'selected',
         options: []
     };
 
@@ -196,7 +196,7 @@ export default class ButtonSelect extends Component {
         const {
             value: currentValue,
             buttonClassName,
-            buttonActiveClassName,
+            buttonSelectedClassName,
             options
         } = this.props;
 
@@ -209,7 +209,7 @@ export default class ButtonSelect extends Component {
                     key={value}
                     ref={this.setButtonRef}
                     value={value}
-                    className={buttonClassName + (checked ? ' ' + buttonActiveClassName : '')}
+                    className={buttonClassName + (checked ? ' ' + buttonSelectedClassName : '')}
                     tabIndex={checked || (!currentValue && !i) ? '0' : '-1'}
                     aria-checked={checked}
                     aria-posinset={i + 1}

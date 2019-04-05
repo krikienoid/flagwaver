@@ -14,9 +14,10 @@ $brand-green-light:             #3ec300;
 $brand-yellow:                  #e89005;
 $brand-smoky-gray:              #8d99ae;
 
-$brand-gray-darker:             #262626;
-$brand-gray-dark:               #4d4d4d;
-$brand-gray-medium:             #747474;
+$brand-gray-darkest:            #262626;
+$brand-gray-darker:             #4d4d4d;
+$brand-gray-dark:               #747474;
+$brand-gray-medium:             #9c9c9c;
 $brand-gray-light:              #c3c3c3;
 $brand-gray-lighter:            #dedede;
 $brand-gray-lightest:           #ebebeb;
@@ -34,7 +35,7 @@ $spacer:                        1rem;
 
 // Body
 
-$text-color:                    $brand-gray-dark;
+$text-color:                    $brand-gray-darker;
 $text-inverse-color:            $white;
 
 
@@ -46,7 +47,7 @@ $link-hover-color:              darken($link-color, 10%);
 $link-hover-decoration:         underline;
 
 $link-inverse-color:            $white;
-$link-inverse-hover-color:      lighten($brand-blue, 40%);
+$link-inverse-hover-color:      lighten($primary, 40%);
 
 
 // Grid
@@ -111,11 +112,11 @@ $secondary-color-light:         lighten($secondary-color, 10%);
 
 // Gray colors
 
-$dark-color:                    $brand-gray-darker;
+$dark-color:                    $brand-gray-darkest;
 $light-color:                   $white;
 $gray-color:                    $brand-gray-light;
 $gray-color-dark:               $brand-gray-medium;
-$gray-color-light:              $brand-gray-lightest;
+$gray-color-light:              $brand-gray-lighter;
 
 $border-color:                  $brand-gray-lighter;
 $border-color-dark:             $brand-gray-light;
