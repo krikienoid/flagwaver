@@ -24,10 +24,19 @@ $panel-outer-padding-y: $grid-gutter-width;
 
 .panel-body {
     flex: 0 1 auto;
+    padding-bottom: 2 * $panel-outer-padding-y;
     overflow-y: scroll;
 
     .btn-group,
     .input-group {
         width: 100%;
     }
+}
+
+.panel-header-controls {
+    margin-bottom: 1rem;
+}
+
+.panel-heading {
+    margin: 0;
 }

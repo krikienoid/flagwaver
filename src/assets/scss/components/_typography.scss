@@ -17,15 +17,33 @@ p {
     margin: 0 0 (1rem * $line-height-base);
 }
 
-a {
+a,
+.link {
+    color: $link-color;
     font-weight: 500;
     text-decoration: $link-decoration;
+
+    &:visited {
+        color: $link-color;
+    }
 
     &:focus,
     &:hover,
     &:active,
     &.active {
+        color: $link-color-dark;
         text-decoration: $link-hover-decoration;
+    }
+}
+
+.link {
+    display: inline;
+    @include button-unstyled;
+    outline: 0;
+    cursor: pointer;
+
+    &:focus {
+        @include control-shadow;
     }
 }
 

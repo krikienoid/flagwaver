@@ -19,10 +19,14 @@ export default class Panel extends Component {
             <div className="panel">
                 <div className="panel-header">
                     <div className="panel-header-controls">
-                        <a
-                            href="#"
+                        <button
+                            type="button"
+                            className="link"
                             onClick={onPanelClose}
-                        >&lsaquo; Back</a>
+                        >
+                            <span className="link-caret" aria-hidden="true">&lsaquo;&nbsp;</span>
+                            Back
+                        </button>
                     </div>
 
                     <div className="panel-header-inner">

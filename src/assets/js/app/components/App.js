@@ -119,7 +119,7 @@ export default class App extends Component {
                     />
 
                     <Drawer id="drawer" open={isDrawerOpen}>
-                        <Panel title="Edit Flag">
+                        <Panel title="Edit Flag" onPanelClose={this.closeDrawer}>
                             <FlagGroupPaneContainer />
 
                             <hr />
