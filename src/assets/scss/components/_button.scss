@@ -9,6 +9,20 @@
     &:hover {
         background: lighten($primary, 50%);
     }
+
+    &:active,
+    &.active {
+        background: $primary-color-dark;
+        border-color: darken($primary-color-dark, 5%);
+        transition: none;
+    }
+
+    &.btn-link {
+        &:active,
+        &.active {
+            color: $light-color;
+        }
+    }
 }
 
 .btn-group {

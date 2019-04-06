@@ -140,7 +140,7 @@ export default class FilePickerInput extends Component {
                                 name="file"
                                 value={value}
                                 accept={accept}
-                                defaultText="Choose file..."
+                                defaultText="Select file..."
                                 onChange={this.handleFileChange}
                                 onLoad={this.handleFileLoad}
                                 isValidFileType={isValidFileType}

@@ -20,7 +20,7 @@ export default class FileInput extends Component {
     static defaultProps = {
         label: 'File',
         name: 'file',
-        defaultText: 'Choose file...',
+        defaultText: 'Select file...',
         onChange: () => {},
         onLoad: () => {},
         isValidFileType: () => true
@@ -96,24 +96,27 @@ export default class FileInput extends Component {
                     {label}
                 </label>
 
-                <div className="input-group">
-                    <div className="file-input">
+                <div className="form-file">
+                    <input
+                        type="file"
+                        className="form-file-input"
+                        id={id}
+                        name={name}
+                        accept={accept}
+                        onChange={this.handleChange}
+                    />
+
+                    <div className="input-group form-file-btn" aria-hidden="true">
                         <input
-                            type="file"
-                            className="custom-file-input"
-                            id={id}
-                            name={name}
-                            accept={accept}
-                            onChange={this.handleChange}
+                            type="text"
+                            className="form-input"
+                            value={file ? file.name : ''}
+                            placeholder={defaultText}
+                            disabled="disabled"
                         />
 
-                        <div
-                            type="button"
-                            className="file-input-btn"
-                        >
-                            {file ? (
-                                `${file.name} (${prettyPrintBytes(file.size)})`
-                            ) : defaultText}
+                        <div className="btn input-group-btn">
+                            Browse...
                         </div>
                     </div>
                 </div>

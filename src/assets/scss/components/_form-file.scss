@@ -1,0 +1,53 @@
+//
+// Form file input
+//
+
+.form-file {
+    position: relative;
+}
+
+.form-file-input,
+.form-file-btn {
+    border-radius: $border-radius;
+}
+
+.form-file-input {
+    width: 100%;
+    display: block;
+    @include block-full;
+    z-index: 2;
+    // HACK: Push default button out of view so `cursor: pointer;` will work.
+    padding-left: 100%;
+    overflow: hidden;
+    opacity: 0;
+    cursor: pointer;
+
+    &:focus + .form-file-btn {
+        @include control-shadow();
+
+        .form-input {
+            border-color: $primary-color;
+        }
+    }
+
+    &:focus + .form-file-btn .btn,
+    &:hover + .form-file-btn .btn {
+        background: lighten($primary, 50%);
+        border-color: $primary-color-dark;
+    }
+
+    &:active + .form-file-btn .btn {
+        background: $primary-color-dark;
+        border-color: darken($primary-color-dark, 5%);
+        color: $light-color;
+        transition: none;
+    }
+}
+
+.form-file-btn {
+    .form-input {
+        background-color: $bg-color-light;
+        opacity: 1;
+        cursor: default;
+    }
+}
