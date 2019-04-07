@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import uniqueId from '../utils/uniqueId';
 
-export default function withUniqueId(Component) {
-    return (props) => {
-        const id = props.id || uniqueId('uid-');
+export default function withUniqueId(WrappedComponent) {
+    return class extends Component {
+        constructor(props) {
+            super(props);
 
-        return (
-            <Component {...props} id={id} />
-        );
+            this.id = props.id || uniqueId('uid-');
+        }
+
+        render() {
+            return (
+                <WrappedComponent {...this.props} id={this.id} />
+            );
+        }
     };
 }

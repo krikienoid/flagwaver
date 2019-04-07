@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import FilePickerInput from '../components/FilePickerInput';
-import withUniqueId from '../hocs/withUniqueId';
+import Select from '../components/Select';
 import { fileRecordPropType } from '../types';
 
-class FlagGroupPane extends Component {
+export default class FlagGroupPane extends Component {
     static propTypes = {
-        id: PropTypes.string.isRequired,
         fileRecord: fileRecordPropType,
         options: PropTypes.object,
         setFileRecord: PropTypes.func,
@@ -42,7 +41,7 @@ class FlagGroupPane extends Component {
     }
 
     render() {
-        const { id, fileRecord, options } = this.props;
+        const { fileRecord, options } = this.props;
 
         if (!options) {
             return (
@@ -55,7 +54,6 @@ class FlagGroupPane extends Component {
         return (
             <div className="form-section">
                 <FilePickerInput
-                    id={`${id}-image-filepicker`}
                     label="Select Image"
                     value={fileRecord}
                     accept="image/*"
@@ -66,44 +64,30 @@ class FlagGroupPane extends Component {
 
                 <hr />
 
-                <div className="form-group">
-                    <label className="form-label" htmlFor={`${id}-hoisting-select`}>
-                        Hoisting
-                    </label>
+                <Select
+                    label="Hoisting"
+                    name="hoisting"
+                    value={options.hoisting}
+                    onChange={this.handleChange}
+                    options={[
+                        { value: 'dexter', label: 'Dexter' },
+                        { value: 'sinister', label: 'Sinister' }
+                    ]}
+                />
 
-                    <select
-                        className="form-select"
-                        id={`${id}-hoisting-select`}
-                        name="hoisting"
-                        value={options.hoisting}
-                        onChange={this.handleChange}
-                    >
-                        <option value="dexter">Dexter</option>
-                        <option value="sinister">Sinister</option>
-                    </select>
-                </div>
-
-                <div className="form-group">
-                    <label className="form-label" htmlFor={`${id}-orientation-select`}>
-                        Orientation
-                    </label>
-
-                    <select
-                        className="form-select"
-                        id={`${id}-orientation-select`}
-                        name="topEdge"
-                        value={options.topEdge}
-                        onChange={this.handleChange}
-                    >
-                        <option value="top">Top</option>
-                        <option value="left">Left</option>
-                        <option value="bottom">Bottom</option>
-                        <option value="right">Right</option>
-                    </select>
-                </div>
+                <Select
+                    label="Orientation"
+                    name="topEdge"
+                    value={options.topEdge}
+                    onChange={this.handleChange}
+                    options={[
+                        { value: 'top',    label: 'Top'    },
+                        { value: 'left',   label: 'Left'   },
+                        { value: 'bottom', label: 'Bottom' },
+                        { value: 'right',  label: 'Right'  }
+                    ]}
+                />
             </div>
         );
     }
 }
-
-export default withUniqueId(FlagGroupPane);

@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import FilePickerInput from '../components/FilePickerInput';
-import withUniqueId from '../hocs/withUniqueId';
 import { fileRecordPropType } from '../types';
 
-class FlagGroupBar extends Component {
+export default class FlagGroupBar extends Component {
     static propTypes = {
-        id: PropTypes.string.isRequired,
         fileRecord: fileRecordPropType,
         options: PropTypes.object,
         setFileRecord: PropTypes.func,
@@ -35,7 +33,7 @@ class FlagGroupBar extends Component {
     }
 
     render() {
-        const { id, fileRecord, options } = this.props;
+        const { fileRecord, options } = this.props;
 
         if (!options) {
             return (
@@ -48,7 +46,6 @@ class FlagGroupBar extends Component {
         return (
             <div className="form-section">
                 <FilePickerInput
-                    id={`${id}-image-filepicker`}
                     label="Select Image"
                     value={fileRecord}
                     accept="image/*"
@@ -60,5 +57,3 @@ class FlagGroupBar extends Component {
         );
     }
 }
-
-export default withUniqueId(FlagGroupBar);

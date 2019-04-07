@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default class URLInput extends Component {
+import withUniqueId from '../hocs/withUniqueId';
+
+class URLInput extends Component {
     static propTypes = {
         id: PropTypes.string.isRequired,
         label: PropTypes.node,
@@ -61,3 +63,5 @@ export default class URLInput extends Component {
         );
     }
 }
+
+export default withUniqueId(URLInput);

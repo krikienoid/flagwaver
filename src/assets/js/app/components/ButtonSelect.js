@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 
+import withUniqueId from '../hocs/withUniqueId';
 import HelperPropTypes from '../utils/HelperPropTypes';
 
 /*
@@ -63,7 +64,7 @@ class ButtonSelectButton extends Component {
     }
 }
 
-export default class ButtonSelect extends Component {
+class ButtonSelect extends Component {
     static propTypes = {
         id: PropTypes.string.isRequired,
         className: PropTypes.string,
@@ -253,3 +254,5 @@ export default class ButtonSelect extends Component {
         );
     }
 }
+
+export default withUniqueId(ButtonSelect);

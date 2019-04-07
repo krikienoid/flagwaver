@@ -13,7 +13,6 @@ const FilePickerInputMode = {
 
 export default class FilePickerInput extends Component {
     static propTypes = {
-        id: PropTypes.string.isRequired,
         label: PropTypes.node,
         value: fileRecordPropType,
         accept: PropTypes.string,
@@ -92,7 +91,7 @@ export default class FilePickerInput extends Component {
     }
 
     render() {
-        const { id, label, value, accept, isValidFileType } = this.props;
+        const { label, value, accept, isValidFileType } = this.props;
         const { inputMode, url } = this.state;
 
         return (
@@ -104,7 +103,6 @@ export default class FilePickerInput extends Component {
 
                     <div className="field-group-body">
                         <ButtonSelect
-                            id={`${id}-from-select`}
                             label="From"
                             value={inputMode}
                             onChange={this.handleModeChange}
@@ -124,7 +122,6 @@ export default class FilePickerInput extends Component {
 
                         {inputMode === FilePickerInputMode.WEB && (
                             <URLInput
-                                id={`${id}-url-input`}
                                 label="URL"
                                 name="url"
                                 value={url}
@@ -135,7 +132,6 @@ export default class FilePickerInput extends Component {
 
                         {inputMode === FilePickerInputMode.FILE && (
                             <FileInput
-                                id={`${id}-file-input`}
                                 label="File"
                                 name="file"
                                 value={value}

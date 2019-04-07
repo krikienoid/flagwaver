@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 
 import SliderInput from '../components/SliderInput';
 import SwitchInput from '../components/SwitchInput';
-import withUniqueId from '../hocs/withUniqueId';
 
-class WindPane extends Component {
+export default class WindPane extends Component {
     static propTypes = {
-        id: PropTypes.string.isRequired,
         options: PropTypes.object.isRequired,
         setOptions: PropTypes.func
     };
@@ -36,12 +34,11 @@ class WindPane extends Component {
     }
 
     render() {
-        const { id, options } = this.props;
+        const { options } = this.props;
 
         return (
             <div className="form-section">
                 <SwitchInput
-                    id={`${id}-enabled-input`}
                     label="Wind"
                     name="enabled"
                     value={options.enabled}
@@ -49,7 +46,6 @@ class WindPane extends Component {
                 />
 
                 <SliderInput
-                    id={`${id}-direction`}
                     label="Direction"
                     name="direction"
                     value={options.direction}
@@ -59,7 +55,6 @@ class WindPane extends Component {
                 />
 
                 <SliderInput
-                    id={`${id}-speed`}
                     label="Speed"
                     name="speed"
                     value={options.speed}
@@ -71,5 +66,3 @@ class WindPane extends Component {
         );
     }
 }
-
-export default withUniqueId(WindPane);

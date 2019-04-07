@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import SwitchInput from '../components/SwitchInput';
-import withUniqueId from '../hocs/withUniqueId';
 
-class WindBar extends Component {
+export default class WindBar extends Component {
     static propTypes = {
-        id: PropTypes.string.isRequired,
         options: PropTypes.object.isRequired,
         setOptions: PropTypes.func
     };
@@ -28,12 +26,11 @@ class WindBar extends Component {
     }
 
     render() {
-        const { id, options } = this.props;
+        const { options } = this.props;
 
         return (
             <div className="form-section">
                 <SwitchInput
-                    id={`${id}-enabled-input`}
                     label="Wind"
                     name="enabled"
                     value={options.enabled}
@@ -43,5 +40,3 @@ class WindBar extends Component {
         );
     }
 }
-
-export default withUniqueId(WindBar);

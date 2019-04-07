@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default class SliderInput extends Component {
+import withUniqueId from '../hocs/withUniqueId';
+
+class SliderInput extends Component {
     static propTypes = {
         id: PropTypes.string.isRequired,
         label: PropTypes.node,
@@ -42,3 +44,5 @@ export default class SliderInput extends Component {
         );
     }
 }
+
+export default withUniqueId(SliderInput);

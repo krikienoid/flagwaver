@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import withUniqueId from '../hocs/withUniqueId';
 import { fileRecordPropType } from '../types';
 import prettyPrintBytes from '../utils/prettyPrintBytes';
 
-export default class FileInput extends Component {
+class FileInput extends Component {
     static propTypes = {
         id: PropTypes.string.isRequired,
         label: PropTypes.node,
@@ -124,3 +125,5 @@ export default class FileInput extends Component {
         );
     }
 }
+
+export default withUniqueId(FileInput);
