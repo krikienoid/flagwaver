@@ -3,6 +3,8 @@
 //
 
 .form-group {
+    position: relative;
+
     &:not(:last-child) {
         margin-bottom: $spacer;
     }

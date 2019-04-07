@@ -8,14 +8,17 @@
 // See: https://hugogiraudel.com/2016/10/13/css-hide-and-seek/
 
 @mixin sr-only {
-    position: absolute;
     width: 1px;
     height: 1px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
     padding: 0;
     overflow: hidden;
+    border: 0;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
-    border: 0;
 }
 
 // Use in conjunction with .sr-only to only display content when it's focused.
@@ -27,11 +30,11 @@
 @mixin sr-only-focusable {
     &:active,
     &:focus {
-        position: static;
         width: auto;
         height: auto;
+        position: static;
         overflow: visible;
-        clip: auto;
         white-space: normal;
+        clip: auto;
     }
 }

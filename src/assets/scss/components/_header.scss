@@ -59,6 +59,7 @@ $site-header-btn-height: 1.5rem;
 
 .site-header-btn {
     @include button-icon($site-header-btn-width, $site-header-btn-height);
+    position: relative;
     margin: 0.125rem 0;
     color: $link-inverse-color;
     cursor: pointer;
