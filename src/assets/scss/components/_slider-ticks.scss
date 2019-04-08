@@ -1,0 +1,58 @@
+//
+// Slider ticks
+//
+
+.slider-ticks {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0.25rem ($unit-3 / 2) 0;
+
+    > li {
+        $width: 1rem;
+
+        flex: 1 1 auto;
+        position: relative;
+        font-size: $font-size-sm;
+        line-height: 1;
+
+        input {
+            width: $width;
+            height: $font-size-sm;
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin-left: -$width / 2;
+            opacity: 0;
+        }
+
+        label {
+            width: $width;
+            display: block;
+            position: relative;
+            margin-left: -$width / 2;
+            text-align: center;
+            cursor: pointer;
+
+            &::before {
+                content: "";
+                width: 0.0625rem;
+                height: 0.375rem;
+                display: block;
+                position: absolute;
+                top: -0.75rem;
+                left: 50%;
+                z-index: -1;
+                background: $border-color;
+            }
+        }
+
+        input:focus + label {
+            @include control-shadow;
+        }
+
+        input:checked + label {
+            color: $primary-color;
+        }
+    }
+}

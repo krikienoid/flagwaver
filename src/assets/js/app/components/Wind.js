@@ -5,7 +5,7 @@ import THREE from 'three';
 import { WindModule, WindModifiers } from '../../flagwaver';
 import withAppContext from '../hocs/withAppContext';
 
-const yAxis = new THREE.Vector3(0, 1, 0);
+const yAxis = new THREE.Vector3(0, -1, 0);
 
 function getDirectionVector(deg) {
     const v = new THREE.Vector3(0, 0, 1);

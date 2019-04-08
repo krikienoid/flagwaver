@@ -17,6 +17,10 @@ class SliderInput extends Component {
         ]),
         outputPrefix: PropTypes.string,
         outputSuffix: PropTypes.string,
+        ticks: PropTypes.arrayOf(PropTypes.shape({
+            label: PropTypes.node,
+            value: PropTypes.number.isRequired
+        })),
         onChange: PropTypes.func
     };
 
@@ -27,7 +31,8 @@ class SliderInput extends Component {
         max: 100,
         step: 1,
         outputPrefix: '',
-        outputSuffix: ''
+        outputSuffix: '',
+        ticks: []
     };
 
     render() {
@@ -41,6 +46,7 @@ class SliderInput extends Component {
             step,
             outputPrefix,
             outputSuffix,
+            ticks,
             onChange
         } = this.props;
 
@@ -69,6 +75,35 @@ class SliderInput extends Component {
                     step={step}
                     onChange={onChange}
                 />
+
+                {(ticks && ticks.length) ? (
+                    <fieldset className="form-group">
+                        <legend className="sr-only">
+                            <span className="sr-only">
+                                Select {label}
+                            </span>
+                        </legend>
+
+                        <ul className="slider-ticks">
+                            {ticks.map(({ label: tickLabel, value: tickValue }) => (
+                                <li key={tickValue}>
+                                    <input
+                                        type="radio"
+                                        id={`${id}-tick-${tickValue}`}
+                                        name={name}
+                                        value={tickValue}
+                                        checked={value === tickValue}
+                                        onChange={onChange}
+                                    />
+
+                                    <label htmlFor={`${id}-tick-${tickValue}`}>
+                                        {tickLabel}
+                                    </label>
+                                </li>
+                            ))}
+                        </ul>
+                    </fieldset>
+                ) : null}
             </div>
         );
     }

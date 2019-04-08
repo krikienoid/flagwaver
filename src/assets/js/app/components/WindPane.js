@@ -17,13 +17,13 @@ export default class WindPane extends Component {
     constructor(props) {
         super(props);
 
-        this.handleChange = this.handleChange.bind(this);
+        this.handleSliderChange = this.handleSliderChange.bind(this);
         this.handleSwitchChange = this.handleSwitchChange.bind(this);
     }
 
-    handleChange(e) {
+    handleSliderChange(e) {
         this.props.setOptions({
-            [e.target.name]: e.target.value
+            [e.target.name]: Number(e.target.value)
         });
     }
 
@@ -52,7 +52,25 @@ export default class WindPane extends Component {
                     min={0}
                     max={360}
                     outputSuffix="&deg;"
-                    onChange={this.handleChange}
+                    ticks={[
+                        {
+                            label: (<span aria-label="North">N</span>),
+                            value: 0
+                        },
+                        {
+                            label: (<span aria-label="East">E</span>),
+                            value: 90
+                        },
+                        {
+                            label: (<span aria-label="South">S</span>),
+                            value: 180
+                        },
+                        {
+                            label: (<span aria-label="West">W</span>),
+                            value: 270
+                        }
+                    ]}
+                    onChange={this.handleSliderChange}
                 />
 
                 <SliderInput
@@ -61,7 +79,7 @@ export default class WindPane extends Component {
                     value={options.speed}
                     min={0}
                     max={2000}
-                    onChange={this.handleChange}
+                    onChange={this.handleSliderChange}
                 />
             </div>
         );
