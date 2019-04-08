@@ -51,6 +51,7 @@ export default class WindPane extends Component {
                     value={options.direction}
                     min={0}
                     max={360}
+                    outputSuffix="&deg;"
                     onChange={this.handleChange}
                 />
 

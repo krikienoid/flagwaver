@@ -11,6 +11,12 @@ class SliderInput extends Component {
         value: PropTypes.number,
         min: PropTypes.number,
         max: PropTypes.number,
+        step: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.oneOf(['any'])
+        ]),
+        outputPrefix: PropTypes.string,
+        outputSuffix: PropTypes.string,
         onChange: PropTypes.func
     };
 
@@ -18,11 +24,25 @@ class SliderInput extends Component {
         label: 'Slider',
         name: 'slider',
         min: 0,
-        max: 100
+        max: 100,
+        step: 1,
+        outputPrefix: '',
+        outputSuffix: ''
     };
 
     render() {
-        const { id, label, name, value, min, max, onChange } = this.props;
+        const {
+            id,
+            label,
+            name,
+            value,
+            min,
+            max,
+            step,
+            outputPrefix,
+            outputSuffix,
+            onChange
+        } = this.props;
 
         return (
             <div className="form-group">
@@ -30,14 +50,23 @@ class SliderInput extends Component {
                     {label}
                 </label>
 
+                <div className="form-static">
+                    {outputPrefix}
+
+                    <output htmlFor={id}>{value}</output>
+
+                    {outputSuffix}
+                </div>
+
                 <input
                     type="range"
-                    className="slider tooltip"
+                    className="slider"
                     id={id}
                     name={name}
                     value={value}
                     min={min}
                     max={max}
+                    step={step}
                     onChange={onChange}
                 />
             </div>

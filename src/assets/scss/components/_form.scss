@@ -4,6 +4,7 @@
 
 .form-group {
     position: relative;
+    margin-bottom: 0;
 
     &:not(:last-child) {
         margin-bottom: $spacer;
@@ -41,5 +42,23 @@ legend {
             border-radius: $unit-2 + $border-width;
             cursor: pointer;
         }
+    }
+}
+
+.form-static {
+    width: 100%;
+    display: block;
+    padding: $control-padding-y 0;
+    background: none;
+    border: solid transparent;
+    border-width: $border-width 0;
+    color: $text-color;
+    font-size: $font-size-base;
+    font-weight: normal;
+    line-height: $line-height-base;
+    outline: 0;
+
+    &:focus {
+        @include control-shadow;
     }
 }
