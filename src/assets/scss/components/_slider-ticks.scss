@@ -54,5 +54,11 @@
         input:checked + label {
             color: $primary-color;
         }
+
+        input:disabled + label,
+        input.disabled + label {
+            color: $gray-color-light;
+            cursor: not-allowed;
+        }
     }
 }

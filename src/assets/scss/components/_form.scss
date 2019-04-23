@@ -43,6 +43,17 @@ legend {
             cursor: pointer;
         }
     }
+
+    input {
+        &:disabled,
+        &.disabled {
+            ~ label {
+                .form-icon-target {
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
 }
 
 .form-static {
@@ -60,5 +71,9 @@ legend {
 
     &:focus {
         @include control-shadow;
+    }
+
+    &.disabled {
+        color: $gray-color-light;
     }
 }

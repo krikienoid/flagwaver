@@ -42,6 +42,25 @@
         color: $light-color;
         transition: none;
     }
+
+    &:disabled,
+    &.disabled {
+        pointer-events: none;
+
+        + .form-file-btn {
+            .form-input {
+                background-color: $bg-color-dark;
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            .btn {
+                opacity: 0.5;
+                cursor: default;
+                pointer-events: none;
+            }
+        }
+    }
 }
 
 .form-file-btn {

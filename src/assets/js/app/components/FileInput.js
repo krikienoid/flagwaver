@@ -13,6 +13,7 @@ class FileInput extends Component {
         value: fileRecordPropType,
         accept: PropTypes.string,
         defaultText: PropTypes.node,
+        disabled: PropTypes.bool,
         onChange: PropTypes.func,
         onLoad: PropTypes.func,
         isValidFileType: PropTypes.func
@@ -22,6 +23,7 @@ class FileInput extends Component {
         label: 'File',
         name: 'file',
         defaultText: 'Select file...',
+        disabled: false,
         onChange: () => {},
         onLoad: () => {},
         isValidFileType: () => true
@@ -86,7 +88,8 @@ class FileInput extends Component {
             name,
             value,
             accept,
-            defaultText
+            defaultText,
+            disabled
         } = this.props;
 
         const file = value && value.file || null;
@@ -104,6 +107,7 @@ class FileInput extends Component {
                         id={id}
                         name={name}
                         accept={accept}
+                        disabled={disabled}
                         onChange={this.handleChange}
                     />
 

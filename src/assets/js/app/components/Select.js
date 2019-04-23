@@ -9,6 +9,7 @@ function Select({
     name,
     value,
     options,
+    disabled,
     onChange
 }) {
     return (
@@ -22,6 +23,7 @@ function Select({
                 id={id}
                 name={name}
                 value={value}
+                disabled={disabled}
                 onChange={onChange}
             >
                 {options.map(option => (
@@ -43,13 +45,15 @@ Select.propTypes = {
         label: PropTypes.node,
         value: PropTypes.string.isRequired
     })),
+    disabled: PropTypes.bool,
     onChange: PropTypes.func
 };
 
 Select.defaultProps = {
     label: 'Select',
     name: 'select',
-    options: []
+    options: [],
+    disabled: false
 };
 
 export default withUniqueId(Select);

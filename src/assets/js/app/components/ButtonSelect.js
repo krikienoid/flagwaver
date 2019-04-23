@@ -71,6 +71,7 @@ class ButtonSelect extends Component {
         direction: PropTypes.oneOf([Direction.LTR, Direction.RTL]),
         label: PropTypes.node,
         value: PropTypes.string,
+        disabled: PropTypes.bool,
         onChange: PropTypes.func,
         labelClassName: PropTypes.string,
         buttonGroupClassName: PropTypes.string,
@@ -99,6 +100,7 @@ class ButtonSelect extends Component {
         direction: Direction.LTR,
         label: 'Please Select',
         value: '',
+        disabled: false,
         onChange: () => {},
         labelClassName: 'form-label',
         buttonGroupClassName: 'btn-group',
@@ -196,6 +198,7 @@ class ButtonSelect extends Component {
     renderButtons() {
         const {
             value: currentValue,
+            disabled,
             buttonClassName,
             buttonSelectedClassName,
             options
@@ -211,6 +214,7 @@ class ButtonSelect extends Component {
                     ref={this.setButtonRef}
                     value={value}
                     className={buttonClassName + (checked ? ' ' + buttonSelectedClassName : '')}
+                    disabled={disabled}
                     tabIndex={checked || (!currentValue && !i) ? '0' : '-1'}
                     aria-checked={checked}
                     aria-posinset={i + 1}

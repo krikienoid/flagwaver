@@ -10,6 +10,7 @@ function URLInput({
     placeholder,
     buttonText,
     value,
+    disabled,
     onChange,
     onSubmit
 }) {
@@ -27,12 +28,14 @@ function URLInput({
                     name={name}
                     value={value}
                     placeholder={placeholder}
+                    disabled={disabled}
                     onChange={onChange}
                 />
 
                 <button
                     type="button"
                     className="input-group-btn btn btn-outline-secondary"
+                    disabled={disabled}
                     onClick={onSubmit}
                 >
                     {buttonText}
@@ -49,6 +52,7 @@ URLInput.propTypes = {
     placeholder: PropTypes.string,
     buttonText: PropTypes.node,
     value: PropTypes.string,
+    disabled: PropTypes.bool,
     onChange: PropTypes.func,
     onSubmit: PropTypes.func
 };
@@ -57,7 +61,8 @@ URLInput.defaultProps = {
     label: 'URL',
     name: 'url',
     placeholder: 'https://www...',
-    buttonText: 'Go'
+    buttonText: 'Go',
+    disabled: false
 };
 
 export default withUniqueId(URLInput);

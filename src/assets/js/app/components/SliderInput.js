@@ -11,6 +11,7 @@ function SliderInput({
     min,
     max,
     step,
+    disabled,
     outputPrefix,
     outputSuffix,
     ticks,
@@ -22,7 +23,7 @@ function SliderInput({
                 {label}
             </label>
 
-            <div className="form-static">
+            <div className={'form-static' + (disabled ? ' ' + 'disabled' : '')}>
                 {outputPrefix}
 
                 <output htmlFor={id}>{value}</output>
@@ -39,11 +40,12 @@ function SliderInput({
                 min={min}
                 max={max}
                 step={step}
+                disabled={disabled}
                 onChange={onChange}
             />
 
             {(ticks && ticks.length) ? (
-                <fieldset className="form-group">
+                <fieldset className="form-group" disabled={disabled}>
                     <legend className="sr-only">
                         <span className="sr-only">
                             Select {label}
@@ -59,6 +61,7 @@ function SliderInput({
                                     name={name}
                                     value={tickValue}
                                     checked={value === tickValue}
+                                    disabled={disabled}
                                     onChange={onChange}
                                 />
 
@@ -85,6 +88,7 @@ SliderInput.propTypes = {
         PropTypes.number,
         PropTypes.oneOf(['any'])
     ]),
+    disabled: PropTypes.bool,
     outputPrefix: PropTypes.string,
     outputSuffix: PropTypes.string,
     ticks: PropTypes.arrayOf(PropTypes.shape({
@@ -100,6 +104,7 @@ SliderInput.defaultProps = {
     min: 0,
     max: 100,
     step: 1,
+    disabled: false,
     outputPrefix: '',
     outputSuffix: '',
     ticks: []

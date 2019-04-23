@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import withUniqueId from '../hocs/withUniqueId';
 
-function SwitchInput({ id, label, name, value, onChange }) {
+function SwitchInput({ id, label, name, value, disabled, onChange }) {
     return (
         <div className="form-group">
             <div className="form-switch">
@@ -13,6 +13,7 @@ function SwitchInput({ id, label, name, value, onChange }) {
                     id={id}
                     name={name}
                     checked={value}
+                    disabled={disabled}
                     onChange={onChange}
                 />
 
@@ -33,12 +34,14 @@ SwitchInput.propTypes = {
     label: PropTypes.node,
     name: PropTypes.string,
     value: PropTypes.bool,
+    disabled: PropTypes.bool,
     onChange: PropTypes.func
 };
 
 SwitchInput.defaultProps = {
     label: 'Switch',
-    name: 'switch'
+    name: 'switch',
+    disabled: false
 };
 
 export default withUniqueId(SwitchInput);
