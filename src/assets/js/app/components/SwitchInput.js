@@ -1,48 +1,44 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import withUniqueId from '../hocs/withUniqueId';
 
-class SwitchInput extends Component {
-    static propTypes = {
-        id: PropTypes.string.isRequired,
-        label: PropTypes.node,
-        name: PropTypes.string,
-        value: PropTypes.bool,
-        onChange: PropTypes.func
-    };
+function SwitchInput({ id, label, name, value, onChange }) {
+    return (
+        <div className="form-group">
+            <div className="form-switch">
+                <input
+                    type="checkbox"
+                    className="checkbox"
+                    id={id}
+                    name={name}
+                    checked={value}
+                    onChange={onChange}
+                />
 
-    static defaultProps = {
-        label: 'Switch',
-        name: 'switch'
-    };
+                <span className="form-icon" aria-hidden="true"></span>
 
-    render() {
-        const { id, label, name, value, onChange } = this.props;
+                <label htmlFor={id}>
+                    {label}
 
-        return (
-            <div className="form-group">
-                <div className="form-switch">
-                    <input
-                        type="checkbox"
-                        className="checkbox"
-                        id={id}
-                        name={name}
-                        checked={value}
-                        onChange={onChange}
-                    />
-
-                    <span className="form-icon" aria-hidden="true"></span>
-
-                    <label htmlFor={id}>
-                        {label}
-
-                        <div className="form-icon-target"></div>
-                    </label>
-                </div>
+                    <div className="form-icon-target"></div>
+                </label>
             </div>
-        );
-    }
+        </div>
+    );
 }
+
+SwitchInput.propTypes = {
+    id: PropTypes.string.isRequired,
+    label: PropTypes.node,
+    name: PropTypes.string,
+    value: PropTypes.bool,
+    onChange: PropTypes.func
+};
+
+SwitchInput.defaultProps = {
+    label: 'Switch',
+    name: 'switch'
+};
 
 export default withUniqueId(SwitchInput);
