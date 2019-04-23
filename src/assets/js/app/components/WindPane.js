@@ -36,12 +36,22 @@ export default class WindPane extends Component {
     render() {
         const { options } = this.props;
 
+        const controllable = options.enabled && options.controlled;
+
         return (
             <div className="form-section">
                 <SwitchInput
-                    label="Wind"
+                    label="Wind On"
                     name="enabled"
                     value={options.enabled}
+                    onChange={this.handleSwitchChange}
+                />
+
+                <SwitchInput
+                    label="Wind Control"
+                    name="controlled"
+                    value={options.controlled}
+                    disabled={!options.enabled}
                     onChange={this.handleSwitchChange}
                 />
 
@@ -70,6 +80,7 @@ export default class WindPane extends Component {
                             value: 270
                         }
                     ]}
+                    disabled={!controllable}
                     onChange={this.handleSliderChange}
                 />
 
@@ -79,6 +90,7 @@ export default class WindPane extends Component {
                     value={options.speed}
                     min={0}
                     max={2000}
+                    disabled={!controllable}
                     onChange={this.handleSliderChange}
                 />
             </div>
