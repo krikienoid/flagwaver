@@ -66,6 +66,7 @@
         margin-bottom: $bottom-app-bar-padding-y;
         padding-bottom: 0.25rem;
         color: $text-inverse-color;
+        font-size: $font-size-lg;
         @include font-smoothing;
 
         @include breakpoint(sm) {
@@ -75,6 +76,8 @@
 
     .field-group-body {
         display: flex;
+        padding: 0;
+        border: 0;
     }
 }
 
