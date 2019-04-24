@@ -36,3 +36,15 @@ This project uses a Gulp-powered build system with these features:
 ## Credits
 
 Written by [krikienoid](https://github.com/krikienoid/flagwaver). Based on previous work by [flagtest.nz](http://flagtest.nz/) and [Joshua Koo](https://github.com/zz85).
+
+## License
+
+### Code
+
+Code released under the MIT License.
+
+### Assets
+
+All art assets included in this project are distributed under their respective licenses.
+
+- **img/Sky_over_Washington_Monument-1600x1200px.jpg** - This work has been released into the public domain by its author, Andypham3000 at English Wikipedia. This applies worldwide.
