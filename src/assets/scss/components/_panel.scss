@@ -2,8 +2,10 @@
 // Panel
 //
 
-$panel-outer-padding-x: $grid-gutter-width;
-$panel-outer-padding-y: $grid-gutter-width;
+$panel-outer-padding-x: 0.5 * $spacer;
+$panel-outer-padding-y: $spacer;
+$panel-sm-outer-padding-x: $grid-gutter-width;
+$panel-sm-outer-padding-y: $grid-gutter-width;
 
 .panel {
     height: 100%;
@@ -15,6 +17,10 @@ $panel-outer-padding-y: $grid-gutter-width;
 .panel-header,
 .panel-body {
     padding: $panel-outer-padding-y $panel-outer-padding-x;
+
+    @include breakpoint(sm) {
+        padding: $panel-sm-outer-padding-y $panel-sm-outer-padding-x;
+    }
 }
 
 .panel-header {
@@ -26,6 +32,10 @@ $panel-outer-padding-y: $grid-gutter-width;
     flex: 0 1 auto;
     padding-bottom: 2 * $panel-outer-padding-y;
     overflow-y: scroll;
+
+    @include breakpoint(sm) {
+        padding-bottom: 2 * $panel-sm-outer-padding-y;
+    }
 
     .btn-group,
     .input-group {

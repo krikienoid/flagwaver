@@ -2,7 +2,10 @@
 // Drawer
 //
 
-$drawer-width: rem(320px);
+$drawer-width: 100%;
+$drawer-xs-width: rem(320px);
+$drawer-sm-width: rem(360px);
+
 $drawer-zindex: $zindex-fixed;
 
 .drawer {
@@ -15,6 +18,16 @@ $drawer-zindex: $zindex-fixed;
     background-color: $white;
     transform: translateX(-$drawer-width);
     transition: transform $transition-style;
+
+    @include breakpoint(xs) {
+        width: $drawer-xs-width;
+        transform: translateX(-$drawer-xs-width);
+    }
+
+    @include breakpoint(sm) {
+        width: $drawer-sm-width;
+        transform: translateX(-$drawer-sm-width);
+    }
 
     &.open {
         transform: translateX(0);
