@@ -31,6 +31,7 @@ export default class App extends Component {
 
     componentDidMount() {
         this.app = initApp();
+        this.handleHashChange();
         window.addEventListener('hashchange', this.handleHashChange);
         this.forceUpdate();
     }
