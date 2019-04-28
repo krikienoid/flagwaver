@@ -1,0 +1,20 @@
+{
+    "name": "FlagWaver",
+    "short_name": "FlagWaver",
+    "icons": [
+        {
+            "src": "@PUBLIC_URL/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "@PUBLIC_URL/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#76aff4",
+    "background_color": "#76aff4",
+    "start_url": "./",
+    "display": "standalone"
+}

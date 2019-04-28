@@ -5,24 +5,29 @@ const compatibility = [
 ];
 
 export default {
+  app: {
+    PUBLIC_URL: 'https://krikienoid.github.io/flagwaver'
+  },
   server: {
     root: 'dist',
     port: 8000
   },
   paths: {
     src: {
-      root: 'src',
-      html: 'src/index.html',
-      sass: 'src/assets/scss/**/*.scss',
-      js:   'src/assets/js',
-      img:  'src/assets/img/**/*'
+      root:   'src',
+      html:   'src/index.html',
+      sass:   'src/assets/scss/**/*.scss',
+      js:     'src/assets/js',
+      img:    'src/assets/img/**/*',
+      static: 'src/static/**/*'
     },
     dest: {
-      root: 'dist',
-      html: 'dist',
-      css:  'dist/assets/css',
-      js:   'dist/assets/js',
-      img:  'dist/assets/img'
+      root:   'dist',
+      html:   'dist',
+      css:    'dist/assets/css',
+      js:     'dist/assets/js',
+      img:    'dist/assets/img',
+      static: 'dist'
     },
     deps: {
       js: [

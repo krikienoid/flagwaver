@@ -10,6 +10,7 @@ import yargs                    from 'yargs';
 
 import file                     from 'gulp-file';
 import gulpif                   from 'gulp-if';
+import replace                  from 'gulp-replace';
 import sourcemaps               from 'gulp-sourcemaps';
 
 import autoprefixer             from 'gulp-autoprefixer';
@@ -60,6 +61,7 @@ function copyGitIgnore() {
 
 function buildPages() {
   return gulp.src(config.paths.src.html)
+    .pipe(replace('@PUBLIC_URL', config.app.PUBLIC_URL))
     .pipe(gulp.dest(config.paths.dest.html));
 }
 
@@ -131,6 +133,16 @@ function buildImages() {
 }
 
 //
+// Build static assets
+//
+
+function buildStatic() {
+  return gulp.src(config.paths.src.static)
+    .pipe(replace('@PUBLIC_URL', config.app.PUBLIC_URL))
+    .pipe(gulp.dest(config.paths.dest.static));
+}
+
+//
 // Server
 //
 
@@ -176,7 +188,8 @@ gulp.task(
       buildPages,
       buildCSS,
       buildJS,
-      buildImages
+      buildImages,
+      buildStatic
     )
   )
 );
