@@ -117,7 +117,7 @@ const buildJS = gulp.parallel(
 );
 
 //
-// Build Images
+// Build images
 //
 
 function buildImages() {
@@ -166,10 +166,13 @@ function server(done) {
 function watch() {
   gulp.watch(config.paths.src.html)
     .on('all', gulp.series(buildPages, browser.reload));
+
   gulp.watch(config.paths.src.sass)
     .on('all', gulp.series(buildCSS));
+
   gulp.watch(path.join(config.paths.src.js, '/**/*.js'))
     .on('all', gulp.series(buildJS, browser.reload));
+
   gulp.watch(config.paths.src.img)
     .on('all', gulp.series(buildImages, browser.reload));
 }

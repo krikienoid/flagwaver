@@ -80,7 +80,7 @@ export default {
         ['@babel/preset-env', {
           modules: false,
           targets: {
-            browsers: config.compatibility
+            browsers: config.browserslist
           },
           useBuiltIns: 'entry'
         }],

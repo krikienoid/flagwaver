@@ -1,6 +1,6 @@
 const env = process.env.NODE_ENV || 'development';
 
-const compatibility = [
+const browserslist = [
   'last 2 versions',
   'ie >= 9',
   'ios >= 7'
@@ -44,10 +44,10 @@ export default {
       ]
     }
   },
-  compatibility: compatibility,
+  browserslist: browserslist,
   settings: {
     autoprefixer: {
-      browsers: compatibility
+      browsers: browserslist
     },
     cleanCss: {
       compatibility: 'ie9'
