@@ -1,7 +1,5 @@
 import path                     from 'path';
 
-import yargs                    from 'yargs';
-
 import babel                    from 'rollup-plugin-babel';
 import commonjs                 from 'rollup-plugin-commonjs';
 import resolve                  from 'rollup-plugin-node-resolve';
@@ -9,8 +7,7 @@ import replace                  from 'rollup-plugin-replace';
 
 import config                   from './config';
 
-// Check for --production flag
-const PRODUCTION = !!yargs.argv.production;
+const PRODUCTION = config.env === 'production';
 
 function banner(title) {
   return '/*!' +
@@ -96,9 +93,8 @@ export default {
       ]
     }),
     replace({
-      'process.env.NODE_ENV': JSON.stringify(
-        PRODUCTION ? 'production' : 'development'
-      )
+      'process.env.NODE_ENV': JSON.stringify(config.env),
+      'process.env.PUBLIC_URL': JSON.stringify(config.app.PUBLIC_URL)
     })
   ]
 };

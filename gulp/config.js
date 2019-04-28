@@ -1,3 +1,5 @@
+const env = process.env.NODE_ENV || 'development';
+
 const compatibility = [
   'last 2 versions',
   'ie >= 9',
@@ -5,8 +7,14 @@ const compatibility = [
 ];
 
 export default {
+  env: env,
   app: {
-    PUBLIC_URL: 'https://krikienoid.github.io/flagwaver'
+    development: {
+      PUBLIC_URL: 'http://localhost:8000'
+    },
+    production: {
+      PUBLIC_URL: 'https://krikienoid.github.io/flagwaver'
+    }
   },
   server: {
     root: 'dist',
@@ -59,9 +67,24 @@ export default {
         'html5shiv',
         'setClasses'
       ]
+    },
+    workboxBuild: {
+      swDest: 'dist/service-worker.js',
+      skipWaiting: true,
+      clientsClaim: true,
+      ignoreURLParametersMatching: [/./],
+      directoryIndex: 'index.html',
+      cleanupOutdatedCaches: true,
+      globDirectory: 'dist',
+      globPatterns: [
+        '**/*.{html,css,js}',
+        'assets/img/**/*.{gif,png,jpg,svg}'
+      ]
     }
   },
   init: function () {
+    this.app = this.app[env] || this.app['development'];
+
     return this;
   }
 }.init();

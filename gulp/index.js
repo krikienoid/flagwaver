@@ -6,7 +6,6 @@ import gulp                     from 'gulp';
 
 import browser                  from 'browser-sync';
 import rimraf                   from 'rimraf';
-import yargs                    from 'yargs';
 
 import file                     from 'gulp-file';
 import gulpif                   from 'gulp-if';
@@ -25,18 +24,12 @@ import rollupStream             from 'rollup-stream';
 import buffer                   from 'vinyl-buffer';
 import source                   from 'vinyl-source-stream';
 
+import workboxBuild             from 'workbox-build';
+
 import config                   from './config';
 import rollupConfig             from './rollupConfig';
 
-//
-// Config
-//
-
-// Check for --production flag
-const PRODUCTION = !!yargs.argv.production;
-
-// Set node environment flag
-process.env.NODE_ENV = PRODUCTION ? 'production' : 'development';
+const PRODUCTION = config.env === 'production';
 
 //
 // Prepare destination directory
@@ -143,6 +136,17 @@ function buildStatic() {
 }
 
 //
+// Build service worker
+//
+
+function buildSW() {
+  return workboxBuild.generateSW(config.settings.workboxBuild)
+    .then(({ count, size }) => {
+      console.log(`Generated "${config.settings.workboxBuild.swDest}", which will precache ${count} files, totaling ${size} bytes.`);
+    });
+}
+
+//
 // Server
 //
 
@@ -190,7 +194,8 @@ gulp.task(
       buildJS,
       buildImages,
       buildStatic
-    )
+    ),
+    buildSW
   )
 );
 
