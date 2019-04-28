@@ -24,6 +24,10 @@
     "url": "https://github.com/krikienoid/flagwaver/issues"
   },
   "main": "gulpfile.babel.js",
+  "engines": {
+    "node": ">=8",
+    "npm": ">=6"
+  },
   "scripts": {
     "start": "gulp",
     "start-test": "NODE_ENV=production gulp",
