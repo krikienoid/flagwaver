@@ -11,7 +11,34 @@ body,
     overflow: hidden;
 }
 
+html.no-js {
+    #root {
+        display: none;
+    }
+}
+
 .app-bg,
 .app-canvas {
     @include block-full;
+}
+
+.section {
+    padding-top: 0.5 * $spacer;
+    padding-bottom: 0.5 * $spacer;
+
+    @include breakpoint(sm) {
+        padding-top: $grid-gutter-width;
+        padding-bottom: $grid-gutter-width;
+    }
+}
+
+.container,
+.container-fluid {
+    padding-left: 0.5 * $spacer;
+    padding-right: 0.5 * $spacer;
+
+    @include breakpoint(sm) {
+        padding-left: $grid-gutter-width;
+        padding-right: $grid-gutter-width;
+    }
 }
