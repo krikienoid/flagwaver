@@ -12,10 +12,13 @@
 
         <link rel="canonical" href="@PUBLIC_URL" />
 
+        <!-- BEGIN Resource hints -->
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+        <link rel="preload" href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" as="style" />
+        <!-- END Resource hints -->
+
         <!-- BEGIN CSS -->
         <link rel="stylesheet" type="text/css" href="./assets/css/main.css" />
-        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" />
-        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:900i&text=FlagWaver" />
         <!-- END CSS -->
 
         <!-- BEGIN iOS meta tags -->
@@ -45,6 +48,51 @@
 
         <meta name="twitter:card" content="summary_large_image" />
         <!-- END Social tags -->
+
+        <!-- BEGIN Web Font Loader -->
+        <script type="text/javascript">
+            (function () {
+                var sessionStorage = window.sessionStorage;
+
+                if (sessionStorage && sessionStorage.wfActive) {
+                    (function (d) {
+                        var l = d.createElement('link');
+                        l.rel = 'stylesheet';
+                        l.type = 'text/css';
+                        l.href = 'https://fonts.googleapis.com/css?family=Montserrat:400,500,700';
+                        d.head.appendChild(l);
+                        d.documentElement.className += ' wf-active';
+                    })(document);
+
+                    return;
+                }
+
+                window.WebFontConfig = {
+                    custom: {
+                        families: [
+                            'Montserrat'
+                        ],
+                        urls: [
+                            'https://fonts.googleapis.com/css?family=Montserrat:400,500,700'
+                        ]
+                    },
+                    timeout: 2000,
+                    active: function () {
+                        if (sessionStorage) {
+                            sessionStorage.wfActive = true;
+                        }
+                    }
+                };
+
+                (function (d) {
+                    var wf = d.createElement('script'), s = d.scripts[0];
+                    wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
+                    wf.async = true;
+                    s.parentNode.insertBefore(wf, s);
+                })(document);
+            })();
+        </script>
+        <!-- END Web Font Loader -->
     </head>
 
     <body>

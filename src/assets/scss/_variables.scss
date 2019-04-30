@@ -75,7 +75,7 @@ $zindex-fixed:                  1000;
 
 $font-size-root:                16px;
 
-$font-family-helvetica:         Helvetica, Arial, sans-serif;
+$font-family-helvetica:         "Helvetica Neue", Helvetica, Arial, sans-serif;
 $font-family-montserrat:        "Montserrat", $font-family-helvetica;
 
 $font-family-base:              $font-family-montserrat;
@@ -137,12 +137,6 @@ $error-color:                   $brand-red;
 
 $body-bg:                       $white;
 $body-font-color:               $text-color;
-
-
-// Fonts
-
-$fallback-font-family:          $font-family-helvetica;
-$body-font-family:              $font-family-base;
 
 
 // Unit sizes

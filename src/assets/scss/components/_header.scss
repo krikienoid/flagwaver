@@ -128,14 +128,26 @@ $site-header-btn-height: 1.5rem;
 .site-headline {
     margin: 0;
     font-size: 1.75rem;
-    font-style: italic;
-    font-weight: 900;
-    letter-spacing: -0.01em;
     line-height: 1;
     white-space: nowrap;
     user-select: none;
 
+    img {
+        width: auto;
+        height: 2.5rem;
+        display: inline-block;
+        margin-top: -0.375rem;
+        margin-bottom: -0.5rem;
+        vertical-align: top;
+    }
+
     @include breakpoint(sm) {
         font-size: 2rem;
+
+        img {
+            height: 3rem;
+            margin-top: -0.625rem;
+            margin-bottom: -0.375rem;
+        }
     }
 }

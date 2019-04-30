@@ -73,7 +73,18 @@ export default class App extends Component {
                 <header className="site-header" role="banner">
                     <div className="site-header-layout">
                         <div className="site-header-center">
-                            <h1 className="site-headline">FlagWaver</h1>
+                            <h1 className="site-headline">
+                                <img
+                                    width="189"
+                                    height="48"
+                                    alt="FlagWaver"
+                                    src={`${process.env.PUBLIC_URL}/${
+                                        window.Modernizr && window.Modernizr.svgasimg
+                                            ? 'assets/img/site-headline-inverse.svg'
+                                            : 'assets/img/site-headline-inverse.png'
+                                    }`}
+                                />
+                            </h1>
                         </div>
 
                         <div className="site-header-left">
