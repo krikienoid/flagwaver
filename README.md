@@ -47,4 +47,5 @@ Code released under the MIT License.
 
 All art assets included in this project are distributed under their respective licenses.
 
+- **fonts/montserrat** - This Font Software is licensed under the SIL Open Font License, Version 1.1.
 - **img/Sky_over_Washington_Monument-1600x1200px.jpg** - This work has been released into the public domain by its author, Andypham3000 at English Wikipedia. This applies worldwide.

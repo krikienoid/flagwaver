@@ -27,6 +27,7 @@ export default {
       sass:   'src/assets/scss/**/*.scss',
       js:     'src/assets/js',
       img:    'src/assets/img/**/*',
+      fonts:  'src/assets/fonts/**/*.{eot,svg,ttf,woff,woff2}',
       static: 'src/static/**/*'
     },
     dest: {
@@ -35,6 +36,7 @@ export default {
       css:    'dist/assets/css',
       js:     'dist/assets/js',
       img:    'dist/assets/img',
+      fonts:  'dist/assets/fonts',
       static: 'dist'
     },
     deps: {
@@ -74,23 +76,17 @@ export default {
       clientsClaim: true,
       runtimeCaching: [
         {
-          urlPattern: /^https:\/\/fonts\.googleapis\.com/,
+          urlPattern: /assets\/fonts/,
           handler: 'staleWhileRevalidate',
           options: {
-            cacheName: 'google-fonts-stylesheets'
+            cacheName: 'webfonts'
           }
         },
         {
-          urlPattern: /^https:\/\/fonts\.gstatic\.com/,
-          handler: 'cacheFirst',
+          urlPattern: /^https:\/\/ajax\.googleapis\.com/,
+          handler: 'staleWhileRevalidate',
           options: {
-            cacheName: 'google-fonts-webfonts',
-            cacheableResponse: {
-              statuses: [0, 200]
-            },
-            expiration: {
-              maxAgeSeconds: 60 * 60 * 24 * 365
-            }
+            cacheName: 'google-typekit-webfontloader'
           }
         }
       ],

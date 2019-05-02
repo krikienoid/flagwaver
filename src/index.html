@@ -12,11 +12,6 @@
 
         <link rel="canonical" href="@PUBLIC_URL" />
 
-        <!-- BEGIN Resource hints -->
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-        <link rel="preload" href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" as="style" />
-        <!-- END Resource hints -->
-
         <!-- BEGIN CSS -->
         <link rel="stylesheet" type="text/css" href="./assets/css/main.css" />
         <!-- END CSS -->
@@ -55,14 +50,7 @@
                 var sessionStorage = window.sessionStorage;
 
                 if (sessionStorage && sessionStorage.wfActive) {
-                    (function (d) {
-                        var l = d.createElement('link');
-                        l.rel = 'stylesheet';
-                        l.type = 'text/css';
-                        l.href = 'https://fonts.googleapis.com/css?family=Montserrat:400,500,700';
-                        d.head.appendChild(l);
-                        d.documentElement.className += ' wf-active';
-                    })(document);
+                    document.documentElement.className += ' wf-active';
 
                     return;
                 }
@@ -70,10 +58,7 @@
                 window.WebFontConfig = {
                     custom: {
                         families: [
-                            'Montserrat'
-                        ],
-                        urls: [
-                            'https://fonts.googleapis.com/css?family=Montserrat:400,500,700'
+                            'Montserrat:n4,n5,n7'
                         ]
                     },
                     timeout: 2000,

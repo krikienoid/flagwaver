@@ -8,6 +8,7 @@ import browser                  from 'browser-sync';
 import rimraf                   from 'rimraf';
 
 import file                     from 'gulp-file';
+import flatten                  from 'gulp-flatten';
 import gulpif                   from 'gulp-if';
 import replace                  from 'gulp-replace';
 import sourcemaps               from 'gulp-sourcemaps';
@@ -126,6 +127,16 @@ function buildImages() {
 }
 
 //
+// Build fonts
+//
+
+function buildFonts() {
+  return gulp.src(config.paths.src.fonts)
+    .pipe(flatten())
+    .pipe(gulp.dest(config.paths.dest.fonts));
+}
+
+//
 // Build static assets
 //
 
@@ -196,6 +207,7 @@ gulp.task(
       buildCSS,
       buildJS,
       buildImages,
+      buildFonts,
       buildStatic
     ),
     buildSW
