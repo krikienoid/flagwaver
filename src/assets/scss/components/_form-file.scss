@@ -13,14 +13,21 @@
 
 .form-file-input {
     width: 100%;
+    height: 100%;
     display: block;
     @include block-full;
     z-index: 2;
-    // HACK: Push default button out of view so `cursor: pointer;` will work.
-    padding-left: 100%;
     overflow: hidden;
+    // HACK: Hide input text so `cursor: pointer;` will work in Firefox.
+    // https://stackoverflow.com/a/24488438
+    font-size: 0;
     opacity: 0;
     cursor: pointer;
+
+    &::-webkit-file-upload-button {
+        // Chrome and Blink button
+        cursor: pointer;
+    }
 
     &:focus + .form-file-btn {
         @include control-shadow();
