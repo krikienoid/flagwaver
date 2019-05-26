@@ -42,17 +42,18 @@ function glsl() {
 
 export default {
   input: path.join(config.paths.src.js, '/index.js'),
-  file: path.join(config.paths.dest.js, '/app.js'),
-  format: 'iife',
-  indent: '    ',
-  sourcemap: !PRODUCTION,
-  banner: banner('FlagWaver - App'),
+  output: {
+    file: path.join(config.paths.dest.js, '/app.js'),
+    format: 'iife',
+    indent: '    ',
+    banner: banner('FlagWaver - App'),
+    globals: {
+      'three': 'THREE'
+    }
+  },
   external: [
     'three'
   ],
-  globals: {
-    'three': 'THREE'
-  },
   plugins: [
     resolve(),
     commonjs({

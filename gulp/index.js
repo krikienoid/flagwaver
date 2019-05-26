@@ -18,12 +18,9 @@ import cleanCss                 from 'gulp-clean-css';
 import sass                     from 'gulp-sass';
 import sassTildeImporter        from 'node-sass-tilde-importer';
 
+import rollup                   from 'gulp-better-rollup';
 import uglify                   from 'gulp-uglify';
 import modernizr                from 'modernizr';
-import { rollup }               from 'rollup';
-import rollupStream             from 'rollup-stream';
-import buffer                   from 'vinyl-buffer';
-import source                   from 'vinyl-source-stream';
 
 import workboxBuild             from 'workbox-build';
 
@@ -81,13 +78,9 @@ function buildCSS() {
 //
 
 function buildAppJS() {
-  const filename = path.basename(rollupConfig.file);
-  const base = config.paths.src.js;
-
-  return rollupStream(Object.assign({ rollup: { rollup } }, rollupConfig))
-    .pipe(source(filename, base))
-    .pipe(buffer())
-    .pipe(sourcemaps.init({ loadMaps: true }))
+  return gulp.src(rollupConfig.input)
+    .pipe(sourcemaps.init())
+    .pipe(rollup(rollupConfig, rollupConfig.output))
     .pipe(gulpif(PRODUCTION, uglify()
       .on('error', (e) => { console.log(e); })
     ))
