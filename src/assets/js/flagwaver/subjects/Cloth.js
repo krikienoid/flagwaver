@@ -26,18 +26,21 @@ export default class Cloth {
         const particleAt = (u, v) => particles[u + v * (xSegments + 1)];
 
         // Cloth plane function
-        const plane = (u, v) => new THREE.Vector3(u * width, v * height, 0);
+        const plane = (u, v, target) => {
+            target.set(u * width, v * height, 0);
+        };
 
         //
         // Particles
         //
 
+        const position = new THREE.Vector3();
+
         for (let v = 0; v <= ySegments; v++) {
             for (let u = 0; u <= xSegments; u++) {
-                particles.push(new Particle(
-                    plane(u / xSegments, v / ySegments),
-                    mass
-                ));
+                plane(u / xSegments, v / ySegments, position);
+
+                particles.push(new Particle(position, mass));
             }
         }
 
