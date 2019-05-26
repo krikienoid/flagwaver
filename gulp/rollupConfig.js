@@ -60,11 +60,29 @@ export default {
       namedExports: {
         'node_modules/react/index.js': [
           'Children', 'createRef', 'Component', 'PureComponent',
-          'createContext', 'forwardRef', 'Fragment', 'StrictMode',
-          'createElement', 'cloneElement', 'createFactory', 'isValidElement'
+          'createContext', 'forwardRef', 'lazy', 'memo',
+          'useCallback', 'useContext', 'useEffect', 'useImperativeHandle',
+          'useDebugValue', 'useLayoutEffect', 'useMemo', 'useReducer',
+          'useRef', 'useState', 'Fragment', 'StrictMode', 'Suspense',
+          'createElement', 'cloneElement', 'createFactory', 'isValidElement',
+          'version', 'unstable_ConcurrentMode', 'unstable_Profiler'
         ],
         'node_modules/react-dom/index.js': [
-          'createPortal', 'findDOMNode', 'hydrate', 'render'
+          'createPortal', 'findDOMNode', 'hydrate', 'render',
+          'unstable_renderSubtreeIntoContainer', 'unmountComponentAtNode',
+          'unstable_createPortal', 'unstable_batchedUpdates',
+          'unstable_interactiveUpdates', 'flushSync',
+          'unstable_createRoot', 'unstable_flushControlled'
+        ],
+        'node_modules/react-is/index.js': [
+          'typeOf', 'AsyncMode', 'ConcurrentMode',
+          'ContextConsumer', 'ContextProvider', 'Element', 'ForwardRef',
+          'Fragment', 'Lazy', 'Memo', 'Portal', 'Profiler',
+          'StrictMode', 'Suspense',
+          'isValidElementType', 'isAsyncMode', 'isConcurrentMode',
+          'isContextConsumer', 'isContextProvider', 'isElement', 'isForwardRef',
+          'isFragment', 'isLazy', 'isMemo', 'isPortal', 'isProfiler',
+          'isStrictMode', 'isSuspense'
         ]
       }
     }),
@@ -82,7 +100,8 @@ export default {
           targets: {
             browsers: config.browserslist
           },
-          useBuiltIns: 'entry'
+          useBuiltIns: 'entry',
+          corejs: 3
         }],
         '@babel/preset-react'
       ],
