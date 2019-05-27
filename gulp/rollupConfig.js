@@ -8,6 +8,7 @@ import replace                  from 'rollup-plugin-replace';
 import config                   from './config';
 
 const PRODUCTION = config.env === 'production';
+const ROLLUP_QUICK_BUILD = !PRODUCTION;
 
 function banner(title) {
   return '/*!' +
@@ -45,7 +46,7 @@ export default {
   output: {
     file: path.join(config.paths.dest.js, '/app.js'),
     format: 'iife',
-    indent: '    ',
+    indent: ROLLUP_QUICK_BUILD ? false : '    ',
     banner: banner('FlagWaver - App'),
     globals: {
       'three': 'THREE'
@@ -54,10 +55,12 @@ export default {
   external: [
     'three'
   ],
+  treeshake: !ROLLUP_QUICK_BUILD,
   plugins: [
     resolve(),
     commonjs({
       include: 'node_modules/**',
+      sourcemap: !ROLLUP_QUICK_BUILD,
       namedExports: {
         'node_modules/react/index.js': [
           'Children', 'createRef', 'Component', 'PureComponent',
