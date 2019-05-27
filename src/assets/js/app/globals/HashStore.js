@@ -64,8 +64,14 @@ function mapStateFromHash(state) {
 }
 
 function isValidState(state) {
-    // Has an image and is not a local file
-    return !!state.flagGroup.imgSrc && !state.fileRecord.file;
+    return (
+        // Has an image
+        !!state.flagGroup.imgSrc &&
+        // Not a local file
+        !state.fileRecord.file &&
+        // File selection has been applied to flag
+        state.fileRecord.url === state.flagGroup.imgSrc
+    );
 }
 
 function withLegacyFallback(state) {
