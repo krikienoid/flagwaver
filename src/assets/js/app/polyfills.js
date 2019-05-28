@@ -5,6 +5,6 @@ import 'core-js/es6/set';
 // ES6
 import 'core-js/fn/array/find';
 import 'core-js/fn/array/find-index';
+import 'core-js/fn/object/assign';
 
-// Object.assign polyfill provided by THREE.js
 // requestAnimationFrame polyfill provided by THREE.js
