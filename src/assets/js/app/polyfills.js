@@ -1,10 +1,10 @@
 // React IE
-import 'core-js/es6/map';
-import 'core-js/es6/set';
+import 'core-js/es/map';
+import 'core-js/es/set';
 
 // ES6
-import 'core-js/fn/array/find';
-import 'core-js/fn/array/find-index';
-import 'core-js/fn/object/assign';
+import 'core-js/es/array/find';
+import 'core-js/es/array/find-index';
+import 'core-js/es/object/assign';
 
 // requestAnimationFrame polyfill provided by THREE.js

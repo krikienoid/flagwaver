@@ -8,6 +8,7 @@ import replace                  from 'rollup-plugin-replace';
 import config                   from './config';
 
 const PRODUCTION = config.env === 'production';
+const ROLLUP_QUICK_BUILD = !PRODUCTION;
 
 function banner(title) {
   return '/*!' +
@@ -42,29 +43,50 @@ function glsl() {
 
 export default {
   input: path.join(config.paths.src.js, '/index.js'),
-  file: path.join(config.paths.dest.js, '/app.js'),
-  format: 'iife',
-  indent: '    ',
-  sourcemap: !PRODUCTION,
-  banner: banner('FlagWaver - App'),
+  output: {
+    file: path.join(config.paths.dest.js, '/app.js'),
+    format: 'iife',
+    indent: ROLLUP_QUICK_BUILD ? false : '    ',
+    banner: banner('FlagWaver - App'),
+    globals: {
+      'three': 'THREE'
+    }
+  },
   external: [
     'three'
   ],
-  globals: {
-    'three': 'THREE'
-  },
+  treeshake: !ROLLUP_QUICK_BUILD,
   plugins: [
     resolve(),
     commonjs({
       include: 'node_modules/**',
+      sourcemap: !ROLLUP_QUICK_BUILD,
       namedExports: {
         'node_modules/react/index.js': [
           'Children', 'createRef', 'Component', 'PureComponent',
-          'createContext', 'forwardRef', 'Fragment', 'StrictMode',
-          'createElement', 'cloneElement', 'createFactory', 'isValidElement'
+          'createContext', 'forwardRef', 'lazy', 'memo',
+          'useCallback', 'useContext', 'useEffect', 'useImperativeHandle',
+          'useDebugValue', 'useLayoutEffect', 'useMemo', 'useReducer',
+          'useRef', 'useState', 'Fragment', 'StrictMode', 'Suspense',
+          'createElement', 'cloneElement', 'createFactory', 'isValidElement',
+          'version', 'unstable_ConcurrentMode', 'unstable_Profiler'
         ],
         'node_modules/react-dom/index.js': [
-          'createPortal', 'findDOMNode', 'hydrate', 'render'
+          'createPortal', 'findDOMNode', 'hydrate', 'render',
+          'unstable_renderSubtreeIntoContainer', 'unmountComponentAtNode',
+          'unstable_createPortal', 'unstable_batchedUpdates',
+          'unstable_interactiveUpdates', 'flushSync',
+          'unstable_createRoot', 'unstable_flushControlled'
+        ],
+        'node_modules/react-is/index.js': [
+          'typeOf', 'AsyncMode', 'ConcurrentMode',
+          'ContextConsumer', 'ContextProvider', 'Element', 'ForwardRef',
+          'Fragment', 'Lazy', 'Memo', 'Portal', 'Profiler',
+          'StrictMode', 'Suspense',
+          'isValidElementType', 'isAsyncMode', 'isConcurrentMode',
+          'isContextConsumer', 'isContextProvider', 'isElement', 'isForwardRef',
+          'isFragment', 'isLazy', 'isMemo', 'isPortal', 'isProfiler',
+          'isStrictMode', 'isSuspense'
         ]
       }
     }),
@@ -82,7 +104,8 @@ export default {
           targets: {
             browsers: config.browserslist
           },
-          useBuiltIns: 'entry'
+          useBuiltIns: 'entry',
+          corejs: 3
         }],
         '@babel/preset-react'
       ],
