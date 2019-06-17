@@ -103,9 +103,7 @@ export default {
           modules: false,
           targets: {
             browsers: config.browserslist
-          },
-          useBuiltIns: 'entry',
-          corejs: 3
+          }
         }],
         '@babel/preset-react'
       ],
