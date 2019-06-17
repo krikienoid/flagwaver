@@ -1,6 +1,6 @@
+import HashState from '../../hashstate';
 import { setFileRecord } from '../redux/modules/fileRecord';
 import flagGroup, { setFlagGroupOptions } from '../redux/modules/flagGroup';
-import HashState from '../helpers/HashState';
 
 const flagGroupDefaults = flagGroup(undefined, {});
 

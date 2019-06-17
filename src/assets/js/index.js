@@ -5,6 +5,9 @@
  * A web app for simulating a waving flag.
  */
 
+// Polyfills
+import './polyfills';
+
 // FlagWaver - Core
 import './flagwaver';
 
