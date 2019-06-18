@@ -19,7 +19,7 @@ export default class FlagGroupInterface {
         const setFlagOptions = this.flagInterface.setOptions.bind(this.flagInterface);
 
         // Wrapper method
-        this.flagInterface.setOptions = (options, callback) => {
+        this.flagInterface.setOptions = (options, callback, error) => {
             setFlagOptions(options, (flag) => {
                 if (this.flagpole) {
                     this.flagpole.needsUpdate = true;
@@ -28,7 +28,7 @@ export default class FlagGroupInterface {
                 if (callback) {
                     callback(flag);
                 }
-            });
+            }, error);
         };
 
         this.object.add(this.flagInterface.object);
@@ -51,7 +51,7 @@ export default class FlagGroupInterface {
         }
     }
 
-    setFlagpoleOptions(options, callback) {
+    setFlagpoleOptions(options, callback, error) {
         const settings = Object.assign({}, options);
 
         const flagInterface = this.flagInterface;
@@ -75,8 +75,8 @@ export default class FlagGroupInterface {
         }
     }
 
-    setFlagOptions(options, callback) {
-        this.flagInterface.setOptions(options, callback);
+    setFlagOptions(options, callback, error) {
+        this.flagInterface.setOptions(options, callback, error);
     }
 
     reset() {

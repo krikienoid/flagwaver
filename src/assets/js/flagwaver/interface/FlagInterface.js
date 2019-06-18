@@ -25,7 +25,7 @@ export default class FlagInterface {
         }
     }
 
-    setOptions(options, callback) {
+    setOptions(options, callback, error) {
         const settings = Object.assign({}, options);
         const src = settings.imgSrc;
 
@@ -49,7 +49,7 @@ export default class FlagInterface {
         if (src) {
             loadImage(src, (image) => {
                 replace(buildFlag(image, settings));
-            });
+            }, error);
         }
     }
 

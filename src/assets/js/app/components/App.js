@@ -8,6 +8,7 @@ import Drawer from '../components/Drawer';
 import Panel from '../components/Panel';
 import FlagGroupBarContainer from '../containers/FlagGroupBarContainer';
 import FlagGroupPaneContainer from '../containers/FlagGroupPaneContainer';
+import ToastsContainer from '../containers/ToastsContainer';
 import WindBarContainer from '../containers/WindBarContainer';
 import WindPaneContainer from '../containers/WindPaneContainer';
 import AppContext from '../contexts/AppContext';
@@ -162,6 +163,8 @@ export default class App extends Component {
                         </div>
                     </div>
                 </main>
+
+                <ToastsContainer />
             </AppContext.Provider>
         );
     }

@@ -127,7 +127,7 @@ export default class FlagModule extends ControlModule {
         this.subject.render();
     }
 
-    setOptions(options, callback) {
+    setOptions(options, callback, error) {
         if (isObject(options)) {
             this.subject.setOptions(
                 Object.assign(
@@ -138,7 +138,8 @@ export default class FlagModule extends ControlModule {
                     if (callback) {
                         callback(this.configOptions);
                     }
-                }
+                },
+                error
             );
         }
     }

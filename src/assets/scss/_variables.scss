@@ -14,6 +14,7 @@ $brand-sky-blue-light:          #76aff4;
 $brand-green-light:             #3ec300;
 $brand-yellow:                  #e89005;
 $brand-smoky-gray:              #8d99ae;
+$brand-danger:                  #dc392d;
 
 $brand-gray-darkest:            #262626;
 $brand-gray-darker:             #4d4d4d;
@@ -69,6 +70,7 @@ $grid-gutter-half:              $grid-gutter-width / 2;
 // Z-index
 
 $zindex-fixed:                  1000;
+$zindex-toasts:                 1010;
 
 
 // Typography
@@ -130,7 +132,7 @@ $bg-color-light:                $light-color;
 
 $success-color:                 $brand-green-light;
 $warning-color:                 $brand-yellow;
-$error-color:                   $brand-red;
+$error-color:                   $brand-danger;
 
 
 // Other colors
