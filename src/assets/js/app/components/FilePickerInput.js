@@ -32,8 +32,11 @@ export default class FilePickerInput extends Component {
 
         this.state = {
             inputMode: FilePickerInputMode.WEB,
-            url: ''
+            url: '',
+            hasSubmittedURL: false
         };
+
+        this.validateURL = this.validateURL.bind(this);
 
         this.handleModeChange = this.handleModeChange.bind(this);
         this.handleURLChange = this.handleURLChange.bind(this);
@@ -52,12 +55,31 @@ export default class FilePickerInput extends Component {
         }
     }
 
+    validateURL(value) {
+        const { hasSubmittedURL } = this.state;
+
+        return (
+            (hasSubmittedURL && !value)
+                ? {
+                    valid: false,
+                    feedback: 'Please enter a valid URL.'
+                }
+                : { valid: true }
+        );
+    }
+
     handleModeChange(value) {
-        this.setState({ inputMode: value });
+        this.setState({
+            inputMode: value,
+            hasSubmittedURL: false
+        });
     }
 
     handleURLChange(e) {
-        this.setState({ url: e.target.value });
+        this.setState({
+            url: e.target.value,
+            hasSubmittedURL: false
+        });
     }
 
     handleURLSubmit() {
@@ -68,6 +90,8 @@ export default class FilePickerInput extends Component {
             url: url,
             file: null
         };
+
+        this.setState({ hasSubmittedURL: true });
 
         onChange(value);
         onLoad(value);
@@ -125,6 +149,7 @@ export default class FilePickerInput extends Component {
                                 label="URL"
                                 name="url"
                                 value={url}
+                                validator={this.validateURL}
                                 onChange={this.handleURLChange}
                                 onSubmit={this.handleURLSubmit}
                             />

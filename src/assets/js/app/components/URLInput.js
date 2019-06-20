@@ -11,11 +11,14 @@ function URLInput({
     buttonText,
     value,
     disabled,
+    validator,
     onChange,
     onSubmit
 }) {
+    const { valid, feedback } = validator(value);
+
     return (
-        <div className="form-group">
+        <div className={'form-group' + (!valid ? ' ' + 'has-error' : '')}>
             <label className="form-label" htmlFor={id}>
                 {label}
             </label>
@@ -29,6 +32,7 @@ function URLInput({
                     value={value}
                     placeholder={placeholder}
                     disabled={disabled}
+                    aria-describedby={feedback ? `${id}-feedback` : null}
                     onChange={onChange}
                 />
 
@@ -41,6 +45,12 @@ function URLInput({
                     {buttonText}
                 </button>
             </div>
+
+            {!valid ? (
+                <p class="form-input-hint" id={`${id}-feedback`}>
+                    {feedback}
+                </p>
+            ) : null}
         </div>
     );
 }
@@ -53,6 +63,7 @@ URLInput.propTypes = {
     buttonText: PropTypes.node,
     value: PropTypes.string,
     disabled: PropTypes.bool,
+    validator: PropTypes.func,
     onChange: PropTypes.func,
     onSubmit: PropTypes.func
 };
@@ -62,7 +73,8 @@ URLInput.defaultProps = {
     name: 'url',
     placeholder: 'https://www...',
     buttonText: 'Go',
-    disabled: false
+    disabled: false,
+    validator: () => ({ valid: true })
 };
 
 export default withUniqueId(URLInput);
