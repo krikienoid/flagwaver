@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import FormGroup from '../components/FormGroup';
 import withUniqueId from '../hocs/withUniqueId';
 import { fileRecordPropType } from '../types';
 import prettyPrintBytes from '../utils/prettyPrintBytes';
@@ -14,6 +15,7 @@ class FileInput extends Component {
         accept: PropTypes.string,
         defaultText: PropTypes.node,
         disabled: PropTypes.bool,
+        validator: PropTypes.func,
         onChange: PropTypes.func,
         onLoad: PropTypes.func,
         isValidFileType: PropTypes.func
@@ -24,6 +26,7 @@ class FileInput extends Component {
         name: 'file',
         defaultText: 'Select file...',
         disabled: false,
+        validator: () => ({ valid: true }),
         onChange: () => {},
         onLoad: () => {},
         isValidFileType: () => true
@@ -89,13 +92,17 @@ class FileInput extends Component {
             value,
             accept,
             defaultText,
-            disabled
+            disabled,
+            validator
         } = this.props;
+
+        const { valid, feedback } = validator(value);
+        const feedbackId = feedback ? `${id}-feedback` : null;
 
         const file = value && value.file || null;
 
         return (
-            <div className="form-group">
+            <FormGroup {...{ valid, feedback, feedbackId }}>
                 <label className="form-label" htmlFor={id}>
                     {label}
                 </label>
@@ -108,6 +115,7 @@ class FileInput extends Component {
                         name={name}
                         accept={accept}
                         disabled={disabled}
+                        aria-describedby={feedbackId}
                         onChange={this.handleChange}
                     />
 
@@ -125,7 +133,7 @@ class FileInput extends Component {
                         </div>
                     </div>
                 </div>
-            </div>
+            </FormGroup>
         );
     }
 }

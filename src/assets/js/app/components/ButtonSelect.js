@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 
+import FormGroup from '../components/FormGroup';
 import withUniqueId from '../hocs/withUniqueId';
 import HelperPropTypes from '../utils/HelperPropTypes';
 
@@ -72,6 +73,7 @@ class ButtonSelect extends Component {
         label: PropTypes.node,
         value: PropTypes.string,
         disabled: PropTypes.bool,
+        validator: PropTypes.func,
         onChange: PropTypes.func,
         labelClassName: PropTypes.string,
         buttonGroupClassName: PropTypes.string,
@@ -101,6 +103,7 @@ class ButtonSelect extends Component {
         label: 'Please Select',
         value: '',
         disabled: false,
+        validator: () => ({ valid: true }),
         onChange: () => {},
         labelClassName: 'form-label',
         buttonGroupClassName: 'btn-group',
@@ -233,15 +236,24 @@ class ButtonSelect extends Component {
             className,
             labelClassName,
             label,
+            value,
+            validator,
             buttonGroupClassName
         } = this.props;
+
+        const { valid, feedback } = validator(value);
+        const feedbackId = feedback ? `${id}-feedback` : null;
 
         const labelId = `${id}-label`;
 
         return (
-            <div
+            <FormGroup
                 className={className}
+                valid={valid}
+                feedback={feedback}
+                feedbackId={feedbackId}
                 role="radiogroup"
+                aria-describedby={feedbackId}
                 aria-labelledby={labelId}
             >
                 <div id={labelId} className={labelClassName}>
@@ -254,7 +266,7 @@ class ButtonSelect extends Component {
                 >
                     {this.renderButtons()}
                 </div>
-            </div>
+            </FormGroup>
         );
     }
 }
