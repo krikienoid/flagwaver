@@ -25,7 +25,7 @@ export default class FlagInterface {
         }
     }
 
-    setOptions(options, callback, error) {
+    setOptions(options) {
         const settings = Object.assign({}, options);
         const src = settings.imgSrc;
 
@@ -33,24 +33,27 @@ export default class FlagInterface {
             this.destroy();
             this.flag = flag;
             this.object.add(flag.object);
-
-            if (callback) {
-                callback(flag);
-            }
         };
-
-        replace(buildFlag(null, settings));
 
         /*
          * If a new image is to be loaded, options must be set
          * asynchronously after image loading has completed.
          */
+        return new Promise((resolve, reject) => {
+            if (src) {
+                loadImage(src, (image) => {
+                    const flag = buildFlag(image, settings);
 
-        if (src) {
-            loadImage(src, (image) => {
-                replace(buildFlag(image, settings));
-            }, error);
-        }
+                    replace(flag);
+                    resolve(flag);
+                }, reject);
+            } else {
+                const flag = buildFlag(null, settings);
+
+                replace(flag);
+                resolve(flag);
+            }
+        });
     }
 
     reset() {

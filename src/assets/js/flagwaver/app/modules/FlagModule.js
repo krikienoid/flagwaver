@@ -127,20 +127,10 @@ export default class FlagModule extends ControlModule {
         this.subject.render();
     }
 
-    setOptions(options, callback, error) {
-        if (isObject(options)) {
-            this.subject.setOptions(
-                Object.assign(
-                    this.configOptions,
-                    this.constructor.validate(options)
-                ),
-                (flag) => {
-                    if (callback) {
-                        callback(this.configOptions);
-                    }
-                },
-                error
-            );
-        }
+    setOptions(options) {
+        return this.subject.setOptions(Object.assign(
+            this.configOptions,
+            this.constructor.validate(options)
+        ));
     }
 }

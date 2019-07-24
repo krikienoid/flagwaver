@@ -19,17 +19,12 @@ export default class FlagGroupInterface {
         const setFlagOptions = this.flagInterface.setOptions.bind(this.flagInterface);
 
         // Wrapper method
-        this.flagInterface.setOptions = (options, callback, error) => {
-            setFlagOptions(options, (flag) => {
+        this.flagInterface.setOptions = options =>
+            setFlagOptions(options).then((flag) => {
                 if (this.flagpole) {
                     this.flagpole.needsUpdate = true;
                 }
-
-                if (callback) {
-                    callback(flag);
-                }
-            }, error);
-        };
+            });
 
         this.object.add(this.flagInterface.object);
 
@@ -70,13 +65,13 @@ export default class FlagGroupInterface {
             flagpole.addFlag(flagInterface.flag, 0);
         }
 
-        if (callback) {
-            callback(flagpole);
-        }
+        return new Promise((resolve, reject) => {
+            resolve(flagpole);
+        });
     }
 
-    setFlagOptions(options, callback, error) {
-        this.flagInterface.setOptions(options, callback, error);
+    setFlagOptions(options) {
+        return this.flagInterface.setOptions(options);
     }
 
     reset() {

@@ -6,5 +6,6 @@ import 'core-js/es/set';
 import 'core-js/es/array/find';
 import 'core-js/es/array/find-index';
 import 'core-js/es/object/assign';
+import 'core-js/es/promise';
 
 // requestAnimationFrame polyfill provided by THREE.js

@@ -43,12 +43,13 @@ class FlagGroup extends Component {
         if (module) {
             module.subject.setFlagOptions(Object.assign({}, options, {
                 imgSrc: options.imgSrc || DEFAULT_FLAG_SRC
-            }), null, (e) => {
-                addToast({
-                    status: 'error',
-                    message: 'Image could not be loaded.'
+            }))
+                .catch((e) => {
+                    addToast({
+                        status: 'error',
+                        message: 'Image could not be loaded.'
+                    });
                 });
-            });
         }
     }
 
