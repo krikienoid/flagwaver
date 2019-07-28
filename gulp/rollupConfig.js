@@ -107,7 +107,7 @@ export default {
         }],
         '@babel/preset-react'
       ],
-      exclude: 'node_modules/**',
+      exclude: 'node_modules/!(react-spring)/**',
       plugins: [
         '@babel/plugin-external-helpers',
         ['@babel/plugin-proposal-class-properties', { 'loose': true }],

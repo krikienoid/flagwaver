@@ -41,6 +41,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-redux": "^7.0.3",
+    "react-spring": "^8.0.27",
     "redux": "^4.0.1",
     "spectre.css": "^0.5.8",
     "stats.js": "^0.17.0",
