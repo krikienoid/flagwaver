@@ -49,10 +49,12 @@ export default {
     indent: ROLLUP_QUICK_BUILD ? false : '    ',
     banner: banner('FlagWaver - App'),
     globals: {
+      'modernizr': 'window.Modernizr || {}',
       'three': 'THREE'
     }
   },
   external: [
+    'modernizr',
     'three'
   ],
   treeshake: !ROLLUP_QUICK_BUILD,

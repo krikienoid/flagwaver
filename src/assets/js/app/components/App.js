@@ -1,3 +1,4 @@
+import Modernizr from 'modernizr';
 import React, { Component } from 'react';
 
 import { fromHash } from '../globals/HashStore';
@@ -13,6 +14,12 @@ import WindBarContainer from '../containers/WindBarContainer';
 import WindPaneContainer from '../containers/WindPaneContainer';
 import AppContext from '../contexts/AppContext';
 import store from '../redux/store';
+
+const SITE_HEADLINE_INVERSE_IMAGE_PATH = `${process.env.PUBLIC_URL}/${
+    Modernizr.svgasimg
+        ? 'assets/img/site-headline-inverse.svg'
+        : 'assets/img/site-headline-inverse.png'
+}`;
 
 export default class App extends Component {
     constructor(props) {
@@ -79,11 +86,7 @@ export default class App extends Component {
                                     width="189"
                                     height="48"
                                     alt="FlagWaver"
-                                    src={`${process.env.PUBLIC_URL}/${
-                                        window.Modernizr && window.Modernizr.svgasimg
-                                            ? 'assets/img/site-headline-inverse.svg'
-                                            : 'assets/img/site-headline-inverse.png'
-                                    }`}
+                                    src={SITE_HEADLINE_INVERSE_IMAGE_PATH}
                                 />
                             </h1>
                         </div>
