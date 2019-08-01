@@ -62,8 +62,7 @@ export default {
         'css/flexboxtweener',
         'svg',
         'svg/asimg',
-        'svg/inline',
-        'webgl'
+        'svg/inline'
       ],
       options: [
         'html5shiv',

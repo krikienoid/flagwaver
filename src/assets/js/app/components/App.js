@@ -13,6 +13,7 @@ import ToastsContainer from '../containers/ToastsContainer';
 import WindBarContainer from '../containers/WindBarContainer';
 import WindPaneContainer from '../containers/WindPaneContainer';
 import AppContext from '../contexts/AppContext';
+import withWebGLBrowserTest from '../hocs/withWebGLBrowserTest';
 import store from '../redux/store';
 
 const SITE_HEADLINE_INVERSE_IMAGE_PATH = `${process.env.PUBLIC_URL}/${
@@ -21,7 +22,7 @@ const SITE_HEADLINE_INVERSE_IMAGE_PATH = `${process.env.PUBLIC_URL}/${
         : 'assets/img/site-headline-inverse.png'
 }`;
 
-export default class App extends Component {
+class App extends Component {
     constructor(props) {
         super(props);
 
@@ -172,3 +173,5 @@ export default class App extends Component {
         );
     }
 }
+
+export default withWebGLBrowserTest(App);
