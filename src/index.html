@@ -14,6 +14,12 @@
 
         <!-- BEGIN CSS -->
         <link rel="stylesheet" type="text/css" href="./assets/css/main.css" />
+
+        <!--[if lte IE 9]>
+            <style type="text/css">
+                #root { display: none; }
+            </style>
+        <![endif]-->
         <!-- END CSS -->
 
         <!-- BEGIN iOS meta tags -->
@@ -84,7 +90,7 @@
         <div id="root"></div>
 
         <noscript>
-            <div class="section">
+            <div class="section browser-error-no-js">
                 <div class="container">
                     <div class="text-content">
                         <h2>Your browser does not have JavaScript enabled.</h2>
@@ -93,6 +99,17 @@
                 </div>
             </div>
         </noscript>
+
+        <!--[if lte IE 9]>
+            <div class="section browser-error-old-ie">
+                <div class="container">
+                    <div class="text-content">
+                        <h2>Your browser is not supported.</h2>
+                        <p>This page requires a browser that supports WebGL. <a href="http://get.webgl.org/" rel="noopener" target="_blank">Follow this link for more information</a>.</p>
+                    </div>
+                </div>
+            </div>
+        <![endif]-->
 
         <!-- BEGIN JS -->
         <script type="text/javascript" src="./assets/js/modernizr-custom.js"></script>
