@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import { FlagGroupModule } from '../../flagwaver';
 import withAppContext from '../hocs/withAppContext';
 
-const DEFAULT_FLAG_SRC = './assets/img/NZ.2b.png';
+const DEFAULT_FLAG_IMAGE_PATH = './assets/img/NZ.2b.png';
 
 class FlagGroup extends Component {
     static propTypes = {
         app: PropTypes.object.isRequired,
-        options: PropTypes.object.isRequired
+        options: PropTypes.object.isRequired,
+        addToast: PropTypes.func.isRequired
     };
 
     componentDidMount() {
@@ -37,12 +38,18 @@ class FlagGroup extends Component {
 
     renderModule() {
         const module = this.module;
-        const { options } = this.props;
+        const { options, addToast } = this.props;
 
         if (module) {
             module.subject.setFlagOptions(Object.assign({}, options, {
-                imgSrc: options.imgSrc || DEFAULT_FLAG_SRC
-            }));
+                imgSrc: options.imgSrc || DEFAULT_FLAG_IMAGE_PATH
+            }))
+                .catch((e) => {
+                    addToast({
+                        status: 'error',
+                        message: 'Image could not be loaded.'
+                    });
+                });
         }
     }
 

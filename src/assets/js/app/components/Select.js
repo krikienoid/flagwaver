@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import FormGroup from '../components/FormGroup';
 import withUniqueId from '../hocs/withUniqueId';
 
 function Select({
@@ -10,10 +11,14 @@ function Select({
     value,
     options,
     disabled,
+    validator,
     onChange
 }) {
+    const { valid, feedback } = validator(value);
+    const feedbackId = feedback ? `${id}-feedback` : null;
+
     return (
-        <div className="form-group">
+        <FormGroup {...{ valid, feedback, feedbackId }}>
             <label className="form-label" htmlFor={id}>
                 {label}
             </label>
@@ -24,6 +29,7 @@ function Select({
                 name={name}
                 value={value}
                 disabled={disabled}
+                aria-describedby={feedbackId}
                 onChange={onChange}
             >
                 {options.map(option => (
@@ -32,7 +38,7 @@ function Select({
                     </option>
                 ))}
             </select>
-        </div>
+        </FormGroup>
     );
 }
 
@@ -46,6 +52,7 @@ Select.propTypes = {
         value: PropTypes.string.isRequired
     })),
     disabled: PropTypes.bool,
+    validator: PropTypes.func,
     onChange: PropTypes.func
 };
 
@@ -53,7 +60,8 @@ Select.defaultProps = {
     label: 'Select',
     name: 'select',
     options: [],
-    disabled: false
+    disabled: false,
+    validator: () => ({ valid: true })
 };
 
 export default withUniqueId(Select);

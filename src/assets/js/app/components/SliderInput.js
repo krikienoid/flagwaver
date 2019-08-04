@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import FormGroup from '../components/FormGroup';
 import withUniqueId from '../hocs/withUniqueId';
 
 function SliderInput({
@@ -15,10 +16,14 @@ function SliderInput({
     outputPrefix,
     outputSuffix,
     ticks,
+    validator,
     onChange
 }) {
+    const { valid, feedback } = validator(value);
+    const feedbackId = feedback ? `${id}-feedback` : null;
+
     return (
-        <div className="form-group">
+        <FormGroup {...{ valid, feedback, feedbackId }}>
             <label className="form-label" htmlFor={id}>
                 {label}
             </label>
@@ -41,6 +46,7 @@ function SliderInput({
                 max={max}
                 step={step}
                 disabled={disabled}
+                aria-describedby={feedbackId}
                 onChange={onChange}
             />
 
@@ -73,7 +79,7 @@ function SliderInput({
                     </ul>
                 </fieldset>
             ) : null}
-        </div>
+        </FormGroup>
     );
 }
 
@@ -95,6 +101,7 @@ SliderInput.propTypes = {
         label: PropTypes.node,
         value: PropTypes.number.isRequired
     })),
+    validator: PropTypes.func,
     onChange: PropTypes.func
 };
 
@@ -107,7 +114,8 @@ SliderInput.defaultProps = {
     disabled: false,
     outputPrefix: '',
     outputSuffix: '',
-    ticks: []
+    ticks: [],
+    validator: () => ({ valid: true })
 };
 
 export default withUniqueId(SliderInput);

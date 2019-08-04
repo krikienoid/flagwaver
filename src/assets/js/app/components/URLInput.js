@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import FormGroup from '../components/FormGroup';
 import withUniqueId from '../hocs/withUniqueId';
 
 function URLInput({
@@ -11,11 +12,15 @@ function URLInput({
     buttonText,
     value,
     disabled,
+    validator,
     onChange,
     onSubmit
 }) {
+    const { valid, feedback } = validator(value);
+    const feedbackId = feedback ? `${id}-feedback` : null;
+
     return (
-        <div className="form-group">
+        <FormGroup {...{ valid, feedback, feedbackId }}>
             <label className="form-label" htmlFor={id}>
                 {label}
             </label>
@@ -29,6 +34,7 @@ function URLInput({
                     value={value}
                     placeholder={placeholder}
                     disabled={disabled}
+                    aria-describedby={feedbackId}
                     onChange={onChange}
                 />
 
@@ -41,7 +47,7 @@ function URLInput({
                     {buttonText}
                 </button>
             </div>
-        </div>
+        </FormGroup>
     );
 }
 
@@ -53,6 +59,7 @@ URLInput.propTypes = {
     buttonText: PropTypes.node,
     value: PropTypes.string,
     disabled: PropTypes.bool,
+    validator: PropTypes.func,
     onChange: PropTypes.func,
     onSubmit: PropTypes.func
 };
@@ -62,7 +69,8 @@ URLInput.defaultProps = {
     name: 'url',
     placeholder: 'https://www...',
     buttonText: 'Go',
-    disabled: false
+    disabled: false,
+    validator: () => ({ valid: true })
 };
 
 export default withUniqueId(URLInput);

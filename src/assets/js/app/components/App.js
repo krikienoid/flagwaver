@@ -1,3 +1,4 @@
+import Modernizr from 'modernizr';
 import React, { Component } from 'react';
 
 import { fromHash } from '../globals/HashStore';
@@ -8,12 +9,20 @@ import Drawer from '../components/Drawer';
 import Panel from '../components/Panel';
 import FlagGroupBarContainer from '../containers/FlagGroupBarContainer';
 import FlagGroupPaneContainer from '../containers/FlagGroupPaneContainer';
+import ToastsContainer from '../containers/ToastsContainer';
 import WindBarContainer from '../containers/WindBarContainer';
 import WindPaneContainer from '../containers/WindPaneContainer';
 import AppContext from '../contexts/AppContext';
+import withWebGLBrowserTest from '../hocs/withWebGLBrowserTest';
 import store from '../redux/store';
 
-export default class App extends Component {
+const SITE_HEADLINE_INVERSE_IMAGE_PATH = `${process.env.PUBLIC_URL}/${
+    Modernizr.svgasimg
+        ? 'assets/img/site-headline-inverse.svg'
+        : 'assets/img/site-headline-inverse.png'
+}`;
+
+class App extends Component {
     constructor(props) {
         super(props);
 
@@ -78,11 +87,7 @@ export default class App extends Component {
                                     width="189"
                                     height="48"
                                     alt="FlagWaver"
-                                    src={`${process.env.PUBLIC_URL}/${
-                                        window.Modernizr && window.Modernizr.svgasimg
-                                            ? 'assets/img/site-headline-inverse.svg'
-                                            : 'assets/img/site-headline-inverse.png'
-                                    }`}
+                                    src={SITE_HEADLINE_INVERSE_IMAGE_PATH}
                                 />
                             </h1>
                         </div>
@@ -162,7 +167,11 @@ export default class App extends Component {
                         </div>
                     </div>
                 </main>
+
+                <ToastsContainer />
             </AppContext.Provider>
         );
     }
 }
+
+export default withWebGLBrowserTest(App);

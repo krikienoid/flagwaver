@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import FilePickerInput from '../components/FilePickerInput';
+import Message from '../components/Message';
 import { fileRecordPropType } from '../types';
 
 export default class FlagGroupBar extends Component {
@@ -37,9 +38,9 @@ export default class FlagGroupBar extends Component {
 
         if (!options) {
             return (
-                <div className="alert error">
+                <Message status="error">
                     <p>Error: Object does not exist.</p>
-                </div>
+                </Message>
             );
         }
 

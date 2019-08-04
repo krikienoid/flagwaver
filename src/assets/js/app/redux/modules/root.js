@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
 
+import toasts from './toasts';
+
 import fileRecord from './fileRecord';
 import flagGroup from './flagGroup';
 import wind from './wind';
@@ -19,6 +21,7 @@ export function resetApp() {
 // Reducer
 
 const appReducer = combineReducers({
+    toasts: toasts,
     fileRecord: fileRecord,
     flagGroup: flagGroup,
     wind: wind

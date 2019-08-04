@@ -1,11 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import FormGroup from '../components/FormGroup';
 import withUniqueId from '../hocs/withUniqueId';
 
-function SwitchInput({ id, label, name, value, disabled, onChange }) {
+function SwitchInput({
+    id,
+    label,
+    name,
+    value,
+    disabled,
+    validator,
+    onChange
+}) {
+    const { valid, feedback } = validator(value);
+    const feedbackId = feedback ? `${id}-feedback` : null;
+
     return (
-        <div className="form-group">
+        <FormGroup {...{ valid, feedback, feedbackId }}>
             <div className="form-switch">
                 <input
                     type="checkbox"
@@ -14,6 +26,7 @@ function SwitchInput({ id, label, name, value, disabled, onChange }) {
                     name={name}
                     checked={value}
                     disabled={disabled}
+                    aria-describedby={feedbackId}
                     onChange={onChange}
                 />
 
@@ -25,7 +38,7 @@ function SwitchInput({ id, label, name, value, disabled, onChange }) {
                     <div className="form-icon-target"></div>
                 </label>
             </div>
-        </div>
+        </FormGroup>
     );
 }
 
@@ -35,13 +48,15 @@ SwitchInput.propTypes = {
     name: PropTypes.string,
     value: PropTypes.bool,
     disabled: PropTypes.bool,
+    validator: PropTypes.func,
     onChange: PropTypes.func
 };
 
 SwitchInput.defaultProps = {
     label: 'Switch',
     name: 'switch',
-    disabled: false
+    disabled: false,
+    validator: () => ({ valid: true })
 };
 
 export default withUniqueId(SwitchInput);

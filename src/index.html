@@ -14,6 +14,12 @@
 
         <!-- BEGIN CSS -->
         <link rel="stylesheet" type="text/css" href="./assets/css/main.css" />
+
+        <!--[if lte IE 9]>
+            <style type="text/css">
+                #root { display: none; }
+            </style>
+        <![endif]-->
         <!-- END CSS -->
 
         <!-- BEGIN iOS meta tags -->
@@ -84,15 +90,28 @@
         <div id="root"></div>
 
         <noscript>
-            <div class="section">
-                <div class="container">
-                    <div class="text-content">
-                        <h2>You don’t have javascript enabled.</h2>
-                        <p>For full functionality of this site, it is necessary to enable JavaScript. Here are the <a href="https://www.enable-javascript.com/" rel="noopener" target="_blank">instructions how to enable JavaScript in your web browser</a>.</p>
+            <div class="empty empty-screen browser-error-no-js">
+                <div class="v-align">
+                    <div class="v-align-content">
+                        <h2>Your browser does not have JavaScript enabled</h2>
+                        <p>This site requires JavaScript to fully function.</p>
+                        <p><a href="http://www.enable-javascript.com/" rel="noopener" target="_blank">How to enable JavaScript</a></p>
                     </div>
                 </div>
             </div>
         </noscript>
+
+        <!--[if lte IE 9]>
+            <div class="empty empty-screen browser-error-old-ie">
+                <div class="v-align">
+                    <div class="v-align-content">
+                        <h2>Your browser is not supported</h2>
+                        <p>This page requires a browser that supports WebGL.</p>
+                        <p><a href="http://get.webgl.org/" rel="noopener" target="_blank">More information</a></p>
+                    </div>
+                </div>
+            </div>
+        <![endif]-->
 
         <!-- BEGIN JS -->
         <script type="text/javascript" src="./assets/js/modernizr-custom.js"></script>

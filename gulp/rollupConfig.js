@@ -49,10 +49,12 @@ export default {
     indent: ROLLUP_QUICK_BUILD ? false : '    ',
     banner: banner('FlagWaver - App'),
     globals: {
+      'modernizr': 'window.Modernizr || {}',
       'three': 'THREE'
     }
   },
   external: [
+    'modernizr',
     'three'
   ],
   treeshake: !ROLLUP_QUICK_BUILD,
@@ -107,7 +109,7 @@ export default {
         }],
         '@babel/preset-react'
       ],
-      exclude: 'node_modules/**',
+      exclude: 'node_modules/!(react-spring)/**',
       plugins: [
         '@babel/plugin-external-helpers',
         ['@babel/plugin-proposal-class-properties', { 'loose': true }],

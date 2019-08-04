@@ -1,0 +1,39 @@
+//
+// Toasts
+//
+
+.toasts {
+    max-width: 100%;
+    @include list-unstyled;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: $zindex-toasts;
+    margin: 0;
+    padding: 0.5rem;
+
+    > li {
+        display: block;
+    }
+}
+
+.toasts-item-wrap {
+    padding-bottom: 0.5rem;
+}
+
+.toast {
+    width: rem(320px);
+    max-width: 100%;
+    position: relative;
+    padding: 0.5rem 0.75rem;
+    padding-right: 1.25rem + 2 * 0.75rem;
+    font-size: 0.875rem;
+    box-shadow: 0 0.125rem 0.125rem 0.0625rem rgba($black, 0.2);
+
+    .btn-clear {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0.5rem;
+    }
+}
