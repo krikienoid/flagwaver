@@ -1,8 +1,9 @@
 import Modernizr from 'modernizr';
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import { fromHash } from '../globals/HashStore';
 import initApp from '../globals/initApp';
+import AnimationControlBar from '../components/AnimationControlBar';
 import AppCanvas from '../components/AppCanvas';
 import AppModules from '../components/AppModules';
 import Drawer from '../components/Drawer';
@@ -22,18 +23,26 @@ const SITE_HEADLINE_INVERSE_IMAGE_PATH = `${process.env.PUBLIC_URL}/${
         : 'assets/img/site-headline-inverse.png'
 }`;
 
+const AppMode = {
+    EDIT: 'edit',
+    ANIMATE: 'animate'
+};
+
 class App extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            isDrawerOpen: false
+            isDrawerOpen: false,
+            appMode: AppMode.EDIT
         };
 
         this.openDrawer = this.openDrawer.bind(this);
         this.closeDrawer = this.closeDrawer.bind(this);
         this.toggleDrawer = this.toggleDrawer.bind(this);
         this.handleHashChange = this.handleHashChange.bind(this);
+        this.setAppModeEdit = this.setAppModeEdit.bind(this);
+        this.setAppModeAnimate = this.setAppModeAnimate.bind(this);
 
         this.app = null;
     }
@@ -70,9 +79,22 @@ class App extends Component {
         fromHash(store);
     }
 
+    setAppModeEdit() {
+        this.setState({
+            appMode: AppMode.EDIT
+        });
+    }
+
+    setAppModeAnimate() {
+        this.setState({
+            appMode: AppMode.ANIMATE
+        });
+    }
+
     render() {
         const {
-            isDrawerOpen
+            isDrawerOpen,
+            appMode
         } = this.state;
 
         return (
@@ -136,35 +158,52 @@ class App extends Component {
                     />
 
                     <Drawer id="drawer" open={isDrawerOpen}>
-                        <Panel title="Edit Flag" onPanelClose={this.closeDrawer}>
-                            <FlagGroupPanelContainer />
+                        <button type="button" onClick={this.setAppModeEdit}>Flag</button>
+                        <button type="button" onClick={this.setAppModeAnimate}>Animation</button>
 
-                            <hr />
+                        {(appMode === AppMode.EDIT) ? (
+                            <Panel title="Edit Flag" onPanelClose={this.closeDrawer}>
+                                <FlagGroupPanelContainer />
 
-                            <WindPanelContainer />
-                        </Panel>
+                                <hr />
+
+                                <WindPanelContainer />
+                            </Panel>
+                        ) : (appMode === AppMode.ANIMATE) ? (
+                            <Panel title="Animation Control" onPanelClose={this.closeDrawer}>
+                                <AnimationControlBar />
+                            </Panel>
+                        ) : null}
                     </Drawer>
 
                     <div className="bottom-app-bar">
-                        <div className="bottom-app-bar-primary">
-                            <FlagGroupBarContainer />
-                        </div>
+                        {(appMode === AppMode.EDIT) ? (
+                            <Fragment>
+                                <div className="bottom-app-bar-primary">
+                                    <FlagGroupBarContainer />
+                                </div>
 
-                        <div className="bottom-app-bar-secondary">
-                            <WindBarContainer />
-                        </div>
+                                <div className="bottom-app-bar-secondary">
+                                    <WindBarContainer />
+                                </div>
 
-                        <div className="bottom-app-bar-tertiary">
-                            <div className="form-section">
-                                <button
-                                    type="button"
-                                    className="btn btn-link"
-                                    onClick={this.openDrawer}
-                                >
-                                    All options
-                                </button>
+                                <div className="bottom-app-bar-tertiary">
+                                    <div className="form-section">
+                                        <button
+                                            type="button"
+                                            className="btn btn-link"
+                                            onClick={this.openDrawer}
+                                        >
+                                            All options
+                                        </button>
+                                    </div>
+                                </div>
+                            </Fragment>
+                        ) : (appMode === AppMode.ANIMATE) ? (
+                            <div className="bottom-app-bar-primary">
+                                <AnimationControlBar />
                             </div>
-                        </div>
+                        ) : null}
                     </div>
                 </main>
 
