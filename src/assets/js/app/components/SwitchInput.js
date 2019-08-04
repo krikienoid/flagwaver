@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import FormGroup from '../components/FormGroup';
-import withUniqueId from '../hocs/withUniqueId';
+import useUniqueId from '../hooks/useUniqueId';
 
 function SwitchInput({
-    id,
+    id: propsId,
     label,
     name,
     value,
@@ -13,6 +13,8 @@ function SwitchInput({
     validator,
     onChange
 }) {
+    const id = useUniqueId(propsId);
+
     const { valid, feedback } = validator(value);
     const feedbackId = feedback ? `${id}-feedback` : null;
 
@@ -43,7 +45,7 @@ function SwitchInput({
 }
 
 SwitchInput.propTypes = {
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     label: PropTypes.node,
     name: PropTypes.string,
     value: PropTypes.bool,
@@ -59,4 +61,4 @@ SwitchInput.defaultProps = {
     validator: () => ({ valid: true })
 };
 
-export default withUniqueId(SwitchInput);
+export default SwitchInput;

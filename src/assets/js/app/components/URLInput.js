@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import FormGroup from '../components/FormGroup';
-import withUniqueId from '../hocs/withUniqueId';
+import useUniqueId from '../hooks/useUniqueId';
 
 function URLInput({
-    id,
+    id: propsId,
     label,
     name,
     placeholder,
@@ -16,6 +16,8 @@ function URLInput({
     onChange,
     onSubmit
 }) {
+    const id = useUniqueId(propsId);
+
     const { valid, feedback } = validator(value);
     const feedbackId = feedback ? `${id}-feedback` : null;
 
@@ -52,7 +54,7 @@ function URLInput({
 }
 
 URLInput.propTypes = {
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     label: PropTypes.node,
     name: PropTypes.string,
     placeholder: PropTypes.string,
@@ -73,4 +75,4 @@ URLInput.defaultProps = {
     validator: () => ({ valid: true })
 };
 
-export default withUniqueId(URLInput);
+export default URLInput;

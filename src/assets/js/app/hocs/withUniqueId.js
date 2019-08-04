@@ -1,20 +1,6 @@
-import React, { Component, useState } from 'react';
+import React from 'react';
 
-import uniqueId from '../utils/uniqueId';
-
-function useUniqueId(propId) {
-    const [id, setId] = useState(propId);
-
-    if (!id) {
-        const uid = uniqueId('uid-');
-
-        setId(uid);
-
-        return uid;
-    }
-
-    return id;
-}
+import useUniqueId from '../hooks/useUniqueId';
 
 export default function withUniqueId(WrappedComponent) {
     return (props) => {
