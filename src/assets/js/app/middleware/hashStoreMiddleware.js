@@ -1,12 +1,11 @@
 import { toHash } from '../globals/hashStore';
 
 export default function hashStoreMiddleware(store) {
-    return (next) =>
-        (action) => {
-            const result = next(action);
+    return (next) => (action) => {
+        const result = next(action);
 
-            toHash(store);
+        toHash(store);
 
-            return result;
-        };
+        return result;
+    };
 }

@@ -34,7 +34,7 @@ function buildCamera() {
 }
 
 function buildRenderer() {
-    const dpr = (window.devicePixelRatio) ? window.devicePixelRatio : 1;
+    const dpr = window.devicePixelRatio ? window.devicePixelRatio : 1;
     const renderer = new THREE.WebGLRenderer({
         antialias: true,
         alpha:     true

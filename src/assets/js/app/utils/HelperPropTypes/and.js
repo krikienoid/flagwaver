@@ -6,7 +6,7 @@ export default function and(validators) {
     function validate(...args) {
         let error = null;
 
-        validators.some(validator => {
+        validators.some((validator) => {
             error = validator(...args);
             return error != null;
         });
@@ -17,7 +17,7 @@ export default function and(validators) {
     function validateIsRequired(...args) {
         let error = null;
 
-        validators.some(validator => {
+        validators.some((validator) => {
             error = validator.isRequired(...args);
             return error != null;
         });
