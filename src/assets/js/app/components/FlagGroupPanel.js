@@ -6,7 +6,7 @@ import Message from '../components/Message';
 import Select from '../components/Select';
 import { fileRecordPropType } from '../types';
 
-export default class FlagGroupPane extends Component {
+export default class FlagGroupPanel extends Component {
     static propTypes = {
         fileRecord: fileRecordPropType,
         options: PropTypes.object,

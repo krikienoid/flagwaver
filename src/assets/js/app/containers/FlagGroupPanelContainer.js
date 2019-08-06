@@ -1,7 +1,7 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import FlagGroupPane from '../components/FlagGroupPane';
+import FlagGroupPanel from '../components/FlagGroupPanel';
 import { setFileRecord } from '../redux/modules/fileRecord';
 import { setFlagGroupOptions } from '../redux/modules/flagGroup';
 
@@ -15,4 +15,4 @@ const matchDispatchToProps = dispatch => bindActionCreators({
     setOptions: setFlagGroupOptions
 }, dispatch);
 
-export default connect(mapStateToProps, matchDispatchToProps)(FlagGroupPane);
+export default connect(mapStateToProps, matchDispatchToProps)(FlagGroupPanel);
