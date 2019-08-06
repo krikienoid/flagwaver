@@ -1,0 +1,14 @@
+//
+// Slider
+//
+
+.slider {
+    // Fixes for IE
+    // https://github.com/picturepan2/spectre/pull/599
+    padding: 0;
+
+    &::-ms-track {
+        border: 0;
+        color: transparent;
+    }
+}
