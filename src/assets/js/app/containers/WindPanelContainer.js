@@ -1,7 +1,7 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import WindPane from '../components/WindPane';
+import WindPanel from '../components/WindPanel';
 import { setWindOptions } from '../redux/modules/wind';
 
 const mapStateToProps = state => ({
@@ -12,4 +12,4 @@ const matchDispatchToProps = dispatch => bindActionCreators({
     setOptions: setWindOptions
 }, dispatch);
 
-export default connect(mapStateToProps, matchDispatchToProps)(WindPane);
+export default connect(mapStateToProps, matchDispatchToProps)(WindPanel);

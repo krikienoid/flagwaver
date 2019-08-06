@@ -8,10 +8,10 @@ import AppModules from '../components/AppModules';
 import Drawer from '../components/Drawer';
 import Panel from '../components/Panel';
 import FlagGroupBarContainer from '../containers/FlagGroupBarContainer';
-import FlagGroupPaneContainer from '../containers/FlagGroupPaneContainer';
+import FlagGroupPanelContainer from '../containers/FlagGroupPanelContainer';
 import ToastsContainer from '../containers/ToastsContainer';
 import WindBarContainer from '../containers/WindBarContainer';
-import WindPaneContainer from '../containers/WindPaneContainer';
+import WindPanelContainer from '../containers/WindPanelContainer';
 import AppContext from '../contexts/AppContext';
 import withWebGLBrowserTest from '../hocs/withWebGLBrowserTest';
 import store from '../redux/store';
@@ -137,11 +137,11 @@ class App extends Component {
 
                     <Drawer id="drawer" open={isDrawerOpen}>
                         <Panel title="Edit Flag" onPanelClose={this.closeDrawer}>
-                            <FlagGroupPaneContainer />
+                            <FlagGroupPanelContainer />
 
                             <hr />
 
-                            <WindPaneContainer />
+                            <WindPanelContainer />
                         </Panel>
                     </Drawer>
 

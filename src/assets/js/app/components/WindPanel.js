@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import SliderInput from '../components/SliderInput';
 import SwitchInput from '../components/SwitchInput';
 
-export default class WindPane extends Component {
+export default class WindPanel extends Component {
     static propTypes = {
         options: PropTypes.object.isRequired,
         setOptions: PropTypes.func

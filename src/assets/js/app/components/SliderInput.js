@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import FormGroup from '../components/FormGroup';
-import withUniqueId from '../hocs/withUniqueId';
+import useUniqueId from '../hooks/useUniqueId';
 
 function SliderInput({
-    id,
+    id: propsId,
     label,
     name,
     value,
@@ -19,6 +19,8 @@ function SliderInput({
     validator,
     onChange
 }) {
+    const id = useUniqueId(propsId);
+
     const { valid, feedback } = validator(value);
     const feedbackId = feedback ? `${id}-feedback` : null;
 
@@ -84,7 +86,7 @@ function SliderInput({
 }
 
 SliderInput.propTypes = {
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     label: PropTypes.node,
     name: PropTypes.string,
     value: PropTypes.number,
@@ -118,4 +120,4 @@ SliderInput.defaultProps = {
     validator: () => ({ valid: true })
 };
 
-export default withUniqueId(SliderInput);
+export default SliderInput;
