@@ -1,5 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { Fragment, useState, useContext } from 'react';
+import { MdPlayArrow, MdPause, MdStop, MdSkipNext } from 'react-icons/md';
 
+import Icon from '../components/Icon';
 import AppContext from '../contexts/AppContext';
 
 export default function AnimationControlBar() {
@@ -26,7 +28,17 @@ export default function AnimationControlBar() {
                                 setPaused(!paused);
                             }}
                         >
-                            {paused ? 'Play' : 'Pause'}
+                            {paused ? (
+                                <Fragment>
+                                    <Icon component={MdPlayArrow} />
+                                    <span className="sr-only">Play</span>
+                                </Fragment>
+                            ) : (
+                                <Fragment>
+                                    <Icon component={MdPause} />
+                                    <span className="sr-only">Pause</span>
+                                </Fragment>
+                            )}
                         </button>
 
                         <button
@@ -39,7 +51,8 @@ export default function AnimationControlBar() {
                                 setPaused(true);
                             }}
                         >
-                            Stop
+                            <Icon component={MdStop} />
+                            <span className="sr-only">Stop</span>
                         </button>
 
                         <button
@@ -47,7 +60,8 @@ export default function AnimationControlBar() {
                             className="btn"
                             onClick={() => { animationModule.step(); }}
                         >
-                            Step forward
+                            <Icon component={MdSkipNext} />
+                            <span className="sr-only">Step forward</span>
                         </button>
                     </div>
                 </div>
