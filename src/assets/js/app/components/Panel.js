@@ -4,31 +4,15 @@ import PropTypes from 'prop-types';
 export default class Panel extends Component {
     static propTypes = {
         title: PropTypes.node,
-        onPanelClose: PropTypes.func,
         children: PropTypes.node
     };
 
-    static defaultProps = {
-        onPanelClose: () => {}
-    };
-
     render() {
-        const { title, onPanelClose, children } = this.props;
+        const { title, children } = this.props;
 
         return (
             <div className="panel">
                 <div className="panel-header">
-                    <div className="panel-header-controls">
-                        <button
-                            type="button"
-                            className="link"
-                            onClick={onPanelClose}
-                        >
-                            <span className="link-caret" aria-hidden="true">&lsaquo;&nbsp;</span>
-                            Back
-                        </button>
-                    </div>
-
                     <div className="panel-header-inner">
                         <div className="panel-side">
                         </div>

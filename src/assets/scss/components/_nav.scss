@@ -1,0 +1,33 @@
+//
+// Nav
+//
+
+.nav {
+    margin: 0;
+    padding: 0;
+
+    .nav-item {
+        .link {
+            color: $gray-color-dark;
+            padding: $unit-1 $unit-2;
+            text-decoration: none;
+
+            &:focus,
+            &:hover {
+                color: $primary-color;
+            }
+        }
+
+        &.active {
+            > .link {
+                color: darken($gray-color-dark, 10%);
+                font-weight: bold;
+
+                &:focus,
+                &:hover {
+                    color: $primary-color;
+                }
+            }
+        }
+    }
+}
