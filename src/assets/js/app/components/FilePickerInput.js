@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { MdArrowForward, MdFolderOpen } from 'react-icons/md';
 
 import ButtonSelect from '../components/ButtonSelect';
 import FileInput from '../components/FileInput';
+import Icon from '../components/Icon';
 import URLInput from '../components/URLInput';
 import { fileRecordPropType } from '../types';
 
@@ -149,6 +151,12 @@ export default class FilePickerInput extends Component {
                                 label="URL"
                                 name="url"
                                 value={url}
+                                buttonText={(
+                                    <Fragment>
+                                        <Icon component={MdArrowForward} />
+                                        <span className="sr-only">Enter</span>
+                                    </Fragment>
+                                )}
                                 validator={this.validateURL}
                                 onChange={this.handleURLChange}
                                 onSubmit={this.handleURLSubmit}
@@ -162,6 +170,12 @@ export default class FilePickerInput extends Component {
                                 value={value}
                                 accept={accept}
                                 defaultText="Select file..."
+                                buttonText={(
+                                    <Fragment>
+                                        <Icon component={MdFolderOpen} />
+                                        <span className="sr-only">Browse</span>
+                                    </Fragment>
+                                )}
                                 onChange={this.handleFileChange}
                                 onLoad={this.handleFileLoad}
                                 isValidFileType={isValidFileType}

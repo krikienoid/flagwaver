@@ -9,9 +9,9 @@ function URLInput({
     label,
     name,
     placeholder,
-    buttonText,
     value,
     disabled,
+    buttonText,
     validator,
     onChange,
     onSubmit
@@ -58,9 +58,9 @@ URLInput.propTypes = {
     label: PropTypes.node,
     name: PropTypes.string,
     placeholder: PropTypes.string,
-    buttonText: PropTypes.node,
     value: PropTypes.string,
     disabled: PropTypes.bool,
+    buttonText: PropTypes.node,
     validator: PropTypes.func,
     onChange: PropTypes.func,
     onSubmit: PropTypes.func
@@ -70,8 +70,8 @@ URLInput.defaultProps = {
     label: 'URL',
     name: 'url',
     placeholder: 'https://www...',
-    buttonText: 'Go',
     disabled: false,
+    buttonText: 'Go',
     validator: () => ({ valid: true })
 };
 
