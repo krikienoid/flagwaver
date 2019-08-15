@@ -2,7 +2,7 @@
 // Drawer
 //
 
-$drawer-width: 100%;
+$drawer-width: rem(288px);
 $drawer-xs-width: rem(320px);
 $drawer-sm-width: rem(360px);
 
@@ -15,21 +15,22 @@ $drawer-zindex: $zindex-fixed;
     left: 0;
     bottom: 0;
     z-index: $drawer-zindex;
+    overflow-y: auto;
     background-color: $white;
-    transform: translateX(-$drawer-width);
-    transition: transform $transition-style;
+    box-shadow: none;
+    transform: translateX(-100%);
+    transition: box-shadow $transition-style, transform $transition-style;
 
     @include breakpoint(xs) {
         width: $drawer-xs-width;
-        transform: translateX(-$drawer-xs-width);
     }
 
     @include breakpoint(sm) {
         width: $drawer-sm-width;
-        transform: translateX(-$drawer-sm-width);
     }
 
     &.open {
+        box-shadow: 0 0 0.5rem 0.25rem rgba($black, 0.25);
         transform: translateX(0);
     }
 }

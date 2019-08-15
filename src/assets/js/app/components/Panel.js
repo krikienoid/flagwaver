@@ -26,9 +26,7 @@ export default class Panel extends Component {
                 </div>
 
                 <div className="panel-body">
-                    <div className="panel-body-inner">
-                        {children}
-                    </div>
+                    {children}
                 </div>
             </div>
         );

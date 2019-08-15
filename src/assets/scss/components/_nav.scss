@@ -14,7 +14,11 @@
 
             &:focus,
             &:hover {
-                color: $primary-color;
+                color: $link-color;
+            }
+
+            &:active {
+                color: $link-color-dark;
             }
         }
 
@@ -25,7 +29,11 @@
 
                 &:focus,
                 &:hover {
-                    color: $primary-color;
+                    color: $link-color;
+                }
+
+                &:active {
+                    color: $link-color-dark;
                 }
             }
         }
