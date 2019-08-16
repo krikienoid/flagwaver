@@ -44,9 +44,9 @@
     }
 
     &:active + .form-file-btn .btn {
-        background: $primary-color-dark;
+        background: lighten($primary, 50%);
         border-color: darken($primary-color-dark, 5%);
-        color: $light-color;
+        color: darken($primary-color-dark, 5%);
         transition: none;
     }
 

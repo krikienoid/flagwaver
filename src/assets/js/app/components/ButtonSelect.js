@@ -108,7 +108,7 @@ class ButtonSelect extends Component {
         labelClassName: 'form-label',
         buttonGroupClassName: 'btn-group',
         buttonClassName: 'btn',
-        buttonSelectedClassName: 'selected',
+        buttonSelectedClassName: 'active',
         options: []
     };
 

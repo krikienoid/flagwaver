@@ -42,7 +42,7 @@ function URLInput({
 
                 <button
                     type="button"
-                    className="input-group-btn btn btn-outline-secondary"
+                    className="btn input-group-btn"
                     disabled={disabled}
                     onClick={onSubmit}
                 >
