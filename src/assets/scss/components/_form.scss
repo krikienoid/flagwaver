@@ -35,7 +35,15 @@ legend {
 }
 
 .form-switch {
+    .form-icon {
+        background-clip: border-box;
+        background-color: $gray-color-dark;
+        border-color: $gray-color-dark;
+    }
+
     label {
+        transition: background 0.2s, border 0.2s, box-shadow 0.2s, color 0.2s;
+
         .form-icon-target {
             width: $unit-8;
             height: $unit-4 + $border-width * 2;
@@ -51,7 +59,15 @@ legend {
     input {
         &:disabled,
         &.disabled {
+            ~ .form-icon {
+                background-color: $bg-color-dark;
+                border-color: $bg-color-dark;
+                opacity: 1;
+            }
+
             ~ label {
+                color: $gray-color-light;
+
                 .form-icon-target {
                     cursor: not-allowed;
                 }

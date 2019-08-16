@@ -41,20 +41,6 @@
         @include sr-only;
     }
 
-    .form-input {
-        border-color: $brand-gray-medium;
-
-        &:focus {
-            border-color: $primary-color;
-        }
-    }
-
-    .form-switch {
-        .form-icon {
-            border-color: $brand-gray-medium;
-        }
-    }
-
     .field-group {
         position: relative;
         margin: 0;
