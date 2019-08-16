@@ -56,8 +56,8 @@ a,
         color: $link-color;
     }
 
-    &:focus,
     &:hover,
+    &:focus,
     &:active,
     &.active {
         color: $link-color-dark;

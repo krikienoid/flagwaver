@@ -76,6 +76,18 @@ legend {
     }
 }
 
+.input-group {
+    .form-input,
+    .form-select {
+        .has-success &,
+        &.is-success,
+        .has-error &,
+        &.is-error {
+            z-index: 2;
+        }
+    }
+}
+
 .form-static {
     width: 100%;
     display: block;

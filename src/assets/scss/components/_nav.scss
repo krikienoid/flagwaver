@@ -12,8 +12,8 @@
             padding: $unit-1 $unit-2;
             text-decoration: none;
 
-            &:focus,
-            &:hover {
+            &:hover,
+            &:focus {
                 color: $link-color;
             }
 
@@ -27,8 +27,8 @@
                 color: darken($gray-color-dark, 10%);
                 font-weight: bold;
 
-                &:focus,
-                &:hover {
+                &:hover,
+                &:focus {
                     color: $link-color;
                 }
 

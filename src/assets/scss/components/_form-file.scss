@@ -37,16 +37,17 @@
         }
     }
 
-    &:focus + .form-file-btn .btn,
-    &:hover + .form-file-btn .btn {
-        background: lighten($primary, 50%);
-        border-color: $primary-color-dark;
+    &:hover + .form-file-btn .btn,
+    &:focus + .form-file-btn .btn {
+        background: lighten($primary-color, 50%);
+        border-color: $primary-color;
+        color: $primary-color;
     }
 
     &:active + .form-file-btn .btn {
-        background: lighten($primary, 50%);
-        border-color: darken($primary-color-dark, 5%);
-        color: darken($primary-color-dark, 5%);
+        background: $primary-color-light;
+        border-color: $primary-color-light;
+        color: $light-color;
         transition: none;
     }
 
