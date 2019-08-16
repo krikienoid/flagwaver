@@ -15,6 +15,7 @@ function SliderInput({
     disabled,
     outputPrefix,
     outputSuffix,
+    ticksLabel,
     ticks,
     validator,
     onChange
@@ -56,7 +57,7 @@ function SliderInput({
                 <fieldset className="form-group" disabled={disabled}>
                     <legend className="sr-only">
                         <span className="sr-only">
-                            Select {label}
+                            {ticksLabel}
                         </span>
                     </legend>
 
@@ -99,6 +100,7 @@ SliderInput.propTypes = {
     disabled: PropTypes.bool,
     outputPrefix: PropTypes.string,
     outputSuffix: PropTypes.string,
+    ticksLabel: PropTypes.node,
     ticks: PropTypes.arrayOf(PropTypes.shape({
         label: PropTypes.node,
         value: PropTypes.number.isRequired
@@ -116,6 +118,7 @@ SliderInput.defaultProps = {
     disabled: false,
     outputPrefix: '',
     outputSuffix: '',
+    ticksLabel: 'Select position',
     ticks: [],
     validator: () => ({ valid: true })
 };

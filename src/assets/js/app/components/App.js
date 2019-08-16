@@ -37,7 +37,7 @@ const navItems = [
     },
     {
         key: AppMode.ANIMATE,
-        displayName: 'Animation Control'
+        displayName: 'Animation control'
     }
 ];
 
@@ -244,7 +244,7 @@ class App extends Component {
                                 </div>
                             </div>
                         ) : (appMode === AppMode.EDIT) ? (
-                            <Panel title="Edit Flag">
+                            <Panel title="Flag">
                                 <FlagGroupPanelContainer />
 
                                 <hr />
@@ -252,7 +252,7 @@ class App extends Component {
                                 <WindPanelContainer />
                             </Panel>
                         ) : (appMode === AppMode.ANIMATE) ? (
-                            <Panel title="Animation Control">
+                            <Panel title="Animation control">
                                 <AnimationControlBar />
                             </Panel>
                         ) : null}

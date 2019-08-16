@@ -41,14 +41,14 @@ export default class WindPanel extends Component {
         return (
             <div className="form-section">
                 <SwitchInput
-                    label="Wind On"
+                    label="Wind"
                     name="enabled"
                     value={options.enabled}
                     onChange={this.handleSwitchChange}
                 />
 
                 <SwitchInput
-                    label="Wind Control"
+                    label="Wind control"
                     name="controlled"
                     value={options.controlled}
                     disabled={!options.enabled}
@@ -62,6 +62,7 @@ export default class WindPanel extends Component {
                     min={0}
                     max={360}
                     outputSuffix="&deg;"
+                    ticksLabel="Select cardinal direction"
                     ticks={[
                         {
                             label: (<span aria-label="North">N</span>),

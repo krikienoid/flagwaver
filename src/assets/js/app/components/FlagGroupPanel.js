@@ -55,7 +55,7 @@ export default class FlagGroupPanel extends Component {
         return (
             <div className="form-section">
                 <FilePickerInput
-                    label="Select Image"
+                    label="Select image"
                     value={fileRecord}
                     accept="image/*"
                     onChange={this.handleFilePickerChange}
