@@ -21,6 +21,19 @@
         transition: none;
     }
 
+    &[disabled],
+    &:disabled,
+    &.disabled {
+        border-color: $bg-color-dark;
+        color: $bg-color-dark;
+        opacity: 1;
+
+        &.active {
+            background: $bg-color-dark;
+            color: $light-color;
+        }
+    }
+
     &.btn-link {
         &:hover,
         &:focus {
