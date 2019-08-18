@@ -149,7 +149,7 @@ class App extends Component {
                                     <span className="icon-bar"></span>
                                 </span>
 
-                                <span className="sr-only">Menu</span>
+                                <span className="sr-only">Open drawer</span>
                             </Drawer.Button>
                         </div>
 
@@ -215,7 +215,7 @@ class App extends Component {
                                             onClick={this.closeDrawer}
                                         >
                                             <Icon component={MdClose} />
-                                            <span className="sr-only">Close menu</span>
+                                            <span className="sr-only">Close drawer</span>
                                         </Drawer.Button>
                                     </div>
                                 </div>

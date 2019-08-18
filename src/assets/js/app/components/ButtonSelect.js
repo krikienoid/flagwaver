@@ -256,7 +256,7 @@ class ButtonSelect extends Component {
                 aria-describedby={feedbackId}
                 aria-labelledby={labelId}
             >
-                <div id={labelId} className={labelClassName}>
+                <div className={labelClassName} id={labelId}>
                     {label}
                 </div>
 

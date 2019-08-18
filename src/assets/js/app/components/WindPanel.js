@@ -1,8 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import SliderInput from '../components/SliderInput';
 import SwitchInput from '../components/SwitchInput';
+
+function ShortLabel({ symbol, text }) {
+    return (
+        <Fragment>
+            <span aria-hidden="true">{symbol}</span>
+            <span className="sr-only">{text}</span>
+        </Fragment>
+    );
+}
 
 export default class WindPanel extends Component {
     static propTypes = {
@@ -64,19 +73,19 @@ export default class WindPanel extends Component {
                     outputSuffix="&deg;"
                     ticks={[
                         {
-                            label: (<span aria-label="North">N</span>),
+                            label: (<ShortLabel symbol="N" text="North" />),
                             value: 0
                         },
                         {
-                            label: (<span aria-label="East">E</span>),
+                            label: (<ShortLabel symbol="E" text="East" />),
                             value: 90
                         },
                         {
-                            label: (<span aria-label="South">S</span>),
+                            label: (<ShortLabel symbol="S" text="South" />),
                             value: 180
                         },
                         {
-                            label: (<span aria-label="West">W</span>),
+                            label: (<ShortLabel symbol="W" text="West" />),
                             value: 270
                         }
                     ]}

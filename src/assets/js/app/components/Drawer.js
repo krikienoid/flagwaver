@@ -71,8 +71,8 @@ function Drawer({
 }) {
     return (
         <div
-            id={id}
             className={className + (open ? ' ' + openClassName : '')}
+            id={id}
             aria-hidden={!open}
         >
             {children}
