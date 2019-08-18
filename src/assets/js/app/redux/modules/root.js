@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 
+import animationControl from './animationControl';
 import toasts from './toasts';
 
 import fileRecord from './fileRecord';
@@ -21,6 +22,7 @@ export function resetApp() {
 // Reducer
 
 const appReducer = combineReducers({
+    animationControl: animationControl,
     toasts: toasts,
     fileRecord: fileRecord,
     flagGroup: flagGroup,

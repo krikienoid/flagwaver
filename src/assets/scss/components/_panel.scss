@@ -43,8 +43,39 @@ $panel-sm-outer-padding-y: $grid-gutter-width;
     }
 }
 
-.panel-header-controls {
-    margin-bottom: 1rem;
+.panel-navbar {
+    position: relative;
+    z-index: 1;
+    background-color: $brand-gray-lightest;
+
+    .btn {
+        border-radius: 0;
+    }
+}
+
+.panel-navbar-layout {
+    display: flex;
+
+    .panel-navbar-left,
+    .panel-navbar-right {
+        flex: 1 0 auto;
+    }
+
+    .panel-navbar-left {
+        text-align: left;
+    }
+
+    .panel-navbar-right {
+        text-align: right;
+    }
+}
+
+.panel-nav {
+    padding: ($panel-outer-padding-y - $unit-1) ($panel-outer-padding-x - $unit-2);
+
+    @include breakpoint(sm) {
+        padding: ($panel-sm-outer-padding-y - $unit-1) ($panel-sm-outer-padding-x - $unit-2);
+    }
 }
 
 .panel-heading {
