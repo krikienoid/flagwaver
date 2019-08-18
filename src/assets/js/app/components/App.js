@@ -180,85 +180,87 @@ class App extends Component {
                     />
 
                     <Drawer id="drawer" open={isDrawerOpen}>
-                        <div className="panel-navbar">
-                            <div className="panel-navbar-layout">
-                                <div className="panel-navbar-left">
-                                    {isNavOpen ? (
-                                        <button
-                                            type="button"
-                                            className="btn btn-link"
-                                            onClick={this.closeNav}
-                                        >
-                                            <Icon component={MdArrowDropUp} />
-                                            <span className="btn-text" aria-hidden="true">Panels</span>
-                                            <span className="sr-only">Close panels menu</span>
-                                        </button>
-                                    ) : (
-                                        <button
-                                            type="button"
-                                            className="btn btn-link"
-                                            onClick={this.openNav}
-                                        >
-                                            <Icon component={MdArrowDropDown} />
-                                            <span className="btn-text" aria-hidden="true">Panels</span>
-                                            <span className="sr-only">Open panels menu</span>
-                                        </button>
-                                    )}
-                                </div>
-
-                                <div className="panel-navbar-right">
-                                    <Drawer.Button
-                                        className="btn btn-link"
-                                        target="drawer"
-                                        open={isDrawerOpen}
-                                        onClick={this.closeDrawer}
-                                    >
-                                        <Icon component={MdClose} />
-                                        <span className="sr-only">Close menu</span>
-                                    </Drawer.Button>
-                                </div>
-                            </div>
-                        </div>
-
-                        {isNavOpen ? (
-                            <div className="panel">
-                                <div className="panel-nav">
-                                    <h2 className="sr-only">Panel menu</h2>
-
-                                    <ul className="nav">
-                                        {navItems.map(({ key, displayName }) => (
-                                            <li
-                                                key={key}
-                                                className={'nav-item' + (appMode === key ? ' ' + 'active' : '')}
+                        <section aria-label="Drawer">
+                            <div className="panel-navbar">
+                                <div className="panel-navbar-layout">
+                                    <div className="panel-navbar-left">
+                                        {isNavOpen ? (
+                                            <button
+                                                type="button"
+                                                className="btn btn-link"
+                                                onClick={this.closeNav}
                                             >
-                                                <button
-                                                    type="button"
-                                                    className="link"
-                                                    onClick={() => { this.setAppMode(key); }}
-                                                >
-                                                    {displayName}
-                                                </button>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                                <Icon component={MdArrowDropUp} />
+                                                <span className="btn-text" aria-hidden="true">Panels</span>
+                                                <span className="sr-only">Close panels menu</span>
+                                            </button>
+                                        ) : (
+                                            <button
+                                                type="button"
+                                                className="btn btn-link"
+                                                onClick={this.openNav}
+                                            >
+                                                <Icon component={MdArrowDropDown} />
+                                                <span className="btn-text" aria-hidden="true">Panels</span>
+                                                <span className="sr-only">Open panels menu</span>
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    <div className="panel-navbar-right">
+                                        <Drawer.Button
+                                            className="btn btn-link"
+                                            target="drawer"
+                                            open={isDrawerOpen}
+                                            onClick={this.closeDrawer}
+                                        >
+                                            <Icon component={MdClose} />
+                                            <span className="sr-only">Close menu</span>
+                                        </Drawer.Button>
+                                    </div>
                                 </div>
                             </div>
-                        ) : (appMode === AppMode.EDIT) ? (
-                            <Panel title="Edit Flag">
-                                <FlagGroupPanelContainer />
 
-                                <hr />
+                            {isNavOpen ? (
+                                <section className="panel">
+                                    <div className="panel-nav">
+                                        <h2 className="sr-only">Panel menu</h2>
 
-                                <WindPanelContainer />
-                            </Panel>
-                        ) : (appMode === AppMode.ANIMATE) ? (
-                            <Panel title="Animation Control">
-                                <AnimationControlBar />
-                            </Panel>
-                        ) : null}
+                                        <ul className="nav">
+                                            {navItems.map(({ key, displayName }) => (
+                                                <li
+                                                    key={key}
+                                                    className={'nav-item' + (appMode === key ? ' ' + 'active' : '')}
+                                                >
+                                                    <button
+                                                        type="button"
+                                                        className="link"
+                                                        onClick={() => { this.setAppMode(key); }}
+                                                    >
+                                                        {displayName}
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </section>
+                            ) : (appMode === AppMode.EDIT) ? (
+                                <Panel title="Edit Flag">
+                                    <FlagGroupPanelContainer />
+
+                                    <hr />
+
+                                    <WindPanelContainer />
+                                </Panel>
+                            ) : (appMode === AppMode.ANIMATE) ? (
+                                <Panel title="Animation Control">
+                                    <AnimationControlBar />
+                                </Panel>
+                            ) : null}
+                        </section>
                     </Drawer>
 
-                    <div className="bottom-app-bar">
+                    <section className="bottom-app-bar" aria-label="Toolbar">
                         {(appMode === AppMode.EDIT) ? (
                             <Fragment>
                                 <div className="bottom-app-bar-primary">
@@ -286,7 +288,7 @@ class App extends Component {
                                 <AnimationControlBar />
                             </div>
                         ) : null}
-                    </div>
+                    </section>
                 </main>
 
                 <ToastsContainer />
