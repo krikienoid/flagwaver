@@ -1,12 +1,12 @@
-import React, { Fragment, useState, useContext } from 'react';
+import React, { Fragment, useContext } from 'react';
+import PropTypes from 'prop-types';
 import { MdPlayArrow, MdPause, MdStop, MdSkipNext } from 'react-icons/md';
 
 import Icon from '../components/Icon';
 import AppContext from '../contexts/AppContext';
 
-export default function AnimationControlBar() {
+function AnimationControlBar({ paused, setPaused }) {
     const app = useContext(AppContext);
-    const [paused, setPaused] = useState(false);
 
     if (app) {
         const animationModule = app.module('animationModule');
@@ -71,3 +71,14 @@ export default function AnimationControlBar() {
 
     return null;
 }
+
+AnimationControlBar.propTypes = {
+    paused: PropTypes.bool,
+    setPaused: PropTypes.func
+};
+
+AnimationControlBar.defaultProps = {
+    setPaused: () => {}
+};
+
+export default AnimationControlBar;

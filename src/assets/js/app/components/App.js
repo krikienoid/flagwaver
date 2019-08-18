@@ -4,12 +4,12 @@ import { MdClose, MdArrowDropDown, MdArrowDropUp } from 'react-icons/md';
 
 import { fromHash } from '../globals/HashStore';
 import initApp from '../globals/initApp';
-import AnimationControlBar from '../components/AnimationControlBar';
 import AppCanvas from '../components/AppCanvas';
 import AppModules from '../components/AppModules';
 import Drawer from '../components/Drawer';
 import Icon from '../components/Icon';
 import Panel from '../components/Panel';
+import AnimationControlBarContainer from '../containers/AnimationControlBarContainer';
 import FlagGroupBarContainer from '../containers/FlagGroupBarContainer';
 import FlagGroupPanelContainer from '../containers/FlagGroupPanelContainer';
 import ToastsContainer from '../containers/ToastsContainer';
@@ -253,7 +253,7 @@ class App extends Component {
                             </Panel>
                         ) : (appMode === AppMode.ANIMATE) ? (
                             <Panel title="Animation Control">
-                                <AnimationControlBar />
+                                <AnimationControlBarContainer />
                             </Panel>
                         ) : null}
                     </Drawer>
@@ -283,7 +283,7 @@ class App extends Component {
                             </Fragment>
                         ) : (appMode === AppMode.ANIMATE) ? (
                             <div className="bottom-app-bar-primary">
-                                <AnimationControlBar />
+                                <AnimationControlBarContainer />
                             </div>
                         ) : null}
                     </div>
