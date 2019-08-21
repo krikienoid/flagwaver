@@ -39,6 +39,7 @@ legend {
         .form-icon-target {
             width: $unit-8;
             height: $unit-4 + $border-width * 2;
+            display: block;
             position: absolute;
             top: ($control-size-sm - $unit-4) / 2 - $border-width;
             left: 0;
