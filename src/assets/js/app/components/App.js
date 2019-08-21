@@ -54,9 +54,10 @@ class App extends Component {
         this.openDrawer = this.openDrawer.bind(this);
         this.closeDrawer = this.closeDrawer.bind(this);
         this.toggleDrawer = this.toggleDrawer.bind(this);
-        this.handleHashChange = this.handleHashChange.bind(this);
         this.openNav = this.openNav.bind(this);
         this.closeNav = this.closeNav.bind(this);
+
+        this.handleHashChange = this.handleHashChange.bind(this);
 
         this.app = null;
     }
@@ -89,10 +90,6 @@ class App extends Component {
         }
     }
 
-    handleHashChange() {
-        fromHash(store);
-    }
-
     openNav() {
         this.setState({
             isNavOpen: true
@@ -110,6 +107,10 @@ class App extends Component {
             appMode: appMode,
             isNavOpen: false
         });
+    }
+
+    handleHashChange() {
+        fromHash(store);
     }
 
     render() {
