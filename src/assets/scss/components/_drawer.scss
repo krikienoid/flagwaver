@@ -10,6 +10,7 @@ $drawer-zindex: $zindex-fixed;
 
 .drawer {
     width: $drawer-width;
+    visibility: hidden;
     position: absolute;
     top: 0;
     left: 0;
@@ -19,7 +20,8 @@ $drawer-zindex: $zindex-fixed;
     background-color: $white;
     box-shadow: none;
     transform: translateX(-100%);
-    transition: box-shadow $transition-style, transform $transition-style;
+    transition: visibility 0ms $transition-duration,
+        box-shadow $transition-style, transform $transition-style;
 
     @include breakpoint(xs) {
         width: $drawer-xs-width;
@@ -30,8 +32,11 @@ $drawer-zindex: $zindex-fixed;
     }
 
     &.open {
+        visibility: visible;
         box-shadow: 0 0 0.5rem 0.25rem rgba($black, 0.25);
         transform: translateX(0);
+        transition: visibility 0ms,
+            box-shadow $transition-style, transform $transition-style;
     }
 }
 
@@ -41,11 +46,11 @@ $drawer-zindex: $zindex-fixed;
     z-index: $drawer-zindex;
     background-color: $white;
     opacity: 0;
-    transition: opacity $transition-style, visibility 0s $transition-duration;
+    transition: opacity $transition-style, visibility 0ms $transition-duration;
 
     &.open {
         visibility: visible;
         opacity: 0.5;
-        transition: opacity $transition-style, visibility 0s 0s;
+        transition: opacity $transition-style, visibility 0ms 0ms;
     }
 }
