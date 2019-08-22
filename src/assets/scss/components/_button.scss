@@ -18,7 +18,7 @@
         background: $primary-color-light;
         border-color: $primary-color-light;
         color: $light-color;
-        transition: none;
+        transition: $control-shadow-transition;
     }
 
     &[disabled],

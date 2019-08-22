@@ -6,6 +6,7 @@
     // Fixes for IE
     // https://github.com/picturepan2/spectre/pull/599
     padding: 0;
+    transition: $control-shadow-transition;
 
     &::-ms-track {
         border: 0;

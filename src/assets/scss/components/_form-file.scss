@@ -30,7 +30,7 @@
     }
 
     &:focus + .form-file-btn {
-        @include control-shadow();
+        @include control-shadow;
 
         .form-input {
             border-color: $primary-color;
@@ -73,6 +73,8 @@
 }
 
 .form-file-btn {
+    transition: $control-shadow-transition;
+
     .form-input {
         background-color: $bg-color-light;
         opacity: 1;

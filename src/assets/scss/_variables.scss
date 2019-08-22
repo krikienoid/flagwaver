@@ -97,6 +97,13 @@ $transition-duration:           200ms;
 $transition-timing-function:    ease-in-out;
 $transition-style:              $transition-duration $transition-timing-function;
 
+$control-transition:            background $transition-style,
+                                border $transition-style,
+                                box-shadow $transition-style,
+                                color $transition-style;
+
+$control-shadow-transition:     box-shadow $transition-style;
+
 
 //
 // Spectre.css

@@ -33,6 +33,7 @@
             margin-left: -$width / 2;
             text-align: center;
             cursor: pointer;
+            transition: $control-shadow-transition;
 
             &::before {
                 content: "";

@@ -51,6 +51,7 @@ a,
     color: $link-color;
     font-weight: 500;
     text-decoration: $link-decoration;
+    transition: $control-transition;
 
     &:visited {
         color: $link-color;
@@ -62,6 +63,11 @@ a,
     &.active {
         color: $link-color-dark;
         text-decoration: $link-hover-decoration;
+    }
+
+    &:active,
+    &.active {
+        transition: $control-shadow-transition;
     }
 }
 

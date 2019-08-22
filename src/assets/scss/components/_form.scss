@@ -26,6 +26,11 @@ legend {
     line-height: 1.5;
 }
 
+.form-input,
+.form-select {
+    transition: $control-transition;
+}
+
 .form-input {
     font-weight: normal;
 }
@@ -42,7 +47,7 @@ legend {
     }
 
     label {
-        transition: background 0.2s, border 0.2s, box-shadow 0.2s, color 0.2s;
+        transition: $control-transition;
 
         .form-icon-target {
             width: $unit-8;
@@ -120,6 +125,7 @@ legend {
     font-weight: normal;
     line-height: $line-height-base;
     outline: 0;
+    transition: $control-transition;
 
     &:focus {
         @include control-shadow;

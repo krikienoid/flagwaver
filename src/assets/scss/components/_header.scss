@@ -63,7 +63,7 @@ $site-header-btn-height: 1.5rem;
     margin: 0.125rem 0;
     color: $link-inverse-color;
     cursor: pointer;
-    transition: color $transition-style;
+    transition: $control-transition;
 
     &:focus {
         outline: 0;
