@@ -11,8 +11,8 @@ export default class Panel extends Component {
         const { title, children } = this.props;
 
         return (
-            <div className="panel">
-                <div className="panel-header">
+            <section className="panel">
+                <header className="panel-header">
                     <div className="panel-header-inner">
                         <div className="panel-side">
                         </div>
@@ -23,12 +23,12 @@ export default class Panel extends Component {
                             </h2>
                         </div>
                     </div>
-                </div>
+                </header>
 
                 <div className="panel-body">
                     {children}
                 </div>
-            </div>
+            </section>
         );
     }
 }

@@ -22,6 +22,9 @@ class AppCanvas extends Component {
     componentDidMount() {
         const { app } = this.props;
 
+        app.canvas.setAttribute('role', 'img');
+        app.canvas.setAttribute('aria-label', 'View of a waving flag');
+
         this.ref.appendChild(app.canvas);
 
         app.module('resizeModule').resize();
