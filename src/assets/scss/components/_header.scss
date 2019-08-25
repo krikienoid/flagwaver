@@ -61,13 +61,14 @@ $site-header-btn-height: 1.5rem;
     @include button-icon($site-header-btn-width, $site-header-btn-height);
     position: relative;
     margin: 0.125rem 0;
+    overflow: hidden; // Bugfix: Firefox bug #687311
     color: $link-inverse-color;
+    outline-offset: 0.25rem;
     cursor: pointer;
     transition: $control-transition;
 
     &:focus {
-        outline: 0;
-        @include control-shadow;
+        outline: 0.125rem solid rgba($primary-color, 0.8);
     }
 
     @include breakpoint(sm) {
@@ -80,6 +81,7 @@ $site-header-btn-height: 1.5rem;
 
         width: $site-header-btn-width;
         display: inline-block;
+        margin: (($site-header-btn-height - ($bar-height * 3 + $bar-gap * 2)) / 2) 0;
 
         .icon-bar {
             width: 100%;
@@ -101,6 +103,7 @@ $site-header-btn-height: 1.5rem;
 
         width: $site-header-btn-width;
         display: inline-block;
+        margin: (($site-header-btn-height - ($dot-height * 3 + $dot-gap * 2)) / 2) 0;
 
         .icon-dot {
             width: $dot-height;
