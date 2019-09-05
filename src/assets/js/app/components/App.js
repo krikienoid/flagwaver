@@ -8,6 +8,8 @@ import AnimationControlBar from '../components/AnimationControlBar';
 import AppCanvas from '../components/AppCanvas';
 import AppModules from '../components/AppModules';
 import Drawer from '../components/Drawer';
+import FocusDisabled from '../components/FocusDisabled';
+import FocusTrap from '../components/FocusTrap';
 import Icon from '../components/Icon';
 import Panel from '../components/Panel';
 import FlagGroupBarContainer from '../containers/FlagGroupBarContainer';
@@ -51,6 +53,7 @@ class App extends Component {
             appMode: AppMode.EDIT
         };
 
+        this.setDrawerModalRef = this.setDrawerModalRef.bind(this);
         this.openDrawer = this.openDrawer.bind(this);
         this.closeDrawer = this.closeDrawer.bind(this);
         this.toggleDrawer = this.toggleDrawer.bind(this);
@@ -60,6 +63,8 @@ class App extends Component {
         this.handleHashChange = this.handleHashChange.bind(this);
 
         this.app = null;
+
+        this.drawerModalRef = null;
     }
 
     componentDidMount() {
@@ -72,6 +77,10 @@ class App extends Component {
     componentWillUnmount() {
         this.app.destroy();
         window.removeEventListener('hashchange', this.handleHashChange);
+    }
+
+    setDrawerModalRef(elem) {
+        this.drawerModalRef = elem;
     }
 
     openDrawer() {
@@ -124,175 +133,195 @@ class App extends Component {
             <AppContext.Provider value={this.app}>
                 <AppModules />
 
-                <header className="site-header" role="banner">
-                    <div className="site-header-layout">
-                        <div className="site-header-center">
-                            <h1 className="site-headline">
-                                <img
-                                    width="189"
-                                    height="48"
-                                    alt="FlagWaver"
-                                    src={SITE_HEADLINE_INVERSE_IMAGE_PATH}
-                                />
-                            </h1>
-                        </div>
-
-                        <div className="site-header-left">
-                            <Drawer.Button
-                                className="site-header-btn drawer-btn"
-                                target="drawer"
-                                open={isDrawerOpen}
-                                onClick={this.toggleDrawer}
-                            >
-                                <span className="icon icon-bars" aria-hidden="true">
-                                    <span className="icon-bar"></span>
-                                    <span className="icon-bar"></span>
-                                    <span className="icon-bar"></span>
-                                </span>
-
-                                <span className="sr-only">Open drawer</span>
-                            </Drawer.Button>
-                        </div>
-
-                        <div className="site-header-right">
-                            <button type="button" className="site-header-btn">
-                                <span className="icon icon-dots" aria-hidden="true">
-                                    <span className="icon-dot"></span>
-                                    <span className="icon-dot"></span>
-                                    <span className="icon-dot"></span>
-                                </span>
-
-                                <span className="sr-only">Options</span>
-                            </button>
-                        </div>
-                    </div>
-                </header>
-
-                <main className="site-main" role="main">
-                    <div className="app-viewer">
-                        <div className="app-bg bg-sky"></div>
-
-                        <AppCanvas />
-                    </div>
-
-                    <Drawer.Overlay
-                        open={isDrawerOpen}
-                        onClick={this.closeDrawer}
-                    />
-
-                    <Drawer id="drawer" open={isDrawerOpen}>
-                        <section aria-label="Drawer">
-                            <div className="panel-navbar">
-                                <div className="panel-navbar-layout">
-                                    <div className="panel-navbar-left">
-                                        {isNavOpen ? (
-                                            <button
-                                                type="button"
-                                                className="btn btn-link"
-                                                onClick={this.closeNav}
-                                            >
-                                                <Icon component={MdArrowDropUp} />
-                                                <span className="btn-text" aria-hidden="true">Panels</span>
-                                                <span className="sr-only">Close panels menu</span>
-                                            </button>
-                                        ) : (
-                                            <button
-                                                type="button"
-                                                className="btn btn-link"
-                                                onClick={this.openNav}
-                                            >
-                                                <Icon component={MdArrowDropDown} />
-                                                <span className="btn-text" aria-hidden="true">Panels</span>
-                                                <span className="sr-only">Open panels menu</span>
-                                            </button>
-                                        )}
-                                    </div>
-
-                                    <div className="panel-navbar-right">
-                                        <Drawer.Button
-                                            className="btn btn-link"
-                                            target="drawer"
-                                            open={isDrawerOpen}
-                                            onClick={this.closeDrawer}
-                                        >
-                                            <Icon component={MdClose} />
-                                            <span className="sr-only">Close drawer</span>
-                                        </Drawer.Button>
-                                    </div>
-                                </div>
+                <div className="site-wrapper" aria-hidden={isDrawerOpen}>
+                    <header className="site-header" role="banner">
+                        <div className="site-header-layout">
+                            <div className="site-header-center">
+                                <h1 className="site-headline">
+                                    <img
+                                        width="189"
+                                        height="48"
+                                        alt="FlagWaver"
+                                        src={SITE_HEADLINE_INVERSE_IMAGE_PATH}
+                                    />
+                                </h1>
                             </div>
 
-                            {isNavOpen ? (
-                                <section className="panel">
-                                    <div className="panel-nav">
-                                        <h2 className="sr-only">Panel menu</h2>
+                            <div className="site-header-left">
+                                <Drawer.Button
+                                    className="site-header-btn drawer-btn"
+                                    target="drawer"
+                                    open={isDrawerOpen}
+                                    onClick={this.toggleDrawer}
+                                >
+                                    <span className="icon icon-bars" aria-hidden="true">
+                                        <span className="icon-bar"></span>
+                                        <span className="icon-bar"></span>
+                                        <span className="icon-bar"></span>
+                                    </span>
 
-                                        <ul className="nav">
-                                            {navItems.map(({ key, displayName }) => (
-                                                <li
-                                                    key={key}
-                                                    className={'nav-item' + (appMode === key ? ' ' + 'active' : '')}
-                                                >
-                                                    <button
-                                                        type="button"
-                                                        className="link"
-                                                        onClick={() => { this.setAppMode(key); }}
-                                                    >
-                                                        {displayName}
-                                                    </button>
-                                                </li>
-                                            ))}
-                                        </ul>
+                                    <span className="sr-only">Open drawer</span>
+                                </Drawer.Button>
+                            </div>
+
+                            <div className="site-header-right">
+                                <button type="button" className="site-header-btn">
+                                    <span className="icon icon-dots" aria-hidden="true">
+                                        <span className="icon-dot"></span>
+                                        <span className="icon-dot"></span>
+                                        <span className="icon-dot"></span>
+                                    </span>
+
+                                    <span className="sr-only">Options</span>
+                                </button>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="site-main" role="main">
+                        <div className="app-viewer">
+                            <div className="app-bg bg-sky"></div>
+
+                            <AppCanvas />
+                        </div>
+
+                        <section className="bottom-app-bar" aria-label="Toolbar">
+                            {(appMode === AppMode.EDIT) ? (
+                                <Fragment>
+                                    <div className="bottom-app-bar-primary">
+                                        <FlagGroupBarContainer />
                                     </div>
-                                </section>
-                            ) : (appMode === AppMode.EDIT) ? (
-                                <Panel title="Flag">
-                                    <FlagGroupPanelContainer />
 
-                                    <hr />
+                                    <div className="bottom-app-bar-secondary">
+                                        <WindBarContainer />
+                                    </div>
 
-                                    <WindPanelContainer />
-                                </Panel>
+                                    <div className="bottom-app-bar-tertiary">
+                                        <div className="form-section">
+                                            <button
+                                                type="button"
+                                                className="btn btn-link"
+                                                onClick={this.openDrawer}
+                                            >
+                                                All options
+                                            </button>
+                                        </div>
+                                    </div>
+                                </Fragment>
                             ) : (appMode === AppMode.ANIMATE) ? (
-                                <Panel title="Animation control">
+                                <div className="bottom-app-bar-primary">
                                     <AnimationControlBar />
-                                </Panel>
+                                </div>
                             ) : null}
                         </section>
-                    </Drawer>
+                    </main>
+                </div>
 
-                    <section className="bottom-app-bar" aria-label="Toolbar">
-                        {(appMode === AppMode.EDIT) ? (
-                            <Fragment>
-                                <div className="bottom-app-bar-primary">
-                                    <FlagGroupBarContainer />
-                                </div>
+                <FocusTrap
+                    active={isDrawerOpen}
+                    focusTrapOptions={{
+                        onDeactivate: this.closeDrawer,
+                        initialFocus: this.drawerModalRef
+                    }}
+                >
+                    <div>
+                        <Drawer.Overlay
+                            open={isDrawerOpen}
+                            onClick={this.closeDrawer}
+                        />
 
-                                <div className="bottom-app-bar-secondary">
-                                    <WindBarContainer />
-                                </div>
+                        <Drawer id="drawer" open={isDrawerOpen}>
+                            <FocusDisabled disabled={!isDrawerOpen}>
+                                <section
+                                    ref={this.setDrawerModalRef}
+                                    className="focusable-wrap"
+                                    tabIndex="-1"
+                                    role="dialog"
+                                    aria-label="Drawer"
+                                >
+                                    <div className="panel-navbar">
+                                        <div className="panel-navbar-layout">
+                                            <div className="panel-navbar-left">
+                                                {isNavOpen ? (
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-link"
+                                                        onClick={this.closeNav}
+                                                    >
+                                                        <Icon component={MdArrowDropUp} />
+                                                        <span className="btn-text" aria-hidden="true">Panels</span>
+                                                        <span className="sr-only">Close panels menu</span>
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-link"
+                                                        onClick={this.openNav}
+                                                    >
+                                                        <Icon component={MdArrowDropDown} />
+                                                        <span className="btn-text" aria-hidden="true">Panels</span>
+                                                        <span className="sr-only">Open panels menu</span>
+                                                    </button>
+                                                )}
+                                            </div>
 
-                                <div className="bottom-app-bar-tertiary">
-                                    <div className="form-section">
-                                        <button
-                                            type="button"
-                                            className="btn btn-link"
-                                            onClick={this.openDrawer}
-                                        >
-                                            All options
-                                        </button>
+                                            <div className="panel-navbar-right">
+                                                <Drawer.Button
+                                                    className="btn btn-link"
+                                                    target="drawer"
+                                                    open={isDrawerOpen}
+                                                    onClick={this.closeDrawer}
+                                                >
+                                                    <Icon component={MdClose} />
+                                                    <span className="sr-only">Close drawer</span>
+                                                </Drawer.Button>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </Fragment>
-                        ) : (appMode === AppMode.ANIMATE) ? (
-                            <div className="bottom-app-bar-primary">
-                                <AnimationControlBar />
-                            </div>
-                        ) : null}
-                    </section>
-                </main>
 
-                <ToastsContainer />
+                                    {isNavOpen ? (
+                                        <section className="panel">
+                                            <div className="panel-nav">
+                                                <h2 className="sr-only">Panel menu</h2>
+
+                                                <ul className="nav">
+                                                    {navItems.map(({ key, displayName }) => (
+                                                        <li
+                                                            key={key}
+                                                            className={'nav-item' + (appMode === key ? ' ' + 'active' : '')}
+                                                        >
+                                                            <button
+                                                                type="button"
+                                                                className="link"
+                                                                onClick={() => { this.setAppMode(key); }}
+                                                            >
+                                                                {displayName}
+                                                            </button>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        </section>
+                                    ) : (appMode === AppMode.EDIT) ? (
+                                        <Panel title="Flag">
+                                            <FlagGroupPanelContainer />
+
+                                            <hr />
+
+                                            <WindPanelContainer />
+                                        </Panel>
+                                    ) : (appMode === AppMode.ANIMATE) ? (
+                                        <Panel title="Animation control">
+                                            <AnimationControlBar />
+                                        </Panel>
+                                    ) : null}
+                                </section>
+                            </FocusDisabled>
+                        </Drawer>
+
+                        <ToastsContainer />
+                    </div>
+                </FocusTrap>
             </AppContext.Provider>
         );
     }

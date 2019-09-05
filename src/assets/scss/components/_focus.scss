@@ -1,0 +1,9 @@
+//
+// Focus management
+//
+
+.focusable-wrap {
+    &:focus {
+        outline: 0;
+    }
+}
