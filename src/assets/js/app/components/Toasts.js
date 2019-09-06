@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useTransition, animated } from 'react-spring';
 
+import FocusDisabled from '../components/FocusDisabled';
 import Toast from '../components/Toast';
 
 function Toasts({ toasts, removeToast }) {
@@ -44,13 +45,17 @@ function Toasts({ toasts, removeToast }) {
                 {transitions.map(({ item: toast, props: style, key }) => {
                     const { id, message, ...props } = toast;
 
+                    const disabled = !toasts.some(toast => toast.id === id);
+
                     return (
                         <animated.li key={key} style={style}>
-                            <div ref={setItemRef(id)} className="toasts-item-wrap">
-                                <Toast {...props} onDismissClick={() => { removeToast(id); }}>
-                                    <p>{message}</p>
-                                </Toast>
-                            </div>
+                            <FocusDisabled disabled={disabled}>
+                                <div ref={setItemRef(id)} className="toasts-item-wrap">
+                                    <Toast {...props} onDismissClick={() => { removeToast(id); }}>
+                                        <p>{message}</p>
+                                    </Toast>
+                                </div>
+                            </FocusDisabled>
                         </animated.li>
                     );
                 })}
