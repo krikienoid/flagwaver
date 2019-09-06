@@ -150,7 +150,6 @@ class App extends Component {
                             <div className="site-header-left">
                                 <Drawer.Button
                                     className="site-header-btn drawer-btn"
-                                    target="drawer"
                                     open={isDrawerOpen}
                                     onClick={this.toggleDrawer}
                                 >
@@ -230,7 +229,7 @@ class App extends Component {
                             onClick={this.closeDrawer}
                         />
 
-                        <Drawer id="drawer" open={isDrawerOpen}>
+                        <Drawer open={isDrawerOpen}>
                             <FocusDisabled disabled={!isDrawerOpen}>
                                 <section
                                     ref={this.setDrawerModalRef}
@@ -268,7 +267,6 @@ class App extends Component {
                                             <div className="panel-navbar-right">
                                                 <Drawer.Button
                                                     className="btn btn-link"
-                                                    target="drawer"
                                                     open={isDrawerOpen}
                                                     onClick={this.closeDrawer}
                                                 >
