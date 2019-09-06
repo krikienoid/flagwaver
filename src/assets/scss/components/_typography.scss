@@ -85,7 +85,7 @@ a,
 hr {
     margin: 1rem 0;
     border: 0;
-    border-top: 0.0625rem solid $border-color;
+    border-top: $border-width solid $border-color;
 }
 
 .text-inverse {

@@ -20,7 +20,14 @@ $panel-sm-outer-padding-y: $grid-gutter-width;
 }
 
 .panel-header {
-    background-color: $brand-gray-lightest;
+    padding-top: 1.5 * $panel-outer-padding-y;
+    padding-bottom: 0.5 * $panel-outer-padding-y;
+    border-bottom: $border-width solid $border-color;
+
+    @include breakpoint(sm) {
+        padding-top: 1.5 * $panel-sm-outer-padding-y;
+        padding-bottom: 0.5 * $panel-sm-outer-padding-y;
+    }
 }
 
 .panel-body {
@@ -38,7 +45,8 @@ $panel-sm-outer-padding-y: $grid-gutter-width;
 .panel-navbar {
     position: relative;
     z-index: 1;
-    background-color: $brand-gray-lightest;
+    border-bottom: $border-width solid $border-color;
+    font-size: 0.875rem;
 
     .btn {
         border-radius: 0;
