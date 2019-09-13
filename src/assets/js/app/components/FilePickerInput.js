@@ -16,6 +16,7 @@ const FilePickerInputMode = {
 export default class FilePickerInput extends Component {
     static propTypes = {
         label: PropTypes.node,
+        name: PropTypes.string,
         value: fileRecordPropType,
         accept: PropTypes.string,
         onChange: PropTypes.func,
@@ -85,7 +86,7 @@ export default class FilePickerInput extends Component {
     }
 
     handleURLSubmit() {
-        const { onChange, onLoad } = this.props;
+        const { name, onChange, onLoad } = this.props;
         const { url } = this.state;
 
         const value = {
@@ -95,23 +96,23 @@ export default class FilePickerInput extends Component {
 
         this.setState({ hasSubmittedURL: true });
 
-        onChange(value);
-        onLoad(value);
+        onChange(name, value);
+        onLoad(name, value);
     }
 
-    handleFileChange(value) {
-        const { onChange } = this.props;
+    handleFileChange(inputName, value) {
+        const { name, onChange } = this.props;
 
-        onChange(value);
+        onChange(name, value);
 
         this.setState({ url: '' });
     }
 
-    handleFileLoad(value) {
-        const { onChange, onLoad } = this.props;
+    handleFileLoad(inputName, value) {
+        const { name, onChange, onLoad } = this.props;
 
-        onChange(value);
-        onLoad(value);
+        onChange(name, value);
+        onLoad(name, value);
 
         this.setState({ url: '' });
     }

@@ -24,6 +24,11 @@ function SliderInput({
 
     const { valid, feedback } = validator(value);
     const feedbackId = feedback ? `${id}-feedback` : null;
+    const tickGroupName = `${id}-ticks`;
+
+    const handleChange = (e) => {
+        onChange(name, e.target.value);
+    };
 
     return (
         <FormGroup {...{ valid, feedback, feedbackId }}>
@@ -50,7 +55,7 @@ function SliderInput({
                 step={step}
                 disabled={disabled}
                 aria-describedby={feedbackId}
-                onChange={onChange}
+                onChange={handleChange}
             />
 
             {(ticks && ticks.length) ? (
@@ -67,11 +72,11 @@ function SliderInput({
                                 <input
                                     type="radio"
                                     id={`${id}-tick-${tickValue}`}
-                                    name={name}
+                                    name={tickGroupName}
                                     value={tickValue}
                                     checked={value === tickValue}
                                     disabled={disabled}
-                                    onChange={onChange}
+                                    onChange={handleChange}
                                 />
 
                                 <label htmlFor={`${id}-tick-${tickValue}`}>
@@ -120,7 +125,8 @@ SliderInput.defaultProps = {
     outputSuffix: '',
     ticksLabel: 'Select position',
     ticks: [],
-    validator: () => ({ valid: true })
+    validator: () => ({ valid: true }),
+    onChange: () => {}
 };
 
 export default SliderInput;

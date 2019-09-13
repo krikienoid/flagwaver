@@ -33,11 +33,11 @@ export default class FlagGroupPanel extends Component {
         });
     }
 
-    handleFilePickerChange(value) {
+    handleFilePickerChange(name, value) {
         this.props.setFileRecord(value);
     }
 
-    handleFilePickerLoad(value) {
+    handleFilePickerLoad(name, value) {
         this.props.setOptions({ imgSrc: value.url });
     }
 
