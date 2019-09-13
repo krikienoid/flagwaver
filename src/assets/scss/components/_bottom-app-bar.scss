@@ -65,6 +65,17 @@
         padding: 0;
         border: 0;
     }
+
+    .btn-select-block {
+        .btn-select-options {
+            // Fixes for IE
+            display: inline-flex;
+
+            .btn-select-option {
+                flex: 1 0 auto;
+            }
+        }
+    }
 }
 
 .bottom-app-bar-primary {
