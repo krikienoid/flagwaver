@@ -70,7 +70,7 @@ export default class FilePickerInput extends Component {
         );
     }
 
-    handleModeChange(value) {
+    handleModeChange(name, value) {
         this.setState({
             inputMode: value,
             hasSubmittedURL: false
@@ -130,9 +130,8 @@ export default class FilePickerInput extends Component {
                     <div className="field-group-body">
                         <ButtonSelect
                             label="From"
+                            name="inputMode"
                             value={inputMode}
-                            onChange={this.handleModeChange}
-                            buttonGroupClassName="btn-group btn-group-block"
                             options={[
                                 {
                                     label: 'Web',
@@ -143,6 +142,8 @@ export default class FilePickerInput extends Component {
                                     value: FilePickerInputMode.FILE
                                 }
                             ]}
+                            block
+                            onChange={this.handleModeChange}
                         />
 
                         {inputMode === FilePickerInputMode.WEB && (
