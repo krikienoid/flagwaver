@@ -116,7 +116,6 @@ SliderInput.propTypes = {
 
 SliderInput.defaultProps = {
     label: 'Slider',
-    name: 'slider',
     min: 0,
     max: 100,
     step: 1,

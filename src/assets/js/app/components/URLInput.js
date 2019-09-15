@@ -68,7 +68,6 @@ URLInput.propTypes = {
 
 URLInput.defaultProps = {
     label: 'URL',
-    name: 'url',
     placeholder: 'https://www...',
     disabled: false,
     buttonText: 'Go',

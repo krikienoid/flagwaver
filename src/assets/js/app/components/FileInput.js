@@ -24,7 +24,6 @@ class FileInput extends Component {
 
     static defaultProps = {
         label: 'File',
-        name: 'file',
         defaultText: 'Select file...',
         disabled: false,
         buttonText: 'Browse...',

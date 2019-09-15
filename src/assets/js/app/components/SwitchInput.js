@@ -56,7 +56,6 @@ SwitchInput.propTypes = {
 
 SwitchInput.defaultProps = {
     label: 'Switch',
-    name: 'switch',
     disabled: false,
     validator: () => ({ valid: true })
 };

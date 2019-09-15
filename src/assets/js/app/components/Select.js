@@ -60,7 +60,6 @@ Select.propTypes = {
 
 Select.defaultProps = {
     label: 'Select',
-    name: 'select',
     options: [],
     disabled: false,
     validator: () => ({ valid: true })
