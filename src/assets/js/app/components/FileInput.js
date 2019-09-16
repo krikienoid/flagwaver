@@ -24,7 +24,6 @@ class FileInput extends Component {
 
     static defaultProps = {
         label: 'File',
-        name: 'file',
         defaultText: 'Select file...',
         disabled: false,
         buttonText: 'Browse...',
@@ -49,7 +48,7 @@ class FileInput extends Component {
             return;
         }
 
-        const { onChange, onLoad, isValidFileType } = this.props;
+        const { name, onChange, onLoad, isValidFileType } = this.props;
 
         const file = e.target.files[0];
 
@@ -69,7 +68,7 @@ class FileInput extends Component {
             return;
         }
 
-        onChange({
+        onChange(name, {
             url: '',
             file: file
         });
@@ -77,7 +76,7 @@ class FileInput extends Component {
         const reader = new FileReader();
 
         reader.addEventListener('load', (e) => {
-            onLoad({
+            onLoad(name, {
                 url: e.target.result,
                 file: file
             });

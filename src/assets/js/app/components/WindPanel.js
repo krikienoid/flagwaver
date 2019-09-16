@@ -30,9 +30,9 @@ export default class WindPanel extends Component {
         this.handleSwitchChange = this.handleSwitchChange.bind(this);
     }
 
-    handleSliderChange(e) {
+    handleSliderChange(name, value) {
         this.props.setOptions({
-            [e.target.name]: Number(e.target.value)
+            [name]: Number(value)
         });
     }
 
