@@ -35,6 +35,10 @@
             background: $primary-color-light;
             border-color: $primary-color-light;
             color: $light-color;
+            transition: $control-transition;
+        }
+
+        &:active + .btn {
             transition: $control-shadow-transition;
         }
 
