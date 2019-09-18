@@ -45,13 +45,17 @@ export default class FilePickerInput extends Component {
         this.handleFileLoad = this.handleFileLoad.bind(this);
     }
 
+    componentDidMount() {
+        const { value } = this.props;
+
+        this.updateURL(value);
+    }
+
     componentDidUpdate(prevProps) {
         const { value } = this.props;
 
         if (prevProps.value !== value) {
-            this.setState({
-                url: value && !value.file && value.url || ''
-            });
+            this.updateURL(value);
         }
     }
 
@@ -112,6 +116,12 @@ export default class FilePickerInput extends Component {
         onLoad(value);
 
         this.setState({ url: '' });
+    }
+
+    updateURL(value) {
+        this.setState({
+            url: value && !value.file && value.url || ''
+        });
     }
 
     render() {
