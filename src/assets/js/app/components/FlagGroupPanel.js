@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { MdFlag } from 'react-icons/md';
 
+import ButtonSelect from '../components/ButtonSelect';
 import FilePickerInput from '../components/FilePickerInput';
+import Icon from '../components/Icon';
 import Message from '../components/Message';
 import Select from '../components/Select';
 import { fileRecordPropType } from '../types';
@@ -23,6 +26,7 @@ export default class FlagGroupPanel extends Component {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleButtonSelectChange = this.handleButtonSelectChange.bind(this);
         this.handleFilePickerChange = this.handleFilePickerChange.bind(this);
         this.handleFilePickerLoad = this.handleFilePickerLoad.bind(this);
     }
@@ -33,11 +37,17 @@ export default class FlagGroupPanel extends Component {
         });
     }
 
-    handleFilePickerChange(value) {
+    handleButtonSelectChange(name, value) {
+        this.props.setOptions({
+            [name]: value
+        });
+    }
+
+    handleFilePickerChange(name, value) {
         this.props.setFileRecord(value);
     }
 
-    handleFilePickerLoad(value) {
+    handleFilePickerLoad(name, value) {
         this.props.setOptions({ imgSrc: value.url });
     }
 
@@ -55,7 +65,7 @@ export default class FlagGroupPanel extends Component {
         return (
             <div className="form-section">
                 <FilePickerInput
-                    label="Select Image"
+                    label="Select image"
                     value={fileRecord}
                     accept="image/*"
                     onChange={this.handleFilePickerChange}
@@ -65,15 +75,32 @@ export default class FlagGroupPanel extends Component {
 
                 <hr />
 
-                <Select
+                <ButtonSelect
                     label="Hoisting"
                     name="hoisting"
                     value={options.hoisting}
-                    onChange={this.handleChange}
                     options={[
-                        { value: 'dexter', label: 'Dexter' },
-                        { value: 'sinister', label: 'Sinister' }
+                        {
+                            value: 'sinister',
+                            label: (
+                                <Fragment>
+                                    <Icon component={MdFlag} className="icon-hoisting-sinister" />
+                                    <span className="btn-text">Sinister</span>
+                                </Fragment>
+                            )
+                        },
+                        {
+                            value: 'dexter',
+                            label: (
+                                <Fragment>
+                                    <Icon component={MdFlag} className="icon-hoisting-dexter" />
+                                    <span className="btn-text">Dexter</span>
+                                </Fragment>
+                            )
+                        }
                     ]}
+                    block
+                    onChange={this.handleButtonSelectChange}
                 />
 
                 <Select

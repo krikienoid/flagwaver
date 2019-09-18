@@ -6,9 +6,31 @@
     // Fixes for IE
     // https://github.com/picturepan2/spectre/pull/599
     padding: 0;
+    transition: $control-shadow-transition;
+
+    &::-webkit-slider-thumb {
+        transition: background $transition-style, transform $transition-style;
+    }
+
+    &::-moz-range-thumb {
+        transition: background $transition-style, transform $transition-style;
+    }
+
+    &::-ms-thumb {
+        transition: background $transition-style, transform $transition-style;
+    }
 
     &::-ms-track {
+        // Fixes for IE
+        // https://github.com/picturepan2/spectre/pull/599
         border: 0;
         color: transparent;
+    }
+
+    &:disabled,
+    &.disabled {
+        &::-ms-fill-lower {
+            background: $gray-color-light;
+        }
     }
 }

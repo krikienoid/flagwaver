@@ -1,0 +1,106 @@
+//
+// Button select
+//
+
+.btn-select {
+    margin: 0;
+}
+
+.btn-select-option {
+    position: relative;
+
+    input {
+        @include sr-only;
+    }
+
+    .btn {
+        display: block;
+        position: relative;
+    }
+
+    input {
+        &:hover + .btn,
+        &:focus + .btn {
+            background: lighten($primary-color, 50%);
+            border-color: $primary-color;
+            color: $primary-color;
+        }
+
+        &:focus + .btn {
+            @include control-shadow;
+        }
+
+        &:active + .btn,
+        &:checked + .btn {
+            background: $primary-color-light;
+            border-color: $primary-color-light;
+            color: $light-color;
+            transition: $control-transition;
+        }
+
+        &:active + .btn {
+            transition: $control-shadow-transition;
+        }
+
+        &:disabled + .btn,
+        &.disabled + .btn {
+            border-color: $bg-color-dark;
+            color: $bg-color-dark;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        &:disabled:checked + .btn,
+        &.disabled:checked + .btn,
+        &:disabled + .btn.active,
+        &.disabled + .btn.active {
+            background: $bg-color-dark;
+            color: $light-color;
+        }
+    }
+}
+
+.btn-select-options {
+    display: inline-flex;
+
+    .btn-select-option {
+        flex: 1 0 auto;
+
+        &:first-child:not(:last-child) .btn {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        &:not(:first-child):not(:last-child) .btn {
+            margin-left: -$border-width;
+            border-radius: 0;
+        }
+
+        &:last-child:not(:first-child) .btn {
+            margin-left: -$border-width;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        input:focus + .btn,
+        input:hover + .btn,
+        input:active + .btn {
+            z-index: 1;
+        }
+
+        input:checked + .btn,
+        .btn.active {
+            z-index: 2;
+        }
+    }
+}
+
+.btn-select-block {
+    .btn-select-options {
+        display: flex;
+
+        .btn-select-option {
+            flex: 1 0 0;
+        }
+    }
+}

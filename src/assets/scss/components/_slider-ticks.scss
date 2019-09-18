@@ -33,6 +33,7 @@
             margin-left: -$width / 2;
             text-align: center;
             cursor: pointer;
+            transition: $control-transition;
 
             &::before {
                 content: "";
@@ -43,7 +44,7 @@
                 top: -0.75rem;
                 left: 50%;
                 z-index: -1;
-                background: $border-color;
+                background: $bg-color-dark;
             }
         }
 

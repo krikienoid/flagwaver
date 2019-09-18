@@ -15,6 +15,7 @@ function SliderInput({
     disabled,
     outputPrefix,
     outputSuffix,
+    ticksLabel,
     ticks,
     validator,
     onChange
@@ -23,6 +24,11 @@ function SliderInput({
 
     const { valid, feedback } = validator(value);
     const feedbackId = feedback ? `${id}-feedback` : null;
+    const tickGroupName = `${id}-ticks`;
+
+    const handleChange = (e) => {
+        onChange(name, e.target.value);
+    };
 
     return (
         <FormGroup {...{ valid, feedback, feedbackId }}>
@@ -49,14 +55,14 @@ function SliderInput({
                 step={step}
                 disabled={disabled}
                 aria-describedby={feedbackId}
-                onChange={onChange}
+                onChange={handleChange}
             />
 
             {(ticks && ticks.length) ? (
                 <fieldset className="form-group" disabled={disabled}>
                     <legend className="sr-only">
                         <span className="sr-only">
-                            Select {label}
+                            {ticksLabel}
                         </span>
                     </legend>
 
@@ -66,11 +72,11 @@ function SliderInput({
                                 <input
                                     type="radio"
                                     id={`${id}-tick-${tickValue}`}
-                                    name={name}
+                                    name={tickGroupName}
                                     value={tickValue}
                                     checked={value === tickValue}
                                     disabled={disabled}
-                                    onChange={onChange}
+                                    onChange={handleChange}
                                 />
 
                                 <label htmlFor={`${id}-tick-${tickValue}`}>
@@ -99,6 +105,7 @@ SliderInput.propTypes = {
     disabled: PropTypes.bool,
     outputPrefix: PropTypes.string,
     outputSuffix: PropTypes.string,
+    ticksLabel: PropTypes.node,
     ticks: PropTypes.arrayOf(PropTypes.shape({
         label: PropTypes.node,
         value: PropTypes.number.isRequired
@@ -109,15 +116,16 @@ SliderInput.propTypes = {
 
 SliderInput.defaultProps = {
     label: 'Slider',
-    name: 'slider',
     min: 0,
     max: 100,
     step: 1,
     disabled: false,
     outputPrefix: '',
     outputSuffix: '',
+    ticksLabel: 'Select position',
     ticks: [],
-    validator: () => ({ valid: true })
+    validator: () => ({ valid: true }),
+    onChange: () => {}
 };
 
 export default SliderInput;

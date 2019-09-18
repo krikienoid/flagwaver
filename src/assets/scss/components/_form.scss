@@ -26,6 +26,11 @@ legend {
     line-height: 1.5;
 }
 
+.form-input,
+.form-select {
+    transition: $control-transition;
+}
+
 .form-input {
     font-weight: normal;
 }
@@ -35,10 +40,19 @@ legend {
 }
 
 .form-switch {
+    .form-icon {
+        background-clip: border-box;
+        background-color: $gray-color-dark;
+        border-color: $gray-color-dark;
+    }
+
     label {
+        transition: $control-transition;
+
         .form-icon-target {
             width: $unit-8;
             height: $unit-4 + $border-width * 2;
+            display: block;
             position: absolute;
             top: ($control-size-sm - $unit-4) / 2 - $border-width;
             left: 0;
@@ -51,11 +65,68 @@ legend {
     input {
         &:disabled,
         &.disabled {
+            ~ .form-icon {
+                background-color: $bg-color-dark;
+                border-color: $bg-color-dark;
+                opacity: 1;
+            }
+
             ~ label {
+                color: $bg-color-dark;
+
                 .form-icon-target {
                     cursor: not-allowed;
                 }
             }
+        }
+    }
+}
+
+.input-group {
+    .form-input,
+    .form-select {
+        .has-success &,
+        &.is-success,
+        .has-error &,
+        &.is-error {
+            z-index: 2;
+        }
+    }
+
+    .form-input {
+        &:not(:placeholder-shown) {
+            &:invalid {
+                z-index: 2;
+            }
+        }
+    }
+}
+
+.form-input {
+    &:not(:placeholder-shown) {
+        &:invalid {
+            // Remove default style in Firefox
+            box-shadow: none;
+        }
+    }
+}
+
+.form-input,
+.form-select {
+    &:disabled,
+    &.disabled {
+        background-color: $light-color;
+        border-color: $bg-color-dark;
+        color: $bg-color-dark;
+        opacity: 1;
+    }
+}
+
+.form-select {
+    &:not([multiple]):not([size]) {
+        &:disabled,
+        &.disabled {
+            background: $light-color;
         }
     }
 }
@@ -72,6 +143,7 @@ legend {
     font-weight: normal;
     line-height: $line-height-base;
     outline: 0;
+    transition: $control-transition;
 
     &:focus {
         @include control-shadow;

@@ -41,20 +41,6 @@
         @include sr-only;
     }
 
-    .form-input {
-        border-color: $brand-gray-medium;
-
-        &:focus {
-            border-color: $primary-color;
-        }
-    }
-
-    .form-switch {
-        .form-icon {
-            border-color: $brand-gray-medium;
-        }
-    }
-
     .field-group {
         position: relative;
         margin: 0;
@@ -78,6 +64,17 @@
         display: flex;
         padding: 0;
         border: 0;
+    }
+
+    .btn-select-block {
+        .btn-select-options {
+            // Fixes for IE
+            display: inline-flex;
+
+            .btn-select-option {
+                flex: 1 0 auto;
+            }
+        }
     }
 }
 

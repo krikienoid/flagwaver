@@ -37,7 +37,7 @@ function SwitchInput({
                 <label htmlFor={id}>
                     {label}
 
-                    <div className="form-icon-target"></div>
+                    <span className="form-icon-target"></span>
                 </label>
             </div>
         </FormGroup>
@@ -56,7 +56,6 @@ SwitchInput.propTypes = {
 
 SwitchInput.defaultProps = {
     label: 'Switch',
-    name: 'switch',
     disabled: false,
     validator: () => ({ valid: true })
 };

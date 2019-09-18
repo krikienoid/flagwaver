@@ -12,9 +12,13 @@
             padding: $unit-1 $unit-2;
             text-decoration: none;
 
-            &:focus,
-            &:hover {
-                color: $primary-color;
+            &:hover,
+            &:focus {
+                color: $link-color;
+            }
+
+            &:active {
+                color: $link-color-dark;
             }
         }
 
@@ -23,9 +27,13 @@
                 color: darken($gray-color-dark, 10%);
                 font-weight: bold;
 
-                &:focus,
-                &:hover {
-                    color: $primary-color;
+                &:hover,
+                &:focus {
+                    color: $link-color;
+                }
+
+                &:active {
+                    color: $link-color-dark;
                 }
             }
         }

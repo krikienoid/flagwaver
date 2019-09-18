@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 function DrawerButton({
     className,
     openClassName,
-    target,
     open,
     onClick,
     children
@@ -13,8 +12,6 @@ function DrawerButton({
         <button
             type="button"
             className={className + (open ? ' ' + openClassName : '')}
-            aria-controls={target}
-            aria-expanded={open}
             onClick={onClick}
         >
             {children}
@@ -25,7 +22,6 @@ function DrawerButton({
 DrawerButton.propTypes = {
     className: PropTypes.string,
     openClassName: PropTypes.string,
-    target: PropTypes.string,
     open: PropTypes.bool.isRequired,
     onClick: PropTypes.func,
     children: PropTypes.node
@@ -63,7 +59,6 @@ DrawerOverlay.defaultProps = {
 };
 
 function Drawer({
-    id,
     className,
     openClassName,
     open,
@@ -71,7 +66,6 @@ function Drawer({
 }) {
     return (
         <div
-            id={id}
             className={className + (open ? ' ' + openClassName : '')}
             aria-hidden={!open}
         >
@@ -81,7 +75,6 @@ function Drawer({
 }
 
 Drawer.propTypes = {
-    id: PropTypes.string,
     className: PropTypes.string,
     openClassName: PropTypes.string,
     open: PropTypes.bool.isRequired,

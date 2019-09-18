@@ -14,7 +14,7 @@ h5, .h5,
 h6, .h6 {
     margin-top: 0;
     margin-bottom: 0.5em;
-    font-weight: bold;
+    font-weight: 500;
     line-height: 1.25;
 }
 
@@ -51,17 +51,23 @@ a,
     color: $link-color;
     font-weight: 500;
     text-decoration: $link-decoration;
+    transition: $control-transition;
 
     &:visited {
         color: $link-color;
     }
 
-    &:focus,
     &:hover,
+    &:focus,
     &:active,
     &.active {
         color: $link-color-dark;
         text-decoration: $link-hover-decoration;
+    }
+
+    &:active,
+    &.active {
+        transition: $control-shadow-transition;
     }
 }
 
@@ -79,7 +85,7 @@ a,
 hr {
     margin: 1rem 0;
     border: 0;
-    border-top: 0.0625rem solid $brand-gray-light;
+    border-top: $border-width solid $border-color;
 }
 
 .text-inverse {

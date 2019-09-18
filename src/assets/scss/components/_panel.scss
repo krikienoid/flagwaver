@@ -2,16 +2,12 @@
 // Panel
 //
 
-$panel-outer-padding-x: 0.5 * $spacer;
+$panel-outer-padding-x: $spacer;
 $panel-outer-padding-y: $spacer;
 $panel-sm-outer-padding-x: $grid-gutter-width;
 $panel-sm-outer-padding-y: $grid-gutter-width;
 
 .panel {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
 }
 
 .panel-header,
@@ -24,20 +20,23 @@ $panel-sm-outer-padding-y: $grid-gutter-width;
 }
 
 .panel-header {
-    flex: 0 0 auto;
-    background-color: $brand-gray-lightest;
+    padding-top: 1.5 * $panel-outer-padding-y;
+    padding-bottom: 0.5 * $panel-outer-padding-y;
+    border-bottom: $border-width solid $border-color;
+
+    @include breakpoint(sm) {
+        padding-top: 1.5 * $panel-sm-outer-padding-y;
+        padding-bottom: 0.5 * $panel-sm-outer-padding-y;
+    }
 }
 
 .panel-body {
-    flex: 0 1 auto;
     padding-bottom: 2 * $panel-outer-padding-y;
-    overflow-y: scroll;
 
     @include breakpoint(sm) {
         padding-bottom: 2 * $panel-sm-outer-padding-y;
     }
 
-    .btn-group,
     .input-group {
         width: 100%;
     }
@@ -46,7 +45,8 @@ $panel-sm-outer-padding-y: $grid-gutter-width;
 .panel-navbar {
     position: relative;
     z-index: 1;
-    background-color: $brand-gray-lightest;
+    border-bottom: $border-width solid $border-color;
+    font-size: 0.875rem;
 
     .btn {
         border-radius: 0;

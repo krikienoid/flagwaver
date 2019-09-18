@@ -30,22 +30,23 @@
     }
 
     &:focus + .form-file-btn {
-        @include control-shadow();
+        @include control-shadow;
 
         .form-input {
             border-color: $primary-color;
         }
     }
 
-    &:focus + .form-file-btn .btn,
-    &:hover + .form-file-btn .btn {
-        background: lighten($primary, 50%);
-        border-color: $primary-color-dark;
+    &:hover + .form-file-btn .btn,
+    &:focus + .form-file-btn .btn {
+        background: lighten($primary-color, 50%);
+        border-color: $primary-color;
+        color: $primary-color;
     }
 
     &:active + .form-file-btn .btn {
-        background: $primary-color-dark;
-        border-color: darken($primary-color-dark, 5%);
+        background: $primary-color-light;
+        border-color: $primary-color-light;
         color: $light-color;
         transition: none;
     }
@@ -56,13 +57,14 @@
 
         + .form-file-btn {
             .form-input {
-                background-color: $bg-color-dark;
-                opacity: 0.5;
+                border-color: $bg-color-dark;
+                color: $bg-color-dark;
                 cursor: not-allowed;
             }
 
             .btn {
-                opacity: 0.5;
+                border-color: $bg-color-dark;
+                color: $bg-color-dark;
                 cursor: default;
                 pointer-events: none;
             }
@@ -71,8 +73,11 @@
 }
 
 .form-file-btn {
+    transition: $control-shadow-transition;
+
     .form-input {
         background-color: $bg-color-light;
+        color: $body-font-color;
         opacity: 1;
         cursor: default;
     }
