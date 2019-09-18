@@ -2,7 +2,11 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import THREE from 'three';
 
-import { WindModule, WindModifiers } from '../../flagwaver';
+import {
+    Wind as WindSubject,
+    WindModule,
+    WindModifiers
+} from '../../flagwaver';
 import withAppContext from '../hocs/withAppContext';
 
 const yAxis = new THREE.Vector3(0, -1, 0);
@@ -47,7 +51,13 @@ class Wind extends Component {
 
         if (module) {
             module.setOptions({
-                speed: options.enabled ? options.speed : 0,
+                speed: options.enabled
+                    ? (
+                        options.controlled
+                            ? options.speed
+                            : WindSubject.defaults.speed
+                    )
+                    : 0,
                 direction: options.controlled
                     ? getDirectionVector(options.direction)
                     : getDirectionVector(0),

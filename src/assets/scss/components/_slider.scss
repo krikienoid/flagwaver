@@ -12,4 +12,11 @@
         border: 0;
         color: transparent;
     }
+
+    &:disabled,
+    &.disabled {
+        &::-ms-fill-lower {
+            background: $gray-color-light;
+        }
+    }
 }
