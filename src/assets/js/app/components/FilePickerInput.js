@@ -6,6 +6,7 @@ import ButtonSelect from '../components/ButtonSelect';
 import FileInput from '../components/FileInput';
 import Icon from '../components/Icon';
 import URLInput from '../components/URLInput';
+import { isURL } from '../utils/Validators';
 import { fileRecordPropType } from '../types';
 
 const FilePickerInputMode = {
@@ -62,7 +63,7 @@ export default class FilePickerInput extends Component {
         const { hasSubmittedURL } = this.state;
 
         return (
-            (hasSubmittedURL && !value)
+            (hasSubmittedURL && (!value || !isURL(value)))
                 ? {
                     valid: false,
                     feedback: 'Please enter a valid URL.'

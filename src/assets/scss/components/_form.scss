@@ -92,6 +92,23 @@ legend {
             z-index: 2;
         }
     }
+
+    .form-input {
+        &:not(:placeholder-shown) {
+            &:invalid {
+                z-index: 2;
+            }
+        }
+    }
+}
+
+.form-input {
+    &:not(:placeholder-shown) {
+        &:invalid {
+            // Remove default style in Firefox
+            box-shadow: none;
+        }
+    }
 }
 
 .form-input,
