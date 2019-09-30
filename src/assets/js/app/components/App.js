@@ -179,7 +179,7 @@ class App extends Component {
 
                     <main className="site-main" role="main">
                         <div className="app-viewer">
-                            <div className="app-bg bg-sky"></div>
+                            <div className="app-bg bg-image-full bg-classic"></div>
 
                             <AppCanvas />
                         </div>

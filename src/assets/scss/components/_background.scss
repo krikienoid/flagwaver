@@ -2,19 +2,19 @@
 // Background
 //
 
-.bg-sky {
-    background-attachment: fixed;
-    background-color: #566c73;
-    background-image: url("../img/Sky_over_Washington_Monument-480x640px.jpg");
+.bg-image-full {
     background-position: center center;
     background-repeat: no-repeat;
-    background-size: cover;
 
-    @media only screen and (min-width: 480px) {
-        background-image: url("../img/Sky_over_Washington_Monument-800x600px.jpg");
-    }
+    @include background-image-full-size(1920px, 1080px);
+}
 
-    @media only screen and (min-width: 800px) {
-        background-image: url("../img/Sky_over_Washington_Monument-1600x1200px.jpg");
-    }
+.bg-classic {
+    @include background-image-full(#566c73, (
+        "../img/bg-classic-768x768.jpg",
+        "../img/bg-classic-1024x1024.jpg",
+        "../img/bg-classic-1440x1080.jpg"
+    ));
+
+    @include background-image-full-size(1440px, 1080px);
 }
