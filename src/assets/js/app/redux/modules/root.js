@@ -5,6 +5,7 @@ import toasts from './toasts';
 
 import fileRecord from './fileRecord';
 import flagGroup from './flagGroup';
+import scenery from './scenery';
 import wind from './wind';
 
 // Action Types
@@ -26,6 +27,7 @@ const appReducer = combineReducers({
     toasts: toasts,
     fileRecord: fileRecord,
     flagGroup: flagGroup,
+    scenery: scenery,
     wind: wind
 });
 
