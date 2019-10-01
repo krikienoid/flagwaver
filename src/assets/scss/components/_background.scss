@@ -18,3 +18,23 @@
 
     @include background-image-full-size(1440px, 1080px);
 }
+
+.bg-blue-sky {
+    @include background-image-full(#5b8ebe, (
+        "../img/bg-blue-sky-768x768.jpg",
+        "../img/bg-blue-sky-1024x1024.jpg",
+        "../img/bg-blue-sky-1920x1080.jpg"
+    ));
+}
+
+.bg-night-sky-clouds {
+    @include background-image-full(#050914, (
+        "../img/bg-night-sky-clouds-768x768.jpg",
+        "../img/bg-night-sky-clouds-1024x1024.jpg",
+        "../img/bg-night-sky-clouds-1920x1080.jpg"
+    ));
+
+    @media (min-width: 1024px), (min-height: 1024px) {
+        background-position: percentage(179 / 1920) center;
+    }
+}
