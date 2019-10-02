@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { FlagGroupModule } from '../../flagwaver';
 import withAppContext from '../hocs/withAppContext';
 
-const DEFAULT_FLAG_IMAGE_PATH = './assets/img/NZ.2b.png';
+const DEFAULT_FLAG_IMAGE_PATH = './assets/img/flag-default.png';
 
 class FlagGroup extends Component {
     static propTypes = {
