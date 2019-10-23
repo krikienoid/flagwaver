@@ -1,13 +1,13 @@
 import THREE from 'three';
 import { Side } from '../constants';
+import { generateDataTexture } from '../utils/ImageUtils';
 import { isNumeric } from '../utils/TypeUtils';
 import ShaderChunk from '../webgl/ShaderChunk';
 import Cloth from './Cloth';
 import FixedConstraint from './FixedConstraint';
 
 // Default flag texture
-const WHITE_TEXTURE = THREE.ImageUtils
-    .generateDataTexture(1, 1, new THREE.Color(0xffffff));
+const WHITE_TEXTURE = generateDataTexture(1, 1, new THREE.Color(0xffffff));
 
 function buildCloth(options) {
     const restDistance = options.height / options.granularity;
@@ -34,7 +34,6 @@ function buildMesh(cloth, options) {
          * https://github.com/mrdoob/three.js/issues/7252
          */
         shininess: 0.001,
-        metal:     false,
         side:      THREE.DoubleSide
     });
 
@@ -69,9 +68,8 @@ function buildMesh(cloth, options) {
     const mesh = new THREE.Mesh(geometry, material);
 
     mesh.castShadow = true;
-    mesh.receiveShadow = true;
     mesh.customDepthMaterial = new THREE.ShaderMaterial({
-        uniforms:       { texture: { type: 't', value: texture } },
+        uniforms:       { texture: { value: texture } },
         vertexShader:   ShaderChunk.depth_vert,
         fragmentShader: ShaderChunk.depth_frag
     });

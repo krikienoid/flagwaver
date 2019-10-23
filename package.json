@@ -48,7 +48,7 @@
     "spectre.css": "^0.5.8",
     "stats.js": "^0.17.0",
     "tabbable": "^4.0.0",
-    "three": "^0.72.0"
+    "three": "^0.109.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
