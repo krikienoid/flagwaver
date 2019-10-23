@@ -17,7 +17,6 @@ export function generateDataTexture(width, height, color) {
     }
 
     const texture = new THREE.DataTexture(data, width, height, THREE.RGBFormat);
-    texture.needsUpdate = true;
 
     return texture;
 }
