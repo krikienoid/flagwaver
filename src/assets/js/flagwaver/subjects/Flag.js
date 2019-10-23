@@ -68,7 +68,6 @@ function buildMesh(cloth, options) {
     const mesh = new THREE.Mesh(geometry, material);
 
     mesh.castShadow = true;
-    mesh.receiveShadow = true;
     mesh.customDepthMaterial = new THREE.ShaderMaterial({
         uniforms:       { texture: { value: texture } },
         vertexShader:   ShaderChunk.depth_vert,
