@@ -8,7 +8,7 @@ import buildFlag from '../builders/buildFlag';
  * @classdesc A wrapper object for managing a single flag.
  *
  * @param {Object} [options] - Options passed to buildFlag
- *   @param {string} [options.imgSrc] - Image to generate flag from
+ *   @param {string} [options.imageSrc] - Image to generate flag from
  */
 export default class FlagInterface {
     constructor(options) {
@@ -27,7 +27,7 @@ export default class FlagInterface {
 
     setOptions(options) {
         const settings = Object.assign({}, options);
-        const src = settings.imgSrc;
+        const src = settings.imageSrc;
 
         const replace = (flag) => {
             this.destroy();

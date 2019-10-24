@@ -85,7 +85,7 @@ export default class FlagModule extends ControlModule {
             }
         },
 
-        imgSrc: (value) => {
+        imageSrc: (value) => {
             if (typeof value === 'string') {
                 return value;
             } else {

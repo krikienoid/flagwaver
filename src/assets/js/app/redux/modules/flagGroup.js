@@ -20,7 +20,7 @@ const initialState = {
     height:         'auto',
     mass:           0.1,
     granularity:    10,
-    imgSrc:         '',
+    imageSrc:       '',
     flagpoleType:   'vertical'
 };
 

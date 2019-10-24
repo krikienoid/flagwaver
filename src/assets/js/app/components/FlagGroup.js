@@ -42,7 +42,7 @@ class FlagGroup extends Component {
 
         if (module) {
             module.subject.setFlagOptions(Object.assign({}, options, {
-                imgSrc: options.imgSrc || DEFAULT_FLAG_IMAGE_PATH
+                imageSrc: options.imageSrc || DEFAULT_FLAG_IMAGE_PATH
             }))
                 .catch((e) => {
                     addToast({

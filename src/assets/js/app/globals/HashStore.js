@@ -6,7 +6,7 @@ const flagGroupDefaults = flagGroup(undefined, {});
 
 const hashState = new HashState({
     'src': {
-        defaultValue: flagGroupDefaults.imgSrc,
+        defaultValue: flagGroupDefaults.imageSrc,
         parse: value => decodeURIComponent(value),
         stringify: value => encodeURIComponent(value)
     },
@@ -43,7 +43,7 @@ function assignDefaults(defaults, options) {
 
 function mapStateToHash(state) {
     return {
-        src: state.flagGroup.imgSrc,
+        src: state.flagGroup.imageSrc,
         hoisting: state.flagGroup.hoisting,
         topedge: state.flagGroup.topEdge
     };
@@ -56,7 +56,7 @@ function mapStateFromHash(state) {
             file: null
         },
         flagGroup: assignDefaults(flagGroupDefaults, {
-            imgSrc: state.src,
+            imageSrc: state.src,
             hoisting: state.hoisting,
             topEdge: state.topedge
         })
@@ -66,11 +66,11 @@ function mapStateFromHash(state) {
 function isValidState(state) {
     return (
         // Has an image
-        !!state.flagGroup.imgSrc &&
+        !!state.flagGroup.imageSrc &&
         // Not a local file
         !state.fileRecord.file &&
         // File selection has been applied to flag
-        state.fileRecord.url === state.flagGroup.imgSrc
+        state.fileRecord.url === state.flagGroup.imageSrc
     );
 }
 
