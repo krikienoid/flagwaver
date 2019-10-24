@@ -14,8 +14,8 @@ export function setFlagGroupOptions(options) {
 // Reducer
 
 const initialState = {
-    topEdge:        'top',
     hoisting:       'dexter',
+    orientation:    'top',
     width:          'auto',
     height:         'auto',
     mass:           0.1,

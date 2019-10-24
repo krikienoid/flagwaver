@@ -105,8 +105,8 @@ export default class FlagGroupPanel extends Component {
 
                 <Select
                     label="Orientation"
-                    name="topEdge"
-                    value={options.topEdge}
+                    name="orientation"
+                    value={options.orientation}
                     onChange={this.handleChange}
                     options={[
                         { value: 'top',    label: 'Top'    },

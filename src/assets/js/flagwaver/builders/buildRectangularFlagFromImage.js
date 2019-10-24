@@ -8,7 +8,7 @@ const defaults = {
     width: 'auto',
     height: 'auto',
     hoisting: Hoisting.DEXTER,
-    topEdge: Side.TOP
+    orientation: Side.TOP
 };
 
 // Calculate width and/or height from image if either is set to 'auto'
@@ -70,7 +70,7 @@ function computeSize(image, options) {
 
 // Check if flag has been rotated into a vertical position
 function isVertical(options) {
-    return options.topEdge === Side.LEFT || options.topEdge === Side.RIGHT;
+    return options.orientation === Side.LEFT || options.orientation === Side.RIGHT;
 }
 
 // Compute values needed to apply texture onto mesh
@@ -80,7 +80,7 @@ function computeTextureArgs(options) {
     result.width = options.width;
     result.height = options.height;
     result.reflect = options.hoisting === Hoisting.SINISTER;
-    result.rotate = getAngleOfSide(options.topEdge);
+    result.rotate = getAngleOfSide(options.orientation);
 
     if (isVertical(options)) {
         const offset = (options.width - options.height) / 2;

@@ -25,7 +25,7 @@ export default class FlagModule extends ControlModule {
     static Subject = FlagInterface;
 
     static validate = createPropertyValidator({
-        topEdge: (value) => {
+        orientation: (value) => {
             if (hasValue(Side, value)) {
                 return value;
             } else {
