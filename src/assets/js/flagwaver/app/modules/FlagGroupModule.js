@@ -1,46 +1,49 @@
-import FlagGroupInterface from '../../interface/FlagGroupInterface';
+import FlagGroup from '../../subjects/FlagGroup';
 import ControlModule from './ControlModule';
-import FlagModule from './FlagModule';
 
 /**
  * @class FlagGroupModule
  *
  * @classdesc An interface for a flagpole and its flag.
- *
- * @param {Object} [subject]
- * @param {THREE.Object3D} [context]
  */
 export default class FlagGroupModule extends ControlModule {
-    constructor(subject, context) {
+    constructor() {
         super();
 
-        this.subject = subject || null;
-        this.context = context || null;
-        this.flag = null;
+        this.subject = null;
+        this.app = null;
+        this.configOptions = Object.assign({}, this.constructor.Subject.defaults);
     }
 
     static displayName = 'flagGroupModule';
-    static Subject = FlagGroupInterface;
+    static Subject = FlagGroup;
 
     init(app) {
+        this.app = app;
         this.subject = new this.constructor.Subject();
 
-        if (!this.context) {
-            app.scene.add(this.subject.object);
-        }
-
-        this.flag = new FlagModule(this.subject.flagInterface, this.subject.object);
-
-        app.add(this.flag);
+        this.app.scene.add(this.subject.object);
     }
 
-    deinit(app) {
-        app.remove(this.flag);
-
-        if (!this.context) {
-            app.scene.remove(this.subject.object);
+    deinit() {
+        if (this.subject) {
+            this.app.scene.remove(this.subject.object);
             this.subject.destroy();
         }
+    }
+
+    setOptions(options) {
+        if (this.subject) {
+            this.app.scene.remove(this.subject.object);
+            this.subject.destroy();
+        }
+
+        this.subject = new this.constructor.Subject(Object.assign(
+            this.configOptions,
+            options
+        ));
+
+        this.app.scene.add(this.subject.object);
     }
 
     reset() {

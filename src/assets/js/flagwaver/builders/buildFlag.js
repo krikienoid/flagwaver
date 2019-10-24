@@ -1,6 +1,5 @@
 import { isNumeric } from '../utils/TypeUtils';
 import Flag from '../subjects/Flag';
-import buildRectangularFlagFromImage from './buildRectangularFlagFromImage';
 
 function ensureNumericSize(options) {
     const result = Object.assign({}, options);
@@ -22,13 +21,8 @@ function ensureNumericSize(options) {
  * @description Helper for generating flags based on provided image
  * and options.
  *
- * @param {HTMLImageElement} image
  * @param {Object} [options]
  */
-export default function buildFlag(image, options) {
-    if (image) {
-        return buildRectangularFlagFromImage(image, options);
-    }
-
+export default function buildFlag(options) {
     return new Flag(ensureNumericSize(options));
 }

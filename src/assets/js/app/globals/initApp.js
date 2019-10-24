@@ -91,8 +91,8 @@ function buildApp() {
     app.add(new ResizeModule());
     app.add(new AnimationModule());
 
-    app.add(new GravityModule(['flagModule']));
-    app.add(new WindForceModule(['flagModule'], ['windModule']));
+    app.add(new GravityModule(['flagGroupModule']));
+    app.add(new WindForceModule(['flagGroupModule'], ['windModule']));
 
     return app;
 }

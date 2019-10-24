@@ -1,7 +1,11 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { FlagGroupModule } from '../../flagwaver';
+import {
+    FlagGroupModule,
+    buildAsyncFlagFromImage,
+    buildFlagpole
+} from '../../flagwaver';
 import withAppContext from '../hocs/withAppContext';
 
 const DEFAULT_FLAG_IMAGE_PATH = './assets/img/flag-default.png';
@@ -38,12 +42,19 @@ class FlagGroup extends Component {
 
     renderModule() {
         const module = this.module;
-        const { options, addToast } = this.props;
+        const { app, options, addToast } = this.props;
+        const src = options.imageSrc || DEFAULT_FLAG_IMAGE_PATH;
 
         if (module) {
-            module.subject.setFlagOptions(Object.assign({}, options, {
-                imageSrc: options.imageSrc || DEFAULT_FLAG_IMAGE_PATH
-            }))
+            buildAsyncFlagFromImage(src, options)
+                .then((flag) => {
+                    module.setOptions({
+                        flagpole: buildFlagpole(options, flag),
+                        flag: flag
+                    });
+
+                    app.needsUpdate = true;
+                })
                 .catch((e) => {
                     addToast({
                         status: 'error',
