@@ -40,28 +40,36 @@ class FlagGroup extends Component {
         }
     }
 
-    renderModule() {
+    updateFlag(flag) {
+        const { app, options } = this.props;
         const module = this.module;
-        const { app, options, addToast } = this.props;
-        const src = options.imageSrc || DEFAULT_FLAG_IMAGE_PATH;
 
         if (module) {
-            buildAsyncFlagFromImage(src, options)
-                .then((flag) => {
-                    module.setOptions({
-                        flagpole: buildFlagpole(options, flag),
-                        flag: flag
-                    });
+            module.setOptions({
+                flagpole: buildFlagpole(options, flag),
+                flag: flag
+            });
 
-                    app.needsUpdate = true;
-                })
-                .catch((e) => {
-                    addToast({
-                        status: 'error',
-                        message: 'Image could not be loaded.'
-                    });
-                });
+            app.needsUpdate = true;
         }
+    }
+
+    renderModule() {
+        const { options, addToast } = this.props;
+        const src = options.imageSrc || DEFAULT_FLAG_IMAGE_PATH;
+
+        buildAsyncFlagFromImage(src, options)
+            .then((flag) => {
+                this.updateFlag(flag);
+            }, (flag) => {
+                this.updateFlag(flag);
+            })
+            .catch((e) => {
+                addToast({
+                    status: 'error',
+                    message: 'Image could not be loaded.'
+                });
+            });
     }
 
     render() {
