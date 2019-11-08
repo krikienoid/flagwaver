@@ -4,10 +4,12 @@ import FlagWaver, {
     App,
     AnimationModule,
     ResizeModule,
+    ProcessModule,
     FlagGroupModule,
     WindModule,
-    GravityModule,
-    WindForceModule
+    applyGravityToCloth,
+    applyWindForceToCloth,
+    createInteraction
 } from '../../flagwaver';
 
 function buildScene() {
@@ -79,6 +81,19 @@ function initLights(app) {
     scene.add(light2);
 }
 
+function createInteractionProcessModule(getSubjectLists, action) {
+    let updateFn = () => {};
+
+    return new ProcessModule(
+        (deltaTime) => {
+            updateFn(deltaTime);
+        },
+        () => {
+            updateFn = createInteraction(action, getSubjectLists());
+        }
+    );
+}
+
 function buildApp() {
     const app = new App({
         scene: buildScene(),
@@ -91,8 +106,19 @@ function buildApp() {
     app.add(new ResizeModule());
     app.add(new AnimationModule());
 
-    app.add(new GravityModule(['flagGroupModule']));
-    app.add(new WindForceModule(['flagGroupModule'], ['windModule']));
+    app.add(createInteractionProcessModule(
+        () => ['flagGroupModule', 'windModule'].map(moduleType =>
+            app.getModulesByType(moduleType).map(module => module.subject)
+        ),
+        (subjects) => {
+            const flagGroup = subjects[0];
+            const wind = subjects[1];
+            const flag = flagGroup.flag;
+
+            applyGravityToCloth(flag.cloth, flag.object);
+            applyWindForceToCloth(flag.cloth, wind, flag.object);
+        }
+    ));
 
     return app;
 }
