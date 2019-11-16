@@ -4,11 +4,11 @@ import WindModifiers from './WindModifiers';
 // Perfectly aligned vectors can cause unexpected or unrealistic outcomes
 // in the simulation. Use this function to induce minor disruptions.
 function disturbVector(v) {
-    const w = v.clone();
-    if (w.x === 0) { w.x = 0.001; }
-    if (w.y === 0) { w.y = 0.001; }
-    if (w.z === 0) { w.z = 0.001; }
-    return w;
+    if (v.x === 0) { v.x = 0.001; }
+    if (v.y === 0) { v.y = 0.001; }
+    if (v.z === 0) { v.z = 0.001; }
+
+    return v;
 }
 
 function disturbScalar(n) {
@@ -46,10 +46,7 @@ export default class Wind {
     update() {
         const time = Date.now();
 
-        this.force
-            .copy(
-                this.directionFn(disturbVector(this.direction), time)
-            )
+        this.directionFn(disturbVector(this.force.copy(this.direction)), time)
             .normalize()
             .multiplyScalar(
                 this.speedFn(disturbScalar(this.speed), time)
