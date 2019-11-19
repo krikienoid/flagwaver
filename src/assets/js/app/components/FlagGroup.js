@@ -35,23 +35,21 @@ class FlagGroup extends Component {
     }
 
     componentWillUnmount() {
-        if (this.module) {
-            this.props.app.remove(this.module);
-        }
+        this.props.app.remove(this.module);
     }
 
     updateFlag(flag) {
         const { app, options } = this.props;
-        const module = this.module;
 
-        if (module) {
-            module.setOptions({
-                flagpole: buildFlagpole(options, flag),
-                flag: flag
-            });
+        app.remove(this.module);
 
-            app.needsUpdate = true;
-        }
+        this.module = new FlagGroupModule({
+            flagpole: buildFlagpole(options, flag),
+            flag: flag
+        });
+
+        app.add(this.module);
+        app.needsUpdate = true;
     }
 
     renderModule() {

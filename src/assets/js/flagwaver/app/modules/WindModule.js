@@ -6,14 +6,17 @@ import ControlModule from './ControlModule';
  *
  * @classdesc Adds wind to scene.
  *
- * @param {Wind} wind
+ * @param {Object} [options]
  */
 export default class WindModule extends ControlModule {
-    constructor() {
+    constructor(options) {
         super();
 
-        this.subject = new this.constructor.Subject();
-        this.configOptions = Object.assign({}, this.constructor.Subject.defaults);
+        this.subject = new this.constructor.Subject(Object.assign(
+            {},
+            this.constructor.Subject.defaults,
+            options
+        ));
     }
 
     static displayName = 'windModule';
@@ -21,12 +24,5 @@ export default class WindModule extends ControlModule {
 
     update(deltaTime) {
         this.subject.update(deltaTime);
-    }
-
-    setOptions(options) {
-        this.subject = new this.constructor.Subject(Object.assign(
-            this.configOptions,
-            options
-        ));
     }
 }

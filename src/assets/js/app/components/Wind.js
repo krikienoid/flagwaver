@@ -40,34 +40,32 @@ class Wind extends Component {
     }
 
     componentWillUnmount() {
-        if (this.module) {
-            this.props.app.remove(this.module);
-        }
+        this.props.app.remove(this.module);
     }
 
     renderModule() {
-        const module = this.module;
         const { app, options } = this.props;
 
-        if (module) {
-            module.setOptions({
-                speed: options.enabled
-                    ? (
-                        options.controlled
-                            ? options.speed
-                            : WindSubject.defaults.speed
-                    )
-                    : 0,
-                direction: options.controlled
-                    ? getDirectionVector(options.direction)
-                    : getDirectionVector(0),
-                directionFn: options.controlled
-                    ? WindModifiers.noEffect
-                    : WindModifiers.rotatingDirection
-            });
+        app.remove(this.module);
 
-            app.needsUpdate = true;
-        }
+        this.module = new WindModule({
+            speed: options.enabled
+                ? (
+                    options.controlled
+                        ? options.speed
+                        : WindSubject.defaults.speed
+                )
+                : 0,
+            direction: options.controlled
+                ? getDirectionVector(options.direction)
+                : getDirectionVector(0),
+            directionFn: options.controlled
+                ? WindModifiers.noEffect
+                : WindModifiers.rotatingDirection
+        });
+
+        app.add(this.module);
+        app.needsUpdate = true;
     }
 
     render() {

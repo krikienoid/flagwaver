@@ -5,14 +5,20 @@ import ControlModule from './ControlModule';
  * @class FlagGroupModule
  *
  * @classdesc An interface for a flagpole and its flag.
+ *
+ * @param {Object} [options]
  */
 export default class FlagGroupModule extends ControlModule {
-    constructor() {
+    constructor(options) {
         super();
 
-        this.subject = null;
+        this.subject = new this.constructor.Subject(Object.assign(
+            {},
+            this.constructor.Subject.defaults,
+            options
+        ));
+
         this.app = null;
-        this.configOptions = Object.assign({}, this.constructor.Subject.defaults);
     }
 
     static displayName = 'flagGroupModule';
@@ -20,30 +26,12 @@ export default class FlagGroupModule extends ControlModule {
 
     init(app) {
         this.app = app;
-        this.subject = new this.constructor.Subject();
-
         this.app.scene.add(this.subject.object);
     }
 
     deinit() {
-        if (this.subject) {
-            this.app.scene.remove(this.subject.object);
-            this.subject.destroy();
-        }
-    }
-
-    setOptions(options) {
-        if (this.subject) {
-            this.app.scene.remove(this.subject.object);
-            this.subject.destroy();
-        }
-
-        this.subject = new this.constructor.Subject(Object.assign(
-            this.configOptions,
-            options
-        ));
-
-        this.app.scene.add(this.subject.object);
+        this.app.scene.remove(this.subject.object);
+        this.subject.destroy();
     }
 
     reset() {
