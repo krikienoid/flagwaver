@@ -1,4 +1,5 @@
 import THREE from 'three';
+
 import WindModifiers from './utils/WindModifiers';
 
 // Perfectly aligned vectors can cause unexpected or unrealistic outcomes

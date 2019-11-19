@@ -1,4 +1,5 @@
 import THREE from 'three';
+
 import { Hoisting, Side } from '../constants';
 import getAngleOfSide from '../utils/getAngleOfSide';
 import { isNumeric, isObject } from '../utils/TypeUtils';

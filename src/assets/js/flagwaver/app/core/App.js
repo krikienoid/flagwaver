@@ -1,4 +1,5 @@
 import THREE from 'three';
+
 import ModuleSystem from './ModuleSystem';
 
 const FPS = 60;

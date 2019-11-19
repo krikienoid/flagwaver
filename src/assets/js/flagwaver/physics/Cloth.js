@@ -1,4 +1,5 @@
 import THREE from 'three';
+
 import Particle from './Particle';
 import Constraint from './Constraint';
 

@@ -1,4 +1,5 @@
 import THREE from 'three';
+
 import { Side } from '../constants';
 import { generateDataTexture } from '../utils/ImageUtils';
 import { isNumeric } from '../utils/TypeUtils';

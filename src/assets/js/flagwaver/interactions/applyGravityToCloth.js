@@ -1,4 +1,5 @@
 import THREE from 'three';
+
 import { G } from '../constants';
 import localizeForce from './utils/localizeForce';
 

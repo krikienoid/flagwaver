@@ -1,4 +1,5 @@
 import THREE from 'three';
+
 import localizeForce from './utils/localizeForce';
 
 const tmp = new THREE.Vector3();
