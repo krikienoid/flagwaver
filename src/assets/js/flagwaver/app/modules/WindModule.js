@@ -1,5 +1,5 @@
 import Wind from '../../subjects/Wind';
-import ControlModule from './ControlModule';
+import Module from '../core/Module';
 
 /**
  * @class WindModule
@@ -8,19 +8,16 @@ import ControlModule from './ControlModule';
  *
  * @param {Object} [options]
  */
-export default class WindModule extends ControlModule {
+export default class WindModule extends Module {
     constructor(options) {
         super();
 
-        this.subject = new this.constructor.Subject(Object.assign(
-            {},
-            this.constructor.Subject.defaults,
-            options
-        ));
+        this.subject = new Wind(
+            Object.assign({}, Wind.defaults, options)
+        );
     }
 
     static displayName = 'windModule';
-    static Subject = Wind;
 
     update(deltaTime) {
         this.subject.update(deltaTime);

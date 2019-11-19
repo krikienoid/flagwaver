@@ -1,5 +1,5 @@
 import FlagGroup from '../../subjects/FlagGroup';
-import ControlModule from './ControlModule';
+import Module from '../core/Module';
 
 /**
  * @class FlagGroupModule
@@ -8,21 +8,18 @@ import ControlModule from './ControlModule';
  *
  * @param {Object} [options]
  */
-export default class FlagGroupModule extends ControlModule {
+export default class FlagGroupModule extends Module {
     constructor(options) {
         super();
 
-        this.subject = new this.constructor.Subject(Object.assign(
-            {},
-            this.constructor.Subject.defaults,
-            options
-        ));
+        this.subject = new FlagGroup(
+            Object.assign({}, FlagGroup.defaults, options)
+        );
 
         this.app = null;
     }
 
     static displayName = 'flagGroupModule';
-    static Subject = FlagGroup;
 
     init(app) {
         this.app = app;
