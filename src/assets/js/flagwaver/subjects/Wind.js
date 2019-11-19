@@ -1,5 +1,5 @@
 import THREE from 'three';
-import WindModifiers from './WindModifiers';
+import WindModifiers from './utils/WindModifiers';
 
 // Perfectly aligned vectors can cause unexpected or unrealistic outcomes
 // in the simulation. Use this function to induce minor disruptions.

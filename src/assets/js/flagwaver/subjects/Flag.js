@@ -3,8 +3,8 @@ import { Side } from '../constants';
 import { generateDataTexture } from '../utils/ImageUtils';
 import { isNumeric } from '../utils/TypeUtils';
 import ShaderChunk from '../webgl/ShaderChunk';
-import Cloth from './Cloth';
-import FixedConstraint from './FixedConstraint';
+import Cloth from '../physics/Cloth';
+import FixedConstraint from '../physics/FixedConstraint';
 
 // Default flag texture
 const WHITE_TEXTURE = generateDataTexture(1, 1, new THREE.Color(0xffffff));

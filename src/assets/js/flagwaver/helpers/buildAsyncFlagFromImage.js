@@ -1,6 +1,6 @@
+import buildFlag from '../helpers/buildFlag';
+import buildRectangularFlagFromImage from '../helpers/buildRectangularFlagFromImage';
 import loadImage from '../helpers/loadImage';
-import buildFlag from '../builders/buildFlag';
-import buildRectangularFlagFromImage from '../builders/buildRectangularFlagFromImage';
 
 /**
  * @function buildAsyncFlagFromImage

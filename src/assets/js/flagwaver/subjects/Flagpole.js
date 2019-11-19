@@ -1,6 +1,6 @@
 import THREE from 'three';
 import { Side, FlagpoleType } from '../constants';
-import { createPoleGeometryTypeI } from './FlagpoleGeometryUtils';
+import { createPoleGeometryTypeI } from './utils/FlagpoleGeometryHelpers';
 
 /**
  * @class Flagpole
