@@ -1,4 +1,5 @@
 import THREE from 'three';
+
 import ModuleSystem from './ModuleSystem';
 
 const FPS = 60;
@@ -63,7 +64,7 @@ export default class App extends ModuleSystem {
             for (let i = 0, ii = modules.length; i < ii; i++) {
                 const module = modules[i];
 
-                if ((module.subject || module.interact) && module.update) {
+                if (module.update) {
                     module.update(deltaTime);
                 }
             }

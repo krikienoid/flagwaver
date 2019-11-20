@@ -1,4 +1,5 @@
 import THREE from 'three';
+
 import Constraint from './Constraint';
 
 const SLACK = 1.2;

@@ -1,10 +1,14 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { FlagGroupModule } from '../../flagwaver';
+import {
+    FlagGroupModule,
+    buildAsyncFlagFromImage,
+    buildFlagpole
+} from '../../flagwaver';
 import withAppContext from '../hocs/withAppContext';
 
-const DEFAULT_FLAG_IMAGE_PATH = './assets/img/NZ.2b.png';
+const DEFAULT_FLAG_IMAGE_PATH = './assets/img/flag-default.png';
 
 class FlagGroup extends Component {
     static propTypes = {
@@ -31,26 +35,39 @@ class FlagGroup extends Component {
     }
 
     componentWillUnmount() {
-        if (this.module) {
-            this.props.app.remove(this.module);
-        }
+        this.props.app.remove(this.module);
+    }
+
+    updateFlag(flag) {
+        const { app, options } = this.props;
+
+        app.remove(this.module);
+
+        this.module = new FlagGroupModule({
+            flagpole: buildFlagpole(options, flag),
+            flag: flag
+        });
+
+        app.add(this.module);
+        app.needsUpdate = true;
     }
 
     renderModule() {
-        const module = this.module;
         const { options, addToast } = this.props;
+        const src = options.imageSrc || DEFAULT_FLAG_IMAGE_PATH;
 
-        if (module) {
-            module.subject.setFlagOptions(Object.assign({}, options, {
-                imgSrc: options.imgSrc || DEFAULT_FLAG_IMAGE_PATH
-            }))
-                .catch((e) => {
-                    addToast({
-                        status: 'error',
-                        message: 'Image could not be loaded.'
-                    });
+        buildAsyncFlagFromImage(src, options)
+            .then((flag) => {
+                this.updateFlag(flag);
+            }, (flag) => {
+                this.updateFlag(flag);
+            })
+            .catch((e) => {
+                addToast({
+                    status: 'error',
+                    message: 'Image could not be loaded.'
                 });
-        }
+            });
     }
 
     render() {

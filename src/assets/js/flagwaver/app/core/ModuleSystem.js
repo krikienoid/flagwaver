@@ -13,6 +13,22 @@ export default class ModuleSystem {
         this.modules = [];
     }
 
+    // Get modules by display name
+    getModulesByType(displayName) {
+        const modules = this.modules;
+        const result = [];
+
+        for (let i = 0, ii = modules.length; i < ii; i++) {
+            const module = modules[i];
+
+            if (module.constructor.displayName === displayName) {
+                result.push(module);
+            }
+        }
+
+        return result;
+    }
+
     // Get module by display name and index
     module(displayName, index = 0) {
         const modules = this.modules;

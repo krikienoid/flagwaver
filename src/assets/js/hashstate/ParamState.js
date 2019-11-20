@@ -39,7 +39,7 @@ export default class ParamState {
             state[key] = !isIgnored(field, value) ? value : field.defaultValue;
 
             return state;
-        }, {});
+        }, params);
     }
 
     stringify(state) {

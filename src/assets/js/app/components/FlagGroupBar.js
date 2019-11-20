@@ -30,7 +30,7 @@ export default class FlagGroupBar extends Component {
     }
 
     handleFilePickerLoad(name, value) {
-        this.props.setOptions({ imgSrc: value.url });
+        this.props.setOptions({ imageSrc: value.url });
     }
 
     render() {

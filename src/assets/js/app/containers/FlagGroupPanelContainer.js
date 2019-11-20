@@ -15,4 +15,7 @@ const matchDispatchToProps = dispatch => bindActionCreators({
     setOptions: setFlagGroupOptions
 }, dispatch);
 
-export default connect(mapStateToProps, matchDispatchToProps)(FlagGroupPanel);
+export default connect(
+    mapStateToProps,
+    matchDispatchToProps
+)(FlagGroupPanel);

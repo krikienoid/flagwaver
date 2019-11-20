@@ -1,6 +1,7 @@
 import THREE from 'three';
+
 import { Side, FlagpoleType } from '../constants';
-import { createPoleGeometryTypeI } from './FlagpoleGeometryUtils';
+import { createPoleGeometryTypeI } from './utils/FlagpoleGeometryHelpers';
 
 /**
  * @class Flagpole
@@ -28,7 +29,6 @@ export default class Flagpole {
         const material = new THREE.MeshPhongMaterial({
             color:     0x6A6A6A,
             specular:  0xffffff,
-            metal:     true,
             shininess: 18
         });
 
