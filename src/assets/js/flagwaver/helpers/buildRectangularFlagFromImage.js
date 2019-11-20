@@ -71,7 +71,10 @@ function computeSize(image, options) {
 
 // Check if flag has been rotated into a vertical position
 function isVertical(options) {
-    return options.orientation === Side.LEFT || options.orientation === Side.RIGHT;
+    return (
+        options.orientation === Side.LEFT ||
+        options.orientation === Side.RIGHT
+    );
 }
 
 // Compute values needed to apply texture onto mesh

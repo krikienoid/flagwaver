@@ -9,7 +9,10 @@ const mapStateToProps = state => ({
 });
 
 const matchDispatchToProps = dispatch => bindActionCreators({
-    setPaused: setPaused,
+    setPaused: setPaused
 }, dispatch);
 
-export default connect(mapStateToProps, matchDispatchToProps)(AnimationControlBar);
+export default connect(
+    mapStateToProps,
+    matchDispatchToProps
+)(AnimationControlBar);

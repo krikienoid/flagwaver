@@ -5,8 +5,6 @@ import FlagWaver, {
     AnimationModule,
     ResizeModule,
     ProcessModule,
-    FlagGroupModule,
-    WindModule,
     applyGravityToCloth,
     applyWindForceToCloth,
     createInteraction
