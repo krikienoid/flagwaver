@@ -6,7 +6,7 @@ const flagGroupDefaults = flagGroup(undefined, {});
 
 const hashState = new HashState({
     'src': {
-        defaultValue: flagGroupDefaults.imgSrc,
+        defaultValue: flagGroupDefaults.imageSrc,
         parse: value => decodeURIComponent(value),
         stringify: value => encodeURIComponent(value)
     },
@@ -21,8 +21,8 @@ const hashState = new HashState({
         },
         stringify: value => 'sin'
     },
-    'topedge': {
-        defaultValue: flagGroupDefaults.topEdge,
+    'orientation': {
+        defaultValue: flagGroupDefaults.orientation,
         parse: (string) => {
             if (string.match(/^(top|right|bottom|left)$/gi)) {
                 return string.toLowerCase();
@@ -43,9 +43,9 @@ function assignDefaults(defaults, options) {
 
 function mapStateToHash(state) {
     return {
-        src: state.flagGroup.imgSrc,
+        src: state.flagGroup.imageSrc,
         hoisting: state.flagGroup.hoisting,
-        topedge: state.flagGroup.topEdge
+        orientation: state.flagGroup.orientation
     };
 }
 
@@ -56,9 +56,9 @@ function mapStateFromHash(state) {
             file: null
         },
         flagGroup: assignDefaults(flagGroupDefaults, {
-            imgSrc: state.src,
+            imageSrc: state.src,
             hoisting: state.hoisting,
-            topEdge: state.topedge
+            orientation: state.orientation
         })
     };
 }
@@ -66,23 +66,43 @@ function mapStateFromHash(state) {
 function isValidState(state) {
     return (
         // Has an image
-        !!state.flagGroup.imgSrc &&
+        !!state.flagGroup.imageSrc &&
         // Not a local file
         !state.fileRecord.file &&
         // File selection has been applied to flag
-        state.fileRecord.url === state.flagGroup.imgSrc
+        state.fileRecord.url === state.flagGroup.imageSrc
     );
 }
 
-function withLegacyFallback(state) {
+function withLegacyFallbackSrc(state) {
     // Backwards compatibility for old link structure
     if (!state.src) {
         return {
+            ...state,
             src: window.unescape(window.location.hash.slice(1))
         };
     }
 
     return state;
+}
+
+function withLegacyFallbackTopEdge(state) {
+    // Backwards compatibility for old topedge param
+    if (state.topedge && state.orientation === flagGroupDefaults.orientation) {
+        return {
+            ...state,
+            orientation: state.topedge
+        };
+    }
+
+    return state;
+}
+
+function withLegacyFallbacks(state) {
+    return [
+        withLegacyFallbackSrc,
+        withLegacyFallbackTopEdge
+    ].reduce((result, fn) => fn(result), state);
 }
 
 export function toHash(store) {
@@ -96,7 +116,7 @@ export function toHash(store) {
 }
 
 export function fromHash(store) {
-    const state = mapStateFromHash(withLegacyFallback(hashState.getState()));
+    const state = mapStateFromHash(withLegacyFallbacks(hashState.getState()));
 
     store.dispatch(setFileRecord(state.fileRecord));
     store.dispatch(setFlagGroupOptions(state.flagGroup));
