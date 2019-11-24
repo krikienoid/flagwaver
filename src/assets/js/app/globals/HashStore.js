@@ -1,8 +1,10 @@
 import HashState from '../../hashstate';
 import { setFileRecord } from '../redux/modules/fileRecord';
 import flagGroup, { setFlagGroupOptions } from '../redux/modules/flagGroup';
+import scenery, { setSceneryOptions } from '../redux/modules/scenery';
 
 const flagGroupDefaults = flagGroup(undefined, {});
+const sceneryDefaults = scenery(undefined, {});
 
 const hashState = new HashState({
     'src': {
@@ -28,6 +30,14 @@ const hashState = new HashState({
                 return string.toLowerCase();
             }
         }
+    },
+    'background': {
+        defaultValue: sceneryDefaults.background,
+        parse: (string) => {
+            if (string.match(/^(blue\-sky|night\-sky\-clouds)$/gi)) {
+                return string.toLowerCase();
+            }
+        }
     }
 });
 
@@ -45,7 +55,8 @@ function mapStateToHash(state) {
     return {
         src: state.flagGroup.imageSrc,
         hoisting: state.flagGroup.hoisting,
-        orientation: state.flagGroup.orientation
+        orientation: state.flagGroup.orientation,
+        background: state.scenery.background
     };
 }
 
@@ -59,7 +70,10 @@ function mapStateFromHash(state) {
             imageSrc: state.src,
             hoisting: state.hoisting,
             orientation: state.orientation
-        })
+        }),
+        scenery: {
+            background: state.background
+        }
     };
 }
 
@@ -120,4 +134,5 @@ export function fromHash(store) {
 
     store.dispatch(setFileRecord(state.fileRecord));
     store.dispatch(setFlagGroupOptions(state.flagGroup));
+    store.dispatch(setSceneryOptions(state.scenery));
 }

@@ -1,0 +1,40 @@
+//
+// Background
+//
+
+@mixin background-image-full($color, $srcset) {
+    $src-sm: nth($srcset, 1);
+    $src-md: nth($srcset, 2);
+    $src-lg: nth($srcset, 3);
+
+    @media only screen {
+        background-color: $color;
+        background-image: url("#{$src-sm}");
+
+        @media (min-width: 768px), (min-height: 768px) {
+            background-image: url("#{$src-md}");
+        }
+
+        @media (min-width: 1024px), (min-height: 1024px) {
+            background-image: url("#{$src-lg}");
+        }
+    }
+}
+
+@mixin background-image-full-size($width, $height) {
+    @media only screen {
+        background-size: cover;
+
+        @media (min-width: 1024px) and (min-aspect-ratio: 1 / 1) {
+            background-size: percentage($width / $height) auto;
+        }
+
+        @media (min-width: $height) {
+            background-size: $width $height;
+        }
+
+        @media (min-width: $width), (min-height: $height) {
+            background-size: cover;
+        }
+    }
+}

@@ -50,3 +50,5 @@ All art assets included in this project are distributed under their respective l
 - [Material Design icons](https://google.github.io/material-design-icons/) - Apache License 2.0
 - [Montserrat](https://fonts.google.com/specimen/Montserrat) - SIL Open Font License 1.1
 - [Sky over Washington Monument.jpg](https://commons.wikimedia.org/wiki/File:Sky_over_Washington_Monument.JPG) - This work has been released into the public domain by its author, Andypham3000 at English Wikipedia. This applies worldwide.
+- [Blue Clouds Sky](https://pixabay.com/photos/blue-clouds-sky-background-white-69383/) - Pixabay License. Free for commercial use. No attribution required.
+- [Moon Sky Clouds](https://pixabay.com/photos/moon-sky-clouds-nature-outdoor-1833172/) - Pixabay License. Free for commercial use. No attribution required.

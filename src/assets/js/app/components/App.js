@@ -12,8 +12,10 @@ import FocusTrap from '../components/FocusTrap';
 import Icon from '../components/Icon';
 import Panel from '../components/Panel';
 import AnimationControlBarContainer from '../containers/AnimationControlBarContainer';
+import AppBackgroundContainer from '../containers/AppBackgroundContainer';
 import FlagGroupBarContainer from '../containers/FlagGroupBarContainer';
 import FlagGroupPanelContainer from '../containers/FlagGroupPanelContainer';
+import SceneryPanelContainer from '../containers/SceneryPanelContainer';
 import ToastsContainer from '../containers/ToastsContainer';
 import WindBarContainer from '../containers/WindBarContainer';
 import WindPanelContainer from '../containers/WindPanelContainer';
@@ -179,7 +181,7 @@ class App extends Component {
 
                     <main className="site-main" role="main">
                         <div className="app-viewer">
-                            <div className="app-bg bg-sky"></div>
+                            <AppBackgroundContainer />
 
                             <AppCanvas />
                         </div>
@@ -307,6 +309,10 @@ class App extends Component {
                                             <hr />
 
                                             <WindPanelContainer />
+
+                                            <hr />
+
+                                            <SceneryPanelContainer />
                                         </Panel>
                                     ) : (appMode === AppMode.ANIMATE) ? (
                                         <Panel title="Animation control">
