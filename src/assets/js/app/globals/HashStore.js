@@ -1,10 +1,18 @@
+import { Hoisting, Side } from '../../flagwaver';
 import HashState from '../../hashstate';
+import { SceneryBackground } from '../constants';
 import { setFileRecord } from '../redux/modules/fileRecord';
 import flagGroup, { setFlagGroupOptions } from '../redux/modules/flagGroup';
 import scenery, { setSceneryOptions } from '../redux/modules/scenery';
 
 const flagGroupDefaults = flagGroup(undefined, {});
 const sceneryDefaults = scenery(undefined, {});
+
+function parseEnumValue(enumObject, string) {
+    const b = string.toLowerCase();
+
+    return Object.values(enumObject).find(a => a.toLowerCase() === b) || null;
+}
 
 const hashState = new HashState({
     'src': {
@@ -16,28 +24,22 @@ const hashState = new HashState({
         defaultValue: flagGroupDefaults.hoisting,
         parse: (string) => {
             if (string.match(/^dex(ter)?$/gi)) {
-                return 'dexter';
+                return Hoisting.DEXTER;
             } else if (string.match(/^sin(ister)?$/gi)) {
-                return 'sinister';
+                return Hoisting.SINISTER;
             }
+
+            return null;
         },
         stringify: value => 'sin'
     },
     'orientation': {
         defaultValue: flagGroupDefaults.orientation,
-        parse: (string) => {
-            if (string.match(/^(top|right|bottom|left)$/gi)) {
-                return string.toLowerCase();
-            }
-        }
+        parse: string => parseEnumValue(Side, string)
     },
     'background': {
         defaultValue: sceneryDefaults.background,
-        parse: (string) => {
-            if (string.match(/^(blue\-sky|night\-sky\-clouds)$/gi)) {
-                return string.toLowerCase();
-            }
-        }
+        parse: string => parseEnumValue(SceneryBackground, string)
     }
 });
 

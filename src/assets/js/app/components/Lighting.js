@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { SceneryBackground } from '../constants';
 import withAppContext from '../hocs/withAppContext';
 import {
     createMutedLights,
@@ -39,15 +40,15 @@ class Lighting extends Component {
         this.lights.map((light) => { scene.remove(light); });
 
         switch (options.background) {
-            case 'blue-sky':
+            case SceneryBackground.BLUE_SKY:
                 this.lights = createDaytimeLights();
                 break;
 
-            case 'night-sky-clouds':
+            case SceneryBackground.NIGHT_SKY_CLOUDS:
                 this.lights = createNighttimeLights();
                 break;
 
-            case 'classic':
+            case SceneryBackground.CLASSIC:
             default:
                 this.lights = createMutedLights();
                 break;

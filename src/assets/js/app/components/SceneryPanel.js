@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { SceneryBackground } from '../constants';
 import Select from '../components/Select';
 
 export default class SceneryPanel extends Component {
@@ -37,15 +38,15 @@ export default class SceneryPanel extends Component {
                     onChange={this.handleChange}
                     options={[
                         {
-                            value: 'classic',
+                            value: SceneryBackground.CLASSIC,
                             label: 'Classic'
                         },
                         {
-                            value: 'blue-sky',
+                            value: SceneryBackground.BLUE_SKY,
                             label: 'Blue sky'
                         },
                         {
-                            value: 'night-sky-clouds',
+                            value: SceneryBackground.NIGHT_SKY_CLOUDS,
                             label: 'Night sky with clouds'
                         }
                     ]}

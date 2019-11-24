@@ -1,3 +1,5 @@
+import { SceneryBackground } from '../../constants';
+
 // Action Types
 
 export const SET_SCENERY_OPTIONS = 'flagwaver/scenery/SET_SCENERY_OPTIONS';
@@ -14,7 +16,7 @@ export function setSceneryOptions(value) {
 // Reducer
 
 const initialState = {
-    background: 'classic'
+    background: SceneryBackground.CLASSIC
 };
 
 export default function reducer(state = initialState, action) {

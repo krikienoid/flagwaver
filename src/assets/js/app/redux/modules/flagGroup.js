@@ -1,3 +1,5 @@
+import { Hoisting, Side, FlagpoleType } from '../../../flagwaver';
+
 // Action Types
 
 export const SET_FLAG_GROUP_OPTIONS = 'flagwaver/flagGroup/SET_FLAG_GROUP_OPTIONS';
@@ -14,14 +16,14 @@ export function setFlagGroupOptions(options) {
 // Reducer
 
 const initialState = {
-    hoisting:       'dexter',
-    orientation:    'top',
+    hoisting:       Hoisting.DEXTER,
+    orientation:    Side.TOP,
     width:          'auto',
     height:         'auto',
     mass:           0.1,
     granularity:    10,
     imageSrc:       '',
-    flagpoleType:   'vertical'
+    flagpoleType:   FlagpoleType.VERTICAL
 };
 
 export default function reducer(state = initialState, action) {

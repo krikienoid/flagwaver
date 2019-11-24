@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { MdFlag } from 'react-icons/md';
 
+import { Hoisting, Side } from '../../flagwaver';
 import ButtonSelect from '../components/ButtonSelect';
 import FilePickerInput from '../components/FilePickerInput';
 import Icon from '../components/Icon';
@@ -81,7 +82,7 @@ export default class FlagGroupPanel extends Component {
                     value={options.hoisting}
                     options={[
                         {
-                            value: 'sinister',
+                            value: Hoisting.SINISTER,
                             label: (
                                 <Fragment>
                                     <Icon component={MdFlag} className="icon-hoisting-sinister" />
@@ -90,7 +91,7 @@ export default class FlagGroupPanel extends Component {
                             )
                         },
                         {
-                            value: 'dexter',
+                            value: Hoisting.DEXTER,
                             label: (
                                 <Fragment>
                                     <Icon component={MdFlag} className="icon-hoisting-dexter" />
@@ -109,10 +110,10 @@ export default class FlagGroupPanel extends Component {
                     value={options.orientation}
                     onChange={this.handleChange}
                     options={[
-                        { value: 'top',    label: 'Top'    },
-                        { value: 'left',   label: 'Left'   },
-                        { value: 'bottom', label: 'Bottom' },
-                        { value: 'right',  label: 'Right'  }
+                        { value: Side.TOP,    label: 'Top'    },
+                        { value: Side.LEFT,   label: 'Left'   },
+                        { value: Side.BOTTOM, label: 'Bottom' },
+                        { value: Side.RIGHT,  label: 'Right'  }
                     ]}
                 />
             </div>
