@@ -34,8 +34,8 @@ class Lighting extends Component {
     }
 
     renderModule() {
-        const { options } = this.props;
-        const { scene } = this.props.app;
+        const { app, options } = this.props;
+        const { scene } = app;
 
         this.lights.map((light) => { scene.remove(light); });
 
@@ -55,6 +55,8 @@ class Lighting extends Component {
         }
 
         this.lights.map((light) => { scene.add(light); });
+
+        app.render();
     }
 
     render() {

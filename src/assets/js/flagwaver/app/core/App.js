@@ -127,6 +127,7 @@ export default class App extends ModuleSystem {
         this.clock = clock;
         this.timestep = timestep;
         this.destroy = destroy;
+        this.render = render;
         this.start = start;
         this.update = update;
         this.needsUpdate = false;

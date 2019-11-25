@@ -49,6 +49,7 @@ class FlagGroup extends Component {
         });
 
         app.add(this.module);
+        app.render();
         app.needsUpdate = true;
     }
 
