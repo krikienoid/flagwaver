@@ -74,8 +74,6 @@ export default class FlagGroupPanel extends Component {
                     isValidFileType={type => type.match('image.*')}
                 />
 
-                <hr />
-
                 <ButtonSelect
                     label="Hoisting"
                     name="hoisting"

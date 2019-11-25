@@ -304,17 +304,19 @@ class App extends Component {
                                             </div>
                                         </section>
                                     ) : (appMode === AppMode.EDIT) ? (
-                                        <Panel title="Flag">
-                                            <FlagGroupPanelContainer />
+                                        <Fragment>
+                                            <Panel title="Flag">
+                                                <FlagGroupPanelContainer />
+                                            </Panel>
 
-                                            <hr />
+                                            <Panel title="Wind">
+                                                <WindPanelContainer />
+                                            </Panel>
 
-                                            <WindPanelContainer />
-
-                                            <hr />
-
-                                            <SceneryPanelContainer />
-                                        </Panel>
+                                            <Panel title="Scenery">
+                                                <SceneryPanelContainer />
+                                            </Panel>
+                                        </Fragment>
                                     ) : (appMode === AppMode.ANIMATE) ? (
                                         <Panel title="Animation control">
                                             <AnimationControlBarContainer />

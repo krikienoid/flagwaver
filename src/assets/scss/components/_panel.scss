@@ -8,6 +8,9 @@ $panel-sm-outer-padding-x: $grid-gutter-width;
 $panel-sm-outer-padding-y: $grid-gutter-width;
 
 .panel {
+    + .panel {
+        border-top: $border-width solid $border-color;
+    }
 }
 
 .panel-header,
@@ -21,12 +24,11 @@ $panel-sm-outer-padding-y: $grid-gutter-width;
 
 .panel-header {
     padding-top: 1.5 * $panel-outer-padding-y;
-    padding-bottom: 0.5 * $panel-outer-padding-y;
-    border-bottom: $border-width solid $border-color;
+    padding-bottom: 0;
 
     @include breakpoint(sm) {
         padding-top: 1.5 * $panel-sm-outer-padding-y;
-        padding-bottom: 0.5 * $panel-sm-outer-padding-y;
+        padding-bottom: 0;
     }
 }
 
