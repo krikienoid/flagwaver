@@ -78,6 +78,7 @@ class App extends Component {
 
     componentWillUnmount() {
         this.app.destroy();
+        this.app = null;
         window.removeEventListener('hashchange', this.handleHashChange);
     }
 

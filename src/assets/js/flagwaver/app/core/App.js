@@ -21,7 +21,7 @@ export default class App extends ModuleSystem {
 
         const settings = Object.assign({}, this.constructor.defaults, options);
 
-        const { scene, camera, renderer } = settings;
+        let { scene, camera, renderer } = settings;
 
         const clock = new THREE.Clock();
         const timestep = TIME_STEP;
@@ -102,6 +102,15 @@ export default class App extends ModuleSystem {
             clock.stop();
             removeModules();
             cancelAnimationFrame(loop);
+
+            scene.dispose();
+            renderer.dispose();
+            renderer.forceContextLoss();
+
+            this.canvas = renderer.domElement = null;
+            this.scene = scene = null;
+            this.camera = camera = null;
+            this.renderer = renderer = null;
         };
 
         // Init
@@ -112,8 +121,8 @@ export default class App extends ModuleSystem {
 
         // Public properties and methods
         this.scene = scene;
-        this.renderer = renderer;
         this.camera = camera;
+        this.renderer = renderer;
         this.canvas = renderer.domElement;
         this.clock = clock;
         this.timestep = timestep;
