@@ -107,7 +107,7 @@ function withLegacyFallbackTopEdge(state) {
     if (state.topedge && state.orientation === flagGroupDefaults.orientation) {
         return {
             ...state,
-            orientation: state.topedge
+            orientation: parseEnumValue(Side, state.topedge)
         };
     }
 
