@@ -90,35 +90,30 @@ function isValidState(state) {
     );
 }
 
-function withLegacyFallbackSrc(state) {
+function withLegacyFallbacks(oldState) {
+    let state = oldState;
+
     // Backwards compatibility for old link structure
     if (!state.src) {
-        return {
-            ...state,
-            src: window.unescape(window.location.hash.slice(1))
-        };
+        const hash = window.location.hash.slice(1);
+
+        if ((/^[^!\?].*/).test(hash)) {
+            state = {
+                ...state,
+                src: window.unescape(hash)
+            };
+        }
     }
 
-    return state;
-}
-
-function withLegacyFallbackTopEdge(state) {
     // Backwards compatibility for old topedge param
     if (state.topedge && state.orientation === flagGroupDefaults.orientation) {
-        return {
+        state = {
             ...state,
             orientation: parseEnumValue(Side, state.topedge)
         };
     }
 
     return state;
-}
-
-function withLegacyFallbacks(state) {
-    return [
-        withLegacyFallbackSrc,
-        withLegacyFallbackTopEdge
-    ].reduce((result, fn) => fn(result), state);
 }
 
 export function toHash(store) {
