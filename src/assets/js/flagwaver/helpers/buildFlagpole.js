@@ -1,4 +1,4 @@
-import { FlagpoleType } from '../constants';
+import { FlagpoleType, VerticalHoisting } from '../constants';
 import Flagpole from '../subjects/flagpoles/Flagpole';
 import HorizontalFlagpole from '../subjects/flagpoles/HorizontalFlagpole';
 import OutriggerFlagpole from '../subjects/flagpoles/OutriggerFlagpole';
@@ -30,7 +30,11 @@ export default function buildFlagpole(options, flag) {
             break;
 
         case FlagpoleType.CROSSBAR:
-            settings.crossbarLength = flag.cloth.height;
+            settings.crossbarLength = (
+                settings.verticalHoisting === VerticalHoisting.NONE
+                    ? flag.cloth.width
+                    : flag.cloth.height
+            );
 
             flagpole = new CrossbarFlagpole(settings);
 

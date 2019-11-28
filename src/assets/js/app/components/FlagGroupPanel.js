@@ -2,7 +2,12 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { MdFlag } from 'react-icons/md';
 
-import { Hoisting, Side, FlagpoleType } from '../../flagwaver';
+import {
+    Hoisting,
+    Side,
+    FlagpoleType,
+    VerticalHoisting
+} from '../../flagwaver';
 import ButtonSelect from '../components/ButtonSelect';
 import FilePickerInput from '../components/FilePickerInput';
 import Icon from '../components/Icon';
@@ -140,6 +145,28 @@ export default class FlagGroupPanel extends Component {
                         {
                             value: FlagpoleType.GALLERY,
                             label: 'Gallery'
+                        }
+                    ]}
+                />
+
+                <Select
+                    label="Vertical hanging method"
+                    name="verticalHoisting"
+                    value={options.verticalHoisting}
+                    disabled={options.flagpoleType !== FlagpoleType.CROSSBAR}
+                    onChange={this.handleChange}
+                    options={[
+                        {
+                            value: VerticalHoisting.TOP_RIGHT,
+                            label: 'Rotate clockwise'
+                        },
+                        {
+                            value: VerticalHoisting.TOP_LEFT,
+                            label: 'Rotate and flip'
+                        },
+                        {
+                            value: VerticalHoisting.NONE,
+                            label: 'No change'
                         }
                     ]}
                 />
