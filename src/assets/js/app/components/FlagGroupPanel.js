@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { MdFlag } from 'react-icons/md';
 
-import { Hoisting, Side } from '../../flagwaver';
+import { Hoisting, Side, FlagpoleType } from '../../flagwaver';
 import ButtonSelect from '../components/ButtonSelect';
 import FilePickerInput from '../components/FilePickerInput';
 import Icon from '../components/Icon';
@@ -112,6 +112,35 @@ export default class FlagGroupPanel extends Component {
                         { value: Side.LEFT,   label: 'Left'   },
                         { value: Side.BOTTOM, label: 'Bottom' },
                         { value: Side.RIGHT,  label: 'Right'  }
+                    ]}
+                />
+
+                <Select
+                    label="Flagpole type"
+                    name="flagpoleType"
+                    value={options.flagpoleType}
+                    onChange={this.handleChange}
+                    options={[
+                        {
+                            value: FlagpoleType.VERTICAL,
+                            label: 'Standard'
+                        },
+                        {
+                            value: FlagpoleType.HORIZONTAL,
+                            label: 'Horizontal'
+                        },
+                        {
+                            value: FlagpoleType.OUTRIGGER,
+                            label: 'Outrigger'
+                        },
+                        {
+                            value: FlagpoleType.CROSSBAR,
+                            label: 'Crossbar'
+                        },
+                        {
+                            value: FlagpoleType.GALLERY,
+                            label: 'Gallery'
+                        }
                     ]}
                 />
             </div>

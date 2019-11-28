@@ -1,7 +1,7 @@
 import THREE from 'three';
 
 import Flag from './Flag';
-import Flagpole from './Flagpole';
+import Flagpole from './flagpoles/Flagpole';
 
 /**
  * @class FlagGroup

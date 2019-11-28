@@ -59,3 +59,19 @@ export const FlagpoleType = {
     CROSSBAR:   'crossbar',
     GALLERY:    'gallery'
 };
+
+/**
+ * Enum for vertical flag hanging protocols.
+ *
+ * @readonly
+ * @enum {string}
+ * @typedef {string} VerticalHoisting
+ */
+export const VerticalHoisting = {
+    /** Flag orientation does not change. */
+    NONE: 'none',
+    /** Flag is rotated 90 degrees clockwise. */
+    TOP_RIGHT: 'topright',
+    /** Flag is rotated 90 degrees clockwise and flipped horizontally. */
+    TOP_LEFT: 'topleft'
+};

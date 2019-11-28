@@ -1,4 +1,9 @@
-import Flagpole from '../subjects/Flagpole';
+import { FlagpoleType } from '../constants';
+import Flagpole from '../subjects/flagpoles/Flagpole';
+import HorizontalFlagpole from '../subjects/flagpoles/HorizontalFlagpole';
+import OutriggerFlagpole from '../subjects/flagpoles/OutriggerFlagpole';
+import CrossbarFlagpole from '../subjects/flagpoles/CrossbarFlagpole';
+import GalleryFlagpole from '../subjects/flagpoles/GalleryFlagpole';
 
 /**
  * @function buildFlagpole
@@ -12,7 +17,37 @@ export default function buildFlagpole(options, flag) {
     const settings = Object.assign({}, options);
     let flagpole;
 
-    flagpole = new Flagpole(settings);
+    switch (settings.flagpoleType) {
+        case FlagpoleType.HORIZONTAL:
+            flagpole = new HorizontalFlagpole(settings);
+
+            break;
+
+        case FlagpoleType.OUTRIGGER:
+            flagpole = new OutriggerFlagpole(settings);
+
+            break;
+
+        case FlagpoleType.CROSSBAR:
+            settings.crossbarLength = flag.cloth.height;
+
+            flagpole = new CrossbarFlagpole(settings);
+
+            break;
+
+        case FlagpoleType.GALLERY:
+            settings.crossbarLength = flag.cloth.width;
+
+            flagpole = new GalleryFlagpole(settings);
+
+            break;
+
+        case FlagpoleType.VERTICAL:
+        default:
+            flagpole = new Flagpole(settings);
+
+            break;
+    }
 
     return flagpole;
 }
