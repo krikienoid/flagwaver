@@ -4,6 +4,7 @@ import HorizontalFlagpole from '../subjects/flagpoles/HorizontalFlagpole';
 import OutriggerFlagpole from '../subjects/flagpoles/OutriggerFlagpole';
 import CrossbarFlagpole from '../subjects/flagpoles/CrossbarFlagpole';
 import GalleryFlagpole from '../subjects/flagpoles/GalleryFlagpole';
+import AustralianFlagpole from '../subjects/flagpoles/AustralianFlagpole';
 
 /**
  * @function buildFlagpole
@@ -39,6 +40,11 @@ export default function buildFlagpole(options, flag) {
             settings.crossbarLength = flag.cloth.width;
 
             flagpole = new GalleryFlagpole(settings);
+
+            break;
+
+        case FlagpoleType.AUSTRALIAN:
+            flagpole = new AustralianFlagpole(settings);
 
             break;
 

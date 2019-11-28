@@ -57,7 +57,8 @@ export const FlagpoleType = {
     HORIZONTAL: 'horizontal',
     OUTRIGGER:  'outrigger',
     CROSSBAR:   'crossbar',
-    GALLERY:    'gallery'
+    GALLERY:    'gallery',
+    AUSTRALIAN: 'australian'
 };
 
 /**
