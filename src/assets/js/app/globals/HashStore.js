@@ -1,4 +1,9 @@
-import { Hoisting, Side } from '../../flagwaver';
+import {
+    Hoisting,
+    Side,
+    FlagpoleType,
+    VerticalHoisting
+} from '../../flagwaver';
 import HashState from '../../hashstate';
 import { SceneryBackground } from '../constants';
 import { setFileRecord } from '../redux/modules/fileRecord';
@@ -37,6 +42,14 @@ const hashState = new HashState({
         defaultValue: flagGroupDefaults.orientation,
         parse: string => parseEnumValue(Side, string)
     },
+    'flagpoletype': {
+        defaultValue: flagGroupDefaults.flagpoleType,
+        parse: string => parseEnumValue(FlagpoleType, string)
+    },
+    'vhoisting': {
+        defaultValue: flagGroupDefaults.verticalHoisting,
+        parse: string => parseEnumValue(VerticalHoisting, string)
+    },
     'background': {
         defaultValue: sceneryDefaults.background,
         parse: string => parseEnumValue(SceneryBackground, string)
@@ -58,6 +71,8 @@ function mapStateToHash(state) {
         src: state.flagGroup.imageSrc,
         hoisting: state.flagGroup.hoisting,
         orientation: state.flagGroup.orientation,
+        flagpoletype: state.flagGroup.flagpoleType,
+        vhoisting: state.flagGroup.verticalHoisting,
         background: state.scenery.background
     };
 }
@@ -71,7 +86,9 @@ function mapStateFromHash(state) {
         flagGroup: assignDefaults(flagGroupDefaults, {
             imageSrc: state.src,
             hoisting: state.hoisting,
-            orientation: state.orientation
+            orientation: state.orientation,
+            flagpoleType: state.flagpoletype,
+            verticalHoisting: state.vhoisting
         }),
         scenery: {
             background: state.background

@@ -4,8 +4,12 @@ export * from './constants';
 // Subjects
 export { default as Flag } from './subjects/Flag';
 export { default as FlagGroup } from './subjects/FlagGroup';
-export { default as Flagpole } from './subjects/Flagpole';
 export { default as Wind } from './subjects/Wind';
+export { default as CrossbarFlagpole } from './subjects/flagpoles/CrossbarFlagpole';
+export { default as Flagpole } from './subjects/flagpoles/Flagpole';
+export { default as GalleryFlagpole } from './subjects/flagpoles/GalleryFlagpole';
+export { default as HorizontalFlagpole } from './subjects/flagpoles/HorizontalFlagpole';
+export { default as OutriggerFlagpole } from './subjects/flagpoles/OutriggerFlagpole';
 export { default as WindModifiers } from './subjects/utils/WindModifiers';
 
 // Interactions

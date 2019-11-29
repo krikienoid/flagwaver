@@ -97,8 +97,8 @@ $transition-duration:           200ms;
 $transition-timing-function:    ease-in-out;
 $transition-style:              $transition-duration $transition-timing-function;
 
-$control-transition:            background $transition-style,
-                                border $transition-style,
+$control-transition:            background-color $transition-style,
+                                border-color $transition-style,
                                 box-shadow $transition-style,
                                 color $transition-style;
 

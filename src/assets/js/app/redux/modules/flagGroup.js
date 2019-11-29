@@ -1,4 +1,9 @@
-import { Hoisting, Side, FlagpoleType } from '../../../flagwaver';
+import {
+    Hoisting,
+    Side,
+    FlagpoleType,
+    VerticalHoisting
+} from '../../../flagwaver';
 
 // Action Types
 
@@ -16,14 +21,15 @@ export function setFlagGroupOptions(options) {
 // Reducer
 
 const initialState = {
-    hoisting:       Hoisting.DEXTER,
-    orientation:    Side.TOP,
-    width:          'auto',
-    height:         'auto',
-    mass:           0.1,
-    granularity:    10,
-    imageSrc:       '',
-    flagpoleType:   FlagpoleType.VERTICAL
+    hoisting:           Hoisting.DEXTER,
+    orientation:        Side.TOP,
+    width:              'auto',
+    height:             'auto',
+    mass:               0.1,
+    granularity:        10,
+    imageSrc:           '',
+    flagpoleType:       FlagpoleType.VERTICAL,
+    verticalHoisting:   VerticalHoisting.TOP_RIGHT
 };
 
 export default function reducer(state = initialState, action) {
