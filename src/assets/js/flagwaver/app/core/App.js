@@ -1,9 +1,7 @@
 import THREE from 'three';
 
+import { TIME_STEP } from '../../constants';
 import ModuleSystem from './ModuleSystem';
-
-const FPS = 60;
-const TIME_STEP = 1 / FPS;
 
 /**
  * @class App
@@ -25,6 +23,10 @@ export default class App extends ModuleSystem {
 
         const clock = new THREE.Clock();
         const timestep = TIME_STEP;
+        const maxUpdatesPerFrame = 90;
+        const maxPanics = 255;
+        let delta = 0;
+        let panicCount = 0;
 
         const removeModules = () => {
             const modules = this.modules;
@@ -90,11 +92,39 @@ export default class App extends ModuleSystem {
             render();
         };
 
+        const panic = () => {
+            delta = 0;
+
+            if (panicCount <= maxPanics) {
+                if (panicCount === maxPanics) {
+                    console.warn('FlagWaver.App: maxUpdatesPerFrame exceeded. Suppressing further warnings.');
+                } else {
+                    console.warn('FlagWaver.App: maxUpdatesPerFrame exceeded.');
+                }
+
+                panicCount++;
+            }
+        };
+
         const loop = () => {
             requestAnimationFrame(loop);
 
             if (clock.running) {
-                update(Math.min(clock.getDelta(), timestep));
+                let updateCount = 0;
+
+                delta += clock.getDelta();
+
+                while (delta >= timestep) {
+                    update(timestep);
+
+                    delta -= timestep;
+
+                    if (++updateCount >= maxUpdatesPerFrame) {
+                        panic();
+
+                        break;
+                    }
+                }
             }
         };
 
