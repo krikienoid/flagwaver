@@ -41,8 +41,7 @@ export default {
     },
     deps: {
       js: [
-        'node_modules/three/build/three.min.js',
-        'node_modules/stats.js/build/stats.min.js'
+        'node_modules/three/build/three.min.js'
       ]
     }
   },

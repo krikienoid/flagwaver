@@ -1,7 +1,10 @@
 import THREE from 'three';
 
 import { TIME_STEP } from '../../constants';
+import initStats from '../../utils/initStats';
 import ModuleSystem from './ModuleSystem';
+
+const stats = (process.env.NODE_ENV === 'development') ? initStats() : null;
 
 /**
  * @class App
@@ -111,6 +114,10 @@ export default class App extends ModuleSystem {
         const loop = () => {
             requestAnimationFrame(loop);
 
+            if (process.env.NODE_ENV === 'development') {
+                stats.begin();
+            }
+
             if (clock.running) {
                 let updateCount = 0;
 
@@ -127,6 +134,10 @@ export default class App extends ModuleSystem {
                         break;
                     }
                 }
+            }
+
+            if (process.env.NODE_ENV === 'development') {
+                stats.end();
             }
         };
 
