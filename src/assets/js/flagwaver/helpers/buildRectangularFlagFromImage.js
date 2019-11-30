@@ -1,6 +1,6 @@
 import THREE from 'three';
 
-import { PX_PER_M, Hoisting, Side } from '../constants';
+import { Hoisting, Side } from '../constants';
 import getAngleOfSide from '../utils/getAngleOfSide';
 import { isNumeric, isObject } from '../utils/TypeUtils';
 import Flag from '../subjects/Flag';
@@ -81,104 +81,38 @@ function isVertical(options) {
 function computeTextureArgs(options) {
     const result = {};
 
-    result.width = options.width * PX_PER_M;
-    result.height = options.height * PX_PER_M;
     result.reflect = options.hoisting === Hoisting.SINISTER;
     result.rotate = getAngleOfSide(options.orientation);
-
-    if (isVertical(options)) {
-        const offset = (result.width - result.height) / 2;
-
-        result.translateX = -offset;
-        result.translateY = offset;
-        result.flipXY = true;
-    } else {
-        result.translateX = 0;
-        result.translateY = 0;
-        result.flipXY = false;
-    }
 
     return result;
 }
 
-// Generate transformed texture from image using HTML canvas
-// (Requires images to be CORS enabled)
+// Generate transformed texture from image
 function createTextureFromImage(image, options) {
-    const canvas = document.createElementNS(
-        'http://www.w3.org/1999/xhtml',
-        'canvas'
-    );
+    const texture = new THREE.Texture(image);
 
-    const ctx           = canvas.getContext('2d');
-    const srcWidth      = image.width;
-    const srcHeight     = image.height;
-    let destWidth       = srcWidth;
-    let destHeight      = srcHeight;
+    texture.matrixAutoUpdate = false;
 
     if (isObject(options)) {
-        // Set destination size
-        if (options.width  > 0) { destWidth  = options.width;  }
-        if (options.height > 0) { destHeight = options.height; }
+        const matrix = texture.matrix;
 
-        // Swap X axis with Y axis
-        if (options.flipXY) {
-            canvas.width  = destHeight;
-            canvas.height = destWidth;
-        } else {
-            canvas.width  = destWidth;
-            canvas.height = destHeight;
-        }
+        matrix.scale(1, 1);
 
         // Reflect
         if (options.reflect) {
-            ctx.translate(canvas.width, 0);
-            ctx.scale(-1, 1);
+            matrix.translate(-1, 0).scale(-1, 1);
         }
 
         // Rotate around center
         if (isNumeric(options.rotate)) {
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-            ctx.rotate(options.rotate);
-            ctx.translate(-canvas.width / 2, -canvas.height / 2);
+            matrix
+                .translate(-0.5, -0.5)
+                .rotate(-options.rotate)
+                .translate(0.5, 0.5);
         }
-
-        // Translate X
-        if (isNumeric(options.translateX)) {
-            ctx.translate(options.translateX, 0);
-        }
-
-        // Translate Y
-        if (isNumeric(options.translateY)) {
-            ctx.translate(0, options.translateY);
-        }
-    } else {
-        // Set canvas size
-        canvas.width  = destWidth;
-        canvas.height = destHeight;
     }
 
-    if (process.env.NODE_ENV === 'development') {
-        console.log(
-            'FlagWaver.buildRectangularFlagFromImage: Image texture created.' +
-            '\n  ' + 'Natural size: ' +
-                srcWidth + 'x' + srcHeight +
-            '\n  ' + 'Texture size: ' +
-                Math.round(canvas.width) + 'x' + Math.round(canvas.height) +
-            '\n  ' + 'Natural aspect ratio: ' +
-                Number((srcWidth / srcHeight).toFixed(4)) +
-            '\n  ' + 'Texture aspect ratio: ' +
-                Number((canvas.width / canvas.height).toFixed(4))
-        );
-
-        ctx.fillStyle = '#ff00ff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
-
-    ctx.drawImage(
-        image, 0, 0, srcWidth, srcHeight, 0, 0, destWidth, destHeight
-    );
-
-    return new THREE.Texture(canvas);
+    return texture;
 }
 
 // Compute values needed to create new flag

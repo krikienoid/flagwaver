@@ -26,28 +26,6 @@ function buildMesh(cloth, options) {
     let texture = WHITE_TEXTURE;
     const geometry = cloth.geometry;
 
-    // Material
-    const material = new THREE.MeshPhongMaterial({
-        alphaTest: 0.5,
-        color:     0xffffff,
-        specular:  0x030303,
-        /*
-         * shininess cannot be 0 as it causes bugs in some systems.
-         * https://github.com/mrdoob/three.js/issues/7252
-         */
-        shininess: 0.001,
-        side:      THREE.DoubleSide
-    });
-
-    /* //
-    material = new THREE.MeshBasicMaterial({
-        color:       0x00ff00,
-        wireframe:   true,
-        transparent: true,
-        opacity:     0.9
-    });
-    // */
-
     // Texture
     if (options && options.texture) {
         if (options.texture instanceof THREE.Texture) {
@@ -64,7 +42,28 @@ function buildMesh(cloth, options) {
         }
     }
 
-    material.map = texture;
+    // Material
+    const material = new THREE.MeshPhongMaterial({
+        alphaTest: 0.5,
+        color:     0xffffff,
+        specular:  0x030303,
+        /*
+         * shininess cannot be 0 as it causes bugs in some systems.
+         * https://github.com/mrdoob/three.js/issues/7252
+         */
+        shininess: 0.001,
+        side:      THREE.DoubleSide,
+        map:       texture
+    });
+
+    /* //
+    material = new THREE.MeshBasicMaterial({
+        color:       0x00ff00,
+        wireframe:   true,
+        transparent: true,
+        opacity:     0.9
+    });
+    // */
 
     // Mesh
     const mesh = new THREE.Mesh(geometry, material);

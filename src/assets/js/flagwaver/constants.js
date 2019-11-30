@@ -4,7 +4,6 @@
 
 // Physics constants
 export const TIME_STEP          = 1 / 60;
-export const PX_PER_M           = 200;
 export const DAMPING            = 0.03;
 export const DRAG               = 1 - DAMPING;
 export const DRAG_COEFFICIENT   = 0.12;
