@@ -1,7 +1,7 @@
 import THREE from 'three';
 
 function setLightShadow(light) {
-    const d = 300;
+    const d = 10;
 
     light.castShadow            = true;
     light.shadow.mapSize.width  = 2048;
@@ -18,7 +18,7 @@ export function createMutedLights() {
 
     const light2 = new THREE.DirectionalLight(0xfefffa, 1.5);
 
-    light2.position.set(50, 175, 100);
+    light2.position.set(20, 70, 40);
     setLightShadow(light2);
 
     return [light1, light2];
@@ -29,7 +29,7 @@ export function createDaytimeLights() {
 
     const light2 = new THREE.DirectionalLight(0xdfebff, 2.5);
 
-    light2.position.set(50, 175, 100);
+    light2.position.set(20, 70, 40);
     setLightShadow(light2);
 
     const light3 = new THREE.DirectionalLight(0xacdf9f, 0.35);
@@ -44,7 +44,7 @@ export function createNighttimeLights() {
 
     const light2 = new THREE.DirectionalLight(0x8ba1ff, 1.5);
 
-    light2.position.set(-80, 75, -120);
+    light2.position.set(-55, 50, -80);
     setLightShadow(light2);
 
     const light3 = new THREE.DirectionalLight(0x4564cd, 0.08);

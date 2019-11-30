@@ -13,8 +13,7 @@ import FlagWaver, {
 function buildScene() {
     const scene = new THREE.Scene();
 
-    scene.fog = new THREE.Fog(0x000000, 1000, 10000);
-    scene.fog.color.setHSL(0.6, 1, 0.9);
+    scene.fog = new THREE.Fog(0xcce0fe, 1, 1000);
 
     return scene;
 }
@@ -23,8 +22,8 @@ function buildCamera() {
     const camera = new THREE.PerspectiveCamera(
         30,
         window.innerWidth / window.innerHeight,
-        1,
-        10000
+        0.1,
+        1000
     );
 
     camera.position.set(0, 5, 12);
@@ -44,6 +43,7 @@ function buildRenderer() {
     renderer.gammaInput        = true;
     renderer.gammaOutput       = true;
     renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type    = THREE.PCFSoftShadowMap;
 
     return renderer;
 }
