@@ -75,10 +75,10 @@ class FlagGroup extends Component {
         buildAsyncFlagFromImage(src, options)
             .then((flag) => {
                 this.updateFlag(flag);
-            }, (flag) => {
-                this.updateFlag(flag);
             })
-            .catch((e) => {
+            .catch((flag) => {
+                this.updateFlag(flag);
+
                 addToast({
                     status: 'error',
                     message: 'Image could not be loaded.'
