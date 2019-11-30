@@ -1,5 +1,6 @@
 import THREE from 'three';
 
+import { DRAG_COEFFICIENT } from '../constants';
 import localizeForce from './utils/localizeForce';
 
 const tmp = new THREE.Vector3();
@@ -18,7 +19,10 @@ export default function applyWindForceToCloth(cloth, wind, object) {
     const faces = cloth.geometry.faces;
 
     if (wind) {
-        const force = localizeForce(wind.force, object);
+        const faceArea = cloth.restDistance * cloth.restDistance / 2;
+
+        const force = localizeForce(wind.pressure, object)
+            .multiplyScalar(DRAG_COEFFICIENT * faceArea / 3);
 
         for (let i = 0, ii = faces.length; i < ii; i++) {
             const face   = faces[i];

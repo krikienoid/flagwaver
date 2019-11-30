@@ -18,7 +18,7 @@ const WindModifiers = {
 
     constantSpeed: (speed, time) => speed,
 
-    variableSpeed: (speed, time) => Math.cos(time / 7000) * (speed / 2) + speed
+    variableSpeed: (speed, time) => speed * (1 + 0.25 * Math.cos(time / 7000))
 };
 
 export default WindModifiers;

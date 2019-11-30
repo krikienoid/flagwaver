@@ -25,7 +25,7 @@ const initialState = {
     orientation:        Side.TOP,
     width:              'auto',
     height:             'auto',
-    mass:               0.1,
+    mass:               0.11,
     granularity:        10,
     imageSrc:           '',
     flagpoleType:       FlagpoleType.VERTICAL,

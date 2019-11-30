@@ -1,6 +1,11 @@
 import THREE from 'three';
 
+import { AIR_DENSITY } from '../constants';
 import WindModifiers from './utils/WindModifiers';
+
+function windPressure(speed) {
+    return 0.5 * AIR_DENSITY * speed * speed;
+}
 
 // Perfectly aligned vectors can cause unexpected or unrealistic outcomes
 // in the simulation. Use this function to induce minor disruptions.
@@ -34,12 +39,12 @@ export default class Wind {
         this.directionFn        = settings.directionFn;
         this.speedFn            = settings.speedFn;
 
-        this.force = new THREE.Vector3();
+        this.pressure = new THREE.Vector3();
     }
 
     static defaults = {
         direction:              new THREE.Vector3(1, 0, 0),
-        speed:                  200,
+        speed:                  10, // m/s
         directionFn:            WindModifiers.blowFromLeftDirection,
         speedFn:                WindModifiers.constantSpeed
     };
@@ -47,10 +52,12 @@ export default class Wind {
     update() {
         const time = Date.now();
 
-        this.directionFn(disturbVector(this.force.copy(this.direction)), time)
+        this.directionFn(disturbVector(this.pressure.copy(this.direction)), time)
             .normalize()
             .multiplyScalar(
-                this.speedFn(disturbScalar(this.speed), time)
+                windPressure(
+                    this.speedFn(disturbScalar(this.speed), time)
+                )
             );
     }
 }

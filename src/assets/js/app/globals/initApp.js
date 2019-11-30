@@ -27,8 +27,7 @@ function buildCamera() {
         10000
     );
 
-    camera.position.y = 50;
-    camera.position.z = 2000;
+    camera.position.set(0, 5, 12);
 
     return camera;
 }

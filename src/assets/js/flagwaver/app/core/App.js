@@ -21,6 +21,8 @@ export default class App extends ModuleSystem {
 
         let { scene, camera, renderer } = settings;
 
+        const cameraFocus = new THREE.Vector3(0, 5, 0);
+
         const clock = new THREE.Clock();
         const timestep = TIME_STEP;
         const maxUpdatesPerFrame = 90;
@@ -73,7 +75,7 @@ export default class App extends ModuleSystem {
         };
 
         const render = () => {
-            camera.lookAt(scene.position);
+            camera.lookAt(cameraFocus);
             renderer.render(scene, camera);
         };
 

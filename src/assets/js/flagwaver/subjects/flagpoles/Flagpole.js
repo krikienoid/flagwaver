@@ -38,6 +38,7 @@ export default class Flagpole {
         mesh.receiveShadow = true;
         mesh.castShadow    = true;
 
+        this.top = new THREE.Vector3(0, settings.poleLength, 0);
         this.mesh = mesh;
         this.object = this.mesh;
     }
@@ -46,13 +47,13 @@ export default class Flagpole {
         const o = {};
 
         o.flagpoleType    = FlagpoleType.VERTICAL;
-        o.poleWidth       = 6;
-        o.poleLength      = 8192;
-        o.poleCapSize     = o.poleWidth + 2;
-        o.crossbarWidth   = o.poleWidth - 2;
-        o.crossbarLength  = 200;
-        o.crossbarCapSize = o.crossbarWidth + 2;
-        o.poleTopOffset   = 60;
+        o.poleWidth       = 0.076;
+        o.poleLength      = 6;
+        o.poleCapSize     = o.poleWidth * 4 / 3;
+        o.crossbarWidth   = o.poleWidth * 2 / 3;
+        o.crossbarLength  = 1.2;
+        o.crossbarCapSize = o.crossbarWidth * 3 / 2;
+        o.poleTopOffset   = 0.1;
 
         return o;
     })();
@@ -72,5 +73,6 @@ export default class Flagpole {
         flag.unpin();
         flag.pin({ edges: [Side.LEFT] });
         flag.setLengthConstraints(Side.LEFT);
+        flag.object.position.add(this.top);
     }
 }

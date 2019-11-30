@@ -36,12 +36,13 @@ export default class Cloth {
         //
 
         const position = new THREE.Vector3();
+        const particleMass = mass / ((ySegments + 1) * (xSegments + 1));
 
         for (let v = 0; v <= ySegments; v++) {
             for (let u = 0; u <= xSegments; u++) {
                 plane(u / xSegments, v / ySegments, position);
 
-                particles.push(new Particle(position, mass));
+                particles.push(new Particle(position, particleMass));
             }
         }
 

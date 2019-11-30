@@ -11,7 +11,7 @@ const tmp = new THREE.Vector3();
  */
 export default function applyRippleEffectToCloth(cloth) {
     const particles = cloth.particles;
-    const strength = 100;
+    const strength = 0.004;
     const t = Date.now() / 1000;
 
     for (let i = 0, ii = particles.length; i < ii; i++) {

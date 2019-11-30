@@ -9,7 +9,15 @@ export default class CrossbarFlagpole extends Flagpole {
     constructor(options) {
         super(options);
 
-        this.verticalHoisting = options.verticalHoisting;
+        const settings = Object.assign({}, this.constructor.defaults, options);
+
+        this.top.set(
+            0,
+            settings.poleLength - settings.poleTopOffset,
+            settings.poleWidth / 2 + settings.crossbarWidth / 2
+        );
+
+        this.verticalHoisting = settings.verticalHoisting;
     }
 
     buildGeometry(options) {
@@ -23,6 +31,7 @@ export default class CrossbarFlagpole extends Flagpole {
             case VerticalHoisting.NONE:
                 flag.pin({ edges: [Side.TOP] });
                 flag.setLengthConstraints(Side.TOP);
+                flag.object.position.add(this.top);
                 flag.object.position.x = -flag.cloth.width / 2;
 
                 break;
@@ -30,6 +39,7 @@ export default class CrossbarFlagpole extends Flagpole {
             case VerticalHoisting.TOP_LEFT:
                 flag.pin({ edges: [Side.LEFT] });
                 flag.setLengthConstraints(Side.LEFT);
+                flag.object.position.add(this.top);
                 flag.object.position.x = -flag.cloth.height / 2;
                 flag.object.rotateZ(Math.PI * 3 / 2);
                 flag.object.rotateX(Math.PI);
@@ -40,6 +50,7 @@ export default class CrossbarFlagpole extends Flagpole {
             default:
                 flag.pin({ edges: [Side.LEFT] });
                 flag.setLengthConstraints(Side.LEFT);
+                flag.object.position.add(this.top);
                 flag.object.position.x = flag.cloth.height / 2;
                 flag.object.rotateZ(Math.PI * 3 / 2);
 

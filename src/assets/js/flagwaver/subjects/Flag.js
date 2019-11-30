@@ -11,13 +11,14 @@ import FixedConstraint from '../physics/FixedConstraint';
 const WHITE_TEXTURE = generateDataTexture(1, 1, new THREE.Color(0xffffff));
 
 function buildCloth(options) {
-    const restDistance = options.height / options.granularity;
+    const { width, height, mass, granularity } = options;
+    const restDistance = height / granularity;
 
     return new Cloth(
-        Math.round(options.width / restDistance),
-        Math.round(options.height / restDistance),
+        Math.round(width / restDistance),
+        Math.round(height / restDistance),
         restDistance,
-        options.mass
+        mass * width * height
     );
 }
 
@@ -180,9 +181,9 @@ export default class Flag {
     }
 
     static defaults = {
-        width:          300,
-        height:         200,
-        mass:           0.1,
+        width:          1.8,
+        height:         1.2,
+        mass:           0.11, // 110 g/m^s
         granularity:    10,
         rigidness:      1,
         texture:        WHITE_TEXTURE,

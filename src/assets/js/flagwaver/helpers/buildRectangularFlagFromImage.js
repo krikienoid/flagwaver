@@ -1,6 +1,6 @@
 import THREE from 'three';
 
-import { Hoisting, Side } from '../constants';
+import { PX_PER_M, Hoisting, Side } from '../constants';
 import getAngleOfSide from '../utils/getAngleOfSide';
 import { isNumeric, isObject } from '../utils/TypeUtils';
 import Flag from '../subjects/Flag';
@@ -81,13 +81,13 @@ function isVertical(options) {
 function computeTextureArgs(options) {
     const result = {};
 
-    result.width = options.width;
-    result.height = options.height;
+    result.width = options.width * PX_PER_M;
+    result.height = options.height * PX_PER_M;
     result.reflect = options.hoisting === Hoisting.SINISTER;
     result.rotate = getAngleOfSide(options.orientation);
 
     if (isVertical(options)) {
-        const offset = (options.width - options.height) / 2;
+        const offset = (result.width - result.height) / 2;
 
         result.translateX = -offset;
         result.translateY = offset;

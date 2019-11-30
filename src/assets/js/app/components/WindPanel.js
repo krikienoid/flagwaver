@@ -99,7 +99,8 @@ export default class WindPanel extends Component {
                     name="speed"
                     value={options.speed}
                     min={0}
-                    max={2000}
+                    max={30}
+                    outputSuffix=" m/s"
                     disabled={!controllable}
                     onChange={this.handleSliderChange}
                 />

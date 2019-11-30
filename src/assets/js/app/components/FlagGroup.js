@@ -2,6 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import {
+    FlagpoleType,
     FlagGroupModule,
     buildAsyncFlagFromImage,
     buildFlagpole
@@ -47,6 +48,20 @@ class FlagGroup extends Component {
             flagpole: buildFlagpole(options, flag),
             flag: flag
         });
+
+        if (
+            options.flagpoleType === FlagpoleType.HORIZONTAL ||
+            options.flagpoleType === FlagpoleType.OUTRIGGER
+        ) {
+            const flagGroup = this.module.subject;
+            const flagpole = flagGroup.flagpole;
+            const poleLength = flagpole.constructor.defaults.poleLength;
+
+            // Center top of flagpole
+            flagGroup.object.position
+                .set(0, poleLength, 0)
+                .sub(flagpole.top);
+        }
 
         app.add(this.module);
         app.render();

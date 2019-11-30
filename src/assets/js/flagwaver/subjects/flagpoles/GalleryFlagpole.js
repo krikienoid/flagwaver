@@ -14,5 +14,6 @@ export default class GalleryFlagpole extends Flagpole {
         flag.unpin();
         flag.pin({ edges: [Side.LEFT, Side.TOP] });
         flag.setLengthConstraints(Side.LEFT);
+        flag.object.position.add(this.top);
     }
 }

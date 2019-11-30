@@ -17,23 +17,28 @@ import THREE from 'three';
  * @param {Object} options
  */
 export function createPoleGeometryTypeI(options) {
+    const poleRadius = options.poleWidth / 2;
+    const poleLength = options.poleLength;
+    const poleCapRadius = options.poleCapSize / 2;
+
     const geometry = new THREE.CylinderGeometry(
-        options.poleWidth,
-        options.poleWidth,
-        options.poleLength
+        poleRadius,
+        poleRadius,
+        poleLength
     );
 
-    // Center
-    geometry.translate(0, -options.poleLength / 2, 0);
+    geometry.translate(0, options.poleLength / 2, 0);
 
     // Add finial cap
-    geometry.merge(
-        new THREE.CylinderGeometry(
-            options.poleCapSize,
-            options.poleCapSize,
-            options.poleCapSize
-        )
+    const capGeometry = new THREE.CylinderGeometry(
+        poleCapRadius,
+        poleCapRadius,
+        poleCapRadius
     );
+
+    capGeometry.translate(0, poleLength + poleCapRadius / 2, 0);
+
+    geometry.merge(capGeometry);
 
     return geometry;
 }
@@ -57,38 +62,48 @@ export function createPoleGeometryTypeI(options) {
 export function createPoleGeometryTypeT(options) {
     const geometry = createPoleGeometryTypeI(options);
 
-    // Center
-    geometry.translate(0, options.poleTopOffset, -options.poleWidth);
+    const poleRadius = options.poleWidth / 2;
+    const poleLength = options.poleLength;
+    const crossbarRadius = options.crossbarWidth / 2;
+    const crossbarLength = options.crossbarLength;
+    const crossbarCapRadius = options.crossbarCapSize / 2;
+    const poleTopOffset = options.poleTopOffset;
 
     // Create crossbar
     const crossbarGeometry = new THREE.CylinderGeometry(
-        options.crossbarWidth,
-        options.crossbarWidth,
-        options.crossbarLength
+        crossbarRadius,
+        crossbarRadius,
+        crossbarLength
     );
 
     crossbarGeometry.rotateZ(Math.PI / 2);
 
     // Create crossbar caps
     const capGeometry = new THREE.CylinderGeometry(
-        options.crossbarCapSize,
-        options.crossbarCapSize,
-        options.crossbarCapSize
+        crossbarCapRadius,
+        crossbarCapRadius,
+        crossbarCapRadius
     );
 
     const capGeometry2 = capGeometry.clone();
 
     // Left crossbar cap
     capGeometry.rotateZ(Math.PI / 2);
-    capGeometry.translate(-options.crossbarLength / 2, 0, 0);
+    capGeometry.translate(-crossbarLength / 2, 0, 0);
 
     crossbarGeometry.merge(capGeometry);
 
     // Right crossbar cap
     capGeometry2.rotateZ(-Math.PI / 2);
-    capGeometry2.translate(options.crossbarLength / 2, 0, 0);
+    capGeometry2.translate(crossbarLength / 2, 0, 0);
 
     crossbarGeometry.merge(capGeometry2);
+
+    crossbarGeometry.translate(
+        0,
+        poleLength - poleTopOffset,
+        poleRadius + crossbarRadius
+    );
 
     // Attach crossbar
     geometry.merge(crossbarGeometry);
@@ -115,15 +130,25 @@ export function createPoleGeometryTypeT(options) {
 export function createPoleGeometryTypeL(options) {
     const geometry = createPoleGeometryTypeI(options);
 
+    const poleLength = options.poleLength;
+    const poleCapRadius = options.poleCapSize / 2;
+    const crossbarRadius = options.crossbarWidth / 2;
+    const crossbarLength = options.crossbarLength;
+
     // Create crossbar
     const crossbarGeometry = new THREE.CylinderGeometry(
-        options.crossbarWidth,
-        options.crossbarWidth,
-        options.crossbarLength
+        crossbarRadius,
+        crossbarRadius,
+        crossbarLength
     );
 
-    crossbarGeometry.translate(0, -options.crossbarLength / 2, 0);
     crossbarGeometry.rotateZ(Math.PI / 2);
+
+    crossbarGeometry.translate(
+        crossbarLength / 2,
+        poleLength + poleCapRadius - crossbarRadius,
+        0
+    );
 
     // Attach crossbar
     geometry.merge(crossbarGeometry);
