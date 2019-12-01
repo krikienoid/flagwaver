@@ -4,6 +4,7 @@ import { MdClose, MdArrowDropDown, MdArrowDropUp } from 'react-icons/md';
 
 import { fromHash } from '../globals/HashStore';
 import initApp from '../globals/initApp';
+import AboutPanel from '../components/AboutPanel';
 import AppCanvas from '../components/AppCanvas';
 import AppModules from '../components/AppModules';
 import Drawer from '../components/Drawer';
@@ -31,7 +32,8 @@ const SITE_HEADLINE_INVERSE_IMAGE_PATH = `${process.env.PUBLIC_URL}/${
 
 const AppMode = {
     EDIT: 'edit',
-    ANIMATE: 'animate'
+    ANIMATE: 'animate',
+    ABOUT: 'about'
 };
 
 const navItems = [
@@ -42,6 +44,10 @@ const navItems = [
     {
         key: AppMode.ANIMATE,
         displayName: 'Animation control'
+    },
+    {
+        key: AppMode.ABOUT,
+        displayName: 'About'
     }
 ];
 
@@ -188,7 +194,7 @@ class App extends Component {
                         </div>
 
                         <section className="bottom-app-bar" aria-label="Toolbar">
-                            {(appMode === AppMode.EDIT) ? (
+                            {(appMode === AppMode.EDIT || appMode === AppMode.ABOUT) ? (
                                 <Fragment>
                                     <div className="bottom-app-bar-primary">
                                         <FlagGroupBarContainer />
@@ -320,6 +326,15 @@ class App extends Component {
                                     ) : (appMode === AppMode.ANIMATE) ? (
                                         <Panel title="Animation control">
                                             <AnimationControlBarContainer />
+                                        </Panel>
+                                    ) : (appMode === AppMode.ABOUT) ? (
+                                        <Panel title={(
+                                            <Fragment>
+                                                FlagWaver
+                                                <small>{process.env.VERSION}</small>
+                                            </Fragment>
+                                        )}>
+                                            <AboutPanel />
                                         </Panel>
                                     ) : null}
                                 </section>

@@ -6,9 +6,12 @@
 
 ## Features
 
-- Upload images from the web or from your computer.
+- Upload images from the web or from your device.
 - Supports flag cloths with different aspect ratios.
 - Set the hoist side and flag orientation.
+- Try out different flagpoles.
+- Adjust wind speed and direction.
+- Progressive Web App support.
 
 ## Development
 
@@ -24,8 +27,8 @@ This project uses a Gulp-powered build system with these features:
 ### Build
 
 - Run ```npm install``` to install dependencies after pulling down the repository for the first time.
-- Run ```npm start``` to build the project and run the website locally. The finished site will be created in a folder called ```dist``` and will be viewable in the browser at ```http://localhost:8000```.
-- Run ```npm run build``` to build the project to the ```dist``` directory with production ready assets.
+- Run ```npm run start``` to build the project and run the website locally. The finished site will be created in a folder called ```dist``` and will be viewable in the browser at ```http://localhost:8000```.
+- Run ```npm run start-test``` to build the project to the ```dist``` directory with production ready assets.
 
 ## Resources
 

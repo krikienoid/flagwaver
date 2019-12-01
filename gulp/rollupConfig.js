@@ -5,6 +5,7 @@ import commonjs                 from 'rollup-plugin-commonjs';
 import resolve                  from 'rollup-plugin-node-resolve';
 import replace                  from 'rollup-plugin-replace';
 
+import packageJson              from '../package.json';
 import config                   from './config';
 
 const PRODUCTION = config.env === 'production';
@@ -116,6 +117,7 @@ export default {
       ]
     }),
     replace({
+      'process.env.VERSION': JSON.stringify(packageJson.version),
       'process.env.NODE_ENV': JSON.stringify(config.env),
       'process.env.PUBLIC_URL': JSON.stringify(config.app.PUBLIC_URL)
     })

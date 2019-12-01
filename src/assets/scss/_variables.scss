@@ -172,7 +172,7 @@ $html-font-size:                $font-size-root;
 $html-line-height:              $line-height-base;
 
 $font-size:                     $font-size-base;
-$line-height:                   1rem * $line-height-base;
+$line-height:                   $font-size-base * $line-height-base;
 
 
 // Sizes

@@ -16,6 +16,12 @@ h6, .h6 {
     margin-bottom: 0.5em;
     font-weight: 500;
     line-height: 1.25;
+
+    small, .small {
+        margin-left: 0.25em;
+        color: $brand-gray-light;
+        font-weight: 500;
+    }
 }
 
 h1, .h1 {
@@ -43,7 +49,7 @@ h6, .h6 {
 }
 
 p {
-    margin: 0 0 (1rem * $line-height-base);
+    margin: 0 0 ($font-size-base * $line-height-base);
 }
 
 a,
@@ -82,8 +88,8 @@ a,
     }
 }
 
-hr {
-    margin: 1rem 0;
+hr, .hr {
+    margin: ($font-size-base * $line-height-base) 0;
     border: 0;
     border-top: $border-width solid $border-color;
 }

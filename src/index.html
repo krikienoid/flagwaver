@@ -8,7 +8,7 @@
         <title>FlagWaver</title>
 
         <meta name="description" content="A web app for simulating a waving flag." />
-        <meta name="keywords" content="FlagWaver, Flag, Waving, Vexillology, THREE.js, WebGL, 3D, JavaScript" />
+        <meta name="keywords" content="FlagWaver, Online Flag Waver, Flag, Waving, Vexillology, THREE.js, WebGL, 3D, JavaScript" />
 
         <link rel="canonical" href="@PUBLIC_URL" />
 
@@ -84,6 +84,18 @@
             })();
         </script>
         <!-- END Web Font Loader -->
+
+        <!-- BEGIN Analytics -->
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153496575-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', 'UA-153496575-1', { 'anonymize_ip': true });
+        </script>
+        <!-- END Analytics -->
     </head>
 
     <body>

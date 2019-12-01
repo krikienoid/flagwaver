@@ -47,3 +47,7 @@ html.no-js {
         padding-right: $grid-gutter-width;
     }
 }
+
+.content-section {
+    margin-bottom: $font-size-base * $line-height-base;
+}
