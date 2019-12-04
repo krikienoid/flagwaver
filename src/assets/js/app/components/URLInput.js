@@ -38,6 +38,13 @@ function URLInput({
                     disabled={disabled}
                     aria-describedby={feedbackId}
                     onChange={onChange}
+                    onKeyDown={(e) => {
+                        const key = e.key || e.keyCode;
+
+                        if (key === 'Enter' || key === 13) {
+                            onSubmit(e);
+                        }
+                    }}
                 />
 
                 <button
