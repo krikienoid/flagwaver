@@ -81,7 +81,7 @@ export default {
           'unstable_interactiveUpdates', 'flushSync',
           'unstable_createRoot', 'unstable_flushControlled'
         ],
-        'node_modules/react-is/index.js': [
+        'node_modules/react-redux/node_modules/react-is/index.js': [
           'typeOf', 'AsyncMode', 'ConcurrentMode',
           'ContextConsumer', 'ContextProvider', 'Element', 'ForwardRef',
           'Fragment', 'Lazy', 'Memo', 'Portal', 'Profiler',
@@ -94,28 +94,7 @@ export default {
       }
     }),
     glsl(),
-    babel({
-      /*
-       * Do not use config settings defined in .babelrc as it is targeted
-       * for use with Gulp scripts. Config settings targeted for use with
-       * Rollup should be kept separate.
-       */
-      babelrc: false,
-      presets: [
-        ['@babel/preset-env', {
-          modules: false,
-          targets: {
-            browsers: config.browserslist
-          }
-        }],
-        '@babel/preset-react'
-      ],
-      exclude: 'node_modules/!(react-spring)/**',
-      plugins: [
-        '@babel/plugin-external-helpers',
-        ['@babel/plugin-proposal-class-properties', { 'loose': true }],
-      ]
-    }),
+    babel(),
     replace({
       'process.env.VERSION': JSON.stringify(packageJson.version),
       'process.env.NODE_ENV': JSON.stringify(config.env),
