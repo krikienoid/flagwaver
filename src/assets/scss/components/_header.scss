@@ -128,6 +128,13 @@ $site-header-btn-height: 1.5rem;
     }
 }
 
+.site-header-right {
+    .site-header-btn {
+        // Hide this button for now since it has no use
+        visibility: hidden;
+    }
+}
+
 .site-headline {
     margin: 0;
     font-size: 1.75rem;
