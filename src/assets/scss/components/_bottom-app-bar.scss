@@ -83,6 +83,20 @@
         .form-section {
             margin: 0;
         }
+
+        @include browser-ie10-up {
+            width: 100%;
+
+            .form-section {
+                width: 100%;
+            }
+
+            .form-group {
+                &:last-child {
+                    flex: 1 1 0%;
+                }
+            }
+        }
     }
 }
 

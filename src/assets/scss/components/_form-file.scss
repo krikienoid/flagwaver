@@ -81,5 +81,6 @@
         color: $body-font-color;
         opacity: 1;
         cursor: default;
+        -webkit-text-fill-color: currentColor; // Fixes for Safari
     }
 }
