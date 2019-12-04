@@ -1,184 +1,134 @@
 <!DOCTYPE html>
-
-<html lang="en-US">
-
+<html class="no-js" lang="en-US">
     <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-        <!-- Meta -->
-        <meta charset="utf-8" />
-        <meta name="viewport"    content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Simulate a flag waving in the breeze right in your browser window." />
+        <title>FlagWaver</title>
 
-        <!--
+        <meta name="description" content="A web app for simulating a waving flag." />
+        <meta name="keywords" content="FlagWaver, Online Flag Waver, Flag, Waving, Vexillology, THREE.js, WebGL, 3D, JavaScript" />
 
-        Flag Waver
+        <link rel="canonical" href="https://krikienoid.github.io/flagwaver" />
 
-            Simulate a flag waving in the breeze right in your browser window.
+        <!-- BEGIN CSS -->
+        <link rel="stylesheet" type="text/css" href="./assets/css/main.css" />
 
-        -->
+        <!--[if lte IE 9]>
+            <style type="text/css">
+                #root { display: none; }
+            </style>
+        <![endif]-->
+        <!-- END CSS -->
 
-        <title>Online Flag Waver</title>
+        <!-- BEGIN iOS meta tags -->
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="FlagWaver" />
+        <!-- END iOS meta tags -->
 
-        <!-- Libraries -->
-        <link type="text/css" rel="stylesheet" href="css/normalize.min.css" />
-        <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" />
-        <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-        <script type="text/javascript" src="js/three.min.js"></script>
-        <script type="text/javascript" src="js/modernizr.custom.95719.js"></script>
-        <script type="text/javascript" src="js/rivets.bundled.min.js"></script>
+        <!-- BEGIN Favicons -->
+        <link rel="apple-touch-icon" sizes="180x180" href="https://krikienoid.github.io/flagwaver/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="https://krikienoid.github.io/flagwaver/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="https://krikienoid.github.io/flagwaver/favicon-16x16.png" />
+        <link rel="manifest" href="https://krikienoid.github.io/flagwaver/site.webmanifest" />
+        <link rel="mask-icon" href="https://krikienoid.github.io/flagwaver/safari-pinned-tab.svg" color="#76aff4" />
+        <link rel="shortcut icon" href="https://krikienoid.github.io/flagwaver/favicon.ico" />
+        <meta name="msapplication-TileColor" content="#2d89ef" />
+        <meta name="msapplication-config" content="https://krikienoid.github.io/flagwaver/browserconfig.xml" />
+        <meta name="theme-color" content="#76aff4" />
+        <!-- END Favicons -->
 
-        <!-- Main -->
-        <link type="text/css" rel="stylesheet" href="css/flagwaver-ui.css" />
-        <script type="text/javascript" src="js/hashvars.js"></script>
-        <script type="text/javascript" src="js/flagwaver.js"></script>
-        <script type="text/javascript" src="js/flagwaver-ui.js"></script>
+        <!-- BEGIN Social tags -->
+        <meta property="og:url" content="https://krikienoid.github.io/flagwaver" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="FlagWaver" />
+        <meta property="og:description" content="A web app for simulating a waving flag." />
+        <meta property="og:image" content="https://krikienoid.github.io/flagwaver/assets/img/social-banner.png" />
 
+        <meta name="twitter:card" content="summary_large_image" />
+        <!-- END Social tags -->
+
+        <!-- BEGIN Web Font Loader -->
+        <script type="text/javascript">
+            (function () {
+                var sessionStorage = window.sessionStorage;
+
+                if (sessionStorage && sessionStorage.wfActive) {
+                    document.documentElement.className += ' wf-active';
+
+                    return;
+                }
+
+                window.WebFontConfig = {
+                    custom: {
+                        families: [
+                            'Montserrat:n4,n5,n7'
+                        ]
+                    },
+                    timeout: 2000,
+                    active: function () {
+                        if (sessionStorage) {
+                            sessionStorage.wfActive = true;
+                        }
+                    }
+                };
+
+                (function (d) {
+                    var wf = d.createElement('script'), s = d.scripts[0];
+                    wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
+                    wf.async = true;
+                    s.parentNode.insertBefore(wf, s);
+                })(document);
+            })();
+        </script>
+        <!-- END Web Font Loader -->
+
+        <!-- BEGIN Analytics -->
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153496575-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', 'UA-153496575-1', { 'anonymize_ip': true });
+        </script>
+        <!-- END Analytics -->
     </head>
 
     <body>
+        <div id="root"></div>
 
-        <div class="wrapper-page bg-sky">
-
-            <header class="page-header">
-                <h1>Flag Waver</h1>
-            </header>
-
-            <main class="page-main">
-                <div class="js-flag-canvas"></div>
-            </main>
-
-            <aside class="page-controls">
-                <div class="page-controls-basic">
-                    <div class="page-controls-group page-controls-wide">
-                        <h2>Upload Image</h2>
-                        <div class="input-control-group control-img-upload" id="control-img-upload">
-                            <div class="input-btn-group">
-                                <select
-                                    class="input-control input-btn input-select"
-                                    aria-label="Upload image from"
-                                    data-rv-value="flagWaverOpts.flag.imgUploadMode"
-                                    data-rv-on-change="flagWaverControls.flag.setImgUploadMode"
-                                    id="set-img-upload-mode"
-                                >
-                                    <option value="web">Web</option>
-                                    <option value="file">File</option>
-                                </select>
-                            </div>
-                            <input
-                                type="text"
-                                class="input-control input-control-main input-img-web"
-                                placeholder="Enter image URL"
-                                aria-label="Enter image URL"
-                                data-rv-value="flagWaverOpts.flag.imgURL"
-                                id="input-img-link"
-                            />
-                            <div class="input-btn-group input-img-web">
-                                <input
-                                    type="button"
-                                    class="input-control input-btn"
-                                    value="Go!"
-                                    data-rv-on-click="flagWaverControls.flag.setImgURL"
-                                    id="set-img-link"
-                                />
-                            </div>
-                            <div class="input-control input-control-main input-file input-img-file">
-                                <label
-                                    class="input-cover input-face"
-                                    for="open-img-file"
-                                    data-rv-text="flagWaverOpts.flag.imgFilePath | fileName 'Open a file'"
-                                    id="info-img-file"
-                                ></label>
-                                <input
-                                    type="file"
-                                    class="input-cover input-hidden"
-                                    accept="image/*"
-                                    data-rv-on-change="flagWaverControls.flag.setImgFile"
-                                    id="open-img-file"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="page-controls-group">
-                        <input
-                            type="button"
-                            class="expander input-control input-btn"
-                            data-target="#expandable-controls"
-                            data-text-expanded="Hide Options"
-                            data-text-collapsed="More Options"
-                            aria-expanded="false"
-                            aria-controls="expandable-controls"
-                        />
+        <noscript>
+            <div class="empty empty-screen browser-error-no-js">
+                <div class="v-align">
+                    <div class="v-align-content">
+                        <h2>Your browser does not have JavaScript enabled</h2>
+                        <p>This site requires JavaScript to fully function.</p>
+                        <p><a href="http://www.enable-javascript.com/" rel="noopener" target="_blank">How to enable JavaScript</a></p>
                     </div>
                 </div>
-                <div class="page-controls-more expandable" aria-hidden="true" id="expandable-controls">
-                    <div class="page-controls-group">
-                        <h2>Wind</h2>
-                        <input
-                            type="button"
-                            class="input-control input-btn input-btn-md"
-                            data-text-selected="Wind: On"
-                            data-text-unselected="Wind: Off"
-                            data-rv-value="flagWaverOpts.isWindOn | onoff 'Wind On' 'Wind Off'"
-                            data-rv-on-click="flagWaverControls.toggleWind"
-                            id="wind-toggle"
-                        />
-                    </div>
-                    <div class="page-controls-group">
-                        <h2>Hoisting</h2>
-                        <select
-                            class="input-control input-btn input-select"
-                            aria-label="Hoist side"
-                            data-rv-value="flagWaverOpts.flag.hoisting"
-                            data-rv-on-change="flagWaverControls.flag.setHoisting"
-                            id="set-hoisting"
-                        >
-                            <option value="dexter">Dexter</option>
-                            <option value="sinister">Sinister</option>
-                        </select>
-                        <select
-                            class="input-control input-btn input-select"
-                            aria-label="Hoist top edge"
-                            data-rv-value="flagWaverOpts.flag.topEdge"
-                            data-rv-on-change="flagWaverControls.flag.setTopEdge"
-                            id="set-top-edge"
-                        >
-                            <option value="top">Top</option>
-                            <option value="left">Left</option>
-                            <option value="bottom">Bottom</option>
-                            <option value="right">Right</option>
-                        </select>
+            </div>
+        </noscript>
+
+        <!--[if lte IE 9]>
+            <div class="empty empty-screen browser-error-old-ie">
+                <div class="v-align">
+                    <div class="v-align-content">
+                        <h2>Your browser is not supported</h2>
+                        <p>This page requires a browser that supports WebGL.</p>
+                        <p><a href="http://get.webgl.org/" rel="noopener" target="_blank">More information</a></p>
                     </div>
                 </div>
-            </aside>
+            </div>
+        <![endif]-->
 
-        </div>
-
+        <!-- BEGIN JS -->
+        <script type="text/javascript" src="./assets/js/modernizr-custom.js"></script>
+        <script type="text/javascript" src="./assets/js/three.min.js"></script>
+        <script type="text/javascript" src="./assets/js/app.js"></script>
+        <!-- END JS -->
     </body>
-
-    <script type="x-shader/x-fragment" id="fragmentShaderDepth">
-        uniform sampler2D texture;
-        varying vec2 vUV;
-        vec4 pack_depth( const in float depth ) {
-            const vec4 bit_shift = vec4( 256.0 * 256.0 * 256.0, 256.0 * 256.0, 256.0, 1.0 );
-            const vec4 bit_mask  = vec4( 0.0, 1.0 / 256.0, 1.0 / 256.0, 1.0 / 256.0 );
-            vec4 res = fract( depth * bit_shift );
-            res -= res.xxyz * bit_mask;
-            return res;
-        }
-        void main() {
-            vec4 pixel = texture2D( texture, vUV );
-            if ( pixel.a < 0.5 ) discard;
-            gl_FragData[ 0 ] = pack_depth( gl_FragCoord.z );
-        }
-    </script>
-
-    <script type="x-shader/x-vertex" id="vertexShaderDepth">
-        varying vec2 vUV;
-        void main() {
-            vUV = 0.75 * uv;
-            vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-            gl_Position = projectionMatrix * mvPosition;
-        }
-    </script>
-
 </html>
