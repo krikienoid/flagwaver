@@ -34,7 +34,6 @@ export default class FlagGroupPanel extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleButtonSelectChange = this.handleButtonSelectChange.bind(this);
         this.handleFilePickerChange = this.handleFilePickerChange.bind(this);
-        this.handleFilePickerLoad = this.handleFilePickerLoad.bind(this);
     }
 
     handleChange(e) {
@@ -51,10 +50,7 @@ export default class FlagGroupPanel extends Component {
 
     handleFilePickerChange(name, value) {
         this.props.setFileRecord(value);
-    }
-
-    handleFilePickerLoad(name, value) {
-        this.props.setOptions({ imageSrc: value.url });
+        this.props.setOptions({ src: value.url, type: value.type });
     }
 
     render() {
@@ -71,12 +67,11 @@ export default class FlagGroupPanel extends Component {
         return (
             <div className="form-section">
                 <FilePickerInput
-                    label="Select image"
+                    label="Select image or video"
                     value={fileRecord}
-                    accept="image/*"
+                    accept="image/*, video/*"
                     onChange={this.handleFilePickerChange}
-                    onLoad={this.handleFilePickerLoad}
-                    isValidFileType={type => type.match('image.*')}
+                    isValidFileType={type => type.match('image.*') || type.match('video.*')}
                 />
 
                 <ButtonSelect

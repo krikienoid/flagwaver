@@ -21,7 +21,7 @@ function parseEnumValue(enumObject, string) {
 
 const hashState = new HashState({
     'src': {
-        defaultValue: flagGroupDefaults.imageSrc,
+        defaultValue: flagGroupDefaults.src,
         parse: value => decodeURIComponent(value),
         stringify: value => encodeURIComponent(value)
     },
@@ -68,7 +68,7 @@ function assignDefaults(defaults, options) {
 
 function mapStateToHash(state) {
     return {
-        src: state.flagGroup.imageSrc,
+        src: state.flagGroup.src,
         hoisting: state.flagGroup.hoisting,
         orientation: state.flagGroup.orientation,
         flagpoletype: state.flagGroup.flagpoleType,
@@ -81,10 +81,11 @@ function mapStateFromHash(state) {
     return {
         fileRecord: {
             url: state.src,
-            file: null
+            file: null,
+            type: 'image'
         },
         flagGroup: assignDefaults(flagGroupDefaults, {
-            imageSrc: state.src,
+            src: state.src,
             hoisting: state.hoisting,
             orientation: state.orientation,
             flagpoleType: state.flagpoletype,
@@ -99,11 +100,11 @@ function mapStateFromHash(state) {
 function isValidState(state) {
     return (
         // Has an image
-        !!state.flagGroup.imageSrc &&
+        !!state.flagGroup.src &&
         // Not a local file
         !state.fileRecord.file &&
         // File selection has been applied to flag
-        state.fileRecord.url === state.flagGroup.imageSrc
+        state.fileRecord.url === state.flagGroup.src
     );
 }
 

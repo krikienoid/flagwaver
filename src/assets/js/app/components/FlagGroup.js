@@ -70,7 +70,7 @@ class FlagGroup extends Component {
 
     renderModule() {
         const { options, addToast } = this.props;
-        const src = options.imageSrc || DEFAULT_FLAG_IMAGE_PATH;
+        const src = options.src || DEFAULT_FLAG_IMAGE_PATH;
 
         buildAsyncFlagFromImage(src, options)
             .then((flag) => {

@@ -18,7 +18,6 @@ class FileInput extends Component {
         buttonText: PropTypes.node,
         validator: PropTypes.func,
         onChange: PropTypes.func,
-        onLoad: PropTypes.func,
         isValidFileType: PropTypes.func
     };
 
@@ -29,7 +28,6 @@ class FileInput extends Component {
         buttonText: 'Browse...',
         validator: () => ({ valid: true }),
         onChange: () => {},
-        onLoad: () => {},
         isValidFileType: () => true
     };
 
@@ -48,7 +46,7 @@ class FileInput extends Component {
             return;
         }
 
-        const { name, onChange, onLoad, isValidFileType } = this.props;
+        const { name, onChange, isValidFileType } = this.props;
 
         const file = e.target.files[0];
 
@@ -69,20 +67,10 @@ class FileInput extends Component {
         }
 
         onChange(name, {
-            url: '',
+            url: window.URL.createObjectURL(file),
+            type: file.type.split('/')[0],
             file: file
         });
-
-        const reader = new FileReader();
-
-        reader.addEventListener('load', (e) => {
-            onLoad(name, {
-                url: e.target.result,
-                file: file
-            });
-        });
-
-        reader.readAsDataURL(file);
     }
 
     render () {

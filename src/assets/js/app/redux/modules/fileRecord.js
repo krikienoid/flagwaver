@@ -15,7 +15,8 @@ export function setFileRecord(value) {
 
 const initialState = {
     url: '',
-    file: null
+    file: null,
+    type: null
 };
 
 export default function reducer(state = initialState, action) {
