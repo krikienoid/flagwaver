@@ -1,6 +1,17 @@
 import buildFlag from '../helpers/buildFlag';
-import buildRectangularFlagFromImage from '../helpers/buildRectangularFlagFromImage';
+import buildRectangularFlagFromElement from './buildRectangularFlagFromElement';
 import loadImage from '../helpers/loadImage';
+import loadVideo from '../helpers/loadVideo';
+
+function getLoadFunctionByType(type) {
+    switch (type) {
+        case 'video':
+            return loadVideo;
+        case 'image':
+        default:
+            return loadImage;
+    }
+}
 
 /**
  * @function buildAsyncFlagFromImage
@@ -13,11 +24,11 @@ import loadImage from '../helpers/loadImage';
  */
 export default function buildAsyncFlagFromImage(src, options) {
     return new Promise((resolve, reject) => {
-        loadImage(
+        getLoadFunctionByType(options.type)(
             src,
-            (image) => {
+            (element) => {
                 resolve(
-                    buildRectangularFlagFromImage(image, options)
+                    buildRectangularFlagFromElement(element, options)
                 );
             },
             () => {

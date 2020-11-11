@@ -195,6 +195,11 @@ export default class Flag {
         if (this.mesh instanceof THREE.Mesh) {
             this.mesh.material.dispose();
             this.mesh.geometry.dispose();
+
+            if (this.mesh.material.map.image instanceof HTMLVideoElement) {
+                this.mesh.material.map.image.pause();
+            }
+
             this.mesh.material.map.dispose();
             this.mesh.customDepthMaterial.dispose();
         }
@@ -273,6 +278,10 @@ export default class Flag {
     }
 
     render() {
+        if (this.mesh.material.map.image instanceof HTMLVideoElement && this.mesh.material.map.image.paused) {
+            this.mesh.material.map.image.play();
+        }
+
         this.cloth.render();
     }
 }

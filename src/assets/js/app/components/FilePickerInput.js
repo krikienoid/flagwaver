@@ -46,7 +46,6 @@ export default class FilePickerInput extends Component {
         this.handleURLChange = this.handleURLChange.bind(this);
         this.handleURLSubmit = this.handleURLSubmit.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
-        this.handleFileLoad = this.handleFileLoad.bind(this);
     }
 
     componentDidMount() {
@@ -96,7 +95,8 @@ export default class FilePickerInput extends Component {
 
         const value = {
             url: url,
-            file: null
+            file: null,
+            type: 'image'
         };
 
         this.setState({ hasSubmittedURL: true });
@@ -106,14 +106,6 @@ export default class FilePickerInput extends Component {
     }
 
     handleFileChange(inputName, value) {
-        const { name, onChange } = this.props;
-
-        onChange(name, value);
-
-        this.setState({ url: '' });
-    }
-
-    handleFileLoad(inputName, value) {
         const { name, onChange, onLoad } = this.props;
 
         onChange(name, value);
@@ -189,7 +181,6 @@ export default class FilePickerInput extends Component {
                                     </Fragment>
                                 )}
                                 onChange={this.handleFileChange}
-                                onLoad={this.handleFileLoad}
                                 isValidFileType={isValidFileType}
                             />
                         )}
