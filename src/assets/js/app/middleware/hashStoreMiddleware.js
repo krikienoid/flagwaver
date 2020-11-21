@@ -1,4 +1,4 @@
-import { toHash } from '../globals/hashStore';
+import { toHash } from '../globals/HashStore';
 
 export default function hashStoreMiddleware(store) {
     return (next) => (action) => {
