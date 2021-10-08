@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 
 import FlagGroupContainer from '../containers/FlagGroupContainer';
 import LightingContainer from '../containers/LightingContainer';

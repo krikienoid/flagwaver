@@ -64,7 +64,7 @@ $grid-breakpoints: (
 );
 
 $grid-gutter-width:             1.25rem;
-$grid-gutter-half:              $grid-gutter-width / 2;
+$grid-gutter-half:              $grid-gutter-width * 0.5;
 
 
 // Z-index

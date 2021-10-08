@@ -1,4 +1,4 @@
-import createFocusTrap from 'focus-trap';
+import { createFocusTrap } from 'focus-trap';
 import { useEffect, useRef } from 'react';
 
 export default function useFocusTrap(elem, active, options = {}) {

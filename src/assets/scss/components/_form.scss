@@ -54,7 +54,7 @@ legend {
             height: $unit-4 + $border-width * 2;
             display: block;
             position: absolute;
-            top: ($control-size-sm - $unit-4) / 2 - $border-width;
+            top: ($control-size-sm - $unit-4) * 0.5 - $border-width;
             left: 0;
             z-index: 1;
             border-radius: $unit-2 + $border-width;

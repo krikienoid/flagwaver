@@ -1,4 +1,4 @@
-import tabbable from 'tabbable';
+import { tabbable } from 'tabbable';
 import { useEffect, useRef } from 'react';
 
 const disableFocus = (elems) => {

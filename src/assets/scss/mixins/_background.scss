@@ -2,6 +2,8 @@
 // Background
 //
 
+@use "sass:math";
+
 @mixin background-image-full($color, $srcset) {
     $src-sm: nth($srcset, 1);
     $src-md: nth($srcset, 2);
@@ -26,7 +28,7 @@
         background-size: cover;
 
         @media (min-width: 1024px) and (min-aspect-ratio: 1 / 1) {
-            background-size: percentage($width / $height) auto;
+            background-size: percentage(math.div($width, $height)) auto;
         }
 
         @media (min-width: $height) {

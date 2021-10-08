@@ -6,7 +6,7 @@
     display: flex;
     list-style: none;
     margin: 0;
-    padding: 0.25rem ($unit-3 / 2) 0;
+    padding: 0.25rem ($unit-3 * 0.5) 0;
 
     > li {
         $width: 1rem;
@@ -22,7 +22,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            margin-left: -$width / 2;
+            margin-left: -$width * 0.5;
             opacity: 0;
         }
 
@@ -30,7 +30,7 @@
             width: $width;
             display: block;
             position: relative;
-            margin-left: -$width / 2;
+            margin-left: -$width * 0.5;
             text-align: center;
             cursor: pointer;
             transition: $control-transition;

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import EmptyStateScreen from '../components/EmptyStateScreen';
 
 export default function withWebGLBrowserTest(WrappedComponent) {

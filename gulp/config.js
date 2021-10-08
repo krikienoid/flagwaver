@@ -67,14 +67,14 @@ export default {
       runtimeCaching: [
         {
           urlPattern: /assets\/fonts/,
-          handler: 'staleWhileRevalidate',
+          handler: 'StaleWhileRevalidate',
           options: {
             cacheName: 'webfonts'
           }
         },
         {
           urlPattern: /^https:\/\/ajax\.googleapis\.com/,
-          handler: 'staleWhileRevalidate',
+          handler: 'StaleWhileRevalidate',
           options: {
             cacheName: 'google-typekit-webfontloader'
           }

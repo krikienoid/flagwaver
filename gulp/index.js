@@ -15,14 +15,15 @@ import sourcemaps               from 'gulp-sourcemaps';
 
 import autoprefixer             from 'gulp-autoprefixer';
 import cleanCss                 from 'gulp-clean-css';
-import sass                     from 'gulp-sass';
+import gulpSass                 from 'gulp-sass';
 import sassTildeImporter        from 'node-sass-tilde-importer';
+import sass                     from 'sass';
 
 import rollup                   from 'gulp-better-rollup';
 import uglify                   from 'gulp-uglify';
 import modernizr                from 'modernizr';
 
-import workboxBuild             from 'workbox-build';
+import { generateSW }           from 'workbox-build';
 
 import config                   from './config';
 import rollupConfig             from './rollupConfig';
@@ -60,11 +61,16 @@ function buildPages() {
 // Build CSS
 //
 
+const sassCompiler = gulpSass(sass);
+
 function buildCSS() {
   return gulp.src(config.paths.src.sass)
     .pipe(sourcemaps.init())
-    .pipe(sass({ importer: sassTildeImporter })
-      .on('error', sass.logError)
+    .pipe(sassCompiler({
+      importer: sassTildeImporter,
+      quietDeps: true
+    })
+      .on('error', sassCompiler.logError)
     )
     .pipe(autoprefixer(config.settings.autoprefixer))
     .pipe(gulpif(PRODUCTION, cleanCss(config.settings.cleanCss)))
@@ -144,7 +150,7 @@ function buildStatic() {
 //
 
 function buildSW() {
-  return workboxBuild.generateSW(config.settings.workboxBuild)
+  return generateSW(config.settings.workboxBuild)
     .then(({ count, size }) => {
       console.log(`Generated "${config.settings.workboxBuild.swDest}", which will precache ${count} files, totaling ${size} bytes.`);
     });

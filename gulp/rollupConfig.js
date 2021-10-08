@@ -74,6 +74,9 @@ export default {
           'createElement', 'cloneElement', 'createFactory', 'isValidElement',
           'version', 'unstable_ConcurrentMode', 'unstable_Profiler'
         ],
+        'node_modules/react/jsx-runtime.js': [
+          'jsx', 'jsxs'
+        ],
         'node_modules/react-dom/index.js': [
           'createPortal', 'findDOMNode', 'hydrate', 'render',
           'unstable_renderSubtreeIntoContainer', 'unmountComponentAtNode',

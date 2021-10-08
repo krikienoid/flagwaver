@@ -2,6 +2,8 @@
 // Background
 //
 
+@use "sass:math";
+
 .bg-image-full {
     background-position: center center;
     background-repeat: no-repeat;
@@ -35,6 +37,6 @@
     ));
 
     @media (min-width: 1024px), (min-height: 1024px) {
-        background-position: percentage(179 / 1920) center;
+        background-position: percentage(math.div(179, 1920)) center;
     }
 }
