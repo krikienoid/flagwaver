@@ -13,5 +13,6 @@ import 'core-js/es/promise';
 import 'core-js/es/string/starts-with';
 import 'core-js/es/symbol';
 import 'core-js/features/url';
+import 'regenerator-runtime/runtime';
 
 // requestAnimationFrame polyfill provided by THREE.js

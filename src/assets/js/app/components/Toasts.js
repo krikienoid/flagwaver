@@ -12,22 +12,20 @@ function Toasts({ toasts, removeToast }) {
         elem !== null ? itemRefs.set(id, elem) : itemRefs.delete(id);
     };
 
-    const transitions = useTransition(toasts, toast => toast.id, {
+    const transitions = useTransition(toasts, {
+        keys: toast => toast.id,
         from: {
             height: 0,
             transform: 'translate3d(22rem, 0, 0)'
         },
-        enter: (item) => {
-            return (next) => {
-                return next({
-                    height: itemRefs.get(item.id).offsetHeight
-                })
-                    .then(() => {
-                        next({
-                            transform: 'translate3d(0, 0, 0)'
-                        });
-                    });
-            };
+        enter: (item) => async (next) => {
+            await next({
+                height: itemRefs.get(item.id).offsetHeight
+            });
+
+            await next({
+                transform: 'translate3d(0rem, 0, 0)'
+            });
         },
         leave: [
             {
@@ -42,13 +40,13 @@ function Toasts({ toasts, removeToast }) {
     return (
         <div role="alert" aria-live="assertive" aria-atomic="true">
             <ul className="toasts">
-                {transitions.map(({ item: toast, props: style, key }) => {
+                {transitions((style, toast) => {
                     const { id, message, ...props } = toast;
 
                     const disabled = !toasts.some(toast => toast.id === id);
 
                     return (
-                        <animated.li key={key} style={style}>
+                        <animated.li style={style}>
                             <FocusDisabled disabled={disabled}>
                                 <div ref={setItemRef(id)} className="toasts-item-wrap">
                                     <Toast {...props} onDismissClick={() => { removeToast(id); }}>
