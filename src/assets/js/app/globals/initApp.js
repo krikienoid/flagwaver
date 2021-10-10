@@ -40,8 +40,7 @@ function buildRenderer() {
 
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(dpr);
-    renderer.gammaInput        = true;
-    renderer.gammaOutput       = true;
+    renderer.outputEncoding    = THREE.sRGBEncoding;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type    = THREE.PCFSoftShadowMap;
 

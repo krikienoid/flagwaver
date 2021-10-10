@@ -146,7 +146,6 @@ export default class App extends ModuleSystem {
             removeModules();
             cancelAnimationFrame(loop);
 
-            scene.dispose();
             renderer.dispose();
             renderer.forceContextLoss();
 

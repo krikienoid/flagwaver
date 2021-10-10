@@ -1,4 +1,5 @@
 import THREE from 'three';
+import { mergeBufferGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils';
 
 /**
  * @function createPoleGeometryTypeI
@@ -38,9 +39,7 @@ export function createPoleGeometryTypeI(options) {
 
     capGeometry.translate(0, poleLength + poleCapRadius / 2, 0);
 
-    geometry.merge(capGeometry);
-
-    return geometry;
+    return mergeBufferGeometries([geometry, capGeometry]);
 }
 
 /**
@@ -91,13 +90,9 @@ export function createPoleGeometryTypeT(options) {
     capGeometry.rotateZ(Math.PI / 2);
     capGeometry.translate(-crossbarLength / 2, 0, 0);
 
-    crossbarGeometry.merge(capGeometry);
-
     // Right crossbar cap
     capGeometry2.rotateZ(-Math.PI / 2);
     capGeometry2.translate(crossbarLength / 2, 0, 0);
-
-    crossbarGeometry.merge(capGeometry2);
 
     crossbarGeometry.translate(
         0,
@@ -105,10 +100,12 @@ export function createPoleGeometryTypeT(options) {
         poleRadius + crossbarRadius
     );
 
-    // Attach crossbar
-    geometry.merge(crossbarGeometry);
-
-    return geometry;
+    return mergeBufferGeometries([
+        geometry,
+        crossbarGeometry,
+        capGeometry,
+        capGeometry2
+    ]);
 }
 
 /**
@@ -150,8 +147,5 @@ export function createPoleGeometryTypeL(options) {
         0
     );
 
-    // Attach crossbar
-    geometry.merge(crossbarGeometry);
-
-    return geometry;
+    return mergeBufferGeometries([geometry, crossbarGeometry]);
 }

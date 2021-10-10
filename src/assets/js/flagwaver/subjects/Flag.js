@@ -42,6 +42,8 @@ function buildMesh(cloth, options) {
         }
     }
 
+    texture.encoding = THREE.sRGBEncoding;
+
     // Material
     const material = new THREE.MeshPhongMaterial({
         alphaTest: 0.5,
@@ -70,7 +72,8 @@ function buildMesh(cloth, options) {
 
     mesh.castShadow = true;
     mesh.customDepthMaterial = new THREE.ShaderMaterial({
-        uniforms:       { texture: { value: texture } },
+        glslVersion:    THREE.GLSL3,
+        uniforms:       { textureMap: { value: texture } },
         vertexShader:   ShaderChunk.depth_vert,
         fragmentShader: ShaderChunk.depth_frag
     });
