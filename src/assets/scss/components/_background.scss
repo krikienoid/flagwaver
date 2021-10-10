@@ -4,6 +4,8 @@
 
 @use "sass:math";
 
+@use "../abstracts" as *;
+
 .bg-image-full {
     background-position: center center;
     background-repeat: no-repeat;
@@ -37,6 +39,6 @@
     ));
 
     @media (min-width: 1024px), (min-height: 1024px) {
-        background-position: percentage(math.div(179, 1920)) center;
+        background-position: math.percentage(math.div(179, 1920)) center;
     }
 }

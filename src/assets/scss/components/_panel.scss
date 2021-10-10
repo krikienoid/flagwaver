@@ -2,6 +2,9 @@
 // Panel
 //
 
+@use "../vendors/spectre.css/abstracts" as spectre-css;
+@use "../abstracts" as *;
+
 $panel-outer-padding-x: $spacer;
 $panel-outer-padding-y: $spacer;
 $panel-sm-outer-padding-x: $grid-gutter-width;
@@ -9,7 +12,7 @@ $panel-sm-outer-padding-y: $grid-gutter-width;
 
 .panel {
     + .panel {
-        border-top: $border-width solid $border-color;
+        border-top: spectre-css.$border-width solid spectre-css.$border-color;
     }
 }
 
@@ -47,7 +50,7 @@ $panel-sm-outer-padding-y: $grid-gutter-width;
 .panel-navbar {
     position: relative;
     z-index: 1;
-    border-bottom: $border-width solid $border-color;
+    border-bottom: spectre-css.$border-width solid spectre-css.$border-color;
     font-size: 0.875rem;
 
     .btn {
@@ -73,10 +76,12 @@ $panel-sm-outer-padding-y: $grid-gutter-width;
 }
 
 .panel-nav {
-    padding: ($panel-outer-padding-y - $unit-1) ($panel-outer-padding-x - $unit-2);
+    padding: ($panel-outer-padding-y - spectre-css.$unit-1)
+        ($panel-outer-padding-x - spectre-css.$unit-2);
 
     @include breakpoint(sm) {
-        padding: ($panel-sm-outer-padding-y - $unit-1) ($panel-sm-outer-padding-x - $unit-2);
+        padding: ($panel-sm-outer-padding-y - spectre-css.$unit-1)
+            ($panel-sm-outer-padding-x - spectre-css.$unit-2);
     }
 }
 

@@ -2,6 +2,8 @@
 // Toasts
 //
 
+@use "../abstracts" as *;
+
 .toasts {
     max-width: 100%;
     @include list-unstyled;

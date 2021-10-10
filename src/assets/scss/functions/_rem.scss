@@ -4,6 +4,8 @@
 
 @use "sass:math";
 
+@use "../variables" as *;
+
 $font-size-root: 16px !default;
 
 @function rem($n) {

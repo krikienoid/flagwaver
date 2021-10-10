@@ -2,6 +2,9 @@
 // Header
 //
 
+@use "../vendors/spectre.css/abstracts" as spectre-css;
+@use "../abstracts" as *;
+
 $site-header-btn-width: 1.75rem;
 $site-header-btn-height: 1.5rem;
 
@@ -68,7 +71,7 @@ $site-header-btn-height: 1.5rem;
     transition: $control-transition;
 
     &:focus {
-        outline: 0.125rem solid rgba($primary-color, 0.8);
+        outline: 0.125rem solid rgba(spectre-css.$primary-color, 0.8);
     }
 
     @include breakpoint(sm) {

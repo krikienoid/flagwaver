@@ -2,6 +2,9 @@
 // Bottom app bar
 //
 
+@use "../vendors/spectre.css/abstracts" as spectre-css;
+@use "../abstracts" as *;
+
 .bottom-app-bar,
 .bottom-app-bar-primary,
 .bottom-app-bar-secondary,
@@ -52,7 +55,7 @@
         margin-bottom: $bottom-app-bar-padding-y;
         padding-bottom: 0.25rem;
         color: $text-inverse-color;
-        font-size: $font-size-lg;
+        font-size: spectre-css.$font-size-lg;
         @include font-smoothing;
 
         @include breakpoint(sm) {

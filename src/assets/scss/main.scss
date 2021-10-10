@@ -3,52 +3,35 @@
  * @author krikienoid / https://github.com/krikienoid
  */
 
-@import "functions";
-@import "variables";
-@import "mixins";
-
-@import "fonts";
+@use "fonts";
 
 /*! Custom Spectre.css */
 
-@import "~spectre.css/src/_variables";
-@import "~spectre.css/src/_mixins";
-
-@import "custom/spectre.css/mixins";
-
-@import "~spectre.css/src/normalize";
-@import "~spectre.css/src/base";
-
-@import "~spectre.css/src/buttons";
-@import "~spectre.css/src/empty";
-@import "~spectre.css/src/forms";
-@import "~spectre.css/src/navs";
-@import "~spectre.css/src/sliders";
-@import "~spectre.css/src/toasts";
+@use "vendors/spectre.css/styles";
 
 /*! Main styles */
 
-@import "components/typography";
-@import "components/layout";
-@import "components/button";
-@import "components/form";
-@import "components/header";
+@use "components/typography";
+@use "components/layout";
+@use "components/button";
+@use "components/form";
+@use "components/header";
 
-@import "components/background";
-@import "components/bottom-app-bar";
-@import "components/button-select";
-@import "components/drawer";
-@import "components/empty";
-@import "components/field-group";
-@import "components/focus";
-@import "components/form-file";
-@import "components/icon";
-@import "components/nav";
-@import "components/panel";
-@import "components/slider";
-@import "components/slider-ticks";
-@import "components/toasts";
+@use "components/background";
+@use "components/bottom-app-bar";
+@use "components/button-select";
+@use "components/drawer";
+@use "components/empty";
+@use "components/field-group";
+@use "components/focus";
+@use "components/form-file";
+@use "components/icon";
+@use "components/nav";
+@use "components/panel";
+@use "components/slider";
+@use "components/slider-ticks";
+@use "components/toasts";
 
-@import "utilities/display";
-@import "utilities/screenreader";
-@import "utilities/v-align";
+@use "utilities/display";
+@use "utilities/screenreader";
+@use "utilities/v-align";

@@ -2,6 +2,8 @@
 // Screenreader text
 //
 
+@use "../abstracts" as *;
+
 .sr-only {
     @include sr-only;
 }
