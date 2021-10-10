@@ -2,27 +2,30 @@
 // Slider ticks
 //
 
+@use "../vendors/spectre.css/abstracts" as spectre-css;
+@use "../abstracts" as *;
+
 .slider-ticks {
     display: flex;
     list-style: none;
     margin: 0;
-    padding: 0.25rem ($unit-3 / 2) 0;
+    padding: 0.25rem (spectre-css.$unit-3 * 0.5) 0;
 
     > li {
         $width: 1rem;
 
         flex: 1 1 auto;
         position: relative;
-        font-size: $font-size-sm;
+        font-size: spectre-css.$font-size-sm;
         line-height: 1;
 
         input {
             width: $width;
-            height: $font-size-sm;
+            height: spectre-css.$font-size-sm;
             position: absolute;
             top: 0;
             left: 0;
-            margin-left: -$width / 2;
+            margin-left: -$width * 0.5;
             opacity: 0;
         }
 
@@ -30,7 +33,7 @@
             width: $width;
             display: block;
             position: relative;
-            margin-left: -$width / 2;
+            margin-left: -$width * 0.5;
             text-align: center;
             cursor: pointer;
             transition: $control-transition;
@@ -44,21 +47,21 @@
                 top: -0.75rem;
                 left: 50%;
                 z-index: -1;
-                background: $bg-color-dark;
+                background: spectre-css.$bg-color-dark;
             }
         }
 
         input:focus + label {
-            @include control-shadow;
+            @include spectre-css.control-shadow;
         }
 
         input:checked + label {
-            color: $primary-color;
+            color: spectre-css.$primary-color;
         }
 
         input:disabled + label,
         input.disabled + label {
-            color: $gray-color-light;
+            color: spectre-css.$gray-color-light;
             cursor: not-allowed;
         }
     }

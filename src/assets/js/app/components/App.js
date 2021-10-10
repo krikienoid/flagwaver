@@ -1,5 +1,5 @@
 import Modernizr from 'modernizr';
-import React, { Component, Fragment } from 'react';
+import { Component, Fragment } from 'react';
 import { MdClose, MdArrowDropDown, MdArrowDropUp } from 'react-icons/md';
 
 import { fromHash } from '../globals/HashStore';

@@ -2,6 +2,12 @@
 // Breakpoint
 //
 
+@use "sass:list";
+@use "sass:map";
+@use "sass:meta";
+
+@use "../variables" as *;
+
 $grid-breakpoints: (
     xs: 0,
     sm: 480px,
@@ -12,12 +18,12 @@ $grid-breakpoints: (
 ) !default;
 
 @function get-breakpoint-value($value, $breakpoints: ()) {
-    $type: type-of($value);
+    $type: meta.type-of($value);
 
     @if $type == number and $value > 0 {
         @return $value;
     } @else if $type == string {
-        @return get-breakpoint-value(map-get($breakpoints, $value));
+        @return get-breakpoint-value(map.get($breakpoints, $value));
     }
 
     @return null;
@@ -27,9 +33,9 @@ $grid-breakpoints: (
     $min: $query;
     $max: null;
 
-    @if length($query) == 2 {
-        $min: nth($query, 1);
-        $max: nth($query, 2);
+    @if list.length($query) == 2 {
+        $min: list.nth($query, 1);
+        $max: list.nth($query, 2);
     }
 
     $min: get-breakpoint-value($min, $breakpoints);

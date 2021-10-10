@@ -1,10 +1,10 @@
-import THREE from 'three';
+import { Vector3 } from 'three';
 
 import Constraint from './Constraint';
 
 const SLACK = 1.2;
 
-const diff = new THREE.Vector3();
+const diff = new Vector3();
 
 /**
  * @class FixedConstraint

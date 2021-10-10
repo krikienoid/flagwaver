@@ -1,4 +1,4 @@
-import THREE from 'three';
+import { Clock, Vector3 } from 'three';
 
 import { TIME_STEP } from '../../constants';
 import initStats from '../../utils/initStats';
@@ -24,9 +24,9 @@ export default class App extends ModuleSystem {
 
         let { scene, camera, renderer } = settings;
 
-        const cameraFocus = new THREE.Vector3(0, 5, 0);
+        const cameraFocus = new Vector3(0, 5, 0);
 
-        const clock = new THREE.Clock();
+        const clock = new Clock();
         const timestep = TIME_STEP;
         const maxUpdatesPerFrame = 90;
         const maxPanics = 255;
@@ -146,7 +146,6 @@ export default class App extends ModuleSystem {
             removeModules();
             cancelAnimationFrame(loop);
 
-            scene.dispose();
             renderer.dispose();
             renderer.forceContextLoss();
 

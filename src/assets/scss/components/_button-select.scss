@@ -2,6 +2,11 @@
 // Button select
 //
 
+@use "sass:color";
+
+@use "../vendors/spectre.css/abstracts" as spectre-css;
+@use "../abstracts" as *;
+
 .btn-select {
     margin: 0;
 }
@@ -21,20 +26,23 @@
     input {
         &:hover + .btn,
         &:focus + .btn {
-            background: lighten($primary-color, 50%);
-            border-color: $primary-color;
-            color: $primary-color;
+            background: color.adjust(
+                spectre-css.$primary-color,
+                $lightness: 50%
+            );
+            border-color: spectre-css.$primary-color;
+            color: spectre-css.$primary-color;
         }
 
         &:focus + .btn {
-            @include control-shadow;
+            @include spectre-css.control-shadow;
         }
 
         &:active + .btn,
         &:checked + .btn {
-            background: $primary-color-light;
-            border-color: $primary-color-light;
-            color: $light-color;
+            background: spectre-css.$primary-color-light;
+            border-color: spectre-css.$primary-color-light;
+            color: spectre-css.$light-color;
             transition: $control-transition;
         }
 
@@ -44,8 +52,8 @@
 
         &:disabled + .btn,
         &.disabled + .btn {
-            border-color: $bg-color-dark;
-            color: $bg-color-dark;
+            border-color: spectre-css.$bg-color-dark;
+            color: spectre-css.$bg-color-dark;
             cursor: default;
             pointer-events: none;
         }
@@ -54,8 +62,8 @@
         &.disabled:checked + .btn,
         &:disabled + .btn.active,
         &.disabled + .btn.active {
-            background: $bg-color-dark;
-            color: $light-color;
+            background: spectre-css.$bg-color-dark;
+            color: spectre-css.$light-color;
         }
     }
 }
@@ -72,12 +80,12 @@
         }
 
         &:not(:first-child):not(:last-child) .btn {
-            margin-left: -$border-width;
+            margin-left: -(spectre-css.$border-width);
             border-radius: 0;
         }
 
         &:last-child:not(:first-child) .btn {
-            margin-left: -$border-width;
+            margin-left: -(spectre-css.$border-width);
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
         }

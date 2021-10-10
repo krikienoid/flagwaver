@@ -1,6 +1,6 @@
-import THREE from 'three';
+import { Vector3 } from 'three';
 
-const tmp = new THREE.Vector3();
+const tmp = new Vector3();
 
 /**
  * @function applyRippleEffectToCloth

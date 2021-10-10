@@ -1,4 +1,4 @@
-import THREE from 'three';
+import { Vector3 } from 'three';
 
 import { DRAG } from '../constants';
 
@@ -17,8 +17,8 @@ export default class Particle {
         this.original       = position.clone();
         this.mass           = mass;
         this.inverseMass    = 1 / mass;
-        this.acceleration   = new THREE.Vector3();
-        this.tmp            = new THREE.Vector3();
+        this.acceleration   = new Vector3();
+        this.tmp            = new Vector3();
     }
 
     // Apply force

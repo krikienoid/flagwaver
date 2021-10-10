@@ -1,10 +1,10 @@
-import THREE from 'three';
+import { Vector3 } from 'three';
 
 import { Side } from '../../constants';
 import Flagpole from './Flagpole';
 import { createPoleGeometryTypeI } from './utils/FlagpoleGeometryHelpers';
 
-const zAxis = new THREE.Vector3(0, 0, 1);
+const zAxis = new Vector3(0, 0, 1);
 
 /**
  * @class OutriggerFlagpole

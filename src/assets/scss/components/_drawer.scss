@@ -2,6 +2,8 @@
 // Drawer
 //
 
+@use "../abstracts" as *;
+
 $drawer-width: rem(288px);
 $drawer-xs-width: rem(320px);
 $drawer-sm-width: rem(360px);

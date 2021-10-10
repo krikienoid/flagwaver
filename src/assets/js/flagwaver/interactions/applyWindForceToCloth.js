@@ -1,9 +1,19 @@
-import THREE from 'three';
+import { Vector3 } from 'three';
 
 import { DRAG_COEFFICIENT } from '../constants';
 import localizeForce from './utils/localizeForce';
 
-const tmp = new THREE.Vector3();
+const cb = new Vector3();
+const ab = new Vector3();
+
+function computeFaceNormal(vA, vB, vC) {
+    cb.subVectors(vC, vB);
+    ab.subVectors(vA, vB);
+    cb.cross(ab);
+    cb.normalize();
+
+    return cb;
+}
 
 /**
  * @function applyWindForceToCloth
@@ -16,7 +26,7 @@ const tmp = new THREE.Vector3();
  */
 export default function applyWindForceToCloth(cloth, wind, object) {
     const particles = cloth.particles;
-    const faces = cloth.geometry.faces;
+    const index = cloth.geometry.getIndex();
 
     if (wind) {
         const faceArea = cloth.restDistance * cloth.restDistance / 2;
@@ -24,18 +34,26 @@ export default function applyWindForceToCloth(cloth, wind, object) {
         const force = localizeForce(wind.pressure, object)
             .multiplyScalar(DRAG_COEFFICIENT * faceArea / 3);
 
-        for (let i = 0, ii = faces.length; i < ii; i++) {
-            const face   = faces[i];
-            const normal = face.normal;
+        for (let i = 0, ii = index.count; i < ii; i += 3) {
+            const a = index.getX(i);
+            const b = index.getX(i + 1);
+            const c = index.getX(i + 2);
 
-            tmp
-                .copy(normal)
-                .normalize()
-                .multiplyScalar(normal.dot(force));
+            const particleA = particles[a];
+            const particleB = particles[b];
+            const particleC = particles[c];
 
-            particles[face.a].applyForce(tmp);
-            particles[face.b].applyForce(tmp);
-            particles[face.c].applyForce(tmp);
+            const projectedForce = computeFaceNormal(
+                particleA.position,
+                particleB.position,
+                particleC.position
+            );
+
+            projectedForce.multiplyScalar(projectedForce.dot(force));
+
+            particleA.applyForce(projectedForce);
+            particleB.applyForce(projectedForce);
+            particleC.applyForce(projectedForce);
         }
     }
 }

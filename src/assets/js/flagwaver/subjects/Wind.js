@@ -1,4 +1,4 @@
-import THREE from 'three';
+import { Vector3 } from 'three';
 
 import { AIR_DENSITY } from '../constants';
 import WindModifiers from './utils/WindModifiers';
@@ -39,11 +39,11 @@ export default class Wind {
         this.directionFn        = settings.directionFn;
         this.speedFn            = settings.speedFn;
 
-        this.pressure = new THREE.Vector3();
+        this.pressure = new Vector3();
     }
 
     static defaults = {
-        direction:              new THREE.Vector3(1, 0, 0),
+        direction:              new Vector3(1, 0, 0),
         speed:                  10, // m/s
         directionFn:            WindModifiers.blowFromLeftDirection,
         speedFn:                WindModifiers.constantSpeed

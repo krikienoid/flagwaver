@@ -2,6 +2,9 @@
 // Form
 //
 
+@use "../vendors/spectre.css/abstracts" as spectre-css;
+@use "../abstracts" as *;
+
 .form-group {
     position: relative;
     margin-bottom: 0;
@@ -42,22 +45,23 @@ legend {
 .form-switch {
     .form-icon {
         background-clip: border-box;
-        background-color: $gray-color-dark;
-        border-color: $gray-color-dark;
+        background-color: spectre-css.$gray-color-dark;
+        border-color: spectre-css.$gray-color-dark;
     }
 
     label {
         transition: $control-transition;
 
         .form-icon-target {
-            width: $unit-8;
-            height: $unit-4 + $border-width * 2;
+            width: spectre-css.$unit-8;
+            height: spectre-css.$unit-4 + spectre-css.$border-width * 2;
             display: block;
             position: absolute;
-            top: ($control-size-sm - $unit-4) / 2 - $border-width;
+            top: (spectre-css.$control-size-sm - spectre-css.$unit-4) * 0.5 -
+                spectre-css.$border-width;
             left: 0;
             z-index: 1;
-            border-radius: $unit-2 + $border-width;
+            border-radius: spectre-css.$unit-2 + spectre-css.$border-width;
             cursor: pointer;
         }
     }
@@ -66,13 +70,13 @@ legend {
         &:disabled,
         &.disabled {
             ~ .form-icon {
-                background-color: $bg-color-dark;
-                border-color: $bg-color-dark;
+                background-color: spectre-css.$bg-color-dark;
+                border-color: spectre-css.$bg-color-dark;
                 opacity: 1;
             }
 
             ~ label {
-                color: $bg-color-dark;
+                color: spectre-css.$bg-color-dark;
 
                 .form-icon-target {
                     cursor: not-allowed;
@@ -115,9 +119,9 @@ legend {
 .form-select {
     &:disabled,
     &.disabled {
-        background-color: $light-color;
-        border-color: $bg-color-dark;
-        color: $bg-color-dark;
+        background-color: spectre-css.$light-color;
+        border-color: spectre-css.$bg-color-dark;
+        color: spectre-css.$bg-color-dark;
         opacity: 1;
     }
 }
@@ -126,7 +130,7 @@ legend {
     &:not([multiple]):not([size]) {
         &:disabled,
         &.disabled {
-            background: $light-color;
+            background: spectre-css.$light-color;
         }
     }
 }
@@ -134,10 +138,10 @@ legend {
 .form-static {
     width: 100%;
     display: block;
-    padding: $control-padding-y 0;
+    padding: spectre-css.$control-padding-y 0;
     background: none;
     border: solid transparent;
-    border-width: $border-width 0;
+    border-width: spectre-css.$border-width 0;
     color: $text-color;
     font-size: $font-size-base;
     font-weight: normal;
@@ -146,10 +150,10 @@ legend {
     transition: $control-transition;
 
     &:focus {
-        @include control-shadow;
+        @include spectre-css.control-shadow;
     }
 
     &.disabled {
-        color: $gray-color-light;
+        color: spectre-css.$gray-color-light;
     }
 }

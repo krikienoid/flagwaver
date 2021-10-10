@@ -2,13 +2,18 @@
 // Form file input
 //
 
+@use "sass:color";
+
+@use "../vendors/spectre.css/abstracts" as spectre-css;
+@use "../abstracts" as *;
+
 .form-file {
     position: relative;
 }
 
 .form-file-input,
 .form-file-btn {
-    border-radius: $border-radius;
+    border-radius: spectre-css.$border-radius;
 }
 
 .form-file-input {
@@ -30,24 +35,24 @@
     }
 
     &:focus + .form-file-btn {
-        @include control-shadow;
+        @include spectre-css.control-shadow;
 
         .form-input {
-            border-color: $primary-color;
+            border-color: spectre-css.$primary-color;
         }
     }
 
     &:hover + .form-file-btn .btn,
     &:focus + .form-file-btn .btn {
-        background: lighten($primary-color, 50%);
-        border-color: $primary-color;
-        color: $primary-color;
+        background: color.adjust(spectre-css.$primary-color, $lightness: 50%);
+        border-color: spectre-css.$primary-color;
+        color: spectre-css.$primary-color;
     }
 
     &:active + .form-file-btn .btn {
-        background: $primary-color-light;
-        border-color: $primary-color-light;
-        color: $light-color;
+        background: spectre-css.$primary-color-light;
+        border-color: spectre-css.$primary-color-light;
+        color: spectre-css.$light-color;
         transition: none;
     }
 
@@ -57,14 +62,14 @@
 
         + .form-file-btn {
             .form-input {
-                border-color: $bg-color-dark;
-                color: $bg-color-dark;
+                border-color: spectre-css.$bg-color-dark;
+                color: spectre-css.$bg-color-dark;
                 cursor: not-allowed;
             }
 
             .btn {
-                border-color: $bg-color-dark;
-                color: $bg-color-dark;
+                border-color: spectre-css.$bg-color-dark;
+                color: spectre-css.$bg-color-dark;
                 cursor: default;
                 pointer-events: none;
             }
@@ -76,9 +81,9 @@
     transition: $control-shadow-transition;
 
     .form-input {
-        background-color: $bg-color-light;
-        border-color: $border-color-dark;
-        color: $body-font-color;
+        background-color: spectre-css.$bg-color-light;
+        border-color: spectre-css.$border-color-dark;
+        color: spectre-css.$body-font-color;
         opacity: 1;
         cursor: default;
         -webkit-text-fill-color: currentColor; // Fixes for Safari

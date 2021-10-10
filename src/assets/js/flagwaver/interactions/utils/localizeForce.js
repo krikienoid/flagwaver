@@ -1,7 +1,7 @@
-import THREE from 'three';
+import { Object3D, Vector3 } from 'three';
 
-const tmp = new THREE.Vector3();
-const worldPosition = new THREE.Vector3();
+const tmp = new Vector3();
+const worldPosition = new Vector3();
 
 /**
  * @function localizeForce
@@ -21,7 +21,7 @@ export default function localizeForce(force, object) {
 
     tmp.copy(force);
 
-    if (object instanceof THREE.Object3D) {
+    if (object instanceof Object3D) {
         // Discard world position information
         worldPosition.setFromMatrixPosition(object.matrixWorld);
         tmp.add(worldPosition);

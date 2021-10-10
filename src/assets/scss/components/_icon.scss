@@ -2,12 +2,14 @@
 // Icons
 //
 
+@use "../abstracts" as *;
+
 .svg-icon {
     $size: 1.5rem;
 
     width: $size;
     height: $size;
-    vertical-align: (($font-size-base * $line-height-base - $size * $line-height-base) / 2);
+    vertical-align: (($font-size-base * $line-height-base - $size * $line-height-base) * 0.5);
 }
 
 .icon-hoisting-dexter   { transform: scale(1, 1);    }

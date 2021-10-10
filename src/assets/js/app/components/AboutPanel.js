@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function AboutPanel() {
     return (
         <div className="content-section">

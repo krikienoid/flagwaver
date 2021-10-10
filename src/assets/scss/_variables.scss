@@ -2,6 +2,9 @@
 // Variables
 //
 
+@use "sass:color";
+@use "sass:map";
+
 // Colors
 
 $black:                         #000;
@@ -45,11 +48,11 @@ $text-inverse-color:            $white;
 
 $link-color:                    $primary;
 $link-decoration:               underline;
-$link-hover-color:              darken($link-color, 10%);
+$link-hover-color:              color.adjust($link-color, $lightness: -10%);
 $link-hover-decoration:         underline;
 
 $link-inverse-color:            $white;
-$link-inverse-hover-color:      lighten($primary, 40%);
+$link-inverse-hover-color:      color.adjust($primary, $lightness: 40%);
 
 
 // Grid
@@ -64,7 +67,7 @@ $grid-breakpoints: (
 );
 
 $grid-gutter-width:             1.25rem;
-$grid-gutter-half:              $grid-gutter-width / 2;
+$grid-gutter-half:              $grid-gutter-width * 0.5;
 
 
 // Z-index
@@ -112,12 +115,12 @@ $control-shadow-transition:     box-shadow $transition-style;
 // Core colors
 
 $primary-color:                 $primary;
-$primary-color-dark:            darken($primary-color, 10%);
-$primary-color-light:           lighten($primary-color, 10%);
+$primary-color-dark:            color.adjust($primary-color, $lightness: -10%);
+$primary-color-light:           color.adjust($primary-color, $lightness: 10%);
 
 $secondary-color:               $secondary;
-$secondary-color-dark:          darken($secondary-color, 10%);
-$secondary-color-light:         lighten($secondary-color, 10%);
+$secondary-color-dark:          color.adjust($secondary-color, $lightness: -10%);
+$secondary-color-light:         color.adjust($secondary-color, $lightness: 10%);
 
 
 // Gray colors
@@ -191,11 +194,11 @@ $control-icon-size:             1rem;
 
 // Responsive breakpoints
 
-$size-xs:                       map-get($grid-breakpoints, xs);
-$size-sm:                       map-get($grid-breakpoints, sm);
-$size-md:                       map-get($grid-breakpoints, md);
-$size-lg:                       map-get($grid-breakpoints, lg);
-$size-xl:                       map-get($grid-breakpoints, xl);
-$size-2x:                       map-get($grid-breakpoints, xxl);
+$size-xs:                       map.get($grid-breakpoints, xs);
+$size-sm:                       map.get($grid-breakpoints, sm);
+$size-md:                       map.get($grid-breakpoints, md);
+$size-lg:                       map.get($grid-breakpoints, lg);
+$size-xl:                       map.get($grid-breakpoints, xl);
+$size-2x:                       map.get($grid-breakpoints, xxl);
 
 $responsive-breakpoint:         $size-sm;

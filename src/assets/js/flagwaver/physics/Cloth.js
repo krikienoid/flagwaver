@@ -1,4 +1,5 @@
-import THREE from 'three';
+import { StreamDrawUsage, Vector3 } from 'three';
+import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeometry';
 
 import Particle from './Particle';
 import Constraint from './Constraint';
@@ -35,7 +36,7 @@ export default class Cloth {
         // Particles
         //
 
-        const position = new THREE.Vector3();
+        const position = new Vector3();
         const particleMass = mass / ((ySegments + 1) * (xSegments + 1));
 
         for (let v = 0; v <= ySegments; v++) {
@@ -166,15 +167,9 @@ export default class Cloth {
         // Geometry
         //
 
-        const geometry = new THREE.ParametricGeometry(
-            plane,
-            xSegments,
-            ySegments,
-            true
-        );
+        const geometry = new ParametricGeometry(plane, xSegments, ySegments);
 
-        geometry.dynamic = true;
-        geometry.computeFaceNormals();
+        geometry.getAttribute('position').setUsage(StreamDrawUsage);
 
         // Public properties and methods
         this.xSegments    = xSegments;
@@ -221,15 +216,21 @@ export default class Cloth {
     render() {
         const particles = this.particles;
         const geometry  = this.geometry;
-        const vertices  = geometry.vertices;
+
+        const positionAttribute = geometry.getAttribute('position');
+        const positions = positionAttribute.array;
 
         for (let i = 0, ii = particles.length; i < ii; i++) {
-            vertices[i].copy(particles[i].position);
+            const position = particles[i].position;
+            const j = i * 3;
+
+            positions[j]        = position.x;
+            positions[j + 1]    = position.y;
+            positions[j + 2]    = position.z;
         }
 
-        geometry.computeFaceNormals();
+        positionAttribute.needsUpdate = true;
+
         geometry.computeVertexNormals();
-        geometry.normalsNeedUpdate = true;
-        geometry.verticesNeedUpdate = true;
     }
 }

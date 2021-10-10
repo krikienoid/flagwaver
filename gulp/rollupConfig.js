@@ -50,13 +50,11 @@ export default {
     indent: ROLLUP_QUICK_BUILD ? false : '    ',
     banner: banner('FlagWaver - App'),
     globals: {
-      'modernizr': 'window.Modernizr || {}',
-      'three': 'THREE'
+      'modernizr': 'window.Modernizr || {}'
     }
   },
   external: [
-    'modernizr',
-    'three'
+    'modernizr'
   ],
   treeshake: !ROLLUP_QUICK_BUILD,
   plugins: [
@@ -73,6 +71,9 @@ export default {
           'useRef', 'useState', 'Fragment', 'StrictMode', 'Suspense',
           'createElement', 'cloneElement', 'createFactory', 'isValidElement',
           'version', 'unstable_ConcurrentMode', 'unstable_Profiler'
+        ],
+        'node_modules/react/jsx-runtime.js': [
+          'jsx', 'jsxs'
         ],
         'node_modules/react-dom/index.js': [
           'createPortal', 'findDOMNode', 'hydrate', 'render',

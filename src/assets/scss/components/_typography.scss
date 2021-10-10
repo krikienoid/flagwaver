@@ -2,6 +2,9 @@
 // Typography
 //
 
+@use "../vendors/spectre.css/abstracts" as spectre-css;
+@use "../abstracts" as *;
+
 html.wf-active body {
     font-family: $font-family-montserrat;
 }
@@ -54,20 +57,20 @@ p {
 
 a,
 .link {
-    color: $link-color;
+    color: spectre-css.$link-color;
     font-weight: 500;
     text-decoration: $link-decoration;
     transition: $control-transition;
 
     &:visited {
-        color: $link-color;
+        color: spectre-css.$link-color;
     }
 
     &:hover,
     &:focus,
     &:active,
     &.active {
-        color: $link-color-dark;
+        color: spectre-css.$link-color-dark;
         text-decoration: $link-hover-decoration;
     }
 
@@ -84,14 +87,14 @@ a,
     cursor: pointer;
 
     &:focus {
-        @include control-shadow;
+        @include spectre-css.control-shadow;
     }
 }
 
 hr, .hr {
     margin: ($font-size-base * $line-height-base) 0;
     border: 0;
-    border-top: $border-width solid $border-color;
+    border-top: spectre-css.$border-width solid spectre-css.$border-color;
 }
 
 .text-inverse {

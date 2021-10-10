@@ -1,4 +1,4 @@
-import THREE from 'three';
+import { AmbientLight, DirectionalLight } from 'three';
 
 function setLightShadow(light) {
     const d = 10;
@@ -14,9 +14,9 @@ function setLightShadow(light) {
 }
 
 export function createMutedLights() {
-    const light1 = new THREE.AmbientLight(0x222222, 1);
+    const light1 = new AmbientLight(0x222222, 1);
 
-    const light2 = new THREE.DirectionalLight(0xfefffa, 1.5);
+    const light2 = new DirectionalLight(0xfefffa, 1.5);
 
     light2.position.set(20, 70, 40);
     setLightShadow(light2);
@@ -25,14 +25,14 @@ export function createMutedLights() {
 }
 
 export function createDaytimeLights() {
-    const light1 = new THREE.AmbientLight(0x333333, 1);
+    const light1 = new AmbientLight(0x333333, 1);
 
-    const light2 = new THREE.DirectionalLight(0xdfebff, 2.5);
+    const light2 = new DirectionalLight(0xdfebff, 2.5);
 
     light2.position.set(20, 70, 40);
     setLightShadow(light2);
 
-    const light3 = new THREE.DirectionalLight(0xacdf9f, 0.35);
+    const light3 = new DirectionalLight(0xacdf9f, 0.35);
 
     light3.position.set(0, -1, 0);
 
@@ -40,14 +40,14 @@ export function createDaytimeLights() {
 }
 
 export function createNighttimeLights() {
-    const light1 = new THREE.AmbientLight(0x010101, 0.3);
+    const light1 = new AmbientLight(0x010101, 0.3);
 
-    const light2 = new THREE.DirectionalLight(0x8ba1ff, 1.5);
+    const light2 = new DirectionalLight(0x8ba1ff, 1.5);
 
     light2.position.set(-55, 50, -80);
     setLightShadow(light2);
 
-    const light3 = new THREE.DirectionalLight(0x4564cd, 0.08);
+    const light3 = new DirectionalLight(0x4564cd, 0.08);
 
     light3.position.set(0, 1, 0);
 

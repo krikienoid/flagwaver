@@ -1,6 +1,6 @@
-import THREE from 'three';
+import { ImageLoader } from 'three';
 
-const loader = new THREE.ImageLoader();
+const loader = new ImageLoader();
 
 loader.setCrossOrigin('anonymous');
 

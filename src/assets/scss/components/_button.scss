@@ -2,35 +2,40 @@
 // Button
 //
 
+@use "sass:color";
+
+@use "../vendors/spectre.css/abstracts" as spectre-css;
+@use "../abstracts" as *;
+
 .btn {
-    border-color: $border-color-dark;
+    border-color: spectre-css.$border-color-dark;
     font-weight: 500;
 
     &:hover,
     &:focus {
-        background: lighten($primary-color, 50%);
-        border-color: $primary-color;
-        color: $primary-color;
+        background: color.adjust(spectre-css.$primary-color, $lightness: 50%);
+        border-color: spectre-css.$primary-color;
+        color: spectre-css.$primary-color;
     }
 
     &:active,
     &.active {
-        background: $primary-color-light;
-        border-color: $primary-color-light;
-        color: $light-color;
+        background: spectre-css.$primary-color-light;
+        border-color: spectre-css.$primary-color-light;
+        color: spectre-css.$light-color;
         transition: $control-shadow-transition;
     }
 
     &[disabled],
     &:disabled,
     &.disabled {
-        border-color: $bg-color-dark;
-        color: $bg-color-dark;
+        border-color: spectre-css.$bg-color-dark;
+        color: spectre-css.$bg-color-dark;
         opacity: 1;
 
         &.active {
-            background: $bg-color-dark;
-            color: $light-color;
+            background: spectre-css.$bg-color-dark;
+            color: spectre-css.$light-color;
         }
     }
 
@@ -42,7 +47,7 @@
 
         &:active,
         &.active {
-            color: $light-color;
+            color: spectre-css.$light-color;
         }
     }
 

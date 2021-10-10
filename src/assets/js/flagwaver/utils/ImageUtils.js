@@ -1,4 +1,4 @@
-import THREE from 'three';
+import { RGBFormat, DataTexture } from 'three';
 
 export function generateDataTexture(width, height, color) {
     const size = width * height;
@@ -16,7 +16,7 @@ export function generateDataTexture(width, height, color) {
         data[stride + 2] = b;
     }
 
-    const texture = new THREE.DataTexture(data, width, height, THREE.RGBFormat);
+    const texture = new DataTexture(data, width, height, RGBFormat);
 
     return texture;
 }

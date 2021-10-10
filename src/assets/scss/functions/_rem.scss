@@ -2,8 +2,12 @@
 // px to rem unit converter
 //
 
+@use "sass:math";
+
+@use "../variables" as *;
+
 $font-size-root: 16px !default;
 
 @function rem($n) {
-    @return $n / $font-size-root * 1rem;
+    @return math.div($n, $font-size-root) * 1rem;
 }

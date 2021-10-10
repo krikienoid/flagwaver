@@ -2,13 +2,16 @@
 // Empty state
 //
 
+@use "../vendors/spectre.css/abstracts" as spectre-css;
+@use "../abstracts" as *;
+
 .empty {
     background: $brand-gray-lightest;
     color: $brand-gray-dark;
 
     h2,
     p {
-        margin: $layout-spacing auto;
+        margin: spectre-css.$layout-spacing auto;
     }
 }
 

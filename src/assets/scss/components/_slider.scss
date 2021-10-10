@@ -2,6 +2,9 @@
 // Slider
 //
 
+@use "../vendors/spectre.css/abstracts" as spectre-css;
+@use "../abstracts" as *;
+
 .slider {
     // Fixes for IE
     // https://github.com/picturepan2/spectre/pull/599
@@ -30,7 +33,7 @@
     &:disabled,
     &.disabled {
         &::-ms-fill-lower {
-            background: $gray-color-light;
+            background: spectre-css.$gray-color-light;
         }
     }
 }

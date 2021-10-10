@@ -1,9 +1,9 @@
-import THREE from 'three';
+import { Vector3 } from 'three';
 
 import { G } from '../constants';
 import localizeForce from './utils/localizeForce';
 
-const gravity = new THREE.Vector3(0, -G, 0);
+const gravity = new Vector3(0, -G, 0);
 
 /**
  * @function applyGravityToCloth
