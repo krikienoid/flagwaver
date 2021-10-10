@@ -1,11 +1,9 @@
 @use "sass:math";
 
-@use "../variables" as *;
-
-$font-size-root: 16px !default;
+$_font-size-root: 16px !default;
 
 // px to rem unit converter
 
 @function rem($n) {
-    @return math.div($n, $font-size-root) * 1rem;
+    @return math.div($n, $_font-size-root) * 1rem;
 }

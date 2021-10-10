@@ -1,28 +1,28 @@
 @use "../vendors/spectre.css/abstracts" as spectre-css;
-@use "../abstracts" as *;
+@use "../abstracts" as s;
 
 .slider {
     // Fixes for IE
     // https://github.com/picturepan2/spectre/pull/599
     padding: 0;
-    transition: $control-shadow-transition;
+    transition: s.$control-shadow-transition;
 
     &::-webkit-slider-thumb {
         transition:
-            background $transition-style,
-            transform $transition-style;
+            background s.$transition-style,
+            transform s.$transition-style;
     }
 
     &::-moz-range-thumb {
         transition:
-            background $transition-style,
-            transform $transition-style;
+            background s.$transition-style,
+            transform s.$transition-style;
     }
 
     &::-ms-thumb {
         transition:
-            background $transition-style,
-            transform $transition-style;
+            background s.$transition-style,
+            transform s.$transition-style;
     }
 
     &::-ms-track {

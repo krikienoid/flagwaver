@@ -1,7 +1,7 @@
 @use "sass:color";
 
 @use "../vendors/spectre.css/abstracts" as spectre-css;
-@use "../abstracts" as *;
+@use "../abstracts" as s;
 
 .btn {
     border-color: spectre-css.$border-color-dark;
@@ -19,7 +19,7 @@
         background: spectre-css.$primary-color-light;
         border-color: spectre-css.$primary-color-light;
         color: spectre-css.$light-color;
-        transition: $control-shadow-transition;
+        transition: s.$control-shadow-transition;
     }
 
     &[disabled],

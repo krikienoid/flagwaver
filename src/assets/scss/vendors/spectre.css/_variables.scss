@@ -1,0 +1,98 @@
+@use "sass:color";
+@use "sass:map";
+
+@use "../../variables" as s;
+
+// Core colors
+
+$primary-color:                 s.$primary;
+$primary-color-dark:            color.adjust($primary-color, $lightness: -10%);
+$primary-color-light:           color.adjust($primary-color, $lightness: 10%);
+
+$secondary-color:               s.$secondary;
+$secondary-color-dark:          color.adjust($secondary-color, $lightness: -10%);
+$secondary-color-light:         color.adjust($secondary-color, $lightness: 10%);
+
+
+// Gray colors
+
+$dark-color:                    s.$brand-gray-darkest;
+$light-color:                   s.$white;
+$gray-color:                    s.$brand-gray-light;
+$gray-color-dark:               s.$brand-gray-dark;
+$gray-color-light:              s.$brand-gray-lighter;
+
+$border-color:                  s.$brand-gray-lighter;
+$border-color-dark:             s.$brand-gray-light;
+$bg-color:                      s.$brand-gray-lighter;
+$bg-color-dark:                 s.$brand-gray-lighter;
+$bg-color-light:                $light-color;
+
+
+// Control colors
+
+$success-color:                 s.$brand-green-light;
+$warning-color:                 s.$brand-yellow;
+$error-color:                   s.$brand-danger;
+
+
+// Other colors
+
+$body-bg:                       s.$white;
+$body-font-color:               s.$text-color;
+$link-color:                    s.$link-color;
+
+
+// Unit sizes
+
+$unit-o:                        0.0625rem;
+$unit-h:                        0.125rem;
+$unit-1:                        0.25rem;
+$unit-2:                        0.5rem;
+$unit-3:                        0.75rem;
+$unit-4:                        1rem;
+$unit-5:                        1.25rem;
+$unit-6:                        1.5rem;
+$unit-7:                        1.75rem;
+$unit-8:                        2rem;
+$unit-9:                        2.25rem;
+$unit-10:                       2.5rem;
+$unit-12:                       3rem;
+$unit-16:                       4rem;
+
+
+// Font sizes
+
+$html-font-size:                s.$font-size-root;
+$html-line-height:              s.$line-height-base;
+
+$font-size:                     s.$font-size-base;
+$font-size-sm:                  s.$font-size-sm;
+$font-size-lg:                  s.$font-size-lg;
+$line-height:                   s.$font-size-base * s.$line-height-base;
+
+
+// Sizes
+
+$layout-spacing:                $unit-2;
+$layout-spacing-sm:             $unit-1;
+$layout-spacing-lg:             $unit-4;
+$border-radius:                 $unit-1;
+
+$control-size:                  $unit-9;
+
+$control-padding-x:             0.75rem;
+
+$control-icon-size:             1rem;
+
+
+// Responsive breakpoints
+
+$size-xs:                       map.get(s.$grid-breakpoints, xs);
+$size-sm:                       map.get(s.$grid-breakpoints, sm);
+$size-md:                       map.get(s.$grid-breakpoints, md);
+$size-lg:                       map.get(s.$grid-breakpoints, lg);
+$size-xl:                       map.get(s.$grid-breakpoints, xl);
+$size-2x:                       map.get(s.$grid-breakpoints, xxl);
+
+$responsive-breakpoint:         $size-sm;

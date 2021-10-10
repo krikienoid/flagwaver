@@ -1,17 +1,17 @@
 @use "../vendors/spectre.css/abstracts" as spectre-css;
-@use "../abstracts" as *;
+@use "../abstracts" as s;
 
 .form-group {
     position: relative;
     margin-bottom: 0;
 
     &:not(:last-child) {
-        margin-bottom: $spacer;
+        margin-bottom: s.$spacer;
     }
 }
 
 legend {
-    color: $brand-gray-darkest;
+    color: s.$brand-gray-darkest;
     font-weight: bold;
 }
 
@@ -19,7 +19,7 @@ legend {
     width: fit-content;
     margin-bottom: 0.5em;
     padding: 0;
-    color: $brand-gray-darkest;
+    color: s.$brand-gray-darkest;
     font-size: 0.75rem;
     font-weight: bold;
     line-height: 1.5;
@@ -27,7 +27,7 @@ legend {
 
 .form-input,
 .form-select {
-    transition: $control-transition;
+    transition: s.$control-transition;
 }
 
 .form-input {
@@ -46,7 +46,7 @@ legend {
     }
 
     label {
-        transition: $control-transition;
+        transition: s.$control-transition;
 
         .form-icon-target {
             width: spectre-css.$unit-8;
@@ -138,12 +138,12 @@ legend {
     background: none;
     border: solid transparent;
     border-width: spectre-css.$border-width 0;
-    color: $text-color;
-    font-size: $font-size-base;
+    color: s.$text-color;
+    font-size: s.$font-size-base;
     font-weight: normal;
-    line-height: $line-height-base;
+    line-height: s.$line-height-base;
     outline: 0;
-    transition: $control-transition;
+    transition: s.$control-transition;
 
     &:focus {
         @include spectre-css.control-shadow;

@@ -1,10 +1,10 @@
 @use "../vendors/spectre.css/abstracts" as spectre-css;
-@use "../abstracts" as *;
+@use "../abstracts" as s;
 
-$panel-outer-padding-x: $spacer;
-$panel-outer-padding-y: $spacer;
-$panel-sm-outer-padding-x: $grid-gutter-width;
-$panel-sm-outer-padding-y: $grid-gutter-width;
+$panel-outer-padding-x:         s.$spacer;
+$panel-outer-padding-y:         s.$spacer;
+$panel-sm-outer-padding-x:      s.$grid-gutter-width;
+$panel-sm-outer-padding-y:      s.$grid-gutter-width;
 
 .panel {
     + .panel {
@@ -16,7 +16,7 @@ $panel-sm-outer-padding-y: $grid-gutter-width;
 .panel-body {
     padding: $panel-outer-padding-y $panel-outer-padding-x;
 
-    @include breakpoint(sm) {
+    @include s.breakpoint(sm) {
         padding: $panel-sm-outer-padding-y $panel-sm-outer-padding-x;
     }
 }
@@ -25,7 +25,7 @@ $panel-sm-outer-padding-y: $grid-gutter-width;
     padding-top: 1.5 * $panel-outer-padding-y;
     padding-bottom: 0;
 
-    @include breakpoint(sm) {
+    @include s.breakpoint(sm) {
         padding-top: 1.5 * $panel-sm-outer-padding-y;
         padding-bottom: 0;
     }
@@ -34,7 +34,7 @@ $panel-sm-outer-padding-y: $grid-gutter-width;
 .panel-body {
     padding-bottom: 2 * $panel-outer-padding-y;
 
-    @include breakpoint(sm) {
+    @include s.breakpoint(sm) {
         padding-bottom: 2 * $panel-sm-outer-padding-y;
     }
 
@@ -75,7 +75,7 @@ $panel-sm-outer-padding-y: $grid-gutter-width;
     padding: ($panel-outer-padding-y - spectre-css.$unit-1)
         ($panel-outer-padding-x - spectre-css.$unit-2);
 
-    @include breakpoint(sm) {
+    @include s.breakpoint(sm) {
         padding: ($panel-sm-outer-padding-y - spectre-css.$unit-1)
             ($panel-sm-outer-padding-x - spectre-css.$unit-2);
     }

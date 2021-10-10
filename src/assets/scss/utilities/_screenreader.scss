@@ -1,9 +1,9 @@
-@use "../abstracts" as *;
+@use "../abstracts" as s;
 
 .sr-only {
-    @include sr-only;
+    @include s.sr-only;
 }
 
 .sr-only-focusable {
-    @include sr-only-focusable;
+    @include s.sr-only-focusable;
 }

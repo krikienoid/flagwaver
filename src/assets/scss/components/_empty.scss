@@ -1,9 +1,9 @@
 @use "../vendors/spectre.css/abstracts" as spectre-css;
-@use "../abstracts" as *;
+@use "../abstracts" as s;
 
 .empty {
-    background: $brand-gray-lightest;
-    color: $brand-gray-dark;
+    background: s.$brand-gray-lightest;
+    color: s.$brand-gray-dark;
 
     h2,
     p {

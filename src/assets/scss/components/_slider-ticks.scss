@@ -1,5 +1,5 @@
 @use "../vendors/spectre.css/abstracts" as spectre-css;
-@use "../abstracts" as *;
+@use "../abstracts" as s;
 
 .slider-ticks {
     display: flex;
@@ -32,7 +32,7 @@
             margin-left: -$width * 0.5;
             text-align: center;
             cursor: pointer;
-            transition: $control-transition;
+            transition: s.$control-transition;
 
             &::before {
                 content: "";

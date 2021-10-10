@@ -1,26 +1,62 @@
+@use "sass:list";
 @use "sass:math";
 
-@use "../abstracts" as *;
+@mixin _background-image-full($color, $srcset) {
+    $src-sm: list.nth($srcset, 1);
+    $src-md: list.nth($srcset, 2);
+    $src-lg: list.nth($srcset, 3);
+
+    @media only screen {
+        background-color: $color;
+        background-image: url("#{$src-sm}");
+
+        @media (min-width: 768px), (min-height: 768px) {
+            background-image: url("#{$src-md}");
+        }
+
+        @media (min-width: 1024px), (min-height: 1024px) {
+            background-image: url("#{$src-lg}");
+        }
+    }
+}
+
+@mixin _background-image-full-size($width, $height) {
+    @media only screen {
+        background-size: cover;
+
+        @media (min-width: 1024px) and (min-aspect-ratio: 1 / 1) {
+            background-size: math.percentage(math.div($width, $height)) auto;
+        }
+
+        @media (min-width: $height) {
+            background-size: $width $height;
+        }
+
+        @media (min-width: $width), (min-height: $height) {
+            background-size: cover;
+        }
+    }
+}
 
 .bg-image-full {
     background-position: center center;
     background-repeat: no-repeat;
 
-    @include background-image-full-size(1920px, 1080px);
+    @include _background-image-full-size(1920px, 1080px);
 }
 
 .bg-classic {
-    @include background-image-full(#566c73, (
+    @include _background-image-full(#566c73, (
         "../img/bg-classic-768x768.jpg",
         "../img/bg-classic-1024x1024.jpg",
         "../img/bg-classic-1440x1080.jpg"
     ));
 
-    @include background-image-full-size(1440px, 1080px);
+    @include _background-image-full-size(1440px, 1080px);
 }
 
 .bg-blue-sky {
-    @include background-image-full(#5b8ebe, (
+    @include _background-image-full(#5b8ebe, (
         "../img/bg-blue-sky-768x768.jpg",
         "../img/bg-blue-sky-1024x1024.jpg",
         "../img/bg-blue-sky-1920x1080.jpg"
@@ -28,7 +64,7 @@
 }
 
 .bg-night-sky-clouds {
-    @include background-image-full(#050914, (
+    @include _background-image-full(#050914, (
         "../img/bg-night-sky-clouds-768x768.jpg",
         "../img/bg-night-sky-clouds-1024x1024.jpg",
         "../img/bg-night-sky-clouds-1920x1080.jpg"

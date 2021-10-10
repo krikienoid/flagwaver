@@ -1,7 +1,7 @@
 @use "sass:color";
 
 @use "../vendors/spectre.css/abstracts" as spectre-css;
-@use "../abstracts" as *;
+@use "../abstracts" as s;
 
 .form-file {
     position: relative;
@@ -16,7 +16,7 @@
     width: 100%;
     height: 100%;
     display: block;
-    @include block-full;
+    @include s.block-full;
     z-index: 2;
     overflow: hidden;
     // HACK: Hide input text so `cursor: pointer;` will work in Firefox.
@@ -74,7 +74,7 @@
 }
 
 .form-file-btn {
-    transition: $control-shadow-transition;
+    transition: s.$control-shadow-transition;
 
     .form-input {
         background-color: spectre-css.$bg-color-light;

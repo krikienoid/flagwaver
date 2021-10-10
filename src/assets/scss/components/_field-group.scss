@@ -1,4 +1,4 @@
-@use "../abstracts" as *;
+@use "../abstracts" as s;
 
 .field-group-legend {
     margin-bottom: 0.5em;
@@ -6,6 +6,6 @@
 }
 
 .field-group-body {
-    padding: 0.5 * $spacer;
-    border: 0.125rem solid $brand-gray-lightest;
+    padding: 0.5 * s.$spacer;
+    border: 0.125rem solid s.$brand-gray-lightest;
 }

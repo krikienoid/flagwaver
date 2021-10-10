@@ -1,4 +1,4 @@
-@use "../abstracts" as *;
+@use "../abstracts" as s;
 
 html,
 body,
@@ -22,30 +22,30 @@ html.no-js {
 
 .app-bg,
 .app-canvas {
-    @include block-full;
+    @include s.block-full;
 }
 
 .section {
-    padding-top: 0.5 * $spacer;
-    padding-bottom: 0.5 * $spacer;
+    padding-top: 0.5 * s.$spacer;
+    padding-bottom: 0.5 * s.$spacer;
 
-    @include breakpoint(sm) {
-        padding-top: $grid-gutter-width;
-        padding-bottom: $grid-gutter-width;
+    @include s.breakpoint(sm) {
+        padding-top: s.$grid-gutter-width;
+        padding-bottom: s.$grid-gutter-width;
     }
 }
 
 .container,
 .container-fluid {
-    padding-left: 0.5 * $spacer;
-    padding-right: 0.5 * $spacer;
+    padding-left: 0.5 * s.$spacer;
+    padding-right: 0.5 * s.$spacer;
 
-    @include breakpoint(sm) {
-        padding-left: $grid-gutter-width;
-        padding-right: $grid-gutter-width;
+    @include s.breakpoint(sm) {
+        padding-left: s.$grid-gutter-width;
+        padding-right: s.$grid-gutter-width;
     }
 }
 
 .content-section {
-    margin-bottom: $font-size-base * $line-height-base;
+    margin-bottom: s.$font-size-base * s.$line-height-base;
 }

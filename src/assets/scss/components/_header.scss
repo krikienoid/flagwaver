@@ -1,5 +1,5 @@
 @use "../vendors/spectre.css/abstracts" as spectre-css;
-@use "../abstracts" as *;
+@use "../abstracts" as s;
 
 $site-header-btn-width: 1.75rem;
 $site-header-btn-height: 1.5rem;
@@ -11,29 +11,29 @@ $site-header-btn-height: 1.5rem;
     right: 0;
     z-index: 1;
     padding: 0.5rem 0.625rem 0;
-    color: $text-inverse-color;
-    @include font-smoothing;
+    color: s.$text-inverse-color;
+    @include s.font-smoothing;
 
-    @include breakpoint(sm) {
-        padding: 1rem $grid-gutter-width 0;
+    @include s.breakpoint(sm) {
+        padding: 1rem s.$grid-gutter-width 0;
     }
 }
 
 .site-header-layout {
     display: flex;
-    margin-left: -$grid-gutter-half;
-    margin-right: -$grid-gutter-half;
+    margin-left: -(s.$grid-gutter-half);
+    margin-right: -(s.$grid-gutter-half);
 
     .site-header-center,
     .site-header-left,
     .site-header-right {
-        padding-left: $grid-gutter-half;
-        padding-right: $grid-gutter-half;
+        padding-left: s.$grid-gutter-half;
+        padding-right: s.$grid-gutter-half;
     }
 
     .site-header-left,
     .site-header-right {
-        width: $site-header-btn-width + $grid-gutter-width;
+        width: $site-header-btn-width + s.$grid-gutter-width;
         flex: 0 0 auto;
     }
 
@@ -50,27 +50,27 @@ $site-header-btn-height: 1.5rem;
         order: 1;
         text-align: center;
 
-        @include breakpoint(sm) {
+        @include s.breakpoint(sm) {
             text-align: left;
         }
     }
 }
 
 .site-header-btn {
-    @include button-icon($site-header-btn-width, $site-header-btn-height);
+    @include s.button-icon($site-header-btn-width, $site-header-btn-height);
     position: relative;
     margin: 0.125rem 0;
     overflow: hidden; // Bugfix: Firefox bug #687311
-    color: $link-inverse-color;
+    color: s.$link-inverse-color;
     outline-offset: 0.25rem;
     cursor: pointer;
-    transition: $control-transition;
+    transition: s.$control-transition;
 
     &:focus {
         outline: 0.125rem solid rgba(spectre-css.$primary-color, 0.8);
     }
 
-    @include breakpoint(sm) {
+    @include s.breakpoint(sm) {
         margin: 0.25rem 0;
     }
 
@@ -88,9 +88,9 @@ $site-header-btn-height: 1.5rem;
             width: 100%;
             height: $bar-height;
             display: block;
-            background-color: $link-inverse-color;
+            background-color: s.$link-inverse-color;
             border-radius: 0.0625rem;
-            transition: background-color $transition-style;
+            transition: background-color s.$transition-style;
 
             + .icon-bar {
                 margin-top: $bar-gap;
@@ -113,9 +113,9 @@ $site-header-btn-height: 1.5rem;
             height: $dot-height;
             display: block;
             margin: 0 auto;
-            background-color: $link-inverse-color;
+            background-color: s.$link-inverse-color;
             border-radius: 50%;
-            transition: background-color $transition-style;
+            transition: background-color s.$transition-style;
 
             + .icon-dot {
                 margin-top: $dot-gap;
@@ -126,7 +126,7 @@ $site-header-btn-height: 1.5rem;
     &:hover {
         .icon-bar,
         .icon-dot {
-            background-color: $link-inverse-hover-color;
+            background-color: s.$link-inverse-hover-color;
         }
     }
 }
@@ -154,7 +154,7 @@ $site-header-btn-height: 1.5rem;
         vertical-align: top;
     }
 
-    @include breakpoint(sm) {
+    @include s.breakpoint(sm) {
         font-size: 2rem;
 
         img {

@@ -3,7 +3,6 @@
 //
 
 @use "sass:color";
-@use "sass:map";
 
 // Colors
 
@@ -107,99 +106,3 @@ $control-transition:            background-color $transition-style,
                                 color $transition-style;
 
 $control-shadow-transition:     box-shadow $transition-style;
-
-
-//
-// Spectre.css
-//
-
-// Core colors
-
-$primary-color:                 $primary;
-$primary-color-dark:            color.adjust($primary-color, $lightness: -10%);
-$primary-color-light:           color.adjust($primary-color, $lightness: 10%);
-
-$secondary-color:               $secondary;
-$secondary-color-dark:          color.adjust($secondary-color, $lightness: -10%);
-$secondary-color-light:         color.adjust($secondary-color, $lightness: 10%);
-
-
-// Gray colors
-
-$dark-color:                    $brand-gray-darkest;
-$light-color:                   $white;
-$gray-color:                    $brand-gray-light;
-$gray-color-dark:               $brand-gray-dark;
-$gray-color-light:              $brand-gray-lighter;
-
-$border-color:                  $brand-gray-lighter;
-$border-color-dark:             $brand-gray-light;
-$bg-color:                      $brand-gray-lighter;
-$bg-color-dark:                 $brand-gray-lighter;
-$bg-color-light:                $light-color;
-
-
-// Control colors
-
-$success-color:                 $brand-green-light;
-$warning-color:                 $brand-yellow;
-$error-color:                   $brand-danger;
-
-
-// Other colors
-
-$body-bg:                       $white;
-$body-font-color:               $text-color;
-
-
-// Unit sizes
-
-$unit-o:                        0.0625rem;
-$unit-h:                        0.125rem;
-$unit-1:                        0.25rem;
-$unit-2:                        0.5rem;
-$unit-3:                        0.75rem;
-$unit-4:                        1rem;
-$unit-5:                        1.25rem;
-$unit-6:                        1.5rem;
-$unit-7:                        1.75rem;
-$unit-8:                        2rem;
-$unit-9:                        2.25rem;
-$unit-10:                       2.5rem;
-$unit-12:                       3rem;
-$unit-16:                       4rem;
-
-
-// Font sizes
-
-$html-font-size:                $font-size-root;
-$html-line-height:              $line-height-base;
-
-$font-size:                     $font-size-base;
-$line-height:                   $font-size-base * $line-height-base;
-
-
-// Sizes
-
-$layout-spacing:                $unit-2;
-$layout-spacing-sm:             $unit-1;
-$layout-spacing-lg:             $unit-4;
-$border-radius:                 $unit-1;
-
-$control-size:                  $unit-9;
-
-$control-padding-x:             0.75rem;
-
-$control-icon-size:             1rem;
-
-
-// Responsive breakpoints
-
-$size-xs:                       map.get($grid-breakpoints, xs);
-$size-sm:                       map.get($grid-breakpoints, sm);
-$size-md:                       map.get($grid-breakpoints, md);
-$size-lg:                       map.get($grid-breakpoints, lg);
-$size-xl:                       map.get($grid-breakpoints, xl);
-$size-2x:                       map.get($grid-breakpoints, xxl);
-
-$responsive-breakpoint:         $size-sm;

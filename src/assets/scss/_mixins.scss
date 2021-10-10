@@ -2,9 +2,10 @@
 // Mixins
 //
 
-@forward "mixins/background";
+@use "variables" as s;
+
 @forward "mixins/block-full";
-@forward "mixins/breakpoint";
+@forward "mixins/breakpoint" with ($_grid-breakpoints: s.$grid-breakpoints);
 @forward "mixins/browser-hacks";
 @forward "mixins/button";
 @forward "mixins/font-smoothing";
