@@ -1,4 +1,4 @@
-import THREE from 'three';
+import { Mesh, MeshPhongMaterial, Vector3 } from 'three';
 
 import { Side, FlagpoleType } from '../../constants';
 import { createPoleGeometryTypeI } from './utils/FlagpoleGeometryHelpers';
@@ -26,19 +26,19 @@ export default class Flagpole {
         const geometry = this.buildGeometry(settings);
 
         // Material
-        const material = new THREE.MeshPhongMaterial({
+        const material = new MeshPhongMaterial({
             color:     0x6A6A6A,
             specular:  0xffffff,
             shininess: 18
         });
 
         // Mesh
-        const mesh = new THREE.Mesh(geometry, material);
+        const mesh = new Mesh(geometry, material);
 
         mesh.receiveShadow = true;
         mesh.castShadow    = true;
 
-        this.top = new THREE.Vector3(0, settings.poleLength, 0);
+        this.top = new Vector3(0, settings.poleLength, 0);
         this.mesh = mesh;
         this.object = this.mesh;
     }
@@ -59,7 +59,7 @@ export default class Flagpole {
     })();
 
     destroy() {
-        if (this.mesh instanceof THREE.Mesh) {
+        if (this.mesh instanceof Mesh) {
             this.mesh.material.dispose();
             this.mesh.geometry.dispose();
         }

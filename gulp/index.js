@@ -105,15 +105,9 @@ function buildModernizrJS(done) {
   });
 }
 
-function copyExternalJS() {
-  return gulp.src(config.paths.deps.js)
-    .pipe(gulp.dest(config.paths.dest.js));
-}
-
 const buildJS = gulp.parallel(
   buildAppJS,
-  buildModernizrJS,
-  copyExternalJS
+  buildModernizrJS
 );
 
 //

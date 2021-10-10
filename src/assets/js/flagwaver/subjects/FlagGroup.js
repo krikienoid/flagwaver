@@ -1,4 +1,4 @@
-import THREE from 'three';
+import { Object3D } from 'three';
 
 import Flag from './Flag';
 import Flagpole from './flagpoles/Flagpole';
@@ -22,7 +22,7 @@ export default class FlagGroup {
 
         this.flagpole.addFlag(this.flag, 0);
 
-        this.object = new THREE.Object3D();
+        this.object = new Object3D();
         this.object.add(this.flagpole.object);
         this.object.add(this.flag.object);
     }

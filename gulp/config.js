@@ -32,11 +32,6 @@ export default {
       img:    'dist/assets/img',
       fonts:  'dist/assets/fonts',
       static: 'dist'
-    },
-    deps: {
-      js: [
-        'node_modules/three/build/three.min.js'
-      ]
     }
   },
   settings: {

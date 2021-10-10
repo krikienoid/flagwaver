@@ -1,4 +1,4 @@
-import THREE from 'three';
+import { StreamDrawUsage, Vector3 } from 'three';
 import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeometry';
 
 import Particle from './Particle';
@@ -36,7 +36,7 @@ export default class Cloth {
         // Particles
         //
 
-        const position = new THREE.Vector3();
+        const position = new Vector3();
         const particleMass = mass / ((ySegments + 1) * (xSegments + 1));
 
         for (let v = 0; v <= ySegments; v++) {
@@ -169,7 +169,7 @@ export default class Cloth {
 
         const geometry = new ParametricGeometry(plane, xSegments, ySegments);
 
-        geometry.getAttribute('position').setUsage(THREE.StreamDrawUsage);
+        geometry.getAttribute('position').setUsage(StreamDrawUsage);
 
         // Public properties and methods
         this.xSegments    = xSegments;

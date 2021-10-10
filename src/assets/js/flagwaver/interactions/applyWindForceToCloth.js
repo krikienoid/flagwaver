@@ -1,10 +1,10 @@
-import THREE from 'three';
+import { Vector3 } from 'three';
 
 import { DRAG_COEFFICIENT } from '../constants';
 import localizeForce from './utils/localizeForce';
 
-const cb = new THREE.Vector3();
-const ab = new THREE.Vector3();
+const cb = new Vector3();
+const ab = new Vector3();
 
 function computeFaceNormal(vA, vB, vC) {
     cb.subVectors(vC, vB);

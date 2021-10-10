@@ -50,13 +50,11 @@ export default {
     indent: ROLLUP_QUICK_BUILD ? false : '    ',
     banner: banner('FlagWaver - App'),
     globals: {
-      'modernizr': 'window.Modernizr || {}',
-      'three': 'THREE'
+      'modernizr': 'window.Modernizr || {}'
     }
   },
   external: [
-    'modernizr',
-    'three'
+    'modernizr'
   ],
   treeshake: !ROLLUP_QUICK_BUILD,
   plugins: [

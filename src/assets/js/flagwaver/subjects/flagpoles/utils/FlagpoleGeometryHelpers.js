@@ -1,4 +1,4 @@
-import THREE from 'three';
+import { CylinderGeometry } from 'three';
 import { mergeBufferGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils';
 
 /**
@@ -22,7 +22,7 @@ export function createPoleGeometryTypeI(options) {
     const poleLength = options.poleLength;
     const poleCapRadius = options.poleCapSize / 2;
 
-    const geometry = new THREE.CylinderGeometry(
+    const geometry = new CylinderGeometry(
         poleRadius,
         poleRadius,
         poleLength
@@ -31,7 +31,7 @@ export function createPoleGeometryTypeI(options) {
     geometry.translate(0, options.poleLength / 2, 0);
 
     // Add finial cap
-    const capGeometry = new THREE.CylinderGeometry(
+    const capGeometry = new CylinderGeometry(
         poleCapRadius,
         poleCapRadius,
         poleCapRadius
@@ -69,7 +69,7 @@ export function createPoleGeometryTypeT(options) {
     const poleTopOffset = options.poleTopOffset;
 
     // Create crossbar
-    const crossbarGeometry = new THREE.CylinderGeometry(
+    const crossbarGeometry = new CylinderGeometry(
         crossbarRadius,
         crossbarRadius,
         crossbarLength
@@ -78,7 +78,7 @@ export function createPoleGeometryTypeT(options) {
     crossbarGeometry.rotateZ(Math.PI / 2);
 
     // Create crossbar caps
-    const capGeometry = new THREE.CylinderGeometry(
+    const capGeometry = new CylinderGeometry(
         crossbarCapRadius,
         crossbarCapRadius,
         crossbarCapRadius
@@ -133,7 +133,7 @@ export function createPoleGeometryTypeL(options) {
     const crossbarLength = options.crossbarLength;
 
     // Create crossbar
-    const crossbarGeometry = new THREE.CylinderGeometry(
+    const crossbarGeometry = new CylinderGeometry(
         crossbarRadius,
         crossbarRadius,
         crossbarLength

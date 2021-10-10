@@ -1,6 +1,6 @@
-import THREE from 'three';
+import { Vector3 } from 'three';
 
-const diff = new THREE.Vector3();
+const diff = new Vector3();
 
 /**
  * @class Constraint

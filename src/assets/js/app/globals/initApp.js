@@ -1,4 +1,12 @@
-import THREE from 'three';
+import {
+    PCFSoftShadowMap,
+    sRGBEncoding,
+
+    Fog,
+    PerspectiveCamera,
+    Scene,
+    WebGLRenderer
+} from 'three';
 
 import FlagWaver, {
     App,
@@ -11,15 +19,15 @@ import FlagWaver, {
 } from '../../flagwaver';
 
 function buildScene() {
-    const scene = new THREE.Scene();
+    const scene = new Scene();
 
-    scene.fog = new THREE.Fog(0xcce0fe, 1, 1000);
+    scene.fog = new Fog(0xcce0fe, 1, 1000);
 
     return scene;
 }
 
 function buildCamera() {
-    const camera = new THREE.PerspectiveCamera(
+    const camera = new PerspectiveCamera(
         30,
         window.innerWidth / window.innerHeight,
         0.1,
@@ -33,16 +41,16 @@ function buildCamera() {
 
 function buildRenderer() {
     const dpr = window.devicePixelRatio ? window.devicePixelRatio : 1;
-    const renderer = new THREE.WebGLRenderer({
+    const renderer = new WebGLRenderer({
         antialias: true,
         alpha:     true
     });
 
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(dpr);
-    renderer.outputEncoding    = THREE.sRGBEncoding;
+    renderer.outputEncoding    = sRGBEncoding;
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type    = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type    = PCFSoftShadowMap;
 
     return renderer;
 }

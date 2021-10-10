@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import THREE from 'three';
+import { Vector3 } from 'three';
 
 import {
     Wind as WindSubject,
@@ -9,10 +9,10 @@ import {
 } from '../../flagwaver';
 import withAppContext from '../hocs/withAppContext';
 
-const yAxis = new THREE.Vector3(0, -1, 0);
+const yAxis = new Vector3(0, -1, 0);
 
 function getDirectionVector(deg) {
-    const v = new THREE.Vector3(0, 0, 1);
+    const v = new Vector3(0, 0, 1);
     return v.applyAxisAngle(yAxis, deg * Math.PI / 180);
 }
 

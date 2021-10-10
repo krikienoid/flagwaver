@@ -1,4 +1,4 @@
-import THREE from 'three';
+import { Texture } from 'three';
 
 import { Hoisting, Side } from '../constants';
 import getAngleOfSide from '../utils/getAngleOfSide';
@@ -89,7 +89,7 @@ function computeTextureArgs(options) {
 
 // Generate transformed texture from image
 function createTextureFromImage(image, options) {
-    const texture = new THREE.Texture(image);
+    const texture = new Texture(image);
 
     texture.matrixAutoUpdate = false;
 
