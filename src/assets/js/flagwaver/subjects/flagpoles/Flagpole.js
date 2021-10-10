@@ -46,14 +46,14 @@ export default class Flagpole {
     static defaults = (() => {
         const o = {};
 
-        o.flagpoleType    = FlagpoleType.VERTICAL;
-        o.poleWidth       = 0.076;
-        o.poleLength      = 6;
-        o.poleCapSize     = o.poleWidth * 4 / 3;
-        o.crossbarWidth   = o.poleWidth * 2 / 3;
-        o.crossbarLength  = 1.2;
-        o.crossbarCapSize = o.crossbarWidth * 3 / 2;
-        o.poleTopOffset   = 0.1;
+        o.flagpoleType          = FlagpoleType.VERTICAL;
+        o.poleWidth             = 0.076;
+        o.poleLength            = 6;
+        o.poleCapSize           = o.poleWidth * 4 / 3;
+        o.crossbarWidth         = o.poleWidth * 2 / 3;
+        o.crossbarLength        = 1.2;
+        o.crossbarCapSize       = o.crossbarWidth * 3 / 2;
+        o.poleTopOffset         = 0.1;
 
         return o;
     })();

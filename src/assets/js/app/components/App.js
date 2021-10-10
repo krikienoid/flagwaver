@@ -12,7 +12,8 @@ import FocusDisabled from '../components/FocusDisabled';
 import FocusTrap from '../components/FocusTrap';
 import Icon from '../components/Icon';
 import Panel from '../components/Panel';
-import AnimationControlBarContainer from '../containers/AnimationControlBarContainer';
+import AnimationControlBarContainer
+    from '../containers/AnimationControlBarContainer';
 import AppBackgroundContainer from '../containers/AppBackgroundContainer';
 import FlagGroupBarContainer from '../containers/FlagGroupBarContainer';
 import FlagGroupPanelContainer from '../containers/FlagGroupPanelContainer';
@@ -194,7 +195,10 @@ class App extends Component {
                         </div>
 
                         <section className="bottom-app-bar" aria-label="Toolbar">
-                            {(appMode === AppMode.EDIT || appMode === AppMode.ABOUT) ? (
+                            {(
+                                appMode === AppMode.EDIT ||
+                                appMode === AppMode.ABOUT
+                            ) ? (
                                 <Fragment>
                                     <div className="bottom-app-bar-primary">
                                         <FlagGroupBarContainer />

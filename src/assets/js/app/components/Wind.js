@@ -13,6 +13,7 @@ const yAxis = new Vector3(0, -1, 0);
 
 function getDirectionVector(deg) {
     const v = new Vector3(0, 0, 1);
+
     return v.applyAxisAngle(yAxis, deg * Math.PI / 180);
 }
 

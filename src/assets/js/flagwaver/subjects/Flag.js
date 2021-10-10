@@ -36,8 +36,8 @@ function buildCloth(options) {
 }
 
 function buildMesh(cloth, options) {
-    let texture = WHITE_TEXTURE;
     const geometry = cloth.geometry;
+    let texture = WHITE_TEXTURE;
 
     // Texture
     if (options && options.texture) {
@@ -196,14 +196,14 @@ export default class Flag {
     }
 
     static defaults = {
-        width:          1.8,
-        height:         1.2,
-        mass:           0.11, // 110 g/m^s
-        granularity:    10,
-        rigidness:      1,
-        texture:        WHITE_TEXTURE,
-        pin:            {
-            edges: [Side.LEFT]
+        width:                  1.8,
+        height:                 1.2,
+        mass:                   0.11, // 110 g/m^s
+        granularity:            10,
+        rigidness:              1,
+        texture:                WHITE_TEXTURE,
+        pin: {
+            edges:              [Side.LEFT]
         }
     };
 

@@ -52,7 +52,10 @@ export default class Wind {
     update() {
         const time = Date.now();
 
-        this.directionFn(disturbVector(this.pressure.copy(this.direction)), time)
+        this.directionFn(
+            disturbVector(this.pressure.copy(this.direction)),
+            time
+        )
             .normalize()
             .multiplyScalar(
                 windPressure(

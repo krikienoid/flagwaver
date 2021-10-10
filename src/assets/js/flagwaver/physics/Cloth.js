@@ -1,5 +1,6 @@
 import { StreamDrawUsage, Vector3 } from 'three';
-import { ParametricGeometry } from 'three/examples/jsm/geometries/ParametricGeometry';
+import { ParametricGeometry }
+    from 'three/examples/jsm/geometries/ParametricGeometry';
 
 import Particle from './Particle';
 import Constraint from './Constraint';
@@ -172,15 +173,15 @@ export default class Cloth {
         geometry.getAttribute('position').setUsage(StreamDrawUsage);
 
         // Public properties and methods
-        this.xSegments    = xSegments;
-        this.ySegments    = ySegments;
-        this.restDistance = restDistance;
-        this.width        = width;
-        this.height       = height;
-        this.particles    = particles;
-        this.constraints  = constraints;
-        this.particleAt   = particleAt;
-        this.geometry     = geometry;
+        this.xSegments          = xSegments;
+        this.ySegments          = ySegments;
+        this.restDistance       = restDistance;
+        this.width              = width;
+        this.height             = height;
+        this.particles          = particles;
+        this.constraints        = constraints;
+        this.particleAt         = particleAt;
+        this.geometry           = geometry;
     }
 
     reset() {
@@ -198,7 +199,7 @@ export default class Cloth {
     }
 
     simulate(deltaTime) {
-        const particles   = this.particles;
+        const particles = this.particles;
         const constraints = this.constraints;
         const deltaTimeSq = deltaTime * deltaTime;
 
@@ -215,8 +216,7 @@ export default class Cloth {
 
     render() {
         const particles = this.particles;
-        const geometry  = this.geometry;
-
+        const geometry = this.geometry;
         const positionAttribute = geometry.getAttribute('position');
         const positions = positionAttribute.array;
 

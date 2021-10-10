@@ -31,7 +31,10 @@ function ButtonSelect({
 
                 <div className="btn-select-options">
                     {options.map((option, i) => {
-                        const { label: optionLabel, value: optionValue } = option;
+                        const {
+                            label: optionLabel,
+                            value: optionValue
+                        } = option;
 
                         const optionId = `${id}-option-${i + 1}`;
                         const checked = optionValue === value;

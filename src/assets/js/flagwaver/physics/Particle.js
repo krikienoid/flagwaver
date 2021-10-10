@@ -12,13 +12,13 @@ import { DRAG } from '../constants';
  */
 export default class Particle {
     constructor(position, mass) {
-        this.position       = position.clone();
-        this.previous       = position.clone();
-        this.original       = position.clone();
-        this.mass           = mass;
-        this.inverseMass    = 1 / mass;
-        this.acceleration   = new Vector3();
-        this.tmp            = new Vector3();
+        this.position           = position.clone();
+        this.previous           = position.clone();
+        this.original           = position.clone();
+        this.mass               = mass;
+        this.inverseMass        = 1 / mass;
+        this.acceleration       = new Vector3();
+        this.tmp                = new Vector3();
     }
 
     // Apply force
@@ -35,9 +35,9 @@ export default class Particle {
             .add(this.position)
             .addScaledVector(this.acceleration, deltaTimeSq);
 
-        this.tmp      = this.previous;
-        this.previous = this.position;
-        this.position = tmp;
+        this.tmp                = this.previous;
+        this.previous           = this.position;
+        this.position           = tmp;
 
         this.acceleration.set(0, 0, 0);
     }

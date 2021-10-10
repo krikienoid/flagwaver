@@ -98,7 +98,8 @@ $line-height-base:              1.5;
 
 $transition-duration:           200ms;
 $transition-timing-function:    ease-in-out;
-$transition-style:              $transition-duration $transition-timing-function;
+$transition-style:              $transition-duration
+                                $transition-timing-function;
 
 $control-transition:            background-color $transition-style,
                                 border-color $transition-style,

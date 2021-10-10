@@ -1,7 +1,3 @@
-//
-// Header
-//
-
 @use "../vendors/spectre.css/abstracts" as spectre-css;
 @use "../abstracts" as *;
 
@@ -84,7 +80,9 @@ $site-header-btn-height: 1.5rem;
 
         width: $site-header-btn-width;
         display: inline-block;
-        margin: (($site-header-btn-height - ($bar-height * 3 + $bar-gap * 2)) * 0.5) 0;
+        margin: (
+            ($site-header-btn-height - ($bar-height * 3 + $bar-gap * 2)) * 0.5
+        ) 0;
 
         .icon-bar {
             width: 100%;
@@ -106,7 +104,9 @@ $site-header-btn-height: 1.5rem;
 
         width: $site-header-btn-width;
         display: inline-block;
-        margin: (($site-header-btn-height - ($dot-height * 3 + $dot-gap * 2)) * 0.5) 0;
+        margin: (
+            ($site-header-btn-height - ($dot-height * 3 + $dot-gap * 2)) * 0.5
+        ) 0;
 
         .icon-dot {
             width: $dot-height;

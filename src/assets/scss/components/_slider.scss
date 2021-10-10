@@ -1,7 +1,3 @@
-//
-// Slider
-//
-
 @use "../vendors/spectre.css/abstracts" as spectre-css;
 @use "../abstracts" as *;
 
@@ -12,15 +8,21 @@
     transition: $control-shadow-transition;
 
     &::-webkit-slider-thumb {
-        transition: background $transition-style, transform $transition-style;
+        transition:
+            background $transition-style,
+            transform $transition-style;
     }
 
     &::-moz-range-thumb {
-        transition: background $transition-style, transform $transition-style;
+        transition:
+            background $transition-style,
+            transform $transition-style;
     }
 
     &::-ms-thumb {
-        transition: background $transition-style, transform $transition-style;
+        transition:
+            background $transition-style,
+            transform $transition-style;
     }
 
     &::-ms-track {

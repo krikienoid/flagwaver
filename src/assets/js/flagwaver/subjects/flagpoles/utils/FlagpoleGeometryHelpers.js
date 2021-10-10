@@ -1,5 +1,6 @@
 import { CylinderGeometry } from 'three';
-import { mergeBufferGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils';
+import { mergeBufferGeometries }
+    from 'three/examples/jsm/utils/BufferGeometryUtils';
 
 /**
  * @function createPoleGeometryTypeI

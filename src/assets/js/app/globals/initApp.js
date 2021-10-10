@@ -48,9 +48,10 @@ function buildRenderer() {
 
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(dpr);
-    renderer.outputEncoding    = sRGBEncoding;
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type    = PCFSoftShadowMap;
+
+    renderer.outputEncoding     = sRGBEncoding;
+    renderer.shadowMap.enabled  = true;
+    renderer.shadowMap.type     = PCFSoftShadowMap;
 
     return renderer;
 }
