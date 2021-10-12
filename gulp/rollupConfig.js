@@ -1,5 +1,6 @@
 import path                     from 'path';
 
+import alias                    from '@rollup/plugin-alias';
 import { threeMinifier }        from '@yushijinhun/three-minifier-rollup';
 import babel                    from 'rollup-plugin-babel';
 import commonjs                 from 'rollup-plugin-commonjs';
@@ -60,6 +61,14 @@ export default {
   treeshake: !ROLLUP_QUICK_BUILD,
   plugins: [
     threeMinifier(), // <=== Add plugin on the FIRST line
+    alias({
+      entries: [
+        { find: 'react', replacement: 'preact/compat' },
+        { find: 'react-dom/test-utils', replacement: 'preact/test-utils' },
+        { find: 'react-dom', replacement: 'preact/compat' },
+        { find: 'react/jsx-runtime', replacement: 'preact/jsx-runtime' }
+      ]
+    }),
     resolve(),
     commonjs({
       include: 'node_modules/**',
