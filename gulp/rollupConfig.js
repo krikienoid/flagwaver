@@ -1,5 +1,6 @@
 import path                     from 'path';
 
+import { threeMinifier }        from '@yushijinhun/three-minifier-rollup';
 import babel                    from 'rollup-plugin-babel';
 import commonjs                 from 'rollup-plugin-commonjs';
 import resolve                  from 'rollup-plugin-node-resolve';
@@ -58,6 +59,7 @@ export default {
   ],
   treeshake: !ROLLUP_QUICK_BUILD,
   plugins: [
+    threeMinifier(), // <=== Add plugin on the FIRST line
     resolve(),
     commonjs({
       include: 'node_modules/**',
