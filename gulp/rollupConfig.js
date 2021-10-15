@@ -1,11 +1,11 @@
 import path                     from 'path';
 
 import alias                    from '@rollup/plugin-alias';
+import { babel }                from '@rollup/plugin-babel';
+import commonjs                 from '@rollup/plugin-commonjs';
+import { nodeResolve }          from '@rollup/plugin-node-resolve';
+import replace                  from '@rollup/plugin-replace';
 import { threeMinifier }        from '@yushijinhun/three-minifier-rollup';
-import babel                    from 'rollup-plugin-babel';
-import commonjs                 from 'rollup-plugin-commonjs';
-import resolve                  from 'rollup-plugin-node-resolve';
-import replace                  from 'rollup-plugin-replace';
 
 import packageJson              from '../package.json';
 import config                   from './config';
@@ -13,7 +13,7 @@ import config                   from './config';
 const PRODUCTION = config.env === 'production';
 const ROLLUP_QUICK_BUILD = !PRODUCTION;
 
-function banner(title) {
+function headerComment(title) {
   return '/*!' +
     '\n * ' + title +
     '\n * @author krikienoid / https://github.com/krikienoid' +
@@ -29,12 +29,12 @@ function glsl() {
     transform: function transform(code, id) {
       if (/\.glsl$/.test(id) === false) { return; }
 
-      var transformedCode = 'export default ' + JSON.stringify(
+      const transformedCode = `export default ${JSON.stringify(
         code
           .replace(/[ \t]*\/\/.*\n/g, '') // remove //
           .replace(/[ \t]*\/\*[\s\S]*?\*\//g, '') // remove /* */
           .replace(/\n{2,}/g, '\n') // # \n+ to \n
-      ) + ';';
+      )};`;
 
       return {
         code: transformedCode,
@@ -50,7 +50,7 @@ export default {
     file: path.join(config.paths.dest.js, '/app.js'),
     format: 'iife',
     indent: ROLLUP_QUICK_BUILD ? false : '    ',
-    banner: banner('FlagWaver - App'),
+    banner: headerComment('FlagWaver - App'),
     globals: {
       'modernizr': 'window.Modernizr || {}'
     }
@@ -63,54 +63,28 @@ export default {
     threeMinifier(), // <=== Add plugin on the FIRST line
     alias({
       entries: [
+        { find: 'react/jsx-runtime', replacement: 'preact/jsx-runtime' },
         { find: 'react', replacement: 'preact/compat' },
         { find: 'react-dom/test-utils', replacement: 'preact/test-utils' },
-        { find: 'react-dom', replacement: 'preact/compat' },
-        { find: 'react/jsx-runtime', replacement: 'preact/jsx-runtime' }
+        { find: 'react-dom', replacement: 'preact/compat' }
       ]
     }),
-    resolve(),
+    nodeResolve(),
     commonjs({
       include: 'node_modules/**',
-      sourcemap: !ROLLUP_QUICK_BUILD,
-      namedExports: {
-        'node_modules/react/index.js': [
-          'Children', 'createRef', 'Component', 'PureComponent',
-          'createContext', 'forwardRef', 'lazy', 'memo',
-          'useCallback', 'useContext', 'useEffect', 'useImperativeHandle',
-          'useDebugValue', 'useLayoutEffect', 'useMemo', 'useReducer',
-          'useRef', 'useState', 'Fragment', 'StrictMode', 'Suspense',
-          'createElement', 'cloneElement', 'createFactory', 'isValidElement',
-          'version', 'unstable_ConcurrentMode', 'unstable_Profiler'
-        ],
-        'node_modules/react/jsx-runtime.js': [
-          'jsx', 'jsxs'
-        ],
-        'node_modules/react-dom/index.js': [
-          'createPortal', 'findDOMNode', 'hydrate', 'render',
-          'unstable_renderSubtreeIntoContainer', 'unmountComponentAtNode',
-          'unstable_createPortal', 'unstable_batchedUpdates',
-          'unstable_interactiveUpdates', 'flushSync',
-          'unstable_createRoot', 'unstable_flushControlled'
-        ],
-        'node_modules/react-redux/node_modules/react-is/index.js': [
-          'typeOf', 'AsyncMode', 'ConcurrentMode',
-          'ContextConsumer', 'ContextProvider', 'Element', 'ForwardRef',
-          'Fragment', 'Lazy', 'Memo', 'Portal', 'Profiler',
-          'StrictMode', 'Suspense',
-          'isValidElementType', 'isAsyncMode', 'isConcurrentMode',
-          'isContextConsumer', 'isContextProvider', 'isElement', 'isForwardRef',
-          'isFragment', 'isLazy', 'isMemo', 'isPortal', 'isProfiler',
-          'isStrictMode', 'isSuspense'
-        ]
-      }
+      sourcemap: !ROLLUP_QUICK_BUILD
     }),
     glsl(),
-    babel(),
+    babel({
+      babelHelpers: 'bundled'
+    }),
     replace({
-      'process.env.VERSION': JSON.stringify(packageJson.version),
-      'process.env.NODE_ENV': JSON.stringify(config.env),
-      'process.env.PUBLIC_URL': JSON.stringify(config.app.PUBLIC_URL)
+      preventAssignment: true,
+      values: {
+        'process.env.VERSION': JSON.stringify(packageJson.version),
+        'process.env.NODE_ENV': JSON.stringify(config.env),
+        'process.env.PUBLIC_URL': JSON.stringify(config.app.PUBLIC_URL)
+      }
     })
   ]
 };
