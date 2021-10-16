@@ -1,63 +1,93 @@
 import { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { useTransition, animated } from 'react-spring';
+import { NodeGroup } from 'react-move';
 
 import FocusDisabled from '../components/FocusDisabled';
 import Toast from '../components/Toast';
+import { easeQuadInOut } from '../utils/easings';
 
 function Toasts({ toasts, removeToast }) {
-    const itemRefs = useRef(new Map()).current;
+    const liRefs = useRef(new Map()).current;
 
-    const setItemRef = id => (elem) => {
-        elem !== null ? itemRefs.set(id, elem) : itemRefs.delete(id);
+    const setLiRef = id => (elem) => {
+        elem !== null ? liRefs.set(id, elem) : liRefs.delete(id);
     };
-
-    const transitions = useTransition(toasts, {
-        keys: toast => toast.id,
-        from: {
-            height: 0,
-            transform: 'translate3d(22rem, 0, 0)'
-        },
-        enter: (item) => async (next) => {
-            await next({
-                height: itemRefs.get(item.id).offsetHeight
-            });
-
-            await next({
-                transform: 'translate3d(0rem, 0, 0)'
-            });
-        },
-        leave: [
-            {
-                transform: 'translate3d(22rem, 0, 0)'
-            },
-            {
-                height: 0
-            }
-        ]
-    });
 
     return (
         <div role="alert" aria-live="assertive" aria-atomic="true">
-            <ul className="toasts">
-                {transitions((style, toast) => {
-                    const { id, message, ...props } = toast;
-
-                    const disabled = !toasts.some(toast => toast.id === id);
-
-                    return (
-                        <animated.li style={style}>
-                            <FocusDisabled disabled={disabled}>
-                                <div ref={setItemRef(id)} className="toasts-item-wrap">
-                                    <Toast {...props} onDismissClick={() => { removeToast(id); }}>
-                                        <p>{message}</p>
-                                    </Toast>
-                                </div>
-                            </FocusDisabled>
-                        </animated.li>
-                    );
+            <NodeGroup
+                data={toasts}
+                keyAccessor={toast => toast.id}
+                start={(d, i) => ({
+                    h0: 0, // Default height, set on first render
+                    h: 0,
+                    x: 1
                 })}
-            </ul>
+                enter={(d, i) => [
+                    {
+                        h: [1],
+                        timing: {
+                            duration: 400,
+                            ease: easeQuadInOut
+                        }
+                    },
+                    {
+                        x: [0],
+                        timing: {
+                            delay: 400,
+                            duration: 600,
+                            ease: easeQuadInOut
+                        }
+                    }
+                ]}
+                leave={(d, i) => ({
+                    x: [1],
+                    timing: {
+                        duration: 600,
+                        ease: easeQuadInOut
+                    }
+                })}
+            >
+                {(nodes) => (
+                    <ul className="toasts">
+                        {nodes.map(({ key, data: toast, state }) => {
+                            const { id, message, ...props } = toast;
+                            const { h0, h, x } = state;
+
+                            if (!h0) {
+                                const node = liRefs.get(id);
+                                const height = node ? node.clientHeight : 0;
+
+                                state.h0 = height;
+                            }
+
+                            return (
+                                <li
+                                    key={key}
+                                    ref={setLiRef(id)}
+                                    style={{
+                                        'height': h0 ? `${h * h0}px` : 'auto',
+                                        'transform': `translate3d(${x * 22}rem, 0, 0)`
+                                    }}
+                                >
+                                    <FocusDisabled disabled={!!x}>
+                                        <div className="toasts-item-wrap">
+                                            <Toast
+                                                {...props}
+                                                onDismissClick={() => {
+                                                    removeToast(id);
+                                                }}
+                                            >
+                                                <p>{message}</p>
+                                            </Toast>
+                                        </div>
+                                    </FocusDisabled>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                )}
+            </NodeGroup>
         </div>
     );
 }
