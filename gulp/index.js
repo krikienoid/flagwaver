@@ -26,7 +26,9 @@ import modernizr                from 'modernizr';
 import { generateSW }           from 'workbox-build';
 
 import config                   from './config';
-import rollupConfig             from './rollupConfig';
+import rollupConfig             from './rollup.config';
+import rollupConfigLoader       from './rollup.config.loader';
+import rollupConfigPolyfills    from './rollup.config.polyfills';
 
 const PRODUCTION = config.env === 'production';
 
@@ -83,7 +85,7 @@ function buildCSS() {
 // Build JavaScript
 //
 
-function buildAppJS() {
+function compileJS(rollupConfig) {
   return gulp.src(rollupConfig.input)
     .pipe(sourcemaps.init())
     .pipe(rollup(rollupConfig, rollupConfig.output))
@@ -92,6 +94,25 @@ function buildAppJS() {
     ))
     .pipe(gulpif(!PRODUCTION, sourcemaps.write('.')))
     .pipe(gulp.dest(config.paths.dest.js));
+}
+
+function buildAppJS() {
+  return gulp.src(rollupConfigLoader.input)
+    .pipe(rollup(rollupConfigLoader, rollupConfigLoader.output))
+    .on('data', (file) => {
+      const loaderJS = file.contents.toString();
+      const [loaderJSStart, loaderJSEnd] = loaderJS.split('_MAIN_JS_');
+      const { output } = rollupConfig;
+
+      output.banner = (output.banner || '') + loaderJSStart;
+      output.footer = loaderJSEnd + (output.footer || '');
+
+      return compileJS(rollupConfig);
+    });
+}
+
+function buildPolyfillsJS() {
+  return compileJS(rollupConfigPolyfills);
 }
 
 function buildModernizrJS(done) {
@@ -107,6 +128,7 @@ function buildModernizrJS(done) {
 
 const buildJS = gulp.parallel(
   buildAppJS,
+  buildPolyfillsJS,
   buildModernizrJS
 );
 

@@ -6,10 +6,7 @@
  */
 
 // Polyfills
-import './polyfills';
-
-// FlagWaver - Core
-import './flagwaver';
+import 'regenerator-runtime/runtime';
 
 // UI
 import './app';

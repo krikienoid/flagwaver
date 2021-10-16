@@ -7,4 +7,3 @@ import 'core-js/es/promise';
 import 'core-js/es/set';
 import 'core-js/es/symbol';
 import 'core-js/features/url';
-import 'regenerator-runtime/runtime';
