@@ -4,10 +4,12 @@ export default {
   env: env,
   app: {
     development: {
-      PUBLIC_URL: 'http://localhost:8000'
+      PUBLIC_URL: 'http://localhost:8000',
+      ROOT_URL: '.'
     },
     production: {
-      PUBLIC_URL: 'https://krikienoid.github.io/flagwaver'
+      PUBLIC_URL: 'https://krikienoid.github.io/flagwaver',
+      ROOT_URL: '.'
     }
   },
   server: {

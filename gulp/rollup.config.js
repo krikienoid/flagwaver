@@ -83,7 +83,8 @@ export default {
       values: {
         'process.env.VERSION': JSON.stringify(packageJson.version),
         'process.env.NODE_ENV': JSON.stringify(config.env),
-        'process.env.PUBLIC_URL': JSON.stringify(config.app.PUBLIC_URL)
+        'process.env.PUBLIC_URL': JSON.stringify(config.app.PUBLIC_URL),
+        'process.env.ROOT_URL': JSON.stringify(config.app.ROOT_URL)
       }
     })
   ]

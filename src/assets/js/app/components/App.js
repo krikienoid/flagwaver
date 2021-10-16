@@ -25,7 +25,7 @@ import AppContext from '../contexts/AppContext';
 import withWebGLBrowserTest from '../hocs/withWebGLBrowserTest';
 import store from '../redux/store';
 
-const SITE_HEADLINE_INVERSE_IMAGE_PATH = `${process.env.PUBLIC_URL}/${
+const SITE_HEADLINE_INVERSE_IMAGE_PATH = `${process.env.ROOT_URL}/${
     Modernizr.svgasimg
         ? 'assets/img/site-headline-inverse.svg'
         : 'assets/img/site-headline-inverse.png'

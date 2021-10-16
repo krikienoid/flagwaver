@@ -9,7 +9,7 @@ import {
 } from '../../flagwaver';
 import withAppContext from '../hocs/withAppContext';
 
-const DEFAULT_FLAG_IMAGE_PATH = './assets/img/flag-default.png';
+const DEFAULT_FLAG_IMAGE_PATH = `${process.env.ROOT_URL}/assets/img/flag-default.png`;
 
 class FlagGroup extends Component {
     static propTypes = {

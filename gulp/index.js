@@ -56,6 +56,7 @@ function copyGitIgnore() {
 function buildPages() {
   return gulp.src(config.paths.src.html)
     .pipe(replace('@PUBLIC_URL', config.app.PUBLIC_URL))
+    .pipe(replace('@ROOT_URL', config.app.ROOT_URL))
     .pipe(gulp.dest(config.paths.dest.html));
 }
 
@@ -158,6 +159,7 @@ function buildFonts() {
 function buildStatic() {
   return gulp.src(config.paths.src.static)
     .pipe(replace('@PUBLIC_URL', config.app.PUBLIC_URL))
+    .pipe(replace('@ROOT_URL', config.app.ROOT_URL))
     .pipe(gulp.dest(config.paths.dest.static));
 }
 
