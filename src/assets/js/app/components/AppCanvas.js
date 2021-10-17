@@ -23,7 +23,7 @@ class AppCanvas extends Component {
         const { app } = this.props;
 
         app.canvas.setAttribute('role', 'img');
-        app.canvas.setAttribute('aria-label', 'View of a waving flag');
+        app.canvas.setAttribute('aria-label', 'Animation view');
 
         this.ref.appendChild(app.canvas);
 

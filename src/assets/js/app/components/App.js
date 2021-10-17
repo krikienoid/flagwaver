@@ -261,8 +261,8 @@ class App extends Component {
                                                         onClick={this.closeNav}
                                                     >
                                                         <Icon component={MdArrowDropUp} />
-                                                        <span className="btn-text" aria-hidden="true">Panels</span>
-                                                        <span className="sr-only">Close panels menu</span>
+                                                        <span className="btn-text" aria-hidden="true">Menu</span>
+                                                        <span className="sr-only">Close menu</span>
                                                     </button>
                                                 ) : (
                                                     <button
@@ -271,8 +271,8 @@ class App extends Component {
                                                         onClick={this.openNav}
                                                     >
                                                         <Icon component={MdArrowDropDown} />
-                                                        <span className="btn-text" aria-hidden="true">Panels</span>
-                                                        <span className="sr-only">Open panels menu</span>
+                                                        <span className="btn-text" aria-hidden="true">Menu</span>
+                                                        <span className="sr-only">Open menu</span>
                                                     </button>
                                                 )}
                                             </div>
@@ -293,7 +293,7 @@ class App extends Component {
                                     {isNavOpen ? (
                                         <section className="panel">
                                             <div className="panel-nav">
-                                                <h2 className="sr-only">Panel menu</h2>
+                                                <h2 className="sr-only">Menu</h2>
 
                                                 <ul className="nav">
                                                     {navItems.map(({ key, displayName }) => (

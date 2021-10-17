@@ -166,7 +166,7 @@ export default class FilePickerInput extends Component {
                                 buttonText={(
                                     <Fragment>
                                         <Icon component={MdArrowForward} />
-                                        <span className="sr-only">Enter</span>
+                                        <span className="sr-only">Submit</span>
                                     </Fragment>
                                 )}
                                 validator={this.validateURL}
