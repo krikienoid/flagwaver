@@ -30,13 +30,19 @@ export default class AnimationModule extends Module {
 
         if (!clock.running) {
             clock.start();
-            this.flag.play();
+            let elem = document.getElementById('flagwaver-video');
+            if (elem !== null) {
+                elem.play();
+            }
         }
     }
 
     pause() {
         this.app.clock.stop();
-        this.flag.pause();
+        let elem = document.getElementById('flagwaver-video');
+        if (elem !== null) {
+            elem.pause();
+        }
     }
 
     step() {
@@ -45,7 +51,11 @@ export default class AnimationModule extends Module {
         if (!clock.running) {
             clock.elapsedTime += timestep;
             this.app.update(timestep);
-            this.flag.step(timestep);
+            let elem = document.getElementById('flagwaver-video');
+            if (elem !== null) {
+                elem.pause();
+                elem.currentTime += timestep;
+            }
         }
     }
 

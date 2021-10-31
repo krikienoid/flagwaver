@@ -275,28 +275,6 @@ export default class Flag {
         }
     }
 
-    pause() {
-        let elem = document.getElementById('flagwaver-video');
-        if (elem !== null) {
-            elem.pause();
-        }
-    }
-
-    play() {
-        let elem = document.getElementById('flagwaver-video');
-        if (elem !== null) {
-            elem.play();
-        }
-    }
-    
-    step(timestep) {
-        let elem = document.getElementById('flagwaver-video');
-        if (elem !== null) {
-            elem.pause();
-            elem.currentTime += timestep;
-        }
-    }
-
     simulate(deltaTime) {
         const pins              = this.pins;
         const lengthConstraints = this.lengthConstraints;
