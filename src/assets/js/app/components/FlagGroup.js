@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
     FlagpoleType,
     FlagGroupModule,
-    buildAsyncFlagFromImage,
+    buildAsyncFlagFromElement,
     buildFlagpole
 } from '../../flagwaver';
 import withAppContext from '../hocs/withAppContext';
@@ -70,9 +70,9 @@ class FlagGroup extends Component {
 
     renderModule() {
         const { options, addToast } = this.props;
-        const src = options.imageSrc || DEFAULT_FLAG_IMAGE_PATH;
+        const src = options.src || DEFAULT_FLAG_IMAGE_PATH;
 
-        buildAsyncFlagFromImage(src, options)
+        buildAsyncFlagFromElement(src, options)
             .then((flag) => {
                 this.updateFlag(flag);
             })
@@ -81,7 +81,7 @@ class FlagGroup extends Component {
 
                 addToast({
                     status: 'error',
-                    message: 'Image could not be loaded.'
+                    message: 'Media could not be loaded.'
                 });
             });
     }

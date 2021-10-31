@@ -26,7 +26,7 @@ export { default as ProcessModule } from './app/modules/ProcessModule';
 export { default as WindModule } from './app/modules/WindModule';
 
 // Helpers
-export { default as buildAsyncFlagFromImage } from './helpers/buildAsyncFlagFromImage';
+export { default as buildAsyncFlagFromElement } from './helpers/buildAsyncFlagFromElement';
 export { default as buildFlag } from './helpers/buildFlag';
 export { default as buildFlagpole } from './helpers/buildFlagpole';
 export { default as createInteraction } from './helpers/createInteraction';

@@ -189,6 +189,9 @@ export default class Flag {
         this.mesh = buildMesh(this.cloth, settings);
         this.mesh.position.set(0, -this.cloth.height, 0);
 
+        this.imageElement = this.mesh.material.map.image;
+        this.isVideo = this.imageElement instanceof HTMLVideoElement;
+
         this.object = new Object3D();
         this.object.add(this.mesh);
 
@@ -211,6 +214,9 @@ export default class Flag {
         if (this.mesh instanceof Mesh) {
             this.mesh.material.dispose();
             this.mesh.geometry.dispose();
+            if (this.isVideo) {
+                this.imageElement.remove();
+            }
             this.mesh.material.map.dispose();
             this.mesh.customDepthMaterial.dispose();
         }
@@ -263,6 +269,32 @@ export default class Flag {
 
     reset() {
         this.cloth.reset();
+        if (this.isVideo) {
+            this.imageElement.pause();
+            this.imageElement.currentTime = 0;
+        }
+    }
+
+    pause() {
+        let elem = document.getElementById('flagwaver-video');
+        if (elem !== null) {
+            elem.pause();
+        }
+    }
+
+    play() {
+        let elem = document.getElementById('flagwaver-video');
+        if (elem !== null) {
+            elem.play();
+        }
+    }
+    
+    step(timestep) {
+        let elem = document.getElementById('flagwaver-video');
+        if (elem !== null) {
+            elem.pause();
+            elem.currentTime += timestep;
+        }
     }
 
     simulate(deltaTime) {
@@ -285,6 +317,10 @@ export default class Flag {
         // Length constraints
         for (let i = 0, ii = lengthConstraints.length; i < ii; i++) {
             lengthConstraints[i].resolve();
+        }
+
+        if (this.isVideo) {
+            this.imageElement.play();
         }
     }
 

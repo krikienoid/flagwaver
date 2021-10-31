@@ -6,8 +6,9 @@ import Module from '../core/Module';
  * @classdesc Allow animation to be paused and continued.
  */
 export default class AnimationModule extends Module {
-    constructor() {
+    constructor(flag) {
         super();
+        this.flag = flag;
 
         this.app = null;
     }
@@ -29,11 +30,13 @@ export default class AnimationModule extends Module {
 
         if (!clock.running) {
             clock.start();
+            this.flag.play();
         }
     }
 
     pause() {
         this.app.clock.stop();
+        this.flag.pause();
     }
 
     step() {
@@ -42,6 +45,7 @@ export default class AnimationModule extends Module {
         if (!clock.running) {
             clock.elapsedTime += timestep;
             this.app.update(timestep);
+            this.flag.step(timestep);
         }
     }
 

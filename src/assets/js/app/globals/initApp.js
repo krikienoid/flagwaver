@@ -77,7 +77,6 @@ function buildApp() {
     });
 
     app.add(new ResizeModule());
-    app.add(new AnimationModule());
 
     app.add(createInteractionProcessModule(
         () => ['flagGroupModule', 'windModule'].map(moduleType =>
@@ -87,6 +86,7 @@ function buildApp() {
             const flagGroup = subjects[0];
             const wind = subjects[1];
             const flag = flagGroup.flag;
+            app.add(new AnimationModule(flag));
 
             applyGravityToCloth(flag.cloth, flag.object);
             applyWindForceToCloth(flag.cloth, wind, flag.object);
