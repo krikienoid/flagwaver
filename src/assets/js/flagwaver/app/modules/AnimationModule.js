@@ -6,10 +6,9 @@ import Module from '../core/Module';
  * @classdesc Allow animation to be paused and continued.
  */
 export default class AnimationModule extends Module {
-    constructor(flag) {
+    constructor() {
         super();
-        this.flag = flag;
-
+        
         this.app = null;
     }
 

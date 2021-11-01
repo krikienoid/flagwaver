@@ -189,8 +189,11 @@ export default class Flag {
         this.mesh = buildMesh(this.cloth, settings);
         this.mesh.position.set(0, -this.cloth.height, 0);
 
-        this.imageElement = this.mesh.material.map.image;
-        this.isVideo = this.imageElement instanceof HTMLVideoElement;
+        this.element = this.mesh.material.map.image;
+        if (this.element instanceof HTMLCanvasElement) {
+            this.element = document.getElementById('flagwaver-video');
+        }
+        this.isVideo = this.element instanceof HTMLVideoElement;
 
         this.object = new Object3D();
         this.object.add(this.mesh);
@@ -215,7 +218,7 @@ export default class Flag {
             this.mesh.material.dispose();
             this.mesh.geometry.dispose();
             if (this.isVideo) {
-                this.imageElement.remove();
+                document.body.removeChild(this.element);
             }
             this.mesh.material.map.dispose();
             this.mesh.customDepthMaterial.dispose();
@@ -270,8 +273,8 @@ export default class Flag {
     reset() {
         this.cloth.reset();
         if (this.isVideo) {
-            this.imageElement.pause();
-            this.imageElement.currentTime = 0;
+            this.element.pause();
+            this.element.currentTime = 0;
         }
     }
 
@@ -298,7 +301,7 @@ export default class Flag {
         }
 
         if (this.isVideo) {
-            this.imageElement.play();
+            this.element.play();
         }
     }
 
