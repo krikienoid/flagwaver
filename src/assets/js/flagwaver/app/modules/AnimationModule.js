@@ -8,7 +8,7 @@ import Module from '../core/Module';
 export default class AnimationModule extends Module {
     constructor() {
         super();
-        
+
         this.app = null;
     }
 
@@ -24,24 +24,22 @@ export default class AnimationModule extends Module {
         }
     }
 
+    getFlag() {
+        return this.app.module('flagGroupModule').subject.flag;
+    }
+
     play() {
         const { clock } = this.app;
 
         if (!clock.running) {
             clock.start();
-            let elem = document.getElementById('flagwaver-video');
-            if (elem !== null) {
-                elem.play();
-            }
+            this.getFlag().play();
         }
     }
 
     pause() {
         this.app.clock.stop();
-        let elem = document.getElementById('flagwaver-video');
-        if (elem !== null) {
-            elem.pause();
-        }
+        this.getFlag().pause();
     }
 
     step() {
@@ -50,11 +48,7 @@ export default class AnimationModule extends Module {
         if (!clock.running) {
             clock.elapsedTime += timestep;
             this.app.update(timestep);
-            let elem = document.getElementById('flagwaver-video');
-            if (elem !== null) {
-                elem.pause();
-                elem.currentTime += timestep;
-            }
+            this.getFlag().step(timestep);
         }
     }
 

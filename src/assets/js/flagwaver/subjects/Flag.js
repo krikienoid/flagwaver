@@ -175,7 +175,7 @@ const pin = (() => {
  *   @param {number} [options.height]
  *   @param {number} [options.mass]
  *   @param {number} [options.granularity]
- *   @param {THREE.Texture} [options.texture]
+ *   @param {THREE.Texture||THREE.VideoTexture} [options.texture]
  *   @param {Object} [options.pin]
  */
 export default class Flag {
@@ -189,11 +189,11 @@ export default class Flag {
         this.mesh = buildMesh(this.cloth, settings);
         this.mesh.position.set(0, -this.cloth.height, 0);
 
-        this.element = this.mesh.material.map.image;
-        if (this.element instanceof HTMLCanvasElement) {
-            this.element = document.getElementById('flagwaver-video');
+        if (settings.texture.image instanceof HTMLVideoElement) {
+            this.videoElement = settings.texture.image;
+        } else {
+            this.videoElement = null;
         }
-        this.isVideo = this.element instanceof HTMLVideoElement;
 
         this.object = new Object3D();
         this.object.add(this.mesh);
@@ -217,11 +217,14 @@ export default class Flag {
         if (this.mesh instanceof Mesh) {
             this.mesh.material.dispose();
             this.mesh.geometry.dispose();
-            if (this.isVideo) {
-                document.body.removeChild(this.element);
-            }
             this.mesh.material.map.dispose();
             this.mesh.customDepthMaterial.dispose();
+
+            if (this.videoElement) {
+                if (!this.videoElement.paused) {
+                    this.videoElement.pause();
+                }
+            }
         }
     }
 
@@ -270,11 +273,37 @@ export default class Flag {
         this.lengthConstraints = lengthConstraints;
     }
 
+    play() {
+        if (this.videoElement && this.videoElement.paused) {
+            this.videoElement.play();
+        }
+    }
+
+    pause() {
+        if (this.videoElement && !this.videoElement.paused) {
+            this.videoElement.pause();
+        }
+    }
+    
+    step(timestep) {
+        if (this.videoElement) {
+            if (!this.videoElement.paused) {
+                this.videoElement.pause();
+            }
+
+            this.videoElement.currentTime += timestep;
+        }
+    }
+
     reset() {
         this.cloth.reset();
-        if (this.isVideo) {
-            this.element.pause();
-            this.element.currentTime = 0;
+
+        if (this.videoElement) {
+            if (!this.videoElement.paused) {
+                this.videoElement.pause();
+            }
+
+            this.videoElement.currentTime = 0;
         }
     }
 
@@ -300,9 +329,7 @@ export default class Flag {
             lengthConstraints[i].resolve();
         }
 
-        if (this.isVideo) {
-            this.element.play();
-        }
+        this.play();
     }
 
     render() {

@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import {
     FlagpoleType,
     FlagGroupModule,
-    buildAsyncFlagFromElement,
+    buildAsyncFlagFromImage,
+    buildAsyncFlagFromVideo,
     buildFlagpole
 } from '../../flagwaver';
 import withAppContext from '../hocs/withAppContext';
@@ -71,19 +72,42 @@ class FlagGroup extends Component {
     renderModule() {
         const { options, addToast } = this.props;
         const src = options.src || DEFAULT_FLAG_IMAGE_PATH;
+        const isVideo = src.match(/\.(mp4|mov)$/) || options.type === 'video';
+        
+        if (isVideo) {
+            buildAsyncFlagFromVideo(src, options)
+                .then((flag) => {
+                    this.updateFlag(flag);
 
-        buildAsyncFlagFromElement(src, options)
-            .then((flag) => {
-                this.updateFlag(flag);
-            })
-            .catch((flag) => {
-                this.updateFlag(flag);
+                    if (window.document.documentMode) {
+                        addToast({
+                            status: 'warning',
+                            message: 'Browser feature not supported.'
+                        });
+                    }
+                })
+                .catch((flag) => {
+                    this.updateFlag(flag);
 
-                addToast({
-                    status: 'error',
-                    message: 'Media could not be loaded.'
+                    addToast({
+                        status: 'error',
+                        message: 'Video could not be loaded.'
+                    });
                 });
-            });
+        } else {
+            buildAsyncFlagFromImage(src, options)
+                .then((flag) => {
+                    this.updateFlag(flag);
+                })
+                .catch((flag) => {
+                    this.updateFlag(flag);
+
+                    addToast({
+                        status: 'error',
+                        message: 'Image could not be loaded.'
+                    });
+                });
+        }
     }
 
     render() {

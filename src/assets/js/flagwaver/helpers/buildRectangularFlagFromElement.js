@@ -91,53 +91,9 @@ function computeTextureArgs(options) {
 
 // Generate transformed texture from image
 function createTextureFromElement(element, options) {
-    var texture;
-    if (element instanceof HTMLVideoElement) {
-        if (window.document.documentMode) {
-            const VidTex = function (video) {
-                const scope = this;
-
-                scope.video = video;
-                scope.ctx2d = document.createElement('canvas').getContext('2d');
-                let canvas = scope.ctx2d.canvas;
-                canvas.width = video.videoWidth;
-                canvas.setAttribute('videoSrc', video.src);
-                canvas.height = video.videoHeight;
-
-                scope.ctx2d.drawImage(scope.video, 0, 0,
-                    canvas.width, canvas.height);
-                Texture.call(scope, scope.ctx2d.canvas);
-
-                scope.generateMipmaps = false;
-
-                // Image renders? (sample red circle in base64)
-                //scope.img = document.createElement('img');
-                //scope.img.src = 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=='
-
-                function update() {
-                    if (!scope.video) {
-                        return false;
-                    }
-                    requestAnimationFrame(update);
-                    if ( scope.video.readyState >= scope.video.HAVE_CURRENT_DATA && !scope.video.paused) {
-                        //scope.ctx2d.drawImage(scope.img, 0, 0, canvas.width, canvas.height);
-                        scope.ctx2d.drawImage(scope.video, 0, 0, canvas.width, canvas.height);
-                        scope.needsUpdate = true;
-                    }
-                }
-
-                update();
-            };
-
-            VidTex.prototype = Object.create(Texture.prototype);
-            VidTex.prototype.constructor = VidTex;
-            texture = new VidTex(element);
-        } else {
-            texture = new VideoTexture(element);
-        }
-    } else {
-        texture = new Texture(element);
-    }
+    const texture = element instanceof HTMLVideoElement
+        ? new VideoTexture(element)
+        : new Texture(element);
 
     texture.matrixAutoUpdate = false;
 

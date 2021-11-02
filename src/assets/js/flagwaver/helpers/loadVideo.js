@@ -30,8 +30,4 @@ export default function loadVideo(src, callback, error) {
     video.src = src;
     video.loop = true;
     video.preload = 'auto';
-    video.style.display = 'none';
-    video.id = 'flagwaver-video';
-
-    document.body.appendChild(video);
 }
