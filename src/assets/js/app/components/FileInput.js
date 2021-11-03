@@ -69,19 +69,19 @@ class FileInput extends Component {
         }
 
         onChange(name, {
-            url: window.URL.createObjectURL(file),
-            type: file.type.split('/')[0],
+            url: '',
+            type: file.type,
             file: file
         });
 
         const reader = new FileReader();
 
         reader.addEventListener('load', (e) => {
-            /*onLoad(name, {
+            onLoad(name, {
                 url: e.target.result,
-                type: file.type.split('/')[0],
+                type: file.type,
                 file: file
-            });*/
+            });
         });
 
         reader.readAsDataURL(file);

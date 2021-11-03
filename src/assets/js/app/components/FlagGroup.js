@@ -70,33 +70,38 @@ class FlagGroup extends Component {
     }
 
     renderModule() {
-        const { options, addToast } = this.props;
+        const { fileRecord, options, addToast } = this.props;
         const src = options.src || DEFAULT_FLAG_IMAGE_PATH;
-        const isVideo = src.match(/\.(mp4|mov)$/) || options.type === 'video';
+
+        const { file } = fileRecord;
+        const isVideo = (file && file.type.match(/video\/.*/)) || src.match(/\.(mp4|mov)$/);
+        const isBrowserIE11 = window.document.documentMode;
         
         if (isVideo) {
-            buildAsyncFlagFromVideo(src, options)
-                .then((flag) => {
-                    this.updateFlag(flag);
-                })
-                .catch((flag) => {
-                    this.updateFlag(flag);
+            if (!isBrowserIE11) {
+                buildAsyncFlagFromVideo(src, options)
+                    .then((flag) => {
+                        this.updateFlag(flag);
+                    })
+                    .catch((flag) => {
+                        this.updateFlag(flag);
 
-                    const isBrowserIE11 = window.document.documentMode;
-
-                    if (isBrowserIE11) {
-                        addToast({
-                            status: 'error',
-                            message: 'Browser feature not supported.'
-                        });
-                    } else {
                         addToast({
                             status: 'error',
                             message: 'Video could not be loaded.'
                         });
-                    }
-                    
+                    });
+            } else {
+                addToast({
+                    status: 'error',
+                    message: 'Browser feature not supported.'
                 });
+
+                buildAsyncFlagFromImage(DEFAULT_FLAG_IMAGE_PATH, options)
+                    .then((flag) => {
+                        this.updateFlag(flag);
+                    });
+            }
         } else {
             buildAsyncFlagFromImage(src, options)
                 .then((flag) => {

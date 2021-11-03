@@ -27,11 +27,10 @@ export default class FlagGroupBar extends Component {
 
     handleFilePickerChange(name, value) {
         this.props.setFileRecord(value);
-        this.props.setOptions({ src: value.url, type: value.type });
     }
 
     handleFilePickerLoad(name, value) {
-        this.props.setOptions({ src: value.url, type: value.type });
+        this.props.setOptions({ src: value.url });
     }
 
     render() {

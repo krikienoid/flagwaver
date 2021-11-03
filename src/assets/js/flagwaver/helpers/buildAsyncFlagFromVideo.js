@@ -1,6 +1,5 @@
 import buildFlag from './buildFlag';
-import buildRectangularFlagFromMedia
-    from './buildRectangularFlagFromMedia';
+import buildRectangularFlagFromMedia from './buildRectangularFlagFromMedia';
 import loadVideo from './loadVideo';
 
 /**
@@ -13,15 +12,7 @@ import loadVideo from './loadVideo';
  * @param {Object} [options]
  */
 export default function buildAsyncFlagFromVideo(src, options) {
-    const isBrowserIE11 = window.document.documentMode;
-
     return new Promise((resolve, reject) => {
-        if (isBrowserIE11) {
-            reject(
-                buildFlag(options)
-            );
-        }
-
         loadVideo(
             src,
             (element) => {

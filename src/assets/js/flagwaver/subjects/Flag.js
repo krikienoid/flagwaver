@@ -285,10 +285,7 @@ export default class Flag {
     
     step(timestep) {
         if (this.videoElement) {
-            if (!this.videoElement.paused) {
-                this.videoElement.pause();
-            }
-
+            this.pause();
             this.videoElement.currentTime += timestep;
         }
     }
@@ -297,10 +294,7 @@ export default class Flag {
         this.cloth.reset();
 
         if (this.videoElement) {
-            if (!this.videoElement.paused) {
-                this.videoElement.pause();
-            }
-
+            this.pause();
             this.videoElement.currentTime = 0;
         }
     }

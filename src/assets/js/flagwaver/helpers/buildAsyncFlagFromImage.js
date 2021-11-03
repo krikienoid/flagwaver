@@ -1,6 +1,5 @@
 import buildFlag from './buildFlag';
-import buildRectangularFlagFromMedia
-    from './buildRectangularFlagFromMedia';
+import buildRectangularFlagFromMedia from './buildRectangularFlagFromMedia';
 import loadImage from './loadImage';
 
 /**

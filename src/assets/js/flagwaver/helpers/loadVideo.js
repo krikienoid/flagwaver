@@ -27,7 +27,8 @@ export default function loadVideo(src, callback, error) {
     });
 
     video.crossOrigin = 'anonymous';
-    video.src = src;
     video.loop = true;
     video.preload = 'auto';
+
+    video.src = src;
 }
