@@ -70,7 +70,6 @@ class FileInput extends Component {
 
         onChange(name, {
             url: '',
-            type: file.type,
             file: file
         });
 
@@ -79,7 +78,6 @@ class FileInput extends Component {
         reader.addEventListener('load', (e) => {
             onLoad(name, {
                 url: e.target.result,
-                type: file.type,
                 file: file
             });
         });

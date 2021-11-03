@@ -15,9 +15,9 @@ export default function buildAsyncFlagFromVideo(src, options) {
     return new Promise((resolve, reject) => {
         loadVideo(
             src,
-            (element) => {
+            (video) => {
                 resolve(
-                    buildRectangularFlagFromMedia(element, options)
+                    buildRectangularFlagFromMedia(video, options)
                 );
             },
             () => {

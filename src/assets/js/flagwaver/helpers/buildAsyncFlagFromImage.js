@@ -15,9 +15,9 @@ export default function buildAsyncFlagFromImage(src, options) {
     return new Promise((resolve, reject) => {
         loadImage(
             src,
-            (element) => {
+            (image) => {
                 resolve(
-                    buildRectangularFlagFromMedia(element, options)
+                    buildRectangularFlagFromMedia(image, options)
                 );
             },
             () => {

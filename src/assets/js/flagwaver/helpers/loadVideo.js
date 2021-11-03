@@ -1,7 +1,7 @@
 /**
  * @function loadVideo
  *
- * @description Helper for loading CORS-enabled videos.
+ * @description Helper for loading CORS enabled videos.
  *
  * @param {string} src
  * @param {Function} [callback]

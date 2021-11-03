@@ -6,6 +6,7 @@ import {
     FlagGroupModule,
     buildAsyncFlagFromImage,
     buildAsyncFlagFromVideo,
+    buildFlag,
     buildFlagpole
 } from '../../flagwaver';
 import withAppContext from '../hocs/withAppContext';
@@ -74,9 +75,10 @@ class FlagGroup extends Component {
         const src = options.src || DEFAULT_FLAG_IMAGE_PATH;
 
         const { file } = fileRecord;
-        const isVideo = (file && file.type.match(/video\/.*/)) || src.match(/\.(mp4|mov)$/);
+        const isVideo = (file && file.type.match(/video\/.*/)) ||
+            src.match(/\.(3gp|avi|flv|mov|mp4|mpg|ogg|webm|wmv)$/);
         const isBrowserIE11 = window.document.documentMode;
-        
+
         if (isVideo) {
             if (!isBrowserIE11) {
                 buildAsyncFlagFromVideo(src, options)
@@ -92,15 +94,12 @@ class FlagGroup extends Component {
                         });
                     });
             } else {
+                this.updateFlag(buildFlag(options));
+
                 addToast({
                     status: 'error',
                     message: 'Browser feature not supported.'
                 });
-
-                buildAsyncFlagFromImage(DEFAULT_FLAG_IMAGE_PATH, options)
-                    .then((flag) => {
-                        this.updateFlag(flag);
-                    });
             }
         } else {
             buildAsyncFlagFromImage(src, options)
