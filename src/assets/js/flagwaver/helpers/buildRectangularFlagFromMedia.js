@@ -139,7 +139,7 @@ function computeFlagArgs(element, options) {
 }
 
 /**
- * @function buildRectangularFlagFromElement
+ * @function buildRectangularFlagFromMedia
  *
  * @description Helper for generating flags from rectangular designs
  * that can be rotated and flipped.
@@ -147,7 +147,7 @@ function computeFlagArgs(element, options) {
  * @param {HTMLImageElement|HTMLVideoElement} element
  * @param {Object} [options]
  */
-export default function buildRectangularFlagFromElement(element, options) {
+export default function buildRectangularFlagFromMedia(element, options) {
     const settings = Object.assign({}, defaults, options);
 
     Object.assign(settings, computeSize(element, settings));

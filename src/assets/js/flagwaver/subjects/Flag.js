@@ -175,7 +175,7 @@ const pin = (() => {
  *   @param {number} [options.height]
  *   @param {number} [options.mass]
  *   @param {number} [options.granularity]
- *   @param {THREE.Texture||THREE.VideoTexture} [options.texture]
+ *   @param {THREE.Texture} [options.texture]
  *   @param {Object} [options.pin]
  */
 export default class Flag {
@@ -220,10 +220,8 @@ export default class Flag {
             this.mesh.material.map.dispose();
             this.mesh.customDepthMaterial.dispose();
 
-            if (this.videoElement) {
-                if (!this.videoElement.paused) {
-                    this.videoElement.pause();
-                }
+            if (this.videoElement && !this.videoElement.paused) {
+                this.videoElement.pause();
             }
         }
     }

@@ -78,21 +78,24 @@ class FlagGroup extends Component {
             buildAsyncFlagFromVideo(src, options)
                 .then((flag) => {
                     this.updateFlag(flag);
-
-                    if (window.document.documentMode) {
-                        addToast({
-                            status: 'warning',
-                            message: 'Browser feature not supported.'
-                        });
-                    }
                 })
                 .catch((flag) => {
                     this.updateFlag(flag);
 
-                    addToast({
-                        status: 'error',
-                        message: 'Video could not be loaded.'
-                    });
+                    const isBrowserIE11 = window.document.documentMode;
+
+                    if (isBrowserIE11) {
+                        addToast({
+                            status: 'error',
+                            message: 'Browser feature not supported.'
+                        });
+                    } else {
+                        addToast({
+                            status: 'error',
+                            message: 'Video could not be loaded.'
+                        });
+                    }
+                    
                 });
         } else {
             buildAsyncFlagFromImage(src, options)

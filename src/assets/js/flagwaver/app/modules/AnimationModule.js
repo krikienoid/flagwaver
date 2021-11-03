@@ -24,8 +24,10 @@ export default class AnimationModule extends Module {
         }
     }
 
-    getFlag() {
-        return this.app.module('flagGroupModule').subject.flag;
+    getFlags() {
+        return this.app.getModulesByType('flagGroupModule').map(
+            flagGroup => flagGroup.subject.flag
+        );
     }
 
     play() {
@@ -33,13 +35,13 @@ export default class AnimationModule extends Module {
 
         if (!clock.running) {
             clock.start();
-            this.getFlag().play();
+            this.getFlags().forEach(flag => flag.play());
         }
     }
 
     pause() {
         this.app.clock.stop();
-        this.getFlag().pause();
+        this.getFlags().forEach(flag => flag.pause());
     }
 
     step() {
@@ -48,7 +50,7 @@ export default class AnimationModule extends Module {
         if (!clock.running) {
             clock.elapsedTime += timestep;
             this.app.update(timestep);
-            this.getFlag().step(timestep);
+            this.getFlags().forEach(flag => flag.step(timestep));
         }
     }
 

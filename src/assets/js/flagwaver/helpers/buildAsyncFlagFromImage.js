@@ -1,6 +1,6 @@
 import buildFlag from './buildFlag';
-import buildRectangularFlagFromElement
-    from './buildRectangularFlagFromElement';
+import buildRectangularFlagFromMedia
+    from './buildRectangularFlagFromMedia';
 import loadImage from './loadImage';
 
 /**
@@ -18,7 +18,7 @@ export default function buildAsyncFlagFromImage(src, options) {
             src,
             (element) => {
                 resolve(
-                    buildRectangularFlagFromElement(element, options)
+                    buildRectangularFlagFromMedia(element, options)
                 );
             },
             () => {
