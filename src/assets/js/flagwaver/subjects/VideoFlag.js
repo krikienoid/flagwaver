@@ -53,10 +53,6 @@ export default class VideoFlag extends Flag {
         const video = this.video;
 
         if (video) {
-            if (!video.paused) {
-                video.pause();
-            }
-
             video.currentTime = 0;
         }
     }
