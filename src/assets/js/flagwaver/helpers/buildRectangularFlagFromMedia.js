@@ -4,6 +4,7 @@ import { Hoisting, Side } from '../constants';
 import getAngleOfSide from '../utils/getAngleOfSide';
 import { isNumeric, isObject } from '../utils/TypeUtils';
 import Flag from '../subjects/Flag';
+import VideoFlag from '../subjects/VideoFlag';
 
 const defaults = {
     width: 'auto',
@@ -154,5 +155,10 @@ export default function buildRectangularFlagFromMedia(element, options) {
     Object.assign(settings, computeSize(element, settings));
 
     // Init models and create meshes once images(s) have loaded
-    return new Flag(computeFlagArgs(element, settings));
+    const args = computeFlagArgs(element, settings);
+    const flag = element instanceof HTMLVideoElement
+        ? new VideoFlag(args)
+        : new Flag(args);
+
+    return flag;
 }

@@ -189,12 +189,6 @@ export default class Flag {
         this.mesh = buildMesh(this.cloth, settings);
         this.mesh.position.set(0, -this.cloth.height, 0);
 
-        if (settings.texture.image instanceof HTMLVideoElement) {
-            this.videoElement = settings.texture.image;
-        } else {
-            this.videoElement = null;
-        }
-
         this.object = new Object3D();
         this.object.add(this.mesh);
 
@@ -219,10 +213,6 @@ export default class Flag {
             this.mesh.geometry.dispose();
             this.mesh.material.map.dispose();
             this.mesh.customDepthMaterial.dispose();
-
-            if (this.videoElement && !this.videoElement.paused) {
-                this.videoElement.pause();
-            }
         }
     }
 
@@ -271,32 +261,8 @@ export default class Flag {
         this.lengthConstraints = lengthConstraints;
     }
 
-    play() {
-        if (this.videoElement && this.videoElement.paused) {
-            this.videoElement.play();
-        }
-    }
-
-    pause() {
-        if (this.videoElement && !this.videoElement.paused) {
-            this.videoElement.pause();
-        }
-    }
-    
-    step(timestep) {
-        if (this.videoElement) {
-            this.pause();
-            this.videoElement.currentTime += timestep;
-        }
-    }
-
     reset() {
         this.cloth.reset();
-
-        if (this.videoElement) {
-            this.pause();
-            this.videoElement.currentTime = 0;
-        }
     }
 
     simulate(deltaTime) {
@@ -320,8 +286,6 @@ export default class Flag {
         for (let i = 0, ii = lengthConstraints.length; i < ii; i++) {
             lengthConstraints[i].resolve();
         }
-
-        this.play();
     }
 
     render() {

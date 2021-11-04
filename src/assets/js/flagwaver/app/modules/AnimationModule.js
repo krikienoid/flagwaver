@@ -24,24 +24,22 @@ export default class AnimationModule extends Module {
         }
     }
 
-    getFlags() {
-        return this.app.getModulesByType('flagGroupModule').map(
-            flagGroup => flagGroup.subject.flag
-        );
-    }
-
     play() {
         const { clock } = this.app;
 
         if (!clock.running) {
             clock.start();
-            this.getFlags().forEach(flag => flag.play());
+            this.app.refresh();
         }
     }
 
     pause() {
-        this.app.clock.stop();
-        this.getFlags().forEach(flag => flag.pause());
+        const { clock } = this.app;
+
+        if (clock.running) {
+            clock.stop();
+            this.app.refresh();
+        }
     }
 
     step() {
@@ -50,7 +48,6 @@ export default class AnimationModule extends Module {
         if (!clock.running) {
             clock.elapsedTime += timestep;
             this.app.update(timestep);
-            this.getFlags().forEach(flag => flag.step(timestep));
         }
     }
 
@@ -62,5 +59,6 @@ export default class AnimationModule extends Module {
         clock.elapsedTime = 0;
 
         this.app.start();
+        this.app.refresh();
     }
 }

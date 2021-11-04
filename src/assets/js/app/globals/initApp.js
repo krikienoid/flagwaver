@@ -93,6 +93,31 @@ function buildApp() {
         }
     ));
 
+    app.add(new ProcessModule(
+        null,
+        () => {
+            const modules = app.getModulesByType('flagGroupModule');
+
+            const flags = modules
+                .map(module => module.subject.flag)
+                .filter(flag => flag.video);
+
+            if (app.clock.running) {
+                flags.map(flag => {
+                    flag.play();
+                });
+            } else {
+                flags.map(flag => {
+                    flag.pause();
+                });
+
+                setTimeout(() => {
+                    app.render();
+                }, 100);
+            }
+        }
+    ));
+
     return app;
 }
 
