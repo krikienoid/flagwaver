@@ -18,6 +18,10 @@ function AnimationControlBar({ muted, paused, setMuted, setPaused }) {
     if (app) {
         const animationModule = app.module('animationModule');
 
+        if (muted !== animationModule.muted) {
+            setMuted(animationModule.muted);
+        }
+
         return (
             <div className="form-section">
                 <div className="form-group">
@@ -77,11 +81,11 @@ function AnimationControlBar({ muted, paused, setMuted, setPaused }) {
                             type="button"
                             className="btn"
                             onClick={() => {
-                                setMuted(!muted);
-
                                 animationModule.muted = !muted;
 
                                 app.refresh();
+
+                                setMuted(!muted);
                             }}
                         >
                             {muted ? (

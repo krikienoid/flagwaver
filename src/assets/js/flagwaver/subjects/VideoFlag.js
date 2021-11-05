@@ -35,8 +35,10 @@ export default class VideoFlag extends Flag {
         const video = this.video;
 
         if (video && video.paused) {
-            video.play();
+            return video.play();
         }
+
+        return Promise.resolve();
     }
 
     pause() {
