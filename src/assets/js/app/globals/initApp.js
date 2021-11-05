@@ -96,18 +96,22 @@ function buildApp() {
     app.add(new ProcessModule(
         null,
         () => {
-            const modules = app.getModulesByType('flagGroupModule');
+            const muted = app.module('animationModule').muted;
 
-            const flags = modules
+            const flags = app.getModulesByType('flagGroupModule')
                 .map(module => module.subject.flag)
                 .filter(flag => flag.video);
 
+            flags.map((flag) => {
+                flag.video.muted = muted;
+            });
+
             if (app.clock.running) {
-                flags.map(flag => {
+                flags.map((flag) => {
                     flag.play();
                 });
             } else {
-                flags.map(flag => {
+                flags.map((flag) => {
                     flag.pause();
                 });
 

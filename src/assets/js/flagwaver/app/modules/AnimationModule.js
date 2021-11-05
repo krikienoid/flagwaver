@@ -10,6 +10,8 @@ export default class AnimationModule extends Module {
         super();
 
         this.app = null;
+
+        this.muted = false;
     }
 
     static displayName = 'animationModule';
