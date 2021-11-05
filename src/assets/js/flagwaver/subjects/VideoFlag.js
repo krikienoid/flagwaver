@@ -67,7 +67,7 @@ export default class VideoFlag extends Flag {
 
             video.currentTime += deltaTime;
 
-            if (deltaTime && previousTime === video.currentTime) {
+            if (video.loop && deltaTime && previousTime === video.currentTime) {
                 video.currentTime = 0;
             }
         }
