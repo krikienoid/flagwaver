@@ -6,4 +6,5 @@ import 'core-js/es/object/values';
 import 'core-js/es/promise';
 import 'core-js/es/set';
 import 'core-js/es/symbol';
+import 'core-js/es/typed-array/slice';
 import 'core-js/features/url';
