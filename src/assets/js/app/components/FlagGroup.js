@@ -77,44 +77,43 @@ class FlagGroup extends Component {
         const { file } = fileRecord;
         const isVideo = (file && file.type.match(/video\/.*/)) ||
             src.match(/\.(3gp|avi|flv|mov|mp4|mpg|ogg|webm|wmv)$/);
-        const isBrowserIE11 = window.document.documentMode;
 
-        if (isVideo) {
-            if (!isBrowserIE11) {
-                buildAsyncFlagFromVideo(src, options)
-                    .then((flag) => {
-                        this.updateFlag(flag);
-                    })
-                    .catch((flag) => {
-                        this.updateFlag(flag);
+        (new Promise((resolve, reject) => {
+            if (isVideo) {
+                const isBrowserIE11 = window.document.documentMode;
 
-                        addToast({
-                            status: 'error',
-                            message: 'Video could not be loaded.'
+                if (isBrowserIE11) {
+                    reject('Browser feature not supported.');
+                } else {
+                    buildAsyncFlagFromVideo(src, options)
+                        .then((flag) => {
+                            resolve(flag);
+                        })
+                        .catch(() => {
+                            reject('Video could not be loaded.');
                         });
-                    });
+                }
             } else {
+                buildAsyncFlagFromImage(src, options)
+                    .then((flag) => {
+                        resolve(flag);
+                    })
+                    .catch(() => {
+                        reject('Image could not be loaded.');
+                    });
+            }
+        }))
+            .then((flag) => {
+                this.updateFlag(flag);
+            })
+            .catch((error) => {
                 this.updateFlag(buildFlag(options));
 
                 addToast({
                     status: 'error',
-                    message: 'Browser feature not supported.'
+                    message: error
                 });
-            }
-        } else {
-            buildAsyncFlagFromImage(src, options)
-                .then((flag) => {
-                    this.updateFlag(flag);
-                })
-                .catch((flag) => {
-                    this.updateFlag(flag);
-
-                    addToast({
-                        status: 'error',
-                        message: 'Image could not be loaded.'
-                    });
-                });
-        }
+            });
     }
 
     render() {
