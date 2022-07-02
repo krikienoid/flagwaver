@@ -15,8 +15,8 @@ const defaults = {
 
 // Calculate width and/or height from image if either is set to 'auto'
 function computeSizeFromElement(element, options) {
-    let elementWidth = element.width || element.videoWidth;
-    let elementHeight = element.height || element.videoHeight;
+    const elementWidth = element.width || element.videoWidth;
+    const elementHeight = element.height || element.videoHeight;
 
     if (options.width === 'auto' && options.height === 'auto') {
         const crossWidth = Flag.defaults.height;
