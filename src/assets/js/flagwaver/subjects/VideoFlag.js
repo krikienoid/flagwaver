@@ -67,6 +67,8 @@ export default class VideoFlag extends Flag {
         if (video && video.paused) {
             const previousTime = video.currentTime;
 
+            this.mesh.material.map.update();
+
             video.currentTime += deltaTime;
 
             if (video.loop && deltaTime && previousTime === video.currentTime) {
