@@ -10,6 +10,8 @@ export default class AnimationModule extends Module {
         super();
 
         this.app = null;
+
+        this.muted = false;
     }
 
     static displayName = 'animationModule';
@@ -29,11 +31,17 @@ export default class AnimationModule extends Module {
 
         if (!clock.running) {
             clock.start();
+            this.app.refresh();
         }
     }
 
     pause() {
-        this.app.clock.stop();
+        const { clock } = this.app;
+
+        if (clock.running) {
+            clock.stop();
+            this.app.refresh();
+        }
     }
 
     step() {
@@ -53,5 +61,6 @@ export default class AnimationModule extends Module {
         clock.elapsedTime = 0;
 
         this.app.start();
+        this.app.refresh();
     }
 }
