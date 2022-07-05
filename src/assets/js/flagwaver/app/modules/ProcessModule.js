@@ -12,7 +12,7 @@ export default class ProcessModule extends Module {
     constructor(updateFn, onNeedsUpdate) {
         super();
 
-        this.updateFn = updateFn || (() => {});
+        this.updateFn = updateFn;
         this.onNeedsUpdate = onNeedsUpdate || (() => {});
         this.needsUpdate = false;
     }

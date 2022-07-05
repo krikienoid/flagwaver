@@ -1,5 +1,7 @@
-import buildRectangularFlagFromMedia from './buildRectangularFlagFromMedia';
-import loadImage from './loadImage';
+import buildFlag from '../helpers/buildFlag';
+import buildRectangularFlagFromImage
+    from '../helpers/buildRectangularFlagFromImage';
+import loadImage from '../helpers/loadImage';
 
 /**
  * @function buildAsyncFlagFromImage
@@ -15,10 +17,14 @@ export default function buildAsyncFlagFromImage(src, options) {
         loadImage(
             src,
             (image) => {
-                resolve(buildRectangularFlagFromMedia(image, options));
+                resolve(
+                    buildRectangularFlagFromImage(image, options)
+                );
             },
             () => {
-                reject();
+                reject(
+                    buildFlag(options)
+                );
             }
         );
     });

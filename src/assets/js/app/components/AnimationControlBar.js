@@ -1,26 +1,15 @@
 import { Fragment, useContext } from 'react';
 import PropTypes from 'prop-types';
-import {
-    MdPlayArrow,
-    MdPause,
-    MdStop,
-    MdSkipNext,
-    MdVolumeOff,
-    MdVolumeUp
-} from 'react-icons/md';
+import { MdPlayArrow, MdPause, MdStop, MdSkipNext } from 'react-icons/md';
 
 import Icon from '../components/Icon';
 import AppContext from '../contexts/AppContext';
 
-function AnimationControlBar({ muted, paused, setMuted, setPaused }) {
+function AnimationControlBar({ paused, setPaused }) {
     const app = useContext(AppContext);
 
     if (app) {
         const animationModule = app.module('animationModule');
-
-        if (muted !== animationModule.muted) {
-            setMuted(animationModule.muted);
-        }
 
         return (
             <div className="form-section">
@@ -75,32 +64,6 @@ function AnimationControlBar({ muted, paused, setMuted, setPaused }) {
                             <span className="sr-only">Step forward</span>
                         </button>
                     </div>
-
-                    <div className="btn-group">
-                        <button
-                            type="button"
-                            className="btn"
-                            onClick={() => {
-                                animationModule.muted = !muted;
-
-                                app.refresh();
-
-                                setMuted(!muted);
-                            }}
-                        >
-                            {muted ? (
-                                <Fragment>
-                                    <Icon component={MdVolumeOff} />
-                                    <span className="sr-only">Unmute</span>
-                                </Fragment>
-                            ) : (
-                                <Fragment>
-                                    <Icon component={MdVolumeUp} />
-                                    <span className="sr-only">Mute</span>
-                                </Fragment>
-                            )}
-                        </button>
-                    </div>
                 </div>
             </div>
         );
@@ -110,14 +73,11 @@ function AnimationControlBar({ muted, paused, setMuted, setPaused }) {
 }
 
 AnimationControlBar.propTypes = {
-    muted: PropTypes.bool,
     paused: PropTypes.bool,
-    setMuted: PropTypes.func,
     setPaused: PropTypes.func
 };
 
 AnimationControlBar.defaultProps = {
-    setMuted: () => {},
     setPaused: () => {}
 };
 

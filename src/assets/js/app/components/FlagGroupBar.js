@@ -30,7 +30,7 @@ export default class FlagGroupBar extends Component {
     }
 
     handleFilePickerLoad(name, value) {
-        this.props.setOptions({ src: value.url });
+        this.props.setOptions({ imageSrc: value.url });
     }
 
     render() {
@@ -49,10 +49,10 @@ export default class FlagGroupBar extends Component {
                 <FilePickerInput
                     label="Select image"
                     value={fileRecord}
-                    accept="image/*, video/*"
+                    accept="image/*"
                     onChange={this.handleFilePickerChange}
                     onLoad={this.handleFilePickerLoad}
-                    isValidFileType={type => type.match('image.*') || type.match('video.*')}
+                    isValidFileType={type => type.match('image.*')}
                 />
             </div>
         );

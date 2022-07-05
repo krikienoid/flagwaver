@@ -27,7 +27,7 @@ const initialState = {
     height:             'auto',
     mass:               0.11,
     granularity:        10,
-    src:                '',
+    imageSrc:           '',
     flagpoleType:       FlagpoleType.VERTICAL,
     verticalHoisting:   VerticalHoisting.TOP_RIGHT
 };

@@ -1,10 +1,9 @@
-import { Texture, VideoTexture } from 'three';
+import { Texture } from 'three';
 
 import { Hoisting, Side } from '../constants';
 import getAngleOfSide from '../utils/getAngleOfSide';
 import { isNumeric, isObject } from '../utils/TypeUtils';
 import Flag from '../subjects/Flag';
-import VideoFlag from '../subjects/VideoFlag';
 
 const defaults = {
     width: 'auto',
@@ -14,35 +13,32 @@ const defaults = {
 };
 
 // Calculate width and/or height from image if either is set to 'auto'
-function computeSizeFromElement(element, options) {
-    const elementWidth = element.width || element.videoWidth;
-    const elementHeight = element.height || element.videoHeight;
-
+function computeSizeFromImage(image, options) {
     if (options.width === 'auto' && options.height === 'auto') {
         const crossWidth = Flag.defaults.height;
 
-        if (elementWidth < elementHeight) {
+        if (image.width < image.height) {
             // Vertical
             return {
                 width:  crossWidth,
-                height: crossWidth * elementHeight / elementWidth
+                height: crossWidth * image.height / image.width
             };
         } else {
             // Horizontal or square
             return {
-                width:  crossWidth * elementWidth / elementHeight,
+                width:  crossWidth * image.width / image.height,
                 height: crossWidth
             };
         }
     } else if (options.width === 'auto' && isNumeric(options.height)) {
         return {
-            width:  options.height * elementWidth / elementHeight,
+            width:  options.height * image.width / image.height,
             height: options.height
         };
     } else if (isNumeric(options.width) && options.height === 'auto') {
         return {
             width:  options.width,
-            height: options.width * elementHeight / elementWidth
+            height: options.width * image.height / image.width
         };
     } else {
         return {
@@ -53,14 +49,14 @@ function computeSizeFromElement(element, options) {
 }
 
 // Compute a numeric width and height from options
-function computeSize(element, options) {
+function computeSize(image, options) {
     let size = {
         width:  options.width,
         height: options.height
     };
 
-    if (element) {
-        size = computeSizeFromElement(element, size);
+    if (image) {
+        size = computeSizeFromImage(image, size);
     }
 
     if (isNumeric(size.width) && isNumeric(size.height)) {
@@ -92,10 +88,8 @@ function computeTextureArgs(options) {
 }
 
 // Generate transformed texture from image
-function createTextureFromElement(element, options) {
-    const texture = element instanceof HTMLVideoElement
-        ? new VideoTexture(element)
-        : new Texture(element);
+function createTextureFromImage(image, options) {
+    const texture = new Texture(image);
 
     texture.matrixAutoUpdate = false;
 
@@ -122,7 +116,7 @@ function createTextureFromElement(element, options) {
 }
 
 // Compute values needed to create new flag
-function computeFlagArgs(element, options) {
+function computeFlagArgs(image, options) {
     const result = Object.assign({}, options);
 
     if (isVertical(options)) {
@@ -130,9 +124,9 @@ function computeFlagArgs(element, options) {
         result.height = options.width;
     }
 
-    if (element) {
-        result.texture = createTextureFromElement(
-            element,
+    if (image) {
+        result.texture = createTextureFromImage(
+            image,
             computeTextureArgs(options)
         );
     }
@@ -141,24 +135,19 @@ function computeFlagArgs(element, options) {
 }
 
 /**
- * @function buildRectangularFlagFromMedia
+ * @function buildRectangularFlagFromImage
  *
  * @description Helper for generating flags from rectangular designs
  * that can be rotated and flipped.
  *
- * @param {HTMLImageElement|HTMLVideoElement} element
+ * @param {HTMLImageElement} image
  * @param {Object} [options]
  */
-export default function buildRectangularFlagFromMedia(element, options) {
+export default function buildRectangularFlagFromImage(image, options) {
     const settings = Object.assign({}, defaults, options);
 
-    Object.assign(settings, computeSize(element, settings));
+    Object.assign(settings, computeSize(image, settings));
 
     // Init models and create meshes once images(s) have loaded
-    const args = computeFlagArgs(element, settings);
-    const flag = element instanceof HTMLVideoElement
-        ? new VideoFlag(args)
-        : new Flag(args);
-
-    return flag;
+    return new Flag(computeFlagArgs(image, settings));
 }

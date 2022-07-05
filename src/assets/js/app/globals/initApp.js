@@ -93,44 +93,6 @@ function buildApp() {
         }
     ));
 
-    app.add(new ProcessModule(
-        null,
-        () => {
-            const animationModule = app.module('animationModule');
-
-            const flags = app.getModulesByType('flagGroupModule')
-                .map(module => module.subject.flag)
-                .filter(flag => flag.video);
-
-            if (app.clock.running) {
-                flags.map((flag) => {
-                    flag.play()
-                        .catch((e) => {
-                            // Check for autoplay muting
-                            if (
-                                e instanceof DOMException &&
-                                e.name === 'NotAllowedError'
-                            ) {
-                                animationModule.muted = true;
-                            }
-                        });
-                });
-            } else {
-                flags.map((flag) => {
-                    flag.pause();
-                });
-
-                setTimeout(() => {
-                    app.render();
-                }, 100);
-            }
-
-            flags.map((flag) => {
-                flag.video.muted = animationModule.muted;
-            });
-        }
-    ));
-
     return app;
 }
 

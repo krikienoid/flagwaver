@@ -87,14 +87,6 @@ export default class App extends ModuleSystem {
             render();
         };
 
-        const refresh = () => {
-            markModulesNeedsUpdate(true);
-            this.needsUpdate = false;
-
-            updateModules(0);
-            render();
-        };
-
         const update = (deltaTime) => {
             if (this.needsUpdate) {
                 markModulesNeedsUpdate(true);
@@ -179,7 +171,6 @@ export default class App extends ModuleSystem {
         this.destroy = destroy;
         this.render = render;
         this.start = start;
-        this.refresh = refresh;
         this.update = update;
         this.needsUpdate = false;
     }

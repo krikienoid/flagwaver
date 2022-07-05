@@ -5,7 +5,6 @@ import FlagGroup from '../components/FlagGroup';
 import { addToast } from '../redux/modules/toasts';
 
 const mapStateToProps = state => ({
-    fileRecord: state.fileRecord,
     options: state.flagGroup
 });
 
