@@ -9,7 +9,7 @@ import Flag from './Flag';
  *   @param {number} [options.width]
  *   @param {number} [options.height]
  *   @param {number} [options.mass]
- *   @param {number} [options.granularity]
+ *   @param {number} [options.restDistance]
  *   @param {THREE.Texture} [options.texture]
  *   @param {Object} [options.pin]
  */

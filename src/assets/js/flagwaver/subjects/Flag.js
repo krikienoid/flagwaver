@@ -24,8 +24,7 @@ import FixedConstraint from '../physics/FixedConstraint';
 const WHITE_TEXTURE = generateDataTexture(1, 1, new Color(0xffffff));
 
 function buildCloth(options) {
-    const { width, height, mass, granularity } = options;
-    const restDistance = height / granularity;
+    const { width, height, mass, restDistance } = options;
 
     return new Cloth(
         Math.round(width / restDistance),
@@ -174,7 +173,7 @@ const pin = (() => {
  *   @param {number} [options.width]
  *   @param {number} [options.height]
  *   @param {number} [options.mass]
- *   @param {number} [options.granularity]
+ *   @param {number} [options.restDistance]
  *   @param {THREE.Texture} [options.texture]
  *   @param {Object} [options.pin]
  */
@@ -199,7 +198,7 @@ export default class Flag {
         width:                  1.8,
         height:                 1.2,
         mass:                   0.11, // 110 g/m^s
-        granularity:            10,
+        restDistance:           1.2 / 10,
         rigidness:              1,
         texture:                WHITE_TEXTURE,
         pin: {
