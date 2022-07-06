@@ -28,7 +28,7 @@ export default class App extends ModuleSystem {
 
         const clock = new Clock();
         const timestep = TIME_STEP;
-        const maxUpdatesPerFrame = 90;
+        const maxUpdatesPerFrame = 2;
         const maxPanics = 255;
         let delta = 0;
         let panicCount = 0;
