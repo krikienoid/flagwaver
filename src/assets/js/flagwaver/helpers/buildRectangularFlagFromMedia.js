@@ -6,6 +6,9 @@ import { isNumeric, isObject } from '../utils/TypeUtils';
 import Flag from '../subjects/Flag';
 import VideoFlag from '../subjects/VideoFlag';
 
+// Maximum size of flag
+const maxSize = 500;
+
 const defaults = {
     width: 'auto',
     height: 'auto',
@@ -54,17 +57,18 @@ function computeSizeFromElement(element, options) {
 
 // Compute a numeric width and height from options
 function computeSize(element, options) {
-    let size = {
-        width:  options.width,
-        height: options.height
-    };
+    const { width, height } = element
+        ? computeSizeFromElement(element, options)
+        : options;
 
-    if (element) {
-        size = computeSizeFromElement(element, size);
-    }
+    if (isNumeric(width) && isNumeric(height)) {
+        // Downscale images that exceed maxSize
+        const scale = Math.min(1, maxSize / Math.max(width, height));
 
-    if (isNumeric(size.width) && isNumeric(size.height)) {
-        return size;
+        return {
+            width: width * scale,
+            height: height * scale
+        };
     } else {
         return {
             width:  Flag.defaults.width,

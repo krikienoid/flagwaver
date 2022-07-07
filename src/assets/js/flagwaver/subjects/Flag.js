@@ -27,8 +27,8 @@ function buildCloth(options) {
     const { width, height, mass, restDistance } = options;
 
     return new Cloth(
-        Math.round(width / restDistance),
-        Math.round(height / restDistance),
+        Math.max(1, Math.round(width / restDistance)),
+        Math.max(1, Math.round(height / restDistance)),
         restDistance,
         mass * width * height
     );
