@@ -10,10 +10,11 @@ import VideoFlag from '../subjects/VideoFlag';
 const maxSize = 500;
 
 const defaults = {
-    width: 'auto',
-    height: 'auto',
-    hoisting: Hoisting.DEXTER,
-    orientation: Side.TOP
+    width:                      'auto',
+    height:                     'auto',
+    hoisting:                   Hoisting.DEXTER,
+    orientation:                Side.TOP,
+    resolution:                 256 // px per meter
 };
 
 // Calculate width and/or height from image if either is set to 'auto'
@@ -95,29 +96,51 @@ function computeTextureArgs(options) {
     return result;
 }
 
+// Generate transformed texture from image using HTML canvas
+function scaleImage(image, options) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const srcWidth = image.width;
+    const srcHeight = image.height;
+
+    // Downscale textures that exceed max resolution
+    const scale = Math.min(1, options.height * options.resolution / srcHeight);
+
+    const destWidth = Math.round(srcWidth * scale);
+    const destHeight = Math.round(srcHeight * scale);
+
+    canvas.width = destWidth;
+    canvas.height = destHeight;
+
+    ctx.drawImage(image, 0, 0, destWidth, destHeight);
+
+    return canvas;
+}
+
 // Generate transformed texture from image
-function createTextureFromElement(element, options) {
+function createTextureFromElement(element, options, transform) {
     const texture = element instanceof HTMLVideoElement
         ? new VideoTexture(element)
-        : new Texture(element);
+        : new Texture(scaleImage(element, options));
 
     texture.matrixAutoUpdate = false;
 
-    if (isObject(options)) {
+    if (isObject(transform)) {
         const matrix = texture.matrix;
 
         matrix.scale(1, 1);
 
         // Reflect
-        if (options.reflect) {
+        if (transform.reflect) {
             matrix.translate(-1, 0).scale(-1, 1);
         }
 
         // Rotate around center
-        if (isNumeric(options.rotate)) {
+        if (isNumeric(transform.rotate)) {
             matrix
                 .translate(-0.5, -0.5)
-                .rotate(-options.rotate)
+                .rotate(-transform.rotate)
                 .translate(0.5, 0.5);
         }
     }
@@ -137,6 +160,7 @@ function computeFlagArgs(element, options) {
     if (element) {
         result.texture = createTextureFromElement(
             element,
+            options,
             computeTextureArgs(options)
         );
     }
