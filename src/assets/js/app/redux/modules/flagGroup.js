@@ -26,8 +26,9 @@ const initialState = {
     width:              'auto',
     height:             'auto',
     mass:               0.11,
-    granularity:        10,
+    restDistance:       1.2 / 10,
     src:                '',
+    resolution:         256,
     flagpoleType:       FlagpoleType.VERTICAL,
     verticalHoisting:   VerticalHoisting.TOP_RIGHT
 };

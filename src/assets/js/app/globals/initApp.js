@@ -40,10 +40,14 @@ function buildCamera() {
 }
 
 function buildRenderer() {
-    const dpr = window.devicePixelRatio ? window.devicePixelRatio : 1;
+    const dpr = window.devicePixelRatio
+        ? Math.min(window.devicePixelRatio, 2)
+        : 1;
+
     const renderer = new WebGLRenderer({
-        antialias: true,
-        alpha:     true
+        antialias:              true,
+        alpha:                  true,
+        powerPreference:        'high-performance'
     });
 
     renderer.setSize(window.innerWidth, window.innerHeight);

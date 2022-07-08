@@ -2,6 +2,7 @@ import { StreamDrawUsage, Vector3 } from 'three';
 import { ParametricGeometry }
     from 'three/examples/jsm/geometries/ParametricGeometry';
 
+import { ITERATION_COUNT } from '../constants';
 import Particle from './Particle';
 import Constraint from './Constraint';
 
@@ -209,8 +210,10 @@ export default class Cloth {
         }
 
         // Resolve constraints
-        for (let i = 0, ii = constraints.length; i < ii; i++) {
-            constraints[i].resolve();
+        for (let n = 0, nn = ITERATION_COUNT; n < nn; n++) {
+            for (let i = 0, ii = constraints.length; i < ii; i++) {
+                constraints[i].resolve();
+            }
         }
     }
 
