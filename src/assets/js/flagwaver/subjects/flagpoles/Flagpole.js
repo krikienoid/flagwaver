@@ -1,4 +1,4 @@
-import { Mesh, MeshPhongMaterial, Vector3 } from 'three';
+import { Mesh, MeshStandardMaterial, Vector3 } from 'three';
 
 import { Side, FlagpoleType } from '../../constants';
 import { createPoleGeometryTypeI } from './utils/FlagpoleGeometryHelpers';
@@ -26,10 +26,10 @@ export default class Flagpole {
         const geometry = this.buildGeometry(settings);
 
         // Material
-        const material = new MeshPhongMaterial({
-            color:     0x6A6A6A,
-            specular:  0xffffff,
-            shininess: 18
+        const material = new MeshStandardMaterial({
+            color:     0xfefefe,
+            metalness: 0.98,
+            roughness: 0.55
         });
 
         // Mesh

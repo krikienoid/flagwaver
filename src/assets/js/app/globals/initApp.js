@@ -2,6 +2,7 @@ import {
     PCFSoftShadowMap,
     sRGBEncoding,
 
+    ColorManagement,
     Fog,
     PerspectiveCamera,
     Scene,
@@ -31,7 +32,7 @@ function buildCamera() {
         30,
         window.innerWidth / window.innerHeight,
         0.1,
-        1000
+        100
     );
 
     camera.position.set(0, 5, 12);
@@ -53,9 +54,10 @@ function buildRenderer() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(dpr);
 
-    renderer.outputEncoding     = sRGBEncoding;
-    renderer.shadowMap.enabled  = true;
-    renderer.shadowMap.type     = PCFSoftShadowMap;
+    renderer.outputEncoding             = sRGBEncoding;
+    renderer.physicallyCorrectLights    = true;
+    renderer.shadowMap.enabled          = true;
+    renderer.shadowMap.type             = PCFSoftShadowMap;
 
     return renderer;
 }
@@ -139,5 +141,7 @@ function buildApp() {
 }
 
 export default function init() {
+    ColorManagement.legacyMode = false;
+
     return buildApp();
 }

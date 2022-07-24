@@ -14,9 +14,9 @@ function setLightShadow(light) {
 }
 
 export function createMutedLights() {
-    const light1 = new AmbientLight(0x222222, 1);
+    const light1 = new AmbientLight(0xffffff, 0.4);
 
-    const light2 = new DirectionalLight(0xfefffa, 1.5);
+    const light2 = new DirectionalLight(0xfefffa, 4.5);
 
     light2.position.set(20, 70, 40);
     setLightShadow(light2);
@@ -25,9 +25,9 @@ export function createMutedLights() {
 }
 
 export function createDaytimeLights() {
-    const light1 = new AmbientLight(0x333333, 1);
+    const light1 = new AmbientLight(0xffffff, 0.6);
 
-    const light2 = new DirectionalLight(0xdfebff, 2.5);
+    const light2 = new DirectionalLight(0xdfebff, 6.5);
 
     light2.position.set(20, 70, 40);
     setLightShadow(light2);
@@ -40,14 +40,14 @@ export function createDaytimeLights() {
 }
 
 export function createNighttimeLights() {
-    const light1 = new AmbientLight(0x010101, 0.3);
+    const light1 = new AmbientLight(0xffffff, 0.004);
 
-    const light2 = new DirectionalLight(0x8ba1ff, 1.5);
+    const light2 = new DirectionalLight(0xa8b4e2, 4.5);
 
     light2.position.set(-55, 50, -80);
     setLightShadow(light2);
 
-    const light3 = new DirectionalLight(0x4564cd, 0.08);
+    const light3 = new DirectionalLight(0x6877aa, 0.3);
 
     light3.position.set(0, 1, 0);
 

@@ -7,7 +7,7 @@ import {
 
     Color,
     Mesh,
-    MeshPhongMaterial,
+    MeshStandardMaterial,
     Object3D,
     ShaderMaterial,
     Texture
@@ -57,15 +57,11 @@ function buildMesh(cloth, options) {
     texture.encoding = sRGBEncoding;
 
     // Material
-    const material = new MeshPhongMaterial({
+    const material = new MeshStandardMaterial({
         alphaTest: 0.5,
         color:     0xffffff,
-        specular:  0x030303,
-        /*
-         * shininess cannot be 0 as it causes bugs in some systems.
-         * https://github.com/mrdoob/three.js/issues/7252
-         */
-        shininess: 0.001,
+        metalness: 0.08,
+        roughness: 0.86,
         side:      DoubleSide,
         map:       texture
     });
