@@ -41,6 +41,7 @@
     "preact": "^10.7.3",
     "preact-compat": "^3.19.0",
     "prop-types": "^15.8.1",
+    "react-colorful": "^5.5.1",
     "react-icons": "^4.4.0",
     "react-move": "^6.5.0",
     "react-redux": "^7.2.8",

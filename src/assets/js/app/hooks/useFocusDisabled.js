@@ -3,13 +3,28 @@ import { useEffect, useRef } from 'react';
 
 const disableFocus = (elems) => {
     for (let i = 0, ii = elems.length; i < ii; i++) {
-        elems[i].setAttribute('tabindex', '-1');
+        const elem = elems[i];
+        const defaultTabIndex = elem.getAttribute('tabindex');
+
+        elem.setAttribute('tabindex', '-1');
+
+        if (defaultTabIndex) {
+            elem.setAttribute('data-tabindex', defaultTabIndex);
+        }
     }
 };
 
 const enableFocus = (elems) => {
     for (let i = 0, ii = elems.length; i < ii; i++) {
-        elems[i].removeAttribute('tabindex');
+        const elem = elems[i];
+        const defaultTabIndex = elem.getAttribute('data-tabindex');
+
+        elem.removeAttribute('tabindex');
+
+        if (defaultTabIndex) {
+            elem.setAttribute('tabindex', defaultTabIndex);
+            elem.removeAttribute('data-tabindex');
+        }
     }
 };
 

@@ -9,6 +9,7 @@ import { SceneryBackground } from '../constants';
 import { setFileRecord } from '../redux/modules/fileRecord';
 import flagGroup, { setFlagGroupOptions } from '../redux/modules/flagGroup';
 import scenery, { setSceneryOptions } from '../redux/modules/scenery';
+import { isColorHex } from '../utils/Validators';
 
 const flagGroupDefaults = flagGroup(undefined, {});
 const sceneryDefaults = scenery(undefined, {});
@@ -53,6 +54,21 @@ const hashState = new HashState({
     'background': {
         defaultValue: sceneryDefaults.background,
         parse: string => parseEnumValue(SceneryBackground, string)
+    },
+    'backgroundcolor': {
+        defaultValue: sceneryDefaults.backgroundColor,
+        parse: value => isColorHex(`#${value}`) ? `#${value}` : null,
+        stringify: value => value.slice(1)
+    },
+    'backgroundimage': {
+        defaultValue: sceneryDefaults.backgroundImage,
+        parse: value => ({
+            url: decodeURIComponent(value),
+            file: null
+        }),
+        stringify: value => value && !value.file
+            ? encodeURIComponent(value.url)
+            : undefined
     }
 });
 
@@ -73,7 +89,9 @@ function mapStateToHash(state) {
         orientation: state.flagGroup.orientation,
         flagpoletype: state.flagGroup.flagpoleType,
         vhoisting: state.flagGroup.verticalHoisting,
-        background: state.scenery.background
+        background: state.scenery.background,
+        backgroundcolor: state.scenery.backgroundColor,
+        backgroundimage: state.scenery.backgroundImage
     };
 }
 
@@ -91,7 +109,9 @@ function mapStateFromHash(state) {
             verticalHoisting: state.vhoisting
         }),
         scenery: {
-            background: state.background
+            background: state.background,
+            backgroundColor: state.backgroundcolor,
+            backgroundImage: state.backgroundimage
         }
     };
 }

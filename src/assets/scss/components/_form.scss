@@ -153,3 +153,29 @@ legend {
         color: spectre-css.$gray-color-light;
     }
 }
+
+.form-group {
+    .react-colorful {
+        width: 100%;
+
+        &__saturation {
+            border-radius:
+                spectre-css.$border-radius spectre-css.$border-radius
+                0 0;
+        }
+
+        &__last-control {
+            border-radius:
+                0 0
+                spectre-css.$border-radius spectre-css.$border-radius;
+        }
+
+        &__pointer {
+            transition: s.$control-shadow-transition;
+        }
+
+        &__interactive:focus .react-colorful__pointer {
+            @include spectre-css.control-shadow;
+        }
+    }
+}

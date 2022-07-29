@@ -2,6 +2,8 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { SceneryBackground } from '../constants';
+import ColorPickerInput from '../components/ColorPickerInput';
+import FilePickerInput from '../components/FilePickerInput';
 import Select from '../components/Select';
 
 export default class SceneryPanel extends Component {
@@ -18,12 +20,30 @@ export default class SceneryPanel extends Component {
         super(props);
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleColorPickerChange = this.handleColorPickerChange.bind(this);
+        this.handleFilePickerChange = this.handleFilePickerChange.bind(this);
+        this.handleFilePickerLoad = this.handleFilePickerLoad.bind(this);
     }
 
     handleChange(e) {
         this.props.setOptions({
             [e.target.name]: e.target.value
         });
+    }
+
+    handleColorPickerChange(value) {
+        this.props.setOptions({
+            backgroundColor: value
+        });
+    }
+
+    handleFilePickerChange(name, value) {
+        this.props.setOptions({
+            backgroundImage: value
+        });
+    }
+
+    handleFilePickerLoad(name, value) {
     }
 
     render() {
@@ -48,9 +68,33 @@ export default class SceneryPanel extends Component {
                         {
                             value: SceneryBackground.NIGHT_SKY_CLOUDS,
                             label: 'Night sky with clouds'
+                        },
+                        {
+                            value: SceneryBackground.CUSTOM,
+                            label: 'Custom'
                         }
                     ]}
                 />
+
+                {options.background === SceneryBackground.CUSTOM ? (
+                    <ColorPickerInput
+                        label="Background color"
+                        name="backgroundColor"
+                        value={options.backgroundColor}
+                        onChange={this.handleColorPickerChange}
+                    />
+                ) : null}
+
+                {options.background === SceneryBackground.CUSTOM ? (
+                    <FilePickerInput
+                        label="Background image"
+                        value={options.backgroundImage}
+                        accept="image/*"
+                        onChange={this.handleFilePickerChange}
+                        onLoad={this.handleFilePickerLoad}
+                        isValidFileType={type => type.match('image.*')}
+                    />
+                ) : null}
             </div>
         );
     }
