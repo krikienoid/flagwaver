@@ -13,18 +13,14 @@ import FilePickerInput from '../components/FilePickerInput';
 import Icon from '../components/Icon';
 import Message from '../components/Message';
 import Select from '../components/Select';
-import { fileRecordPropType } from '../types';
 
 export default class FlagGroupPanel extends Component {
     static propTypes = {
-        fileRecord: fileRecordPropType,
         options: PropTypes.object,
-        setFileRecord: PropTypes.func,
         setOptions: PropTypes.func
     };
 
     static defaultProps = {
-        setFileRecord: () => {},
         setOptions: () => {}
     };
 
@@ -34,7 +30,6 @@ export default class FlagGroupPanel extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleButtonSelectChange = this.handleButtonSelectChange.bind(this);
         this.handleFilePickerChange = this.handleFilePickerChange.bind(this);
-        this.handleFilePickerLoad = this.handleFilePickerLoad.bind(this);
     }
 
     handleChange(e) {
@@ -50,15 +45,13 @@ export default class FlagGroupPanel extends Component {
     }
 
     handleFilePickerChange(name, value) {
-        this.props.setFileRecord(value);
-    }
-
-    handleFilePickerLoad(name, value) {
-        this.props.setOptions({ src: value.url });
+        this.props.setOptions({
+            imageSrc: value
+        });
     }
 
     render() {
-        const { fileRecord, options } = this.props;
+        const { options } = this.props;
 
         if (!options) {
             return (
@@ -72,10 +65,9 @@ export default class FlagGroupPanel extends Component {
             <div className="form-section">
                 <FilePickerInput
                     label="Select image"
-                    value={fileRecord}
+                    value={options.imageSrc}
                     accept="image/*, video/*"
                     onChange={this.handleFilePickerChange}
-                    onLoad={this.handleFilePickerLoad}
                     isValidFileType={type => type.match('image.*') || type.match('video.*')}
                 />
 

@@ -10,6 +10,7 @@ import {
     buildFlagpole
 } from '../../flagwaver';
 import withAppContext from '../hocs/withAppContext';
+import { getObject } from '../utils/BlobUtils';
 
 const DEFAULT_FLAG_IMAGE_PATH = `${process.env.ROOT_URL}/assets/img/flag-default.png`;
 
@@ -71,14 +72,16 @@ class FlagGroup extends Component {
     }
 
     renderModule() {
-        const { fileRecord, options, addToast } = this.props;
-        const src = options.src || DEFAULT_FLAG_IMAGE_PATH;
+        const { options, addToast } = this.props;
+        const { imageSrc } = options;
 
-        const { file } = fileRecord;
-        const isVideo = (file && file.type.match(/video\/.*/)) ||
-            src.match(/\.(3gp|avi|flv|mov|mp4|mpg|ogg|webm|wmv)$/);
+        const src = imageSrc || DEFAULT_FLAG_IMAGE_PATH;
 
         (new Promise((resolve, reject) => {
+            const file = getObject(src);
+            const isVideo = (file && file.type.match(/video\/.*/)) ||
+                src.match(/\.(3gp|avi|flv|mov|mp4|mpg|ogg|webm|wmv)$/);
+
             if (isVideo) {
                 const isBrowserIE11 = window.document.documentMode;
 

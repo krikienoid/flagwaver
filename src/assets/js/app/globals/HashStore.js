@@ -6,9 +6,9 @@ import {
 } from '../../flagwaver';
 import HashState from '../../hashstate';
 import { SceneryBackground } from '../constants';
-import { setFileRecord } from '../redux/modules/fileRecord';
 import flagGroup, { setFlagGroupOptions } from '../redux/modules/flagGroup';
 import scenery, { setSceneryOptions } from '../redux/modules/scenery';
+import { getObject } from '../utils/BlobUtils';
 import { isColorHex } from '../utils/Validators';
 
 const flagGroupDefaults = flagGroup(undefined, {});
@@ -22,9 +22,11 @@ function parseEnumValue(enumObject, string) {
 
 const hashState = new HashState({
     'src': {
-        defaultValue: flagGroupDefaults.src,
+        defaultValue: flagGroupDefaults.imageSrc,
         parse: value => decodeURIComponent(value),
-        stringify: value => encodeURIComponent(value)
+        stringify: value => !getObject(value)
+            ? encodeURIComponent(value)
+            : undefined
     },
     'hoisting': {
         defaultValue: flagGroupDefaults.hoisting,
@@ -61,13 +63,10 @@ const hashState = new HashState({
         stringify: value => value.slice(1)
     },
     'backgroundimage': {
-        defaultValue: sceneryDefaults.backgroundImage,
-        parse: value => ({
-            url: decodeURIComponent(value),
-            file: null
-        }),
-        stringify: value => value && !value.file
-            ? encodeURIComponent(value.url)
+        defaultValue: sceneryDefaults.backgroundImageSrc,
+        parse: value => decodeURIComponent(value),
+        stringify: value => !getObject(value)
+            ? encodeURIComponent(value)
             : undefined
     }
 });
@@ -84,25 +83,21 @@ function assignDefaults(defaults, options) {
 
 function mapStateToHash(state) {
     return {
-        src: state.flagGroup.src,
+        src: state.flagGroup.imageSrc,
         hoisting: state.flagGroup.hoisting,
         orientation: state.flagGroup.orientation,
         flagpoletype: state.flagGroup.flagpoleType,
         vhoisting: state.flagGroup.verticalHoisting,
         background: state.scenery.background,
         backgroundcolor: state.scenery.backgroundColor,
-        backgroundimage: state.scenery.backgroundImage
+        backgroundimage: state.scenery.backgroundImageSrc
     };
 }
 
 function mapStateFromHash(state) {
     return {
-        fileRecord: {
-            url: state.src,
-            file: null
-        },
         flagGroup: assignDefaults(flagGroupDefaults, {
-            src: state.src,
+            imageSrc: state.src,
             hoisting: state.hoisting,
             orientation: state.orientation,
             flagpoleType: state.flagpoletype,
@@ -111,19 +106,17 @@ function mapStateFromHash(state) {
         scenery: {
             background: state.background,
             backgroundColor: state.backgroundcolor,
-            backgroundImage: state.backgroundimage
+            backgroundImageSrc: state.backgroundimage
         }
     };
 }
 
 function isValidState(state) {
-    return (
+    return !!(
         // Has an image
-        !!state.flagGroup.src &&
+        state.flagGroup.imageSrc &&
         // Not a local file
-        !state.fileRecord.file &&
-        // File selection has been applied to flag
-        state.fileRecord.url === state.flagGroup.src
+        !getObject(state.flagGroup.imageSrc)
     );
 }
 
@@ -166,7 +159,6 @@ export function toHash(store) {
 export function fromHash(store) {
     const state = mapStateFromHash(withLegacyFallbacks(hashState.getState()));
 
-    store.dispatch(setFileRecord(state.fileRecord));
     store.dispatch(setFlagGroupOptions(state.flagGroup));
     store.dispatch(setSceneryOptions(state.scenery));
 }

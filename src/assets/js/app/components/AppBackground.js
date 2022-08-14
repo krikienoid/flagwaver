@@ -8,20 +8,18 @@ function AppBackground({
     options,
     addToast
 }) {
-    const { background, backgroundColor, backgroundImage } = options;
+    const { background, backgroundColor, backgroundImageSrc } = options;
 
     const [src, setSrc] = useState('');
 
     useEffect(() => {
         setSrc('');
 
-        if (backgroundImage.file) {
-            setSrc(backgroundImage.url);
-        } else if (backgroundImage.url) {
+        if (backgroundImageSrc) {
             loadImage(
-                backgroundImage.url,
+                backgroundImageSrc,
                 (image) => {
-                    setSrc(backgroundImage.url);
+                    setSrc(backgroundImageSrc);
                 },
                 () => {
                     addToast({
@@ -31,7 +29,7 @@ function AppBackground({
                 }
             );
         }
-    }, [backgroundImage]);
+    }, [backgroundImageSrc]);
 
     return (
         <div

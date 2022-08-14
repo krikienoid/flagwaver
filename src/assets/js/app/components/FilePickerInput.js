@@ -6,8 +6,8 @@ import ButtonSelect from '../components/ButtonSelect';
 import FileInput from '../components/FileInput';
 import Icon from '../components/Icon';
 import URLInput from '../components/URLInput';
+import { getObject, createObjectURL, revokeObjectURL } from '../utils/BlobUtils';
 import { isURL } from '../utils/Validators';
-import { fileRecordPropType } from '../types';
 
 const FilePickerInputMode = {
     WEB: 'web',
@@ -18,17 +18,15 @@ export default class FilePickerInput extends Component {
     static propTypes = {
         label: PropTypes.node,
         name: PropTypes.string,
-        value: fileRecordPropType,
+        value: PropTypes.string,
         accept: PropTypes.string,
         onChange: PropTypes.func,
-        onLoad: PropTypes.func,
         isValidFileType: PropTypes.func
     };
 
     static defaultProps = {
         label: 'Select File',
-        onChange: () => {},
-        onLoad: () => {}
+        onChange: () => {}
     };
 
     constructor(props) {
@@ -46,7 +44,6 @@ export default class FilePickerInput extends Component {
         this.handleURLChange = this.handleURLChange.bind(this);
         this.handleURLSubmit = this.handleURLSubmit.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
-        this.handleFileLoad = this.handleFileLoad.bind(this);
     }
 
     componentDidMount() {
@@ -91,40 +88,27 @@ export default class FilePickerInput extends Component {
     }
 
     handleURLSubmit() {
-        const { name, onChange, onLoad } = this.props;
+        const { name, onChange } = this.props;
         const { url } = this.state;
-
-        const value = {
-            url: url,
-            file: null
-        };
 
         this.setState({ hasSubmittedURL: true });
 
-        onChange(name, value);
-        onLoad(name, value);
+        onChange(name, url);
     }
 
-    handleFileChange(inputName, value) {
-        const { name, onChange } = this.props;
-
-        onChange(name, value);
+    handleFileChange(inputName, file) {
+        const { name, value, onChange } = this.props;
 
         this.setState({ url: '' });
-    }
 
-    handleFileLoad(inputName, value) {
-        const { name, onChange, onLoad } = this.props;
+        revokeObjectURL(value);
 
-        onChange(name, value);
-        onLoad(name, value);
-
-        this.setState({ url: '' });
+        onChange(name, createObjectURL(file));
     }
 
     updateURL(value) {
         this.setState({
-            url: value && !value.file && value.url || ''
+            url: value && !getObject(value) ? value : ''
         });
     }
 
@@ -179,7 +163,7 @@ export default class FilePickerInput extends Component {
                             <FileInput
                                 label="File"
                                 name="file"
-                                value={value}
+                                value={getObject(value)}
                                 accept={accept}
                                 defaultText="Select file..."
                                 buttonText={(
@@ -189,7 +173,6 @@ export default class FilePickerInput extends Component {
                                     </Fragment>
                                 )}
                                 onChange={this.handleFileChange}
-                                onLoad={this.handleFileLoad}
                                 isValidFileType={isValidFileType}
                             />
                         )}

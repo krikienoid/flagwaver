@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import FormGroup from '../components/FormGroup';
 import withUniqueId from '../hocs/withUniqueId';
-import { fileRecordPropType } from '../types';
 import prettyPrintBytes from '../utils/prettyPrintBytes';
 
 class FileInput extends Component {
@@ -11,14 +10,13 @@ class FileInput extends Component {
         id: PropTypes.string.isRequired,
         label: PropTypes.node,
         name: PropTypes.string,
-        value: fileRecordPropType,
+        value: PropTypes.instanceOf(File),
         accept: PropTypes.string,
         defaultText: PropTypes.node,
         disabled: PropTypes.bool,
         buttonText: PropTypes.node,
         validator: PropTypes.func,
         onChange: PropTypes.func,
-        onLoad: PropTypes.func,
         isValidFileType: PropTypes.func
     };
 
@@ -29,7 +27,6 @@ class FileInput extends Component {
         buttonText: 'Browse...',
         validator: () => ({ valid: true }),
         onChange: () => {},
-        onLoad: () => {},
         isValidFileType: () => true
     };
 
@@ -40,7 +37,7 @@ class FileInput extends Component {
     }
 
     handleChange(e) {
-        if (!(window.File && window.FileReader)) {
+        if (!window.File) {
             console.error(
                 'The File APIs are not fully supported in this browser.'
             );
@@ -48,7 +45,7 @@ class FileInput extends Component {
             return;
         }
 
-        const { name, onChange, onLoad, isValidFileType } = this.props;
+        const { name, onChange, isValidFileType } = this.props;
 
         const file = e.target.files[0];
 
@@ -68,21 +65,7 @@ class FileInput extends Component {
             return;
         }
 
-        onChange(name, {
-            url: '',
-            file: file
-        });
-
-        const reader = new FileReader();
-
-        reader.addEventListener('load', (e) => {
-            onLoad(name, {
-                url: e.target.result,
-                file: file
-            });
-        });
-
-        reader.readAsDataURL(file);
+        onChange(name, file);
     }
 
     render () {
@@ -101,7 +84,7 @@ class FileInput extends Component {
         const { valid, feedback } = validator(value);
         const feedbackId = feedback ? `${id}-feedback` : null;
 
-        const file = value && value.file || null;
+        const file = value || null;
 
         return (
             <FormGroup {...{ valid, feedback, feedbackId }}>

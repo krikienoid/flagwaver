@@ -22,7 +22,6 @@ export default class SceneryPanel extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleColorPickerChange = this.handleColorPickerChange.bind(this);
         this.handleFilePickerChange = this.handleFilePickerChange.bind(this);
-        this.handleFilePickerLoad = this.handleFilePickerLoad.bind(this);
     }
 
     handleChange(e) {
@@ -39,11 +38,8 @@ export default class SceneryPanel extends Component {
 
     handleFilePickerChange(name, value) {
         this.props.setOptions({
-            backgroundImage: value
+            backgroundImageSrc: value
         });
-    }
-
-    handleFilePickerLoad(name, value) {
     }
 
     render() {
@@ -88,10 +84,9 @@ export default class SceneryPanel extends Component {
                 {options.background === SceneryBackground.CUSTOM ? (
                     <FilePickerInput
                         label="Background image"
-                        value={options.backgroundImage}
+                        value={options.backgroundImageSrc}
                         accept="image/*"
                         onChange={this.handleFilePickerChange}
-                        onLoad={this.handleFilePickerLoad}
                         isValidFileType={type => type.match('image.*')}
                     />
                 ) : null}

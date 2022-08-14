@@ -1,5 +1,4 @@
 import { SceneryBackground } from '../../constants';
-import fileRecord, { setFileRecord } from './fileRecord';
 
 // Action Types
 
@@ -19,21 +18,12 @@ export function setSceneryOptions(value) {
 const initialState = {
     background: SceneryBackground.CLASSIC,
     backgroundColor: '#000000',
-    backgroundImage: fileRecord(undefined, {})
+    backgroundImageSrc: ''
 };
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case SET_SCENERY_OPTIONS:
-            const { backgroundImage } = action.payload;
-
-            if (backgroundImage) {
-                action.payload.backgroundImage = fileRecord(
-                    state.backgroundImage,
-                    setFileRecord(backgroundImage)
-                );
-            }
-
             return { ...state, ...action.payload };
 
         default:

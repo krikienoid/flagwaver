@@ -27,7 +27,7 @@ const initialState = {
     height:             'auto',
     mass:               0.11,
     restDistance:       1.2 / 10,
-    src:                '',
+    imageSrc:           '',
     resolution:         256,
     flagpoleType:       FlagpoleType.VERTICAL,
     verticalHoisting:   VerticalHoisting.TOP_RIGHT
