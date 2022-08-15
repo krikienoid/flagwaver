@@ -1,6 +1,6 @@
 import { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { MdArrowForward, MdFolderOpen } from 'react-icons/md';
+import { MdArrowForward, MdDelete, MdFolderOpen } from 'react-icons/md';
 
 import ButtonSelect from '../components/ButtonSelect';
 import FileInput from '../components/FileInput';
@@ -44,6 +44,7 @@ export default class FilePickerInput extends Component {
         this.handleURLChange = this.handleURLChange.bind(this);
         this.handleURLSubmit = this.handleURLSubmit.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
+        this.handleReset = this.handleReset.bind(this);
     }
 
     componentDidMount() {
@@ -106,6 +107,17 @@ export default class FilePickerInput extends Component {
         onChange(name, createObjectURL(file));
     }
 
+    handleReset() {
+        const { name, onChange } = this.props;
+
+        this.setState({
+            url: '',
+            hasSubmittedURL: false
+        });
+
+        onChange(name, '');
+    }
+
     updateURL(value) {
         this.setState({
             url: value && !getObject(value) ? value : ''
@@ -117,7 +129,7 @@ export default class FilePickerInput extends Component {
         const { inputMode, url } = this.state;
 
         return (
-            <div className="form-group">
+            <div className="form-group form-file-picker">
                 <fieldset className="field-group">
                     <legend className="field-group-legend">
                         {label}
@@ -176,6 +188,17 @@ export default class FilePickerInput extends Component {
                                 isValidFileType={isValidFileType}
                             />
                         )}
+
+                        <div className="form-group form-file-picker-footer">
+                            <button
+                                type="button"
+                                className="btn"
+                                onClick={this.handleReset}
+                            >
+                                <Icon component={MdDelete} />
+                                <span className="btn-text">Clear</span>
+                            </button>
+                        </div>
                     </div>
                 </fieldset>
             </div>
