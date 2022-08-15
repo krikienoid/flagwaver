@@ -1,11 +1,14 @@
+@use "../vendors/spectre.css/abstracts" as spectre-css;
 @use "../abstracts" as s;
 
 .field-group-legend {
-    margin-bottom: 0.5em;
+    margin-bottom: 0.375em;
     font-size: 0.75rem;
 }
 
 .field-group-body {
     padding: 0.5 * s.$spacer;
-    border: 0.125rem solid s.$brand-gray-lightest;
+    background: s.$brand-gray-lightest;
+    border: spectre-css.$border-width solid s.$brand-gray-lighter;
+    border-radius: spectre-css.$border-radius;
 }

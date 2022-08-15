@@ -13,6 +13,13 @@
     > li {
         display: block;
     }
+
+    @include s.breakpoint(0 sm) {
+        $offset: 1.75rem + 2 * 0.625rem - 0.5rem;
+
+        // Leave room for header button
+        max-width: calc(100% - #{$offset});
+    }
 }
 
 .toasts-item-wrap {
@@ -25,6 +32,7 @@
     position: relative;
     padding: 0.5rem 0.75rem;
     padding-right: 1.25rem + 2 * 0.75rem;
+    overflow: hidden;
     font-size: 0.875rem;
     box-shadow: 0 0.125rem 0.125rem 0.0625rem rgba(s.$black, 0.2);
 

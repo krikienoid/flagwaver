@@ -6,7 +6,7 @@
     margin-bottom: 0;
 
     &:not(:last-child) {
-        margin-bottom: s.$spacer;
+        margin-bottom: s.$spacer + 0.125rem;
     }
 }
 
@@ -17,7 +17,7 @@ legend {
 
 .form-label {
     width: fit-content;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.375em;
     padding: 0;
     color: s.$brand-gray-darkest;
     font-size: 0.75rem;
