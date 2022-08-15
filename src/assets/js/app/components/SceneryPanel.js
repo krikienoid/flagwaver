@@ -5,6 +5,7 @@ import { SceneryBackground } from '../constants';
 import ColorPickerInput from '../components/ColorPickerInput';
 import FilePickerInput from '../components/FilePickerInput';
 import Select from '../components/Select';
+import debounce from '../utils/debounce';
 
 export default class SceneryPanel extends Component {
     static propTypes = {
@@ -22,6 +23,8 @@ export default class SceneryPanel extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleColorPickerChange = this.handleColorPickerChange.bind(this);
         this.handleFilePickerChange = this.handleFilePickerChange.bind(this);
+
+        this.handleColorPickerChangeDebounced = debounce(this.handleColorPickerChange);
     }
 
     handleChange(e) {
@@ -77,7 +80,7 @@ export default class SceneryPanel extends Component {
                         label="Background color"
                         name="backgroundColor"
                         value={options.backgroundColor}
-                        onChange={this.handleColorPickerChange}
+                        onChange={this.handleColorPickerChangeDebounced}
                     />
                 ) : null}
 
