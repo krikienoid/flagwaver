@@ -17,8 +17,8 @@ export default function buildAsyncFlagFromImage(src, options) {
             (image) => {
                 resolve(buildRectangularFlagFromMedia(image, options));
             },
-            () => {
-                reject();
+            (e) => {
+                reject(e);
             }
         );
     });

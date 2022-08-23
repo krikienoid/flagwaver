@@ -17,8 +17,8 @@ export default function buildAsyncFlagFromVideo(src, options) {
             (video) => {
                 resolve(buildRectangularFlagFromMedia(video, options));
             },
-            () => {
-                reject();
+            (e) => {
+                reject(e);
             }
         );
     });

@@ -21,7 +21,7 @@ function AppBackground({
                 (image) => {
                     setSrc(backgroundImageSrc);
                 },
-                () => {
+                (e) => {
                     addToast({
                         status: 'error',
                         message: 'Image could not be loaded.'

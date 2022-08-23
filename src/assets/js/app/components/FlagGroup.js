@@ -92,7 +92,7 @@ class FlagGroup extends Component {
                         .then((flag) => {
                             resolve(flag);
                         })
-                        .catch(() => {
+                        .catch((e) => {
                             reject('Video could not be loaded.');
                         });
                 }
@@ -101,7 +101,7 @@ class FlagGroup extends Component {
                     .then((flag) => {
                         resolve(flag);
                     })
-                    .catch(() => {
+                    .catch((e) => {
                         reject('Image could not be loaded.');
                     });
             }

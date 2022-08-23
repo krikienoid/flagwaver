@@ -94,7 +94,9 @@ export default class FilePickerInput extends Component {
 
         this.setState({ hasSubmittedURL: true });
 
-        onChange(name, url);
+        if (!url || isURL(url)) {
+            onChange(name, url);
+        }
     }
 
     handleFileChange(inputName, file) {
