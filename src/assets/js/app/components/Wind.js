@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Vector3 } from 'three';
 
@@ -17,39 +17,13 @@ function getDirectionVector(deg) {
     return v.applyAxisAngle(yAxis, deg * Math.PI / 180);
 }
 
-class Wind extends Component {
-    static propTypes = {
-        app: PropTypes.object.isRequired,
-        options: PropTypes.object.isRequired
-    };
+function Wind({ app, options }) {
+    const module = useRef();
 
-    componentDidMount() {
-        const { app } = this.props;
+    const renderModule = () => {
+        app.remove(module.current);
 
-        this.module = new WindModule();
-
-        app.add(this.module);
-        app.needsUpdate = true;
-
-        this.renderModule();
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.options !== this.props.options) {
-            this.renderModule();
-        }
-    }
-
-    componentWillUnmount() {
-        this.props.app.remove(this.module);
-    }
-
-    renderModule() {
-        const { app, options } = this.props;
-
-        app.remove(this.module);
-
-        this.module = new WindModule({
+        module.current = new WindModule({
             speed: options.enabled
                 ? (
                     options.controlled
@@ -65,13 +39,33 @@ class Wind extends Component {
                 : WindModifiers.rotatingDirection
         });
 
-        app.add(this.module);
+        app.add(module.current);
         app.needsUpdate = true;
-    }
+    };
 
-    render() {
-        return null;
-    }
+    useEffect(() => {
+        module.current = new WindModule();
+
+        app.add(module.current);
+        app.needsUpdate = true;
+
+        renderModule();
+
+        return () => {
+            app.remove(module.current);
+        };
+    }, []);
+
+    useEffect(() => {
+        renderModule();
+    }, [options]);
+
+    return null;
 }
+
+Wind.propTypes = {
+    app: PropTypes.object.isRequired,
+    options: PropTypes.object.isRequired
+};
 
 export default withAppContext(Wind);

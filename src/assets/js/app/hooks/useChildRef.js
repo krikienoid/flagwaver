@@ -10,6 +10,8 @@ export default function useChildRef(children) {
 
             if (typeof child.ref === 'function') {
                 child.ref(elem);
+            } else if (typeof child.ref === 'object') {
+                child.ref.current = elem;
             }
         }
     });

@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -14,40 +14,13 @@ import { getObject } from '../utils/BlobUtils';
 
 const DEFAULT_FLAG_IMAGE_PATH = `${process.env.ROOT_URL}/assets/img/flag-default.png`;
 
-class FlagGroup extends Component {
-    static propTypes = {
-        app: PropTypes.object.isRequired,
-        options: PropTypes.object.isRequired,
-        addToast: PropTypes.func.isRequired
-    };
+function FlagGroup({ app, options, addToast }) {
+    const module = useRef();
 
-    componentDidMount() {
-        const { app } = this.props;
+    const updateFlag = (flag) => {
+        app.remove(module.current);
 
-        this.module = new FlagGroupModule();
-
-        app.add(this.module);
-        app.needsUpdate = true;
-
-        this.renderModule();
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.options !== this.props.options) {
-            this.renderModule();
-        }
-    }
-
-    componentWillUnmount() {
-        this.props.app.remove(this.module);
-    }
-
-    updateFlag(flag) {
-        const { app, options } = this.props;
-
-        app.remove(this.module);
-
-        this.module = new FlagGroupModule({
+        module.current = new FlagGroupModule({
             flagpole: buildFlagpole(options, flag),
             flag: flag
         });
@@ -56,7 +29,7 @@ class FlagGroup extends Component {
             options.flagpoleType === FlagpoleType.HORIZONTAL ||
             options.flagpoleType === FlagpoleType.OUTRIGGER
         ) {
-            const flagGroup = this.module.subject;
+            const flagGroup = module.current.subject;
             const flagpole = flagGroup.flagpole;
             const poleLength = flagpole.constructor.defaults.poleLength;
 
@@ -66,13 +39,12 @@ class FlagGroup extends Component {
                 .sub(flagpole.top);
         }
 
-        app.add(this.module);
+        app.add(module.current);
         app.render();
         app.needsUpdate = true;
-    }
+    };
 
-    renderModule() {
-        const { options, addToast } = this.props;
+    const renderModule = () => {
         const { imageSrc } = options;
 
         const src = imageSrc || DEFAULT_FLAG_IMAGE_PATH;
@@ -107,21 +79,42 @@ class FlagGroup extends Component {
             }
         }))
             .then((flag) => {
-                this.updateFlag(flag);
+                updateFlag(flag);
             })
             .catch((error) => {
-                this.updateFlag(buildFlag(options));
+                updateFlag(buildFlag(options));
 
                 addToast({
                     status: 'error',
                     message: error
                 });
             });
-    }
+    };
 
-    render() {
-        return null;
-    }
+    useEffect(() => {
+        module.current = new FlagGroupModule();
+
+        app.add(module.current);
+        app.needsUpdate = true;
+
+        renderModule();
+
+        return () => {
+            app.remove(module.current);
+        };
+    }, []);
+
+    useEffect(() => {
+        renderModule();
+    }, [options]);
+
+    return null;
 }
+
+FlagGroup.propTypes = {
+    app: PropTypes.object.isRequired,
+    options: PropTypes.object.isRequired,
+    addToast: PropTypes.func.isRequired
+};
 
 export default withAppContext(FlagGroup);

@@ -1,4 +1,4 @@
-import { Component, Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { MdArrowForward, MdDelete, MdFolderOpen } from 'react-icons/md';
 
@@ -14,56 +14,19 @@ const FilePickerInputMode = {
     FILE: 'file'
 };
 
-export default class FilePickerInput extends Component {
-    static propTypes = {
-        label: PropTypes.node,
-        name: PropTypes.string,
-        value: PropTypes.string,
-        accept: PropTypes.string,
-        onChange: PropTypes.func,
-        isValidFileType: PropTypes.func
-    };
+function FilePickerInput({
+    label,
+    name,
+    value,
+    accept,
+    onChange,
+    isValidFileType
+}) {
+    const [inputMode, setInputMode] = useState(FilePickerInputMode.WEB);
+    const [url, setURL] = useState('');
+    const [hasSubmittedURL, setHasSubmittedURL] = useState(false);
 
-    static defaultProps = {
-        label: 'Select File',
-        onChange: () => {}
-    };
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            inputMode: FilePickerInputMode.WEB,
-            url: '',
-            hasSubmittedURL: false
-        };
-
-        this.validateURL = this.validateURL.bind(this);
-
-        this.handleModeChange = this.handleModeChange.bind(this);
-        this.handleURLChange = this.handleURLChange.bind(this);
-        this.handleURLSubmit = this.handleURLSubmit.bind(this);
-        this.handleFileChange = this.handleFileChange.bind(this);
-        this.handleReset = this.handleReset.bind(this);
-    }
-
-    componentDidMount() {
-        const { value } = this.props;
-
-        this.updateURL(value);
-    }
-
-    componentDidUpdate(prevProps) {
-        const { value } = this.props;
-
-        if (prevProps.value !== value) {
-            this.updateURL(value);
-        }
-    }
-
-    validateURL(value) {
-        const { hasSubmittedURL } = this.state;
-
+    const validateURL = (value) => {
         return (
             (hasSubmittedURL && (!value || !isURL(value)))
                 ? {
@@ -72,138 +35,142 @@ export default class FilePickerInput extends Component {
                 }
                 : { valid: true }
         );
-    }
+    };
 
-    handleModeChange(name, value) {
-        this.setState({
-            inputMode: value,
-            hasSubmittedURL: false
-        });
-    }
+    const handleModeChange = (name, value) => {
+        setInputMode(value);
+        setHasSubmittedURL(false);
+    };
 
-    handleURLChange(e) {
-        this.setState({
-            url: e.target.value,
-            hasSubmittedURL: false
-        });
-    }
+    const handleURLChange = (e) => {
+        setURL(e.target.value);
+        setHasSubmittedURL(false);
+    };
 
-    handleURLSubmit() {
-        const { name, onChange } = this.props;
-        const { url } = this.state;
-
-        this.setState({ hasSubmittedURL: true });
+    const handleURLSubmit = () => {
+        setHasSubmittedURL(true);
 
         if (!url || isURL(url)) {
             onChange(name, url);
         }
-    }
+    };
 
-    handleFileChange(inputName, file) {
-        const { name, value, onChange } = this.props;
-
-        this.setState({ url: '' });
+    const handleFileChange = (inputName, file) => {
+        setURL('');
 
         revokeObjectURL(value);
 
         onChange(name, createObjectURL(file));
-    }
+    };
 
-    handleReset() {
-        const { name, onChange } = this.props;
-
-        this.setState({
-            url: '',
-            hasSubmittedURL: false
-        });
+    const handleReset = () => {
+        setURL('');
+        setHasSubmittedURL(false);
 
         onChange(name, '');
-    }
+    };
 
-    updateURL(value) {
-        this.setState({
-            url: value && !getObject(value) ? value : ''
-        });
-    }
+    const updateURL = (value) => {
+        setURL(value && !getObject(value) ? value : '');
+    };
 
-    render() {
-        const { label, value, accept, isValidFileType } = this.props;
-        const { inputMode, url } = this.state;
+    useEffect(() => {
+        updateURL(value);
+    }, []);
 
-        return (
-            <div className="form-group form-file-picker">
-                <fieldset className="field-group">
-                    <legend className="field-group-legend">
-                        {label}
-                    </legend>
+    useEffect(() => {
+        updateURL(value);
+    }, [value]);
 
-                    <div className="field-group-body">
-                        <ButtonSelect
-                            label="From"
-                            name="inputMode"
-                            value={inputMode}
-                            options={[
-                                {
-                                    label: 'Web',
-                                    value: FilePickerInputMode.WEB
-                                },
-                                {
-                                    label: 'File',
-                                    value: FilePickerInputMode.FILE
-                                }
-                            ]}
-                            block
-                            onChange={this.handleModeChange}
+    return (
+        <div className="form-group form-file-picker">
+            <fieldset className="field-group">
+                <legend className="field-group-legend">
+                    {label}
+                </legend>
+
+                <div className="field-group-body">
+                    <ButtonSelect
+                        label="From"
+                        name="inputMode"
+                        value={inputMode}
+                        options={[
+                            {
+                                label: 'Web',
+                                value: FilePickerInputMode.WEB
+                            },
+                            {
+                                label: 'File',
+                                value: FilePickerInputMode.FILE
+                            }
+                        ]}
+                        block
+                        onChange={handleModeChange}
+                    />
+
+                    {inputMode === FilePickerInputMode.WEB && (
+                        <URLInput
+                            label="URL"
+                            name="url"
+                            value={url}
+                            buttonText={(
+                                <Fragment>
+                                    <Icon component={MdArrowForward} />
+                                    <span className="sr-only">Submit</span>
+                                </Fragment>
+                            )}
+                            validator={validateURL}
+                            onChange={handleURLChange}
+                            onSubmit={handleURLSubmit}
                         />
+                    )}
 
-                        {inputMode === FilePickerInputMode.WEB && (
-                            <URLInput
-                                label="URL"
-                                name="url"
-                                value={url}
-                                buttonText={(
-                                    <Fragment>
-                                        <Icon component={MdArrowForward} />
-                                        <span className="sr-only">Submit</span>
-                                    </Fragment>
-                                )}
-                                validator={this.validateURL}
-                                onChange={this.handleURLChange}
-                                onSubmit={this.handleURLSubmit}
-                            />
-                        )}
+                    {inputMode === FilePickerInputMode.FILE && (
+                        <FileInput
+                            label="File"
+                            name="file"
+                            value={getObject(value)}
+                            accept={accept}
+                            defaultText="Select file..."
+                            buttonText={(
+                                <Fragment>
+                                    <Icon component={MdFolderOpen} />
+                                    <span className="sr-only">Browse</span>
+                                </Fragment>
+                            )}
+                            onChange={handleFileChange}
+                            isValidFileType={isValidFileType}
+                        />
+                    )}
 
-                        {inputMode === FilePickerInputMode.FILE && (
-                            <FileInput
-                                label="File"
-                                name="file"
-                                value={getObject(value)}
-                                accept={accept}
-                                defaultText="Select file..."
-                                buttonText={(
-                                    <Fragment>
-                                        <Icon component={MdFolderOpen} />
-                                        <span className="sr-only">Browse</span>
-                                    </Fragment>
-                                )}
-                                onChange={this.handleFileChange}
-                                isValidFileType={isValidFileType}
-                            />
-                        )}
-
-                        <div className="form-group form-file-picker-footer">
-                            <button
-                                type="button"
-                                className="btn"
-                                onClick={this.handleReset}
-                            >
-                                <Icon component={MdDelete} />
-                                <span className="btn-text">Clear</span>
-                            </button>
-                        </div>
+                    <div className="form-group form-file-picker-footer">
+                        <button
+                            type="button"
+                            className="btn"
+                            onClick={handleReset}
+                        >
+                            <Icon component={MdDelete} />
+                            <span className="btn-text">Clear</span>
+                        </button>
                     </div>
-                </fieldset>
-            </div>
-        );
-    }
+                </div>
+            </fieldset>
+        </div>
+    );
 }
+
+FilePickerInput.propTypes = {
+    label: PropTypes.node,
+    name: PropTypes.string,
+    value: PropTypes.string,
+    accept: PropTypes.string,
+    onChange: PropTypes.func,
+    isValidFileType: PropTypes.func
+};
+
+FilePickerInput.defaultProps = {
+    label: 'Select File',
+    onChange: () => {}
+};
+
+export default FilePickerInput;

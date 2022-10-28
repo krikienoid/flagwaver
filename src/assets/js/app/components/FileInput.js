@@ -1,42 +1,28 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import FormGroup from '../components/FormGroup';
 import withUniqueId from '../hocs/withUniqueId';
 import prettyPrintBytes from '../utils/prettyPrintBytes';
 
-class FileInput extends Component {
-    static propTypes = {
-        id: PropTypes.string.isRequired,
-        label: PropTypes.node,
-        name: PropTypes.string,
-        value: PropTypes.instanceOf(File),
-        accept: PropTypes.string,
-        defaultText: PropTypes.node,
-        disabled: PropTypes.bool,
-        buttonText: PropTypes.node,
-        validator: PropTypes.func,
-        onChange: PropTypes.func,
-        isValidFileType: PropTypes.func
-    };
+function FileInput({
+    id,
+    label,
+    name,
+    value,
+    accept,
+    defaultText,
+    disabled,
+    buttonText,
+    validator,
+    onChange,
+    isValidFileType
+}) {
+    const { valid, feedback } = validator(value);
+    const feedbackId = feedback ? `${id}-feedback` : null;
 
-    static defaultProps = {
-        label: 'File',
-        defaultText: 'Select file...',
-        disabled: false,
-        buttonText: 'Browse...',
-        validator: () => ({ valid: true }),
-        onChange: () => {},
-        isValidFileType: () => true
-    };
+    const file = value || null;
 
-    constructor(props) {
-        super(props);
-
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(e) {
+    const handleChange = (e) => {
         if (!window.File) {
             console.error(
                 'The File APIs are not fully supported in this browser.'
@@ -44,8 +30,6 @@ class FileInput extends Component {
 
             return;
         }
-
-        const { name, onChange, isValidFileType } = this.props;
 
         const file = e.target.files[0];
 
@@ -66,61 +50,66 @@ class FileInput extends Component {
         }
 
         onChange(name, file);
-    }
+    };
 
-    render () {
-        const {
-            id,
-            label,
-            name,
-            value,
-            accept,
-            defaultText,
-            disabled,
-            buttonText,
-            validator
-        } = this.props;
+    return (
+        <FormGroup {...{ valid, feedback, feedbackId }}>
+            <label className="form-label" htmlFor={id}>
+                {label}
+            </label>
 
-        const { valid, feedback } = validator(value);
-        const feedbackId = feedback ? `${id}-feedback` : null;
+            <div className="form-file">
+                <input
+                    type="file"
+                    className="form-file-input"
+                    id={id}
+                    name={name}
+                    accept={accept}
+                    disabled={disabled}
+                    aria-describedby={feedbackId}
+                    onChange={handleChange}
+                />
 
-        const file = value || null;
-
-        return (
-            <FormGroup {...{ valid, feedback, feedbackId }}>
-                <label className="form-label" htmlFor={id}>
-                    {label}
-                </label>
-
-                <div className="form-file">
+                <div className="input-group form-file-btn" aria-hidden="true">
                     <input
-                        type="file"
-                        className="form-file-input"
-                        id={id}
-                        name={name}
-                        accept={accept}
-                        disabled={disabled}
-                        aria-describedby={feedbackId}
-                        onChange={this.handleChange}
+                        type="text"
+                        className="form-input"
+                        value={file ? file.name : ''}
+                        placeholder={defaultText}
+                        disabled="disabled"
                     />
 
-                    <div className="input-group form-file-btn" aria-hidden="true">
-                        <input
-                            type="text"
-                            className="form-input"
-                            value={file ? file.name : ''}
-                            placeholder={defaultText}
-                            disabled="disabled"
-                        />
-
-                        <div className="btn input-group-btn">
-                            {buttonText}
-                        </div>
+                    <div className="btn input-group-btn">
+                        {buttonText}
                     </div>
                 </div>
-            </FormGroup>
-        );
-    }
+            </div>
+        </FormGroup>
+    );
 }
+
+FileInput.propTypes = {
+    id: PropTypes.string.isRequired,
+    label: PropTypes.node,
+    name: PropTypes.string,
+    value: PropTypes.instanceOf(File),
+    accept: PropTypes.string,
+    defaultText: PropTypes.node,
+    disabled: PropTypes.bool,
+    buttonText: PropTypes.node,
+    validator: PropTypes.func,
+    onChange: PropTypes.func,
+    isValidFileType: PropTypes.func
+};
+
+FileInput.defaultProps = {
+    label: 'File',
+    defaultText: 'Select file...',
+    disabled: false,
+    buttonText: 'Browse...',
+    validator: () => ({ valid: true }),
+    onChange: () => {},
+    isValidFileType: () => true
+};
 
 export default withUniqueId(FileInput);

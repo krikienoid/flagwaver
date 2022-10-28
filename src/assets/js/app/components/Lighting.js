@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { SceneryBackground } from '../constants';
@@ -9,59 +9,54 @@ import {
     createNighttimeLights
 } from '../scene/LightingHelpers';
 
-class Lighting extends Component {
-    static propTypes = {
-        app: PropTypes.object.isRequired,
-        options: PropTypes.object.isRequired
-    };
+function Lighting({ app, options }) {
+    const { scene } = app;
 
-    componentDidMount() {
-        this.lights = [];
+    const lights = useRef([]);
 
-        this.renderModule();
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.options !== this.props.options) {
-            this.renderModule();
-        }
-    }
-
-    componentWillUnmount() {
-        const { scene } = this.props.app;
-
-        this.lights.map((light) => { scene.remove(light); });
-    }
-
-    renderModule() {
-        const { app, options } = this.props;
-        const { scene } = app;
-
-        this.lights.map((light) => { scene.remove(light); });
+    const renderModule = () => {
+        lights.current.map((light) => { scene.remove(light); });
 
         switch (options.background) {
             case SceneryBackground.BLUE_SKY:
-                this.lights = createDaytimeLights();
+                lights.current = createDaytimeLights();
                 break;
 
             case SceneryBackground.NIGHT_SKY_CLOUDS:
-                this.lights = createNighttimeLights();
+                lights.current = createNighttimeLights();
                 break;
 
             case SceneryBackground.CLASSIC:
             default:
-                this.lights = createMutedLights();
+                lights.current = createMutedLights();
                 break;
         }
 
-        this.lights.map((light) => { scene.add(light); });
+        lights.current.map((light) => { scene.add(light); });
 
         app.render();
-    }
+    };
 
-    render() {
-        return null;
-    }
+    useEffect(() => {
+        lights.current = [];
+
+        renderModule();
+
+        return () => {
+            lights.current.map((light) => { scene.remove(light); });
+        };
+    }, []);
+
+    useEffect(() => {
+        renderModule();
+    }, [options]);
+
+    return null;
 }
+
+Lighting.propTypes = {
+    app: PropTypes.object.isRequired,
+    options: PropTypes.object.isRequired
+};
 
 export default withAppContext(Lighting);

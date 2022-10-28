@@ -1,42 +1,33 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import SwitchInput from '../components/SwitchInput';
 
-export default class WindBar extends Component {
-    static propTypes = {
-        options: PropTypes.object.isRequired,
-        setOptions: PropTypes.func
-    };
-
-    static defaultProps = {
-        setOptions: () => {}
-    };
-
-    constructor(props) {
-        super(props);
-
-        this.handleSwitchChange = this.handleSwitchChange.bind(this);
-    }
-
-    handleSwitchChange(e) {
-        this.props.setOptions({
+function WindBar({ options, setOptions }) {
+    const handleSwitchChange = (e) => {
+        setOptions({
             [e.target.name]: e.target.checked
         });
-    }
+    };
 
-    render() {
-        const { options } = this.props;
-
-        return (
-            <div className="form-section">
-                <SwitchInput
-                    label="Wind"
-                    name="enabled"
-                    value={options.enabled}
-                    onChange={this.handleSwitchChange}
-                />
-            </div>
-        );
-    }
+    return (
+        <div className="form-section">
+            <SwitchInput
+                label="Wind"
+                name="enabled"
+                value={options.enabled}
+                onChange={handleSwitchChange}
+            />
+        </div>
+    );
 }
+
+WindBar.propTypes = {
+    options: PropTypes.object.isRequired,
+    setOptions: PropTypes.func
+};
+
+WindBar.defaultProps = {
+    setOptions: () => {}
+};
+
+export default WindBar;

@@ -1,44 +1,31 @@
-import { Component } from 'react';
+import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import withAppContext from '../hocs/withAppContext';
 
-class AppCanvas extends Component {
-    static propTypes = {
-        app: PropTypes.object.isRequired
-    };
+function AppCanvas({ app }) {
+    const ref = useRef(null);
 
-    constructor(props) {
-        super(props);
-
-        this.setRef = this.setRef.bind(this);
-        this.ref = null;
-    }
-
-    setRef(elem) {
-        this.ref = elem;
-    }
-
-    componentDidMount() {
-        const { app } = this.props;
-
+    useEffect(() => {
         app.canvas.setAttribute('role', 'img');
         app.canvas.setAttribute('aria-label', 'Animation view');
 
-        this.ref.appendChild(app.canvas);
+        ref.current.appendChild(app.canvas);
 
         app.module('resizeModule').resize();
-    }
 
-    componentWillUnmount() {
-        this.ref.removeChild(this.props.app.canvas);
-    }
+        return () => {
+            ref.current.removeChild(this.props.app.canvas);
+        };
+    }, []);
 
-    render() {
-        return (
-            <div ref={this.setRef} className="app-canvas"></div>
-        );
-    }
+    return (
+        <div ref={ref} className="app-canvas"></div>
+    );
 }
+
+AppCanvas.propTypes = {
+    app: PropTypes.object.isRequired
+};
 
 export default withAppContext(AppCanvas);
