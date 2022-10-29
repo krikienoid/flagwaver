@@ -13,7 +13,7 @@ import {
     Texture
 } from 'three';
 
-import { Side } from '../constants';
+import { ITERATION_COUNT, Side } from '../constants';
 import { generateDataTexture } from '../utils/ImageUtils';
 import { isNumeric } from '../utils/TypeUtils';
 import ShaderChunk from '../webgl/ShaderChunk';
@@ -278,8 +278,10 @@ export default class Flag {
         }
 
         // Length constraints
-        for (let i = 0, ii = lengthConstraints.length; i < ii; i++) {
-            lengthConstraints[i].resolve();
+        for (let n = 0, nn = ITERATION_COUNT; n < nn; n++) {
+            for (let i = 0, ii = lengthConstraints.length; i < ii; i++) {
+                lengthConstraints[i].resolve();
+            }
         }
     }
 
