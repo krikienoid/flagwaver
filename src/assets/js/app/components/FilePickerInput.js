@@ -14,6 +14,8 @@ const FilePickerInputMode = {
     FILE: 'file'
 };
 
+const isValidURL = url => !url || isURL(url);
+
 function FilePickerInput({
     label,
     name,
@@ -30,7 +32,7 @@ function FilePickerInput({
 
     const validateURL = (value) => {
         return (
-            (hasSubmittedURL && (!value || !isURL(value)))
+            (hasSubmittedURL && !isValidURL(value))
                 ? {
                     valid: false,
                     feedback: 'Please enter a valid URL.'
@@ -52,7 +54,7 @@ function FilePickerInput({
     const handleURLSubmit = () => {
         setHasSubmittedURL(true);
 
-        if (!url || isURL(url)) {
+        if (isValidURL(url)) {
             onChange(name, url);
         }
     };
