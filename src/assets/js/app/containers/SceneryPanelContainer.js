@@ -1,4 +1,3 @@
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import SceneryPanel from '../components/SceneryPanel';
@@ -8,8 +7,8 @@ const mapStateToProps = state => ({
     options: state.scenery
 });
 
-const matchDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = {
     setOptions: setSceneryOptions
-}, dispatch);
+};
 
-export default connect(mapStateToProps, matchDispatchToProps)(SceneryPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(SceneryPanel);

@@ -1,23 +1,19 @@
-// Action Types
+// Action types
 
 export const SET_MUTED = 'flagwaver/animationControl/SET_MUTED';
 export const SET_PAUSED = 'flagwaver/animationControl/SET_PAUSED';
 
-// Action Creators
+// Action creators
 
-export function setMuted(value) {
-    return {
-        type: SET_MUTED,
-        payload: value
-    };
-}
+export const setMuted = (value) => ({
+    type: SET_MUTED,
+    payload: value
+});
 
-export function setPaused(value) {
-    return {
-        type: SET_PAUSED,
-        payload: value
-    };
-}
+export const setPaused = (value) => ({
+    type: SET_PAUSED,
+    payload: value
+});
 
 // Reducer
 

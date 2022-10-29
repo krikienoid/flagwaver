@@ -1,24 +1,22 @@
 import { SceneryBackground } from '../../constants';
 
-// Action Types
+// Action types
 
 export const SET_SCENERY_OPTIONS = 'flagwaver/scenery/SET_SCENERY_OPTIONS';
 
-// Action Creators
+// Action creators
 
-export function setSceneryOptions(value) {
-    return {
-        type: SET_SCENERY_OPTIONS,
-        payload: value
-    };
-}
+export const setSceneryOptions = (value) => ({
+    type: SET_SCENERY_OPTIONS,
+    payload: value
+});
 
 // Reducer
 
 const initialState = {
-    background: SceneryBackground.CLASSIC,
-    backgroundColor: '#000000',
-    backgroundImageSrc: ''
+    background:                 SceneryBackground.CLASSIC,
+    backgroundColor:            '#000000',
+    backgroundImageSrc:         ''
 };
 
 export default function reducer(state = initialState, action) {

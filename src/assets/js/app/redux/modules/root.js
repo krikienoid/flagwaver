@@ -7,17 +7,15 @@ import flagGroup from './flagGroup';
 import scenery from './scenery';
 import wind from './wind';
 
-// Action Types
+// Action types
 
 export const RESET_APP = 'flagwaver/root/RESET_APP';
 
-// Action Creators
+// Action creators
 
-export function resetApp() {
-    return {
-        type: RESET_APP
-    };
-}
+export const resetApp = () => ({
+    type: RESET_APP
+});
 
 // Reducer
 

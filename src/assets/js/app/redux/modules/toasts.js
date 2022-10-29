@@ -1,4 +1,4 @@
-// Action Types
+// Action types
 
 export const ADD_TOAST = 'flagwaver/toasts/ADD_TOAST';
 export const REMOVE_TOAST = 'flagwaver/toasts/REMOVE_TOAST';
@@ -12,29 +12,21 @@ const defaultOptions = {
     message: ''
 };
 
-export function createToast(options) {
-    return {
+// Action creators
+
+export const addToast = (options = {}) => ({
+    type: ADD_TOAST,
+    payload: {
         ...defaultOptions,
         ...options,
         id: id++
-    };
-}
+    }
+});
 
-// Action Creators
-
-export function addToast(options = {}) {
-    return {
-        type: ADD_TOAST,
-        payload: createToast(options)
-    };
-}
-
-export function removeToast(id) {
-    return {
-        type: REMOVE_TOAST,
-        payload: id
-    };
-}
+export const removeToast = (id) => ({
+    type: REMOVE_TOAST,
+    payload: id
+});
 
 // Reducer
 

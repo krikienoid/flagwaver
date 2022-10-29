@@ -1,4 +1,3 @@
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import FlagGroupPanel from '../components/FlagGroupPanel';
@@ -8,11 +7,11 @@ const mapStateToProps = state => ({
     options: state.flagGroup
 });
 
-const matchDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = {
     setOptions: setFlagGroupOptions
-}, dispatch);
+};
 
 export default connect(
     mapStateToProps,
-    matchDispatchToProps
+    mapDispatchToProps
 )(FlagGroupPanel);

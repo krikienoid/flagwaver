@@ -1,4 +1,3 @@
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import FlagGroup from '../components/FlagGroup';
@@ -8,8 +7,8 @@ const mapStateToProps = state => ({
     options: state.flagGroup
 });
 
-const matchDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = {
     addToast: addToast
-}, dispatch);
+};
 
-export default connect(mapStateToProps, matchDispatchToProps)(FlagGroup);
+export default connect(mapStateToProps, mapDispatchToProps)(FlagGroup);

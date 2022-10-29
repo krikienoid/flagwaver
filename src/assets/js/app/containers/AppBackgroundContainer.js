@@ -1,4 +1,3 @@
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import AppBackground from '../components/AppBackground';
@@ -8,8 +7,8 @@ const mapStateToProps = state => ({
     options: state.scenery
 });
 
-const matchDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = {
     addToast: addToast
-}, dispatch);
+};
 
-export default connect(mapStateToProps, matchDispatchToProps)(AppBackground);
+export default connect(mapStateToProps, mapDispatchToProps)(AppBackground);

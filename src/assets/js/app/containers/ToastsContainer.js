@@ -1,4 +1,3 @@
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import Toasts from '../components/Toasts';
@@ -8,8 +7,8 @@ const mapStateToProps = state => ({
     toasts: state.toasts
 });
 
-const matchDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = {
     removeToast: removeToast
-}, dispatch);
+};
 
-export default connect(mapStateToProps, matchDispatchToProps)(Toasts);
+export default connect(mapStateToProps, mapDispatchToProps)(Toasts);

@@ -1,23 +1,21 @@
-// Action Types
+// Action types
 
 export const SET_WIND_OPTIONS = 'flagwaver/wind/SET_WIND_OPTIONS';
 
-// Action Creators
+// Action creators
 
-export function setWindOptions(value) {
-    return {
-        type: SET_WIND_OPTIONS,
-        payload: value
-    };
-}
+export const setWindOptions = (value) => ({
+    type: SET_WIND_OPTIONS,
+    payload: value
+});
 
 // Reducer
 
 const initialState = {
-    enabled: true,
-    controlled: false,
-    direction: 270,
-    speed: 10
+    enabled:                    true,
+    controlled:                 false,
+    direction:                  270,
+    speed:                      10
 };
 
 export default function reducer(state = initialState, action) {

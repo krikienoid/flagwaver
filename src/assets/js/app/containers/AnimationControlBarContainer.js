@@ -1,4 +1,3 @@
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import AnimationControlBar from '../components/AnimationControlBar';
@@ -9,12 +8,12 @@ const mapStateToProps = state => ({
     paused: state.animationControl.paused
 });
 
-const matchDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = {
     setMuted: setMuted,
     setPaused: setPaused
-}, dispatch);
+};
 
 export default connect(
     mapStateToProps,
-    matchDispatchToProps
+    mapDispatchToProps
 )(AnimationControlBar);
