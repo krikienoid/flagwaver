@@ -12,6 +12,7 @@ import FocusDisabled from '../components/FocusDisabled';
 import FocusTrap from '../components/FocusTrap';
 import Icon from '../components/Icon';
 import Panel from '../components/Panel';
+import ActionsPanelContainer from '../containers/ActionsPanelContainer';
 import AnimationControlBarContainer
     from '../containers/AnimationControlBarContainer';
 import AppBackgroundContainer from '../containers/AppBackgroundContainer';
@@ -295,6 +296,10 @@ function App() {
 
                                         <Panel title="Scenery">
                                             <SceneryPanelContainer />
+                                        </Panel>
+
+                                        <Panel title="Actions">
+                                            <ActionsPanelContainer />
                                         </Panel>
                                     </Fragment>
                                 ) : (appMode === AppMode.ANIMATE) ? (
