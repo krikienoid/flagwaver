@@ -11,9 +11,9 @@ export const createObjectURL = (blob) => {
 };
 
 export const revokeObjectURL = (url) => {
-    URL.revokeObjectURL(url);
-
     if (dict[url]) {
+        URL.revokeObjectURL(url);
+
         delete dict[url];
     }
 };

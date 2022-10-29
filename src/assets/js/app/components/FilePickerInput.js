@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { MdArrowForward, MdDelete, MdFolderOpen } from 'react-icons/md';
 
@@ -25,6 +25,8 @@ function FilePickerInput({
     const [inputMode, setInputMode] = useState(FilePickerInputMode.WEB);
     const [url, setURL] = useState('');
     const [hasSubmittedURL, setHasSubmittedURL] = useState(false);
+
+    const prevValue = useRef('');
 
     const validateURL = (value) => {
         return (
@@ -58,8 +60,6 @@ function FilePickerInput({
     const handleFileChange = (inputName, file) => {
         setURL('');
 
-        revokeObjectURL(value);
-
         onChange(name, createObjectURL(file));
     };
 
@@ -75,6 +75,10 @@ function FilePickerInput({
     };
 
     useEffect(() => {
+        revokeObjectURL(prevValue.current);
+
+        prevValue.current = value;
+
         updateURL(value);
     }, [value]);
 
