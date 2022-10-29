@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 
 import FormGroup from '../components/FormGroup';
-import withUniqueId from '../hocs/withUniqueId';
+import useUniqueId from '../hooks/useUniqueId';
 import prettyPrintBytes from '../utils/prettyPrintBytes';
 
 function FileInput({
-    id,
+    id: propsId,
     label,
     name,
     value,
@@ -17,6 +17,8 @@ function FileInput({
     onChange,
     isValidFileType
 }) {
+    const id = useUniqueId(propsId);
+
     const { valid, feedback } = validator(value);
     const feedbackId = feedback ? `${id}-feedback` : null;
 
@@ -89,7 +91,7 @@ function FileInput({
 }
 
 FileInput.propTypes = {
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     label: PropTypes.node,
     name: PropTypes.string,
     value: PropTypes.instanceOf(File),
@@ -112,4 +114,4 @@ FileInput.defaultProps = {
     isValidFileType: () => true
 };
 
-export default withUniqueId(FileInput);
+export default FileInput;

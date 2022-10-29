@@ -76,10 +76,6 @@ function FilePickerInput({
 
     useEffect(() => {
         updateURL(value);
-    }, []);
-
-    useEffect(() => {
-        updateURL(value);
     }, [value]);
 
     return (
