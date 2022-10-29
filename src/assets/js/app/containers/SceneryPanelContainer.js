@@ -4,7 +4,7 @@ import SceneryPanel from '../components/SceneryPanel';
 import { setSceneryOptions } from '../redux/modules/scenery';
 
 const mapStateToProps = state => ({
-    options: state.scenery
+    options: state.editor.present.scenery
 });
 
 const mapDispatchToProps = {

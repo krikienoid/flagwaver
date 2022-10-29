@@ -6,6 +6,7 @@ import {
 } from '../../flagwaver';
 import HashState from '../../hashstate';
 import { SceneryBackground } from '../constants';
+import { clearHistory } from '../redux/modules/editor';
 import flagGroup, { setFlagGroupOptions } from '../redux/modules/flagGroup';
 import scenery, { setSceneryOptions } from '../redux/modules/scenery';
 import { getObject } from '../utils/BlobUtils';
@@ -82,30 +83,32 @@ function assignDefaults(defaults, options) {
 }
 
 function mapStateToHash(state) {
+    const present = state.editor.present;
+
     return {
-        src: state.flagGroup.imageSrc,
-        hoisting: state.flagGroup.hoisting,
-        orientation: state.flagGroup.orientation,
-        flagpoletype: state.flagGroup.flagpoleType,
-        vhoisting: state.flagGroup.verticalHoisting,
-        background: state.scenery.background,
-        backgroundcolor: state.scenery.backgroundColor,
-        backgroundimage: state.scenery.backgroundImageSrc
+        src:                    present.flagGroup.imageSrc,
+        hoisting:               present.flagGroup.hoisting,
+        orientation:            present.flagGroup.orientation,
+        flagpoletype:           present.flagGroup.flagpoleType,
+        vhoisting:              present.flagGroup.verticalHoisting,
+        background:             present.scenery.background,
+        backgroundcolor:        present.scenery.backgroundColor,
+        backgroundimage:        present.scenery.backgroundImageSrc
     };
 }
 
 function mapStateFromHash(state) {
     return {
         flagGroup: assignDefaults(flagGroupDefaults, {
-            imageSrc: state.src,
-            hoisting: state.hoisting,
-            orientation: state.orientation,
-            flagpoleType: state.flagpoletype,
-            verticalHoisting: state.vhoisting
+            imageSrc:           state.src,
+            hoisting:           state.hoisting,
+            orientation:        state.orientation,
+            flagpoleType:       state.flagpoletype,
+            verticalHoisting:   state.vhoisting
         }),
         scenery: {
-            background: state.background,
-            backgroundColor: state.backgroundcolor,
+            background:         state.background,
+            backgroundColor:    state.backgroundcolor,
             backgroundImageSrc: state.backgroundimage
         }
     };
@@ -114,9 +117,9 @@ function mapStateFromHash(state) {
 function isValidState(state) {
     return !!(
         // Has an image
-        state.flagGroup.imageSrc &&
+        state.editor.present.flagGroup.imageSrc &&
         // Not a local file
-        !getObject(state.flagGroup.imageSrc)
+        !getObject(state.editor.present.flagGroup.imageSrc)
     );
 }
 
@@ -161,4 +164,5 @@ export function fromHash(store) {
 
     store.dispatch(setFlagGroupOptions(state.flagGroup));
     store.dispatch(setSceneryOptions(state.scenery));
+    store.dispatch(clearHistory());
 }

@@ -4,7 +4,7 @@ import AppBackground from '../components/AppBackground';
 import { addToast } from '../redux/modules/toasts';
 
 const mapStateToProps = state => ({
-    options: state.scenery
+    options: state.editor.present.scenery
 });
 
 const mapDispatchToProps = {
