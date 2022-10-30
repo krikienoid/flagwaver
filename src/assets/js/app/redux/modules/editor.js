@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 
+import { revokeObjectURL } from '../../utils/BlobUtils';
 import flagGroup from './flagGroup';
 import scenery from './scenery';
 import undoable from './undoable';
@@ -32,7 +33,52 @@ export const clearHistory = () => ({
 
 // Reducer
 
-const combinedReducer = undoable(combineReducers({
+function withObjectURLCleaner(reducer) {
+    const mapStateToURLs = state => [
+        state.flagGroup.imageSrc,
+        state.scenery.backgroundImageSrc
+    ];
+
+    const cleanObjectURLs = (state, newState) => {
+        const history = [
+            ...state.past,
+            state.present,
+            ...state.future
+        ];
+
+        const newHistory = [
+            ...newState.past,
+            newState.present,
+            ...newState.future
+        ];
+
+        const detachedStates = history
+            .filter(a => !newHistory.some(b => b === a));
+
+        const activeURLs = newHistory
+            .map(mapStateToURLs)
+            .flat();
+
+        const detachedURLs = detachedStates
+            .map(mapStateToURLs)
+            .flat()
+            .filter(url => !activeURLs.includes(url));
+
+        detachedURLs.map(url => { revokeObjectURL(url); });
+    };
+
+    return function (state, action) {
+        const newState = reducer(state, action);
+
+        if (state && action.type !== UNDO && action.type !== REDO) {
+            cleanObjectURLs(state, newState);
+        }
+
+        return newState;
+    };
+}
+
+const combinedReducer = withObjectURLCleaner(undoable(combineReducers({
     flagGroup,
     scenery,
     wind
@@ -41,7 +87,7 @@ const combinedReducer = undoable(combineReducers({
     undoType: UNDO,
     redoType: REDO,
     clearHistoryType: CLEAR_HISTORY
-});
+}));
 
 export default function reducer(state, action) {
     switch (action.type) {

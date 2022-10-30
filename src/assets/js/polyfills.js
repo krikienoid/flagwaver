@@ -1,5 +1,7 @@
 import 'core-js/es/array/find';
 import 'core-js/es/array/find-index';
+import 'core-js/es/array/flat';
+import 'core-js/es/array/includes';
 import 'core-js/es/map';
 import 'core-js/es/object/assign';
 import 'core-js/es/object/values';
