@@ -4,7 +4,7 @@ import WindBar from '../components/WindBar';
 import { setWindOptions } from '../redux/modules/wind';
 
 const mapStateToProps = state => ({
-    options: state.wind
+    options: state.editor.present.wind
 });
 
 const mapDispatchToProps = {

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { MdArrowForward, MdDelete, MdFolderOpen } from 'react-icons/md';
 
@@ -6,13 +6,15 @@ import ButtonSelect from '../components/ButtonSelect';
 import FileInput from '../components/FileInput';
 import Icon from '../components/Icon';
 import URLInput from '../components/URLInput';
-import { getObject, createObjectURL, revokeObjectURL } from '../utils/BlobUtils';
+import { getObject, createObjectURL } from '../utils/BlobUtils';
 import { isURL } from '../utils/Validators';
 
 const FilePickerInputMode = {
     WEB: 'web',
     FILE: 'file'
 };
+
+const isValidURL = url => !url || isURL(url);
 
 function FilePickerInput({
     label,
@@ -26,11 +28,9 @@ function FilePickerInput({
     const [url, setURL] = useState('');
     const [hasSubmittedURL, setHasSubmittedURL] = useState(false);
 
-    const prevValue = useRef('');
-
     const validateURL = (value) => {
         return (
-            (hasSubmittedURL && (!value || !isURL(value)))
+            (hasSubmittedURL && !isValidURL(value))
                 ? {
                     valid: false,
                     feedback: 'Please enter a valid URL.'
@@ -52,7 +52,7 @@ function FilePickerInput({
     const handleURLSubmit = () => {
         setHasSubmittedURL(true);
 
-        if (!url || isURL(url)) {
+        if (isValidURL(url)) {
             onChange(name, url);
         }
     };
@@ -75,10 +75,6 @@ function FilePickerInput({
     };
 
     useEffect(() => {
-        revokeObjectURL(prevValue.current);
-
-        prevValue.current = value;
-
         updateURL(value);
     }, [value]);
 

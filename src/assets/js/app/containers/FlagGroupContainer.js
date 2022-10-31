@@ -4,7 +4,7 @@ import FlagGroup from '../components/FlagGroup';
 import { addToast } from '../redux/modules/toasts';
 
 const mapStateToProps = state => ({
-    options: state.flagGroup
+    options: state.editor.present.flagGroup
 });
 
 const mapDispatchToProps = {
