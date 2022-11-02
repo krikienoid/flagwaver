@@ -7,6 +7,7 @@ function Icon({
     return (
         <IconComponent
             className={'icon svg-icon' + (className ? ' ' + className : '')}
+            viewBox="0 0 24 24"
             attr={{
                 'aria-hidden': true,
                 focusable: false

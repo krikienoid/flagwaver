@@ -35,6 +35,22 @@ $site-header-btn-height: 1.5rem;
     .site-header-right {
         width: $site-header-btn-width + s.$grid-gutter-width;
         flex: 0 0 auto;
+
+        .site-mode-ui-visible & {
+            visibility: visible;
+            opacity: 1;
+            transition:
+                visibility 0s 0s,
+                opacity s.$transition-style;
+        }
+
+        .site-mode-ui-hidden & {
+            visibility: hidden;
+            opacity: 0;
+            transition:
+                visibility 0s s.$transition-duration,
+                opacity s.$transition-style;
+        }
     }
 
     .site-header-left {
@@ -154,6 +170,20 @@ $site-header-btn-height: 1.5rem;
         vertical-align: top;
     }
 
+    .site-mode-ui-visible & {
+        opacity: 1;
+        transition:
+            opacity s.$transition-style,
+            transform s.$transition-style;
+    }
+
+    .site-mode-ui-hidden & {
+        opacity: 0.2;
+        transition:
+            opacity s.$transition-style,
+            transform s.$transition-style;
+    }
+
     @include s.breakpoint(sm) {
         font-size: 2rem;
 
@@ -161,6 +191,14 @@ $site-header-btn-height: 1.5rem;
             height: 3rem;
             margin-top: -0.625rem;
             margin-bottom: -0.375rem;
+        }
+
+        .site-mode-ui-visible & {
+            transform: translateX(0rem);
+        }
+
+        .site-mode-ui-hidden & {
+            transform: translateX(#{-($site-header-btn-width + s.$grid-gutter-width)});
         }
     }
 }

@@ -1,6 +1,13 @@
 import Modernizr from 'modernizr';
 import { Fragment, useEffect, useRef, useState } from 'react';
-import { MdClose, MdArrowDropDown, MdArrowDropUp } from 'react-icons/md';
+import {
+    MdClose,
+    MdArrowDropDown,
+    MdArrowDropUp,
+    MdFullscreen,
+    MdFullscreenExit,
+    MdWallpaper
+} from 'react-icons/md';
 
 import { fromHash } from '../globals/HashStore';
 import initApp from '../globals/initApp';
@@ -58,6 +65,8 @@ function App() {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [appMode, setAppMode] = useState(AppMode.EDIT);
+    const [isUIVisible, setIsUIVisible] = useState(true);
+    const [isFullscreen, setIsFullscreen] = useState(false);
 
     const app = useRef(null);
     const drawerModalRef = useRef(null);
@@ -73,11 +82,7 @@ function App() {
     };
 
     const toggleDrawer = () => {
-        if (isDrawerOpen) {
-            closeDrawer();
-        } else {
-            openDrawer();
-        }
+        setIsDrawerOpen(!isDrawerOpen);
     };
 
     const openNav = () => {
@@ -91,6 +96,24 @@ function App() {
     const selectAppMode = (appMode) => {
         setAppMode(appMode);
         setIsNavOpen(false);
+    };
+
+    const toggleUIVisibility = () => {
+        setIsUIVisible(!isUIVisible);
+    };
+
+    const toggleFullscreen = () => {
+        if (isFullscreen) {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        } else {
+            const el = document.documentElement;
+
+            if (el.requestFullscreen) {
+                el.requestFullscreen();
+            }
+        }
     };
 
     const handleHashChange = () => {
@@ -110,11 +133,50 @@ function App() {
         };
     }, []);
 
+    useEffect(() => {
+        const handleFullscreenChange = () => {
+            setIsFullscreen(!!document.fullscreenElement);
+        };
+
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+        return () => {
+            document.removeEventListener('fullscreenchange', handleFullscreenChange);
+        };
+    }, []);
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            const key = e.key || e.keyCode;
+
+            if (!isUIVisible) {
+                if (
+                    key === 'Enter' || key === 13 ||
+                    key === ' ' || key === 32 ||
+                    key === 'Escape' || key === 27
+                ) {
+                    setIsUIVisible(true);
+
+                    e.preventDefault();
+                }
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isUIVisible]);
+
     return (
         <AppContext.Provider value={app.current}>
             <AppModules />
 
-            <div className="site-wrapper" aria-hidden={isDrawerOpen}>
+            <div
+                className={`site-wrapper ${isUIVisible ? 'site-mode-ui-visible' : 'site-mode-ui-hidden'}`}
+                aria-hidden={isDrawerOpen}
+            >
                 <header className="site-header" role="banner">
                     <div className="site-header-layout">
                         <div className="site-header-center">
@@ -196,6 +258,44 @@ function App() {
                                 <AnimationControlBarContainer />
                             </div>
                         ) : null}
+
+                        <div className="bottom-app-bar-quaternary">
+                            <div className="form-section">
+                                <div className="btn-group">
+                                    <button
+                                        type="button"
+                                        className="btn site-mode-ui-visibility-toggler"
+                                        onClick={toggleUIVisibility}
+                                    >
+                                        <div className="site-mode-ui-visibility-toggler-overlay"></div>
+                                        <Icon component={MdWallpaper} />
+                                        <span className="sr-only">
+                                            {isUIVisible ? 'Hide interface' : 'Show interface'}
+                                        </span>
+                                    </button>
+
+                                    {document.fullscreenEnabled ? (
+                                        <button
+                                            type="button"
+                                            className="btn"
+                                            onClick={toggleFullscreen}
+                                        >
+                                            {isFullscreen ? (
+                                                <Fragment>
+                                                    <Icon component={MdFullscreenExit} />
+                                                    <span className="sr-only">Exit fullscreen mode</span>
+                                                </Fragment>
+                                            ) : (
+                                                <Fragment>
+                                                    <Icon component={MdFullscreen} />
+                                                    <span className="sr-only">Enter fullscreen mode</span>
+                                                </Fragment>
+                                            )}
+                                        </button>
+                                    ) : null}
+                                </div>
+                            </div>
+                        </div>
                     </section>
                 </main>
             </div>

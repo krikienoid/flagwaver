@@ -1,12 +1,2 @@
-@use "../abstracts" as s;
-
-.svg-icon {
-    $size: 1.5rem;
-
-    width: $size;
-    height: $size;
-    vertical-align: ((s.$font-size-base - $size) * s.$line-height-base * 0.5);
-}
-
 .icon-hoisting-dexter   { transform: scale(1, 1);    }
 .icon-hoisting-sinister { transform: scale(-1, 1);   }

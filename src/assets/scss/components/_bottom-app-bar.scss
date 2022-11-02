@@ -1,25 +1,52 @@
 @use "../vendors/spectre.css/abstracts" as spectre-css;
 @use "../abstracts" as s;
 
+$bottom-app-bar-padding-x:      0.5 * s.$spacer;
+$bottom-app-bar-padding-y:      0.5 * s.$spacer;
+$bottom-app-bar-sm-padding-x:   s.$grid-gutter-width;
+$bottom-app-bar-sm-padding-y:   s.$grid-gutter-half;
+
 .bottom-app-bar,
 .bottom-app-bar-primary,
 .bottom-app-bar-secondary,
-.bottom-app-bar-tertiary {
+.bottom-app-bar-tertiary,
+.bottom-app-bar-quaternary {
     display: flex;
 }
 
-.bottom-app-bar {
-    $bottom-app-bar-padding-x:      0.5 * s.$spacer;
-    $bottom-app-bar-padding-y:      0.5 * s.$spacer;
-    $bottom-app-bar-sm-padding-x:   s.$grid-gutter-width;
-    $bottom-app-bar-sm-padding-y:   s.$grid-gutter-half;
+.bottom-app-bar-primary,
+.bottom-app-bar-secondary,
+.bottom-app-bar-tertiary,
+.bottom-app-bar-quaternary .btn:not(.site-mode-ui-visibility-toggler) {
+    .site-mode-ui-visible & {
+        visibility: visible;
+        transition: visibility 0s 0s;
+    }
 
+    .site-mode-ui-hidden & {
+        visibility: hidden;
+        transition: visibility 0s s.$transition-duration;
+    }
+}
+
+.bottom-app-bar {
     position: absolute;
     left: 0;
     bottom: 0;
     right: 0;
+    z-index: 1;
     padding: $bottom-app-bar-padding-y $bottom-app-bar-padding-x;
     background: s.$brand-overlay-white;
+
+    .site-mode-ui-visible & {
+        opacity: 1;
+        transition: opacity s.$transition-style;
+    }
+
+    .site-mode-ui-hidden & {
+        opacity: 0;
+        transition: opacity s.$transition-style;
+    }
 
     @include s.breakpoint(sm) {
         padding: $bottom-app-bar-sm-padding-y $bottom-app-bar-sm-padding-x;
@@ -32,7 +59,10 @@
     .form-group {
         &:not(:last-child) {
             margin-bottom: 0;
-            margin-right: 0.5 * s.$spacer;
+        }
+
+        + .form-group {
+            margin-left: 0.5 * s.$spacer;
         }
     }
 
@@ -83,23 +113,16 @@
 }
 
 .bottom-app-bar-primary {
-    @include s.breakpoint(0 sm) {
+    @include s.breakpoint(0 xs) {
+        width: 100%;
+
         .form-section {
-            margin: 0;
+            width: 100%;
+            margin-right: 0;
         }
 
-        @include s.browser-ie10-up {
-            width: 100%;
-
-            .form-section {
-                width: 100%;
-            }
-
-            .form-group {
-                &:last-child {
-                    flex: 1 1 0%;
-                }
-            }
+        .form-group + .form-group {
+            flex: 1 1 0%;
         }
     }
 }
@@ -112,6 +135,39 @@
 
 .bottom-app-bar-tertiary {
     @include s.breakpoint(0 md) {
+        display: none;
+    }
+}
+
+.bottom-app-bar-quaternary {
+    flex: 1 1 auto;
+    justify-content: flex-end;
+
+    .form-section {
+        margin-right: 0;
+    }
+
+    @include s.breakpoint(0 xs) {
+        .form-section {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            margin-bottom: $bottom-app-bar-padding-y;
+            margin-right: $bottom-app-bar-padding-x;
+        }
+    }
+}
+
+.site-mode-ui-visibility-toggler-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    cursor: default;
+
+    .site-mode-ui-visible & {
         display: none;
     }
 }
