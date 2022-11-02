@@ -17,7 +17,7 @@
 
         <!--[if lte IE 9]>
             <style type="text/css">
-                #root { display: none; }
+                #root, .loader { display: none; }
             </style>
         <![endif]-->
         <!-- END CSS -->
@@ -100,6 +100,10 @@
 
     <body>
         <div id="root"></div>
+
+        <div class="loader" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
 
         <noscript>
             <div class="empty empty-screen browser-error-no-js">

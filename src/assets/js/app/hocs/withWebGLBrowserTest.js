@@ -1,9 +1,13 @@
+import setLoadedClass from '../globals/setLoadedClass';
 import EmptyStateScreen from '../components/EmptyStateScreen';
 
 export default function withWebGLBrowserTest(WrappedComponent) {
     return (props) => {
         if (!window.WebGLRenderingContext) {
             // Browser does not support WebGL
+
+            setLoadedClass();
+
             return (
                 <EmptyStateScreen>
                     <h2>Your browser or device does not support WebGL</h2>
@@ -18,6 +22,9 @@ export default function withWebGLBrowserTest(WrappedComponent) {
 
             if (!ctx) {
                 // Browser supports WebGL but initialization failed
+
+                setLoadedClass();
+
                 return (
                     <EmptyStateScreen>
                         <h2>WebGL could not be initialized</h2>

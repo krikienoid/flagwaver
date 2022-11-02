@@ -11,7 +11,8 @@ body,
 }
 
 html.no-js {
-    #root {
+    #root,
+    .loader {
         display: none;
     }
 

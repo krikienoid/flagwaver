@@ -1,0 +1,42 @@
+@use "../abstracts" as s;
+
+@keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loader {
+    @include s.block-full;
+    z-index: s.$zindex-loader;
+    background-color: s.$white;
+
+    &:before {
+        $size: s.rem(60px);
+        $thickness: s.rem(6px);
+        $color: s.$primary;
+
+        content: "";
+        width: $size;
+        height: $size;
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -0.5 * $size;
+        margin-left: -0.5 * $size;
+        border: $thickness solid $color;
+        border-top-color: transparent;
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        animation: 0.75s linear infinite loading;
+    }
+
+    .loaded & {
+        display: none;
+    }
+}

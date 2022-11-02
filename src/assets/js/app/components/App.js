@@ -11,6 +11,7 @@ import {
 
 import { fromHash } from '../globals/HashStore';
 import initApp from '../globals/initApp';
+import setLoadedClass from '../globals/setLoadedClass';
 import AboutPanel from '../components/AboutPanel';
 import AppCanvas from '../components/AppCanvas';
 import AppModules from '../components/AppModules';
@@ -125,6 +126,7 @@ function App() {
         handleHashChange();
         window.addEventListener('hashchange', handleHashChange);
         forceUpdate();
+        setLoadedClass();
 
         return () => {
             app.current.destroy();
