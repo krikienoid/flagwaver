@@ -35,6 +35,7 @@
     "deploy-test": "NODE_ENV=production gulp build && git-directory-deploy --directory dist --branch gh-pages --repo flagwavertest"
   },
   "dependencies": {
+    "@ungap/node-contains": "^0.2.0",
     "core-js": "^3.22.8",
     "focus-trap": "^6.9.4",
     "normalize-css": "^2.3.1",
