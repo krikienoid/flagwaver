@@ -117,11 +117,11 @@ function App() {
         }
     };
 
-    const handleHashChange = () => {
-        fromHash(store);
-    };
-
     useEffect(() => {
+        const handleHashChange = () => {
+            fromHash(store);
+        };
+
         app.current = initApp();
         handleHashChange();
         window.addEventListener('hashchange', handleHashChange);

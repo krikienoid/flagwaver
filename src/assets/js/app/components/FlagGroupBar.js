@@ -32,7 +32,7 @@ function FlagGroupBar({ options, setOptions }) {
 }
 
 FlagGroupBar.propTypes = {
-    options: PropTypes.object,
+    options: PropTypes.object.isRequired,
     setOptions: PropTypes.func
 };
 

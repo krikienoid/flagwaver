@@ -147,7 +147,7 @@ function FlagGroupPanel({ options, setOptions }) {
 }
 
 FlagGroupPanel.propTypes = {
-    options: PropTypes.object,
+    options: PropTypes.object.isRequired,
     setOptions: PropTypes.func
 };
 
