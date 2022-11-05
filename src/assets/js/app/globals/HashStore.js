@@ -115,11 +115,13 @@ function mapStateFromHash(state) {
 }
 
 function isValidState(state) {
+    const { imageSrc } = state.editor.present.flagGroup;
+
     return !!(
         // Has an image
-        state.editor.present.flagGroup.imageSrc &&
+        imageSrc &&
         // Not a local file
-        !getObject(state.editor.present.flagGroup.imageSrc)
+        !getObject(imageSrc)
     );
 }
 

@@ -38,15 +38,56 @@ function buildMesh(cloth, options) {
     const geometry = cloth.geometry;
     let texture = WHITE_TEXTURE;
 
-    // Texture
+    const prepareTexture = (texture) => {
+        texture.needsUpdate = true;
+        texture.anisotropy  = 16;
+        texture.minFilter   = LinearFilter;
+        texture.magFilter   = LinearFilter;
+
+        texture.wrapS = texture.wrapT = ClampToEdgeWrapping;
+
+        return texture;
+    };
+
+    const prepareMesh = (texture, side) => {
+        texture.encoding = sRGBEncoding;
+
+        const material = new MeshStandardMaterial({
+            alphaTest: 0.5,
+            color:     0xffffff,
+            metalness: 0.08,
+            roughness: 0.86,
+            side:      side,
+            map:       texture
+        });
+
+        /* //
+        material = new MeshBasicMaterial({
+            color:       0x00ff00,
+            wireframe:   true,
+            transparent: true,
+            opacity:     0.9
+        });
+        // */
+
+        const mesh = new Mesh(geometry, material);
+
+        mesh.castShadow = true;
+        mesh.customDepthMaterial = new ShaderMaterial({
+            glslVersion:    GLSL3,
+            uniforms:       { textureMap: { value: texture } },
+            vertexShader:   ShaderChunk.depth_vert,
+            fragmentShader: ShaderChunk.depth_frag
+        });
+
+        mesh.position.set(0, -cloth.height, 0);
+
+        return mesh;
+    };
+
     if (options && options.texture) {
         if (options.texture instanceof Texture) {
-            texture = options.texture;
-            texture.needsUpdate = true;
-            texture.anisotropy  = 16;
-            texture.minFilter   = LinearFilter;
-            texture.magFilter   = LinearFilter;
-            texture.wrapS = texture.wrapT = ClampToEdgeWrapping;
+            texture = prepareTexture(options.texture);
         } else {
             console.error(
                 'FlagWaver.Flag: options.texture must be an instance of THREE.Texture.'
@@ -54,39 +95,7 @@ function buildMesh(cloth, options) {
         }
     }
 
-    texture.encoding = sRGBEncoding;
-
-    // Material
-    const material = new MeshStandardMaterial({
-        alphaTest: 0.5,
-        color:     0xffffff,
-        metalness: 0.08,
-        roughness: 0.86,
-        side:      DoubleSide,
-        map:       texture
-    });
-
-    /* //
-    material = new MeshBasicMaterial({
-        color:       0x00ff00,
-        wireframe:   true,
-        transparent: true,
-        opacity:     0.9
-    });
-    // */
-
-    // Mesh
-    const mesh = new Mesh(geometry, material);
-
-    mesh.castShadow = true;
-    mesh.customDepthMaterial = new ShaderMaterial({
-        glslVersion:    GLSL3,
-        uniforms:       { textureMap: { value: texture } },
-        vertexShader:   ShaderChunk.depth_vert,
-        fragmentShader: ShaderChunk.depth_frag
-    });
-
-    return mesh;
+    return prepareMesh(texture, DoubleSide);
 }
 
 const pin = (() => {
@@ -182,7 +191,6 @@ export default class Flag {
         this.lengthConstraints = [];
 
         this.mesh = buildMesh(this.cloth, settings);
-        this.mesh.position.set(0, -this.cloth.height, 0);
 
         this.object = new Object3D();
         this.object.add(this.mesh);
@@ -203,12 +211,10 @@ export default class Flag {
     };
 
     destroy() {
-        if (this.mesh instanceof Mesh) {
-            this.mesh.material.dispose();
-            this.mesh.geometry.dispose();
-            this.mesh.material.map.dispose();
-            this.mesh.customDepthMaterial.dispose();
-        }
+        this.mesh.material.dispose();
+        this.mesh.geometry.dispose();
+        this.mesh.material.map.dispose();
+        this.mesh.customDepthMaterial.dispose();
     }
 
     pin(options) {

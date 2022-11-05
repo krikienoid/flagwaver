@@ -86,16 +86,6 @@ function isVertical(options) {
     );
 }
 
-// Compute values needed to apply texture onto mesh
-function computeTextureArgs(options) {
-    const result = {};
-
-    result.reflect = options.hoisting === Hoisting.SINISTER;
-    result.rotate = getAngleOfSide(options.orientation);
-
-    return result;
-}
-
 // Generate transformed texture from image using HTML canvas
 function scaleImage(image, options) {
     const canvas = document.createElement('canvas');
@@ -150,7 +140,7 @@ function createTextureFromElement(element, options, transform) {
 
 // Compute values needed to create new flag
 function computeFlagArgs(element, options) {
-    const result = Object.assign({}, options);
+    const result = {};
 
     if (isVertical(options)) {
         result.width  = options.height;
@@ -161,7 +151,10 @@ function computeFlagArgs(element, options) {
         result.texture = createTextureFromElement(
             element,
             options,
-            computeTextureArgs(options)
+            {
+                reflect: options.hoisting === Hoisting.SINISTER,
+                rotate: getAngleOfSide(options.orientation)
+            }
         );
     }
 
@@ -183,7 +176,8 @@ export default function buildRectangularFlagFromMedia(element, options) {
     Object.assign(settings, computeSize(element, settings));
 
     // Init models and create meshes once images(s) have loaded
-    const args = computeFlagArgs(element, settings);
+    const args = Object.assign({}, settings, computeFlagArgs(element, settings));
+
     const flag = element instanceof HTMLVideoElement
         ? new VideoFlag(args)
         : new Flag(args);

@@ -4,15 +4,23 @@ import PropTypes from 'prop-types';
 import {
     FlagpoleType,
     FlagGroupModule,
-    buildAsyncFlagFromImage,
-    buildAsyncFlagFromVideo,
     buildFlag,
-    buildFlagpole
+    buildFlagpole,
+    buildRectangularFlagFromMedia,
+    loadImage,
+    loadVideo
 } from '../../flagwaver';
 import withAppContext from '../hocs/withAppContext';
 import { getObject } from '../utils/BlobUtils';
 
 const DEFAULT_FLAG_IMAGE_PATH = `${process.env.ROOT_URL}/assets/img/flag-default.png`;
+
+const isVideoSrc = (src) => {
+    const file = getObject(src);
+
+    return (file && file.type.match(/video\/.*/)) ||
+        src.match(/\.(3gp|avi|flv|mov|mp4|mpg|ogg|webm|wmv)$/);
+};
 
 function FlagGroup({ app, options, addToast }) {
     const module = useRef();
@@ -50,32 +58,32 @@ function FlagGroup({ app, options, addToast }) {
         const src = imageSrc || DEFAULT_FLAG_IMAGE_PATH;
 
         (new Promise((resolve, reject) => {
-            const file = getObject(src);
-            const isVideo = (file && file.type.match(/video\/.*/)) ||
-                src.match(/\.(3gp|avi|flv|mov|mp4|mpg|ogg|webm|wmv)$/);
-
-            if (isVideo) {
+            if (isVideoSrc(src)) {
                 const isBrowserIE11 = window.document.documentMode;
 
                 if (isBrowserIE11) {
                     reject('Browser feature not supported.');
                 } else {
-                    buildAsyncFlagFromVideo(src, options)
-                        .then((flag) => {
-                            resolve(flag);
-                        })
-                        .catch((e) => {
+                    loadVideo(
+                        src,
+                        (video) => {
+                            resolve(buildRectangularFlagFromMedia(video, options));
+                        },
+                        (e) => {
                             reject('Video could not be loaded.');
-                        });
+                        }
+                    );
                 }
             } else {
-                buildAsyncFlagFromImage(src, options)
-                    .then((flag) => {
-                        resolve(flag);
-                    })
-                    .catch((e) => {
+                loadImage(
+                    src,
+                    (image) => {
+                        resolve(buildRectangularFlagFromMedia(image, options));
+                    },
+                    (e) => {
                         reject('Image could not be loaded.');
-                    });
+                    }
+                );
             }
         }))
             .then((flag) => {

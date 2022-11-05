@@ -6,7 +6,7 @@ import Message from '../components/Message';
 function FlagGroupBar({ options, setOptions }) {
     const handleFilePickerChange = (name, value) => {
         setOptions({
-            imageSrc: value
+            [name]: value
         });
     };
 
@@ -22,6 +22,7 @@ function FlagGroupBar({ options, setOptions }) {
         <div className="form-section">
             <FilePickerInput
                 label="Select image"
+                name="imageSrc"
                 value={options.imageSrc}
                 accept="image/*, video/*"
                 onChange={handleFilePickerChange}

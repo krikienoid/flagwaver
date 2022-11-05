@@ -29,7 +29,7 @@ function FlagGroupPanel({ options, setOptions }) {
 
     const handleFilePickerChange = (name, value) => {
         setOptions({
-            imageSrc: value
+            [name]: value
         });
     };
 
@@ -45,6 +45,7 @@ function FlagGroupPanel({ options, setOptions }) {
         <div className="form-section">
             <FilePickerInput
                 label="Select image"
+                name="imageSrc"
                 value={options.imageSrc}
                 accept="image/*, video/*"
                 onChange={handleFilePickerChange}

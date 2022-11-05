@@ -19,14 +19,21 @@ export const setFlagGroupOptions = (value) => ({
 // Reducer
 
 const initialState = {
-    hoisting:                   Hoisting.DEXTER,
-    orientation:                Side.TOP,
+    // UI
+    imageSrc:                   '',
+
+    // Texture
     width:                      'auto',
     height:                     'auto',
+    hoisting:                   Hoisting.DEXTER,
+    orientation:                Side.TOP,
+    resolution:                 256,
+
+    // Flag
     mass:                       0.11,
     restDistance:               1.2 / 10,
-    imageSrc:                   '',
-    resolution:                 256,
+
+    // Flagpole
     flagpoleType:               FlagpoleType.VERTICAL,
     verticalHoisting:           VerticalHoisting.TOP_RIGHT
 };

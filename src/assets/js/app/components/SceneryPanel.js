@@ -21,7 +21,7 @@ function SceneryPanel({ options, setOptions }) {
 
     const handleFilePickerChange = (name, value) => {
         setOptions({
-            backgroundImageSrc: value
+            [name]: value
         });
     };
 
@@ -66,6 +66,7 @@ function SceneryPanel({ options, setOptions }) {
             {options.background === SceneryBackground.CUSTOM ? (
                 <FilePickerInput
                     label="Background image"
+                    name="backgroundImageSrc"
                     value={options.backgroundImageSrc}
                     accept="image/*"
                     onChange={handleFilePickerChange}
