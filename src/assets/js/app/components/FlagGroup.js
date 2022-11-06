@@ -2,11 +2,12 @@ import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import {
+    Flag,
     FlagpoleType,
     FlagGroupModule,
-    buildFlag,
+    VideoFlag,
     buildFlagpole,
-    buildRectangularFlagFromMedia,
+    computeFlagOptionsFromImage,
     loadImage,
     loadVideo
 } from '../../flagwaver';
@@ -14,6 +15,12 @@ import withAppContext from '../hocs/withAppContext';
 import { getObject } from '../utils/BlobUtils';
 
 const DEFAULT_FLAG_IMAGE_PATH = `${process.env.ROOT_URL}/assets/img/flag-default.png`;
+
+const copyProperties = (object, keys) => keys.reduce((result, key) => {
+    result[key] = object[key];
+
+    return result;
+}, {});
 
 const isVideoSrc = (src) => {
     const file = getObject(src);
@@ -28,14 +35,19 @@ function FlagGroup({ app, options, addToast }) {
     const updateFlag = (flag) => {
         app.remove(module.current);
 
+        const flagpoleOptions = copyProperties(options, [
+            'flagpoleType',
+            'verticalHoisting'
+        ]);
+
         module.current = new FlagGroupModule({
-            flagpole: buildFlagpole(options, flag),
+            flagpole: buildFlagpole(flagpoleOptions, flag),
             flag: flag
         });
 
         if (
-            options.flagpoleType === FlagpoleType.HORIZONTAL ||
-            options.flagpoleType === FlagpoleType.OUTRIGGER
+            flagpoleOptions.flagpoleType === FlagpoleType.HORIZONTAL ||
+            flagpoleOptions.flagpoleType === FlagpoleType.OUTRIGGER
         ) {
             const flagGroup = module.current.subject;
             const flagpole = flagGroup.flagpole;
@@ -57,6 +69,19 @@ function FlagGroup({ app, options, addToast }) {
 
         const src = imageSrc || DEFAULT_FLAG_IMAGE_PATH;
 
+        const textureOptions = copyProperties(options, [
+            'width',
+            'height',
+            'hoisting',
+            'orientation',
+            'resolution'
+        ]);
+
+        const flagOptions = copyProperties(options, [
+            'mass',
+            'restDistance'
+        ]);
+
         (new Promise((resolve, reject) => {
             if (isVideoSrc(src)) {
                 const isBrowserIE11 = window.document.documentMode;
@@ -67,7 +92,13 @@ function FlagGroup({ app, options, addToast }) {
                     loadVideo(
                         src,
                         (video) => {
-                            resolve(buildRectangularFlagFromMedia(video, options));
+                            resolve(new VideoFlag({
+                                ...flagOptions,
+                                ...computeFlagOptionsFromImage({
+                                    ...textureOptions,
+                                    image: video
+                                })
+                            }));
                         },
                         (e) => {
                             reject('Video could not be loaded.');
@@ -78,7 +109,13 @@ function FlagGroup({ app, options, addToast }) {
                 loadImage(
                     src,
                     (image) => {
-                        resolve(buildRectangularFlagFromMedia(image, options));
+                        resolve(new Flag({
+                            ...flagOptions,
+                            ...computeFlagOptionsFromImage({
+                                ...textureOptions,
+                                image: image
+                            })
+                        }));
                     },
                     (e) => {
                         reject('Image could not be loaded.');
@@ -90,7 +127,7 @@ function FlagGroup({ app, options, addToast }) {
                 updateFlag(flag);
             })
             .catch((error) => {
-                updateFlag(buildFlag(options));
+                updateFlag(new Flag(flagOptions));
 
                 addToast({
                     status: 'error',

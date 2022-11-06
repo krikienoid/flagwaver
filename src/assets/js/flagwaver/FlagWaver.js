@@ -29,7 +29,7 @@ export { default as WindModule } from './app/modules/WindModule';
 // Helpers
 export { default as buildFlag } from './helpers/buildFlag';
 export { default as buildFlagpole } from './helpers/buildFlagpole';
-export { default as buildRectangularFlagFromMedia } from './helpers/buildRectangularFlagFromMedia';
+export { default as computeFlagOptionsFromImage } from './helpers/computeFlagOptionsFromImage';
 export { default as createInteraction } from './helpers/createInteraction';
 export { default as loadImage } from './helpers/loadImage';
 export { default as loadVideo } from './helpers/loadVideo';
