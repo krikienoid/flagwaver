@@ -10,6 +10,7 @@ const maxSize = 500;
 
 const defaults = {
     image:                      null,
+    backSideImage:              null,
     width:                      'auto',
     height:                     'auto',
     hoisting:                   Hoisting.DEXTER,
@@ -150,13 +151,34 @@ function computeFlagArgs(options) {
         result.height = options.height;
     }
 
-    if (options.image) {
+    const isSinister = options.hoisting === Hoisting.SINISTER;
+    let { image, backSideImage } = options;
+
+    if (isSinister && backSideImage) {
+        const tmp = image;
+
+        image = backSideImage;
+        backSideImage = tmp;
+    }
+
+    if (image) {
         result.texture = createTextureFromElement(
-            options.image,
+            image,
             options,
             {
-                reflect: options.hoisting === Hoisting.SINISTER,
+                reflect: backSideImage ? false : isSinister,
                 rotate: getAngleOfSide(options.orientation)
+            }
+        );
+    }
+
+    if (backSideImage) {
+        result.backSideTexture = createTextureFromElement(
+            backSideImage,
+            options,
+            {
+                reflect: true,
+                rotate: -getAngleOfSide(options.orientation)
             }
         );
     }
@@ -172,6 +194,7 @@ function computeFlagArgs(options) {
  *
  * @param {Object} [options]
  *   @param {HTMLImageElement|HTMLVideoElement} [image]
+ *   @param {HTMLImageElement|HTMLVideoElement} [backSideImage]
  *   @param {number|string} [width]
  *   @param {number|string} [height]
  *   @param {Hoisting} [hoisting]

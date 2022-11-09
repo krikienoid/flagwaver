@@ -21,6 +21,8 @@ export const setFlagGroupOptions = (value) => ({
 const initialState = {
     // UI
     imageSrc:                   '',
+    backSideImageSrc:           '',
+    isTwoSided:                 false,
 
     // Texture
     width:                      'auto',
@@ -41,7 +43,17 @@ const initialState = {
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case SET_FLAG_GROUP_OPTIONS:
-            return { ...state, ...action.payload };
+            const newState = { ...state, ...action.payload };
+
+            if (!newState.imageSrc) {
+                newState.isTwoSided = false;
+            }
+
+            if (!newState.isTwoSided) {
+                newState.backSideImageSrc = '';
+            }
+
+            return newState;
 
         default:
             return state;

@@ -29,6 +29,22 @@ const isVideoSrc = (src) => {
         src.match(/\.(3gp|avi|flv|mov|mp4|mpg|ogg|webm|wmv)$/);
 };
 
+const promiseLoadImage = src => new Promise((resolve, reject) => {
+    loadImage(
+        src,
+        (image) => { resolve(image); },
+        (e) => { reject('Image could not be loaded.'); }
+    );
+});
+
+const promiseLoadVideo = src => new Promise((resolve, reject) => {
+    loadVideo(
+        src,
+        (video) => { resolve(video); },
+        (e) => { reject('Video could not be loaded.'); }
+    );
+});
+
 function FlagGroup({ app, options, addToast }) {
     const module = useRef();
 
@@ -65,9 +81,10 @@ function FlagGroup({ app, options, addToast }) {
     };
 
     const renderModule = () => {
-        const { imageSrc } = options;
+        const { imageSrc, backSideImageSrc } = options;
 
         const src = imageSrc || DEFAULT_FLAG_IMAGE_PATH;
+        const src2 = backSideImageSrc;
 
         const textureOptions = copyProperties(options, [
             'width',
@@ -83,44 +100,50 @@ function FlagGroup({ app, options, addToast }) {
         ]);
 
         (new Promise((resolve, reject) => {
-            if (isVideoSrc(src)) {
+            if (isVideoSrc(src) || isVideoSrc(src2)) {
                 const isBrowserIE11 = window.document.documentMode;
 
                 if (isBrowserIE11) {
                     reject('Browser feature not supported.');
                 } else {
-                    loadVideo(
-                        src,
-                        (video) => {
+                    Promise.all([
+                        isVideoSrc(src)
+                            ? promiseLoadVideo(src)
+                            : promiseLoadImage(src),
+                        isVideoSrc(src2)
+                            ? promiseLoadVideo(src2)
+                            : src2
+                                ? promiseLoadImage(src2)
+                                : null
+                    ])
+                        .then(([image, backSideImage]) => {
                             resolve(new VideoFlag({
                                 ...flagOptions,
                                 ...computeFlagOptionsFromImage({
                                     ...textureOptions,
-                                    image: video
+                                    image,
+                                    backSideImage
                                 })
                             }));
-                        },
-                        (e) => {
-                            reject('Video could not be loaded.');
-                        }
-                    );
+                        })
+                        .catch(reject);
                 }
             } else {
-                loadImage(
-                    src,
-                    (image) => {
+                Promise.all([
+                    promiseLoadImage(src),
+                    src2 ? promiseLoadImage(src2) : null
+                ])
+                    .then(([image, backSideImage]) => {
                         resolve(new Flag({
                             ...flagOptions,
                             ...computeFlagOptionsFromImage({
                                 ...textureOptions,
-                                image: image
+                                image,
+                                backSideImage
                             })
                         }));
-                    },
-                    (e) => {
-                        reject('Image could not be loaded.');
-                    }
-                );
+                    })
+                    .catch(reject);
             }
         }))
             .then((flag) => {

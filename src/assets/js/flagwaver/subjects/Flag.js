@@ -1,6 +1,8 @@
 import {
+    BackSide,
     ClampToEdgeWrapping,
     DoubleSide,
+    FrontSide,
     GLSL3,
     LinearFilter,
     sRGBEncoding,
@@ -37,6 +39,7 @@ function buildCloth(options) {
 function buildMesh(cloth, options) {
     const geometry = cloth.geometry;
     let texture = WHITE_TEXTURE;
+    let backSideTexture;
 
     const prepareTexture = (texture) => {
         texture.needsUpdate = true;
@@ -88,6 +91,10 @@ function buildMesh(cloth, options) {
     if (options && options.texture) {
         if (options.texture instanceof Texture) {
             texture = prepareTexture(options.texture);
+
+            if (options.backSideTexture instanceof Texture) {
+                backSideTexture = prepareTexture(options.backSideTexture);
+            }
         } else {
             console.error(
                 'FlagWaver.Flag: options.texture must be an instance of THREE.Texture.'
@@ -95,7 +102,10 @@ function buildMesh(cloth, options) {
         }
     }
 
-    return prepareMesh(texture, DoubleSide);
+    return [
+        prepareMesh(texture, backSideTexture ? FrontSide : DoubleSide),
+        backSideTexture ? prepareMesh(backSideTexture, BackSide) : null
+    ];
 }
 
 const pin = (() => {
@@ -180,6 +190,7 @@ const pin = (() => {
  *   @param {number} [options.mass]
  *   @param {number} [options.restDistance]
  *   @param {THREE.Texture} [options.texture]
+ *   @param {THREE.Texture} [options.backSideTexture]
  *   @param {Object} [options.pin]
  */
 export default class Flag {
@@ -190,10 +201,17 @@ export default class Flag {
         this.pins = [];
         this.lengthConstraints = [];
 
-        this.mesh = buildMesh(this.cloth, settings);
+        const [mesh, mesh2] = buildMesh(this.cloth, settings);
+
+        this.mesh = mesh;
+        this.mesh2 = mesh2;
 
         this.object = new Object3D();
         this.object.add(this.mesh);
+
+        if (this.mesh2) {
+            this.object.add(this.mesh2);
+        }
 
         this.pin(settings.pin);
     }
@@ -205,6 +223,7 @@ export default class Flag {
         restDistance:           1.2 / 10,
         rigidness:              1,
         texture:                WHITE_TEXTURE,
+        backSideTexture:        null,
         pin: {
             edges:              [Side.LEFT]
         }
@@ -215,6 +234,12 @@ export default class Flag {
         this.mesh.geometry.dispose();
         this.mesh.material.map.dispose();
         this.mesh.customDepthMaterial.dispose();
+
+        if (this.mesh2) {
+            this.mesh2.material.dispose();
+            this.mesh2.material.map.dispose();
+            this.mesh2.customDepthMaterial.dispose();
+        }
     }
 
     pin(options) {
