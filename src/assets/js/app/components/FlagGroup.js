@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -44,6 +44,22 @@ const promiseLoadVideo = src => new Promise((resolve, reject) => {
         (e) => { reject('Video could not be loaded.'); }
     );
 });
+
+const arePropsEqual = (prevProps, nextProps) => {
+    const { options: prevOptions, ...prevRestProps } = prevProps;
+    const { options: nextOptions, ...nextRestProps } = nextProps;
+
+    const areOptionsEqual = Object.keys(prevOptions)
+        .filter(a => a !== 'isTwoSided')
+        .reduce((result, key) =>
+            result && prevOptions[key] === nextOptions[key], true);
+
+    const areRestPropsEqual = Object.keys(prevRestProps)
+        .reduce((result, key) =>
+            result && prevRestProps[key] === nextRestProps[key], true);
+
+    return areOptionsEqual && areRestPropsEqual;
+};
 
 function FlagGroup({ app, options, addToast }) {
     const module = useRef();
@@ -185,4 +201,4 @@ FlagGroup.propTypes = {
     addToast: PropTypes.func.isRequired
 };
 
-export default withAppContext(FlagGroup);
+export default withAppContext(memo(FlagGroup, arePropsEqual));
