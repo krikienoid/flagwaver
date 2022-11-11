@@ -6,7 +6,7 @@ import {
     MdArrowDropUp,
     MdFullscreen,
     MdFullscreenExit,
-    MdWallpaper
+    MdOutlineSettingsOverscan
 } from 'react-icons/md';
 
 import { fromHash } from '../globals/HashStore';
@@ -266,11 +266,11 @@ function App() {
                                 <div className="btn-group">
                                     <button
                                         type="button"
-                                        className="btn site-mode-ui-visibility-toggler"
+                                        className="btn site-mode-ui-visibility-toggle-btn"
                                         onClick={toggleUIVisibility}
                                     >
-                                        <div className="site-mode-ui-visibility-toggler-overlay"></div>
-                                        <Icon component={MdWallpaper} />
+                                        <div className="site-mode-ui-visibility-toggle-btn-overlay"></div>
+                                        <Icon component={MdOutlineSettingsOverscan} />
                                         <span className="sr-only">
                                             {isUIVisible ? 'Hide interface' : 'Show interface'}
                                         </span>
@@ -279,7 +279,7 @@ function App() {
                                     {document.fullscreenEnabled ? (
                                         <button
                                             type="button"
-                                            className="btn"
+                                            className="btn site-mode-fullscreen-toggle-btn"
                                             onClick={toggleFullscreen}
                                         >
                                             {isFullscreen ? (

@@ -17,7 +17,7 @@ $bottom-app-bar-sm-padding-y:   s.$grid-gutter-half;
 .bottom-app-bar-primary,
 .bottom-app-bar-secondary,
 .bottom-app-bar-tertiary,
-.bottom-app-bar-quaternary .btn:not(.site-mode-ui-visibility-toggler) {
+.bottom-app-bar-quaternary .btn:not(.site-mode-ui-visibility-toggle-btn) {
     .site-mode-ui-visible & {
         visibility: visible;
         transition: visibility 0s 0s;
@@ -107,7 +107,7 @@ $bottom-app-bar-sm-padding-y:   s.$grid-gutter-half;
         }
     }
 
-    .form-file-picker-footer {
+    .form-file-picker-group-footer {
         display: none;
     }
 }
@@ -158,7 +158,7 @@ $bottom-app-bar-sm-padding-y:   s.$grid-gutter-half;
     }
 }
 
-.site-mode-ui-visibility-toggler-overlay {
+.site-mode-ui-visibility-toggle-btn-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -169,5 +169,11 @@ $bottom-app-bar-sm-padding-y:   s.$grid-gutter-half;
 
     .site-mode-ui-visible & {
         display: none;
+    }
+}
+
+.site-mode-fullscreen-toggle-btn {
+    .svg-icon {
+        transform: scale(1.25);
     }
 }

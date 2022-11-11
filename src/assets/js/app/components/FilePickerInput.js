@@ -79,7 +79,7 @@ function FilePickerInput({
     }, [value]);
 
     return (
-        <div className="form-group form-file-picker">
+        <div className="form-group form-file-picker-group">
             <fieldset className="field-group">
                 <legend className="field-group-legend">
                     {label}
@@ -139,7 +139,7 @@ function FilePickerInput({
                         />
                     )}
 
-                    <div className="form-group form-file-picker-footer">
+                    <div className="form-group form-file-picker-group-footer">
                         <button
                             type="button"
                             className="btn"
