@@ -4,12 +4,13 @@ import { Hoisting, Side } from '../constants';
 import getAngleOfSide from '../utils/getAngleOfSide';
 import { isNumeric, isObject } from '../utils/TypeUtils';
 import Flag from '../subjects/Flag';
-import VideoFlag from '../subjects/VideoFlag';
 
 // Maximum size of flag
 const maxSize = 500;
 
 const defaults = {
+    image:                      null,
+    backSideImage:              null,
     width:                      'auto',
     height:                     'auto',
     hoisting:                   Hoisting.DEXTER,
@@ -86,16 +87,6 @@ function isVertical(options) {
     );
 }
 
-// Compute values needed to apply texture onto mesh
-function computeTextureArgs(options) {
-    const result = {};
-
-    result.reflect = options.hoisting === Hoisting.SINISTER;
-    result.rotate = getAngleOfSide(options.orientation);
-
-    return result;
-}
-
 // Generate transformed texture from image using HTML canvas
 function scaleImage(image, options) {
     const canvas = document.createElement('canvas');
@@ -149,19 +140,46 @@ function createTextureFromElement(element, options, transform) {
 }
 
 // Compute values needed to create new flag
-function computeFlagArgs(element, options) {
-    const result = Object.assign({}, options);
+function computeFlagArgs(options) {
+    const result = {};
 
     if (isVertical(options)) {
         result.width  = options.height;
         result.height = options.width;
+    } else {
+        result.width  = options.width;
+        result.height = options.height;
     }
 
-    if (element) {
+    const isSinister = options.hoisting === Hoisting.SINISTER;
+    let { image, backSideImage } = options;
+
+    if (isSinister && backSideImage) {
+        const tmp = image;
+
+        image = backSideImage;
+        backSideImage = tmp;
+    }
+
+    if (image) {
         result.texture = createTextureFromElement(
-            element,
+            image,
             options,
-            computeTextureArgs(options)
+            {
+                reflect: backSideImage ? false : isSinister,
+                rotate: getAngleOfSide(options.orientation)
+            }
+        );
+    }
+
+    if (backSideImage) {
+        result.backSideTexture = createTextureFromElement(
+            backSideImage,
+            options,
+            {
+                reflect: true,
+                rotate: -getAngleOfSide(options.orientation)
+            }
         );
     }
 
@@ -169,24 +187,25 @@ function computeFlagArgs(element, options) {
 }
 
 /**
- * @function buildRectangularFlagFromMedia
+ * @function computeFlagOptionsFromImage
  *
  * @description Helper for generating flags from rectangular designs
  * that can be rotated and flipped.
  *
- * @param {HTMLImageElement|HTMLVideoElement} element
  * @param {Object} [options]
+ *   @param {HTMLImageElement|HTMLVideoElement} [image]
+ *   @param {HTMLImageElement|HTMLVideoElement} [backSideImage]
+ *   @param {number|string} [width]
+ *   @param {number|string} [height]
+ *   @param {Hoisting} [hoisting]
+ *   @param {Side} [orientation]
+ *   @param {number} [resolution]
  */
-export default function buildRectangularFlagFromMedia(element, options) {
+export default function computeFlagOptionsFromImage(options) {
     const settings = Object.assign({}, defaults, options);
 
-    Object.assign(settings, computeSize(element, settings));
+    Object.assign(settings, computeSize(settings.image, settings));
 
     // Init models and create meshes once images(s) have loaded
-    const args = computeFlagArgs(element, settings);
-    const flag = element instanceof HTMLVideoElement
-        ? new VideoFlag(args)
-        : new Flag(args);
-
-    return flag;
+    return computeFlagArgs(settings);
 }

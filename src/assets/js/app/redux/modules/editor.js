@@ -36,6 +36,7 @@ export const clearHistory = () => ({
 function withObjectURLCleaner(reducer) {
     const mapStateToURLs = state => [
         state.flagGroup.imageSrc,
+        state.flagGroup.backSideImageSrc,
         state.scenery.backgroundImageSrc
     ];
 

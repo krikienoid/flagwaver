@@ -29,6 +29,13 @@ const hashState = new HashState({
             ? encodeURIComponent(value)
             : undefined
     },
+    'backsidesrc': {
+        defaultValue: flagGroupDefaults.backSideImageSrc,
+        parse: value => decodeURIComponent(value),
+        stringify: value => !getObject(value)
+            ? encodeURIComponent(value)
+            : undefined
+    },
     'hoisting': {
         defaultValue: flagGroupDefaults.hoisting,
         parse: (string) => {
@@ -87,6 +94,7 @@ function mapStateToHash(state) {
 
     return {
         src:                    present.flagGroup.imageSrc,
+        backsidesrc:            present.flagGroup.backSideImageSrc,
         hoisting:               present.flagGroup.hoisting,
         orientation:            present.flagGroup.orientation,
         flagpoletype:           present.flagGroup.flagpoleType,
@@ -101,6 +109,8 @@ function mapStateFromHash(state) {
     return {
         flagGroup: assignDefaults(flagGroupDefaults, {
             imageSrc:           state.src,
+            backSideImageSrc:   state.backsidesrc,
+            isTwoSided:         !!state.backsidesrc,
             hoisting:           state.hoisting,
             orientation:        state.orientation,
             flagpoleType:       state.flagpoletype,
@@ -115,11 +125,14 @@ function mapStateFromHash(state) {
 }
 
 function isValidState(state) {
+    const { imageSrc, backSideImageSrc } = state.editor.present.flagGroup;
+
     return !!(
         // Has an image
-        state.editor.present.flagGroup.imageSrc &&
+        imageSrc &&
         // Not a local file
-        !getObject(state.editor.present.flagGroup.imageSrc)
+        !getObject(imageSrc) &&
+        !getObject(backSideImageSrc)
     );
 }
 

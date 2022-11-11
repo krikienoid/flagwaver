@@ -13,6 +13,7 @@ import FilePickerInput from '../components/FilePickerInput';
 import Icon from '../components/Icon';
 import Message from '../components/Message';
 import Select from '../components/Select';
+import SwitchInput from '../components/SwitchInput';
 
 function FlagGroupPanel({ options, setOptions }) {
     const handleChange = (e) => {
@@ -29,7 +30,13 @@ function FlagGroupPanel({ options, setOptions }) {
 
     const handleFilePickerChange = (name, value) => {
         setOptions({
-            imageSrc: value
+            [name]: value
+        });
+    };
+
+    const handleSwitchChange = (e) => {
+        setOptions({
+            [e.target.name]: e.target.checked
         });
     };
 
@@ -45,11 +52,31 @@ function FlagGroupPanel({ options, setOptions }) {
         <div className="form-section">
             <FilePickerInput
                 label="Select image"
+                name="imageSrc"
                 value={options.imageSrc}
                 accept="image/*, video/*"
                 onChange={handleFilePickerChange}
                 isValidFileType={type => type.match('image.*') || type.match('video.*')}
             />
+
+            <SwitchInput
+                label="Two-sided"
+                name="isTwoSided"
+                value={options.isTwoSided}
+                disabled={!options.imageSrc}
+                onChange={handleSwitchChange}
+            />
+
+            {options.isTwoSided ? (
+                <FilePickerInput
+                    label="Select back side image"
+                    name="backSideImageSrc"
+                    value={options.backSideImageSrc}
+                    accept="image/*, video/*"
+                    onChange={handleFilePickerChange}
+                    isValidFileType={type => type.match('image.*') || type.match('video.*')}
+                />
+            ) : null}
 
             <ButtonSelect
                 label="Hoisting"

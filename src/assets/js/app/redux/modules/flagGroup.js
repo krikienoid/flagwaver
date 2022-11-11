@@ -19,14 +19,23 @@ export const setFlagGroupOptions = (value) => ({
 // Reducer
 
 const initialState = {
-    hoisting:                   Hoisting.DEXTER,
-    orientation:                Side.TOP,
+    // UI
+    imageSrc:                   '',
+    backSideImageSrc:           '',
+    isTwoSided:                 false,
+
+    // Texture
     width:                      'auto',
     height:                     'auto',
+    hoisting:                   Hoisting.DEXTER,
+    orientation:                Side.TOP,
+    resolution:                 256,
+
+    // Flag
     mass:                       0.11,
     restDistance:               1.2 / 10,
-    imageSrc:                   '',
-    resolution:                 256,
+
+    // Flagpole
     flagpoleType:               FlagpoleType.VERTICAL,
     verticalHoisting:           VerticalHoisting.TOP_RIGHT
 };
@@ -34,7 +43,17 @@ const initialState = {
 export default function reducer(state = initialState, action) {
     switch (action.type) {
         case SET_FLAG_GROUP_OPTIONS:
-            return { ...state, ...action.payload };
+            const newState = { ...state, ...action.payload };
+
+            if (!newState.imageSrc) {
+                newState.isTwoSided = false;
+            }
+
+            if (!newState.isTwoSided) {
+                newState.backSideImageSrc = '';
+            }
+
+            return newState;
 
         default:
             return state;

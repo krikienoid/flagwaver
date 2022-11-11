@@ -106,7 +106,7 @@ function buildApp() {
 
             const flags = app.getModulesByType('flagGroupModule')
                 .map(module => module.subject.flag)
-                .filter(flag => flag.video);
+                .filter(flag => flag.video || flag.video2);
 
             if (app.clock.running) {
                 flags.map((flag) => {
@@ -132,7 +132,13 @@ function buildApp() {
             }
 
             flags.map((flag) => {
-                flag.video.muted = animationModule.muted;
+                if (flag.video) {
+                    flag.video.muted = animationModule.muted;
+                }
+
+                if (flag.video2) {
+                    flag.video2.muted = animationModule.muted;
+                }
             });
         }
     ));

@@ -59,10 +59,8 @@ export default class Flagpole {
     })();
 
     destroy() {
-        if (this.mesh instanceof Mesh) {
-            this.mesh.material.dispose();
-            this.mesh.geometry.dispose();
-        }
+        this.mesh.material.dispose();
+        this.mesh.geometry.dispose();
     }
 
     buildGeometry(options) {
