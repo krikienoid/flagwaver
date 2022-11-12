@@ -1,4 +1,4 @@
-import { Clock, Vector3 } from 'three';
+import { Clock } from 'three';
 
 import { TIME_STEP } from '../../constants';
 import initStats from '../../utils/initStats';
@@ -23,8 +23,6 @@ export default class App extends ModuleSystem {
         const settings = Object.assign({}, this.constructor.defaults, options);
 
         let { scene, camera, renderer } = settings;
-
-        const cameraFocus = new Vector3(0, 5, 0);
 
         const clock = new Clock();
         const timestep = TIME_STEP;
@@ -78,7 +76,6 @@ export default class App extends ModuleSystem {
         };
 
         const render = () => {
-            camera.lookAt(cameraFocus);
             renderer.render(scene, camera);
         };
 

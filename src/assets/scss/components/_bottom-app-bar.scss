@@ -113,7 +113,7 @@ $bottom-app-bar-sm-padding-y:   s.$grid-gutter-half;
 }
 
 .bottom-app-bar-primary {
-    @include s.breakpoint(0 xs) {
+    @include s.breakpoint(0 sm) {
         width: 100%;
 
         .form-section {
@@ -128,13 +128,13 @@ $bottom-app-bar-sm-padding-y:   s.$grid-gutter-half;
 }
 
 .bottom-app-bar-secondary {
-    @include s.breakpoint(0 sm) {
+    @include s.breakpoint(0 md) {
         display: none;
     }
 }
 
 .bottom-app-bar-tertiary {
-    @include s.breakpoint(0 md) {
+    @include s.breakpoint(0 lg) {
         display: none;
     }
 }
@@ -147,7 +147,7 @@ $bottom-app-bar-sm-padding-y:   s.$grid-gutter-half;
         margin-right: 0;
     }
 
-    @include s.breakpoint(0 xs) {
+    @include s.breakpoint(0 sm) {
         .form-section {
             position: absolute;
             bottom: 100%;

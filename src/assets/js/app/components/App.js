@@ -6,6 +6,7 @@ import {
     MdArrowDropUp,
     MdFullscreen,
     MdFullscreenExit,
+    MdOutlineCenterFocusWeak,
     MdOutlineSettingsOverscan
 } from 'react-icons/md';
 
@@ -15,6 +16,7 @@ import setLoadedClass from '../globals/setLoadedClass';
 import AboutPanel from '../components/AboutPanel';
 import AppCanvas from '../components/AppCanvas';
 import AppModules from '../components/AppModules';
+import CameraControlPanel from '../components/CameraControlPanel';
 import Drawer from '../components/Drawer';
 import FocusDisabled from '../components/FocusDisabled';
 import FocusTrap from '../components/FocusTrap';
@@ -44,6 +46,7 @@ const SITE_HEADLINE_INVERSE_IMAGE_PATH = `${process.env.ROOT_URL}/${
 const AppMode = {
     EDIT: 'edit',
     ANIMATE: 'animate',
+    CAMERA: 'camera',
     ABOUT: 'about'
 };
 
@@ -55,6 +58,10 @@ const navItems = [
     {
         key: AppMode.ANIMATE,
         displayName: 'Animation control'
+    },
+    {
+        key: AppMode.CAMERA,
+        displayName: 'Camera control'
     },
     {
         key: AppMode.ABOUT,
@@ -97,6 +104,12 @@ function App() {
     const selectAppMode = (appMode) => {
         setAppMode(appMode);
         setIsNavOpen(false);
+    };
+
+    const resetCamera = () => {
+        const { orbitControls } = app.current.module('orbitControlsModule');
+
+        orbitControls.reset();
     };
 
     const toggleUIVisibility = () => {
@@ -259,11 +272,25 @@ function App() {
                             <div className="bottom-app-bar-primary">
                                 <AnimationControlBarContainer />
                             </div>
+                        ) : (appMode === AppMode.CAMERA) ? (
+                            <div className="bottom-app-bar-primary">
+                            </div>
                         ) : null}
 
                         <div className="bottom-app-bar-quaternary">
                             <div className="form-section">
                                 <div className="btn-group">
+                                    <button
+                                        type="button"
+                                        className="btn"
+                                        onClick={resetCamera}
+                                    >
+                                        <Icon component={MdOutlineCenterFocusWeak} />
+                                        <span className="sr-only">
+                                            Reset camera
+                                        </span>
+                                    </button>
+
                                     <button
                                         type="button"
                                         className="btn site-mode-ui-visibility-toggle-btn"
@@ -407,6 +434,10 @@ function App() {
                                 ) : (appMode === AppMode.ANIMATE) ? (
                                     <Panel title="Animation control">
                                         <AnimationControlBarContainer />
+                                    </Panel>
+                                ) : (appMode === AppMode.CAMERA) ? (
+                                    <Panel title="Camera control">
+                                        <CameraControlPanel />
                                     </Panel>
                                 ) : (appMode === AppMode.ABOUT) ? (
                                     <Panel title={(

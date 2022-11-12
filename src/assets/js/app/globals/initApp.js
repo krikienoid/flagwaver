@@ -6,6 +6,7 @@ import {
     Fog,
     PerspectiveCamera,
     Scene,
+    Vector3,
     WebGLRenderer
 } from 'three';
 
@@ -13,11 +14,14 @@ import FlagWaver, {
     App,
     AnimationModule,
     ResizeModule,
+    OrbitControlsModule,
     ProcessModule,
     applyGravityToCloth,
     applyWindForceToCloth,
     createInteraction
 } from '../../flagwaver';
+
+const cameraFocus = new Vector3(0, 5, 0);
 
 function buildScene() {
     const scene = new Scene();
@@ -36,6 +40,7 @@ function buildCamera() {
     );
 
     camera.position.set(0, 5, 12);
+    camera.lookAt(cameraFocus);
 
     return camera;
 }
@@ -81,6 +86,17 @@ function buildApp() {
         camera: buildCamera(),
         renderer: buildRenderer()
     });
+
+    app.add(new OrbitControlsModule());
+
+    const { orbitControls } = app.module('orbitControlsModule');
+
+    orbitControls.maxDistance = 80;
+    orbitControls.minDistance = 4;
+    orbitControls.target.copy(cameraFocus);
+    orbitControls.target0.copy(cameraFocus);
+
+    orbitControls.update();
 
     app.add(new ResizeModule());
     app.add(new AnimationModule());
