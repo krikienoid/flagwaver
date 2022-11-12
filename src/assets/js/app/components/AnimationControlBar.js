@@ -16,10 +16,10 @@ function AnimationControlBar({ muted, paused, setMuted, setPaused }) {
     const app = useContext(AppContext);
 
     if (app) {
-        const animationModule = app.module('animationModule');
+        const animationControlModule = app.module('animationControlModule');
 
-        if (muted !== animationModule.muted) {
-            setMuted(animationModule.muted);
+        if (muted !== animationControlModule.muted) {
+            setMuted(animationControlModule.muted);
         }
 
         return (
@@ -31,9 +31,9 @@ function AnimationControlBar({ muted, paused, setMuted, setPaused }) {
                             className="btn"
                             onClick={() => {
                                 if (paused) {
-                                    animationModule.play();
+                                    animationControlModule.play();
                                 } else {
-                                    animationModule.pause();
+                                    animationControlModule.pause();
                                 }
 
                                 setPaused(!paused);
@@ -56,8 +56,8 @@ function AnimationControlBar({ muted, paused, setMuted, setPaused }) {
                             type="button"
                             className="btn"
                             onClick={() => {
-                                animationModule.pause();
-                                animationModule.reset();
+                                animationControlModule.pause();
+                                animationControlModule.reset();
 
                                 setPaused(true);
                             }}
@@ -69,7 +69,7 @@ function AnimationControlBar({ muted, paused, setMuted, setPaused }) {
                         <button
                             type="button"
                             className="btn"
-                            onClick={() => { animationModule.step(); }}
+                            onClick={() => { animationControlModule.step(); }}
                         >
                             <Icon component={MdSkipNext} />
                             <span className="sr-only">Step forward</span>
@@ -81,7 +81,7 @@ function AnimationControlBar({ muted, paused, setMuted, setPaused }) {
                             type="button"
                             className="btn"
                             onClick={() => {
-                                animationModule.muted = !muted;
+                                animationControlModule.muted = !muted;
 
                                 app.refresh();
 

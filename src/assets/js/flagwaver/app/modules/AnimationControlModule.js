@@ -1,11 +1,11 @@
 import Module from '../core/Module';
 
 /**
- * @class AnimationModule
+ * @class AnimationControlModule
  *
  * @classdesc Allow animation to be paused and continued.
  */
-export default class AnimationModule extends Module {
+export default class AnimationControlModule extends Module {
     constructor() {
         super();
 
@@ -14,7 +14,7 @@ export default class AnimationModule extends Module {
         this.muted = false;
     }
 
-    static displayName = 'animationModule';
+    static displayName = 'animationControlModule';
 
     init(app) {
         this.app = app;

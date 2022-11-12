@@ -20,7 +20,7 @@ export { default as applyWindForceToCloth } from './interactions/applyWindForceT
 
 // App
 export { default as App } from './app/core/App';
-export { default as AnimationModule } from './app/modules/AnimationModule';
+export { default as AnimationControlModule } from './app/modules/AnimationControlModule';
 export { default as ResizeModule } from './app/modules/ResizeModule';
 export { default as FlagGroupModule } from './app/modules/FlagGroupModule';
 export { default as OrbitControlsModule } from './app/modules/OrbitControlsModule';

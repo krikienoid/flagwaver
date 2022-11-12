@@ -12,7 +12,7 @@ import {
 
 import {
     App,
-    AnimationModule,
+    AnimationControlModule,
     ResizeModule,
     OrbitControlsModule,
     ProcessModule,
@@ -99,7 +99,7 @@ function buildApp() {
     orbitControls.update();
 
     app.add(new ResizeModule());
-    app.add(new AnimationModule());
+    app.add(new AnimationControlModule());
 
     // This process module applies each wind force to each flag.
     app.add(createInteractionProcessModule(
@@ -120,7 +120,7 @@ function buildApp() {
     app.add(new ProcessModule(
         null,
         () => {
-            const animationModule = app.module('animationModule');
+            const animationControlModule = app.module('animationControlModule');
 
             const flags = app.getModulesByType('flagGroupModule')
                 .map(module => module.subject.flag)
@@ -135,7 +135,7 @@ function buildApp() {
                                 e instanceof DOMException &&
                                 e.name === 'NotAllowedError'
                             ) {
-                                animationModule.muted = true;
+                                animationControlModule.muted = true;
                             }
                         });
                 });
@@ -151,11 +151,11 @@ function buildApp() {
 
             flags.map((flag) => {
                 if (flag.video) {
-                    flag.video.muted = animationModule.muted;
+                    flag.video.muted = animationControlModule.muted;
                 }
 
                 if (flag.video2) {
-                    flag.video2.muted = animationModule.muted;
+                    flag.video2.muted = animationControlModule.muted;
                 }
             });
         }
