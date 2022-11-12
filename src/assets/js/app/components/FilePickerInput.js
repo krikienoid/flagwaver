@@ -29,14 +29,16 @@ function FilePickerInput({
     const [hasSubmittedURL, setHasSubmittedURL] = useState(false);
 
     const validateURL = (value) => {
-        return (
-            (hasSubmittedURL && !isValidURL(value))
-                ? {
-                    valid: false,
-                    feedback: 'Please enter a valid URL.'
-                }
-                : { valid: true }
-        );
+        if (hasSubmittedURL && !isValidURL(value)) {
+            return {
+                valid: false,
+                feedback: 'Please enter a valid URL.'
+            };
+        }
+
+        return {
+            valid: true
+        };
     };
 
     const handleModeChange = (name, value) => {

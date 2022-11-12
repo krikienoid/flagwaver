@@ -10,7 +10,7 @@ import {
     WebGLRenderer
 } from 'three';
 
-import FlagWaver, {
+import {
     App,
     AnimationModule,
     ResizeModule,
@@ -101,6 +101,7 @@ function buildApp() {
     app.add(new ResizeModule());
     app.add(new AnimationModule());
 
+    // This process module applies each wind force to each flag.
     app.add(createInteractionProcessModule(
         () => ['flagGroupModule', 'windModule'].map(moduleType =>
             app.getModulesByType(moduleType).map(module => module.subject)
@@ -115,6 +116,7 @@ function buildApp() {
         }
     ));
 
+    // This process module checks for autoplay muting on every video flag.
     app.add(new ProcessModule(
         null,
         () => {

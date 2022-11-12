@@ -70,9 +70,7 @@ export default class ModuleSystem {
 
         if (index < 0) { return; }
 
-        if (module.deinit) {
-            module.deinit(this.context);
-        }
+        module.deinit(this.context);
 
         return modules.splice(index, 1)[0];
     }

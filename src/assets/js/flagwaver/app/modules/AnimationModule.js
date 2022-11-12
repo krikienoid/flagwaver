@@ -21,9 +21,7 @@ export default class AnimationModule extends Module {
     }
 
     deinit() {
-        if (this.play) {
-            this.play();
-        }
+        this.play();
     }
 
     play() {

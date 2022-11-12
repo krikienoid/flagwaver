@@ -17,7 +17,6 @@ import {
 
 import { ITERATION_COUNT, Side } from '../constants';
 import { generateDataTexture } from '../utils/ImageUtils';
-import { isNumeric } from '../utils/TypeUtils';
 import ShaderChunk from '../webgl/ShaderChunk';
 import Cloth from '../physics/Cloth';
 import FixedConstraint from '../physics/FixedConstraint';
@@ -114,14 +113,6 @@ const pin = (() => {
         spacing: 1
     };
 
-    function ensureValidSpacing(spacing) {
-        if (isNumeric(spacing) && spacing >= 1) {
-            return Math.floor(spacing);
-        } else {
-            return defaults.spacing;
-        }
-    }
-
     function pinEdge(cloth, pins, edge, options) {
         const { xSegments, ySegments, particleAt } = cloth;
         const { spacing } = options;
@@ -163,8 +154,6 @@ const pin = (() => {
     return function pin(cloth, pins, options) {
         const settings = Object.assign({}, defaults, options);
         const { edges } = settings;
-
-        settings.spacing = ensureValidSpacing(settings.spacing);
 
         if (typeof edges === 'string') {
             // If edges is a string
