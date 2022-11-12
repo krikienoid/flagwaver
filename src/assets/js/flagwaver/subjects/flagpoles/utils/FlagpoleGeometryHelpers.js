@@ -21,12 +21,14 @@ import { mergeBufferGeometries }
 export function createPoleGeometryTypeI(options) {
     const poleRadius = options.poleWidth / 2;
     const poleLength = options.poleLength;
+    const poleSegments = 32;
     const poleCapRadius = options.poleCapSize / 2;
 
     const geometry = new CylinderGeometry(
         poleRadius,
         poleRadius,
-        poleLength
+        poleLength,
+        poleSegments
     );
 
     geometry.translate(0, options.poleLength / 2, 0);
@@ -35,7 +37,8 @@ export function createPoleGeometryTypeI(options) {
     const capGeometry = new CylinderGeometry(
         poleCapRadius,
         poleCapRadius,
-        poleCapRadius
+        poleCapRadius,
+        poleSegments
     );
 
     capGeometry.translate(0, poleLength + poleCapRadius / 2, 0);
@@ -66,6 +69,7 @@ export function createPoleGeometryTypeT(options) {
     const poleLength = options.poleLength;
     const crossbarRadius = options.crossbarWidth / 2;
     const crossbarLength = options.crossbarLength;
+    const crossbarSegments = 16;
     const crossbarCapRadius = options.crossbarCapSize / 2;
     const poleTopOffset = options.poleTopOffset;
 
@@ -73,7 +77,8 @@ export function createPoleGeometryTypeT(options) {
     const crossbarGeometry = new CylinderGeometry(
         crossbarRadius,
         crossbarRadius,
-        crossbarLength
+        crossbarLength,
+        crossbarSegments
     );
 
     crossbarGeometry.rotateZ(Math.PI / 2);
@@ -82,24 +87,24 @@ export function createPoleGeometryTypeT(options) {
     const capGeometry = new CylinderGeometry(
         crossbarCapRadius,
         crossbarCapRadius,
-        crossbarCapRadius
+        crossbarCapRadius,
+        crossbarSegments
     );
 
     const capGeometry2 = capGeometry.clone();
 
+    const yOffset = poleLength - poleTopOffset;
+    const zOffset = poleRadius + crossbarRadius;
+
     // Left crossbar cap
     capGeometry.rotateZ(Math.PI / 2);
-    capGeometry.translate(-crossbarLength / 2, 0, 0);
+    capGeometry.translate(-crossbarLength / 2, yOffset, zOffset);
 
     // Right crossbar cap
     capGeometry2.rotateZ(-Math.PI / 2);
-    capGeometry2.translate(crossbarLength / 2, 0, 0);
+    capGeometry2.translate(crossbarLength / 2, yOffset, zOffset);
 
-    crossbarGeometry.translate(
-        0,
-        poleLength - poleTopOffset,
-        poleRadius + crossbarRadius
-    );
+    crossbarGeometry.translate(0, yOffset, zOffset);
 
     return mergeBufferGeometries([
         geometry,
@@ -132,12 +137,14 @@ export function createPoleGeometryTypeL(options) {
     const poleCapRadius = options.poleCapSize / 2;
     const crossbarRadius = options.crossbarWidth / 2;
     const crossbarLength = options.crossbarLength;
+    const crossbarSegments = 16;
 
     // Create crossbar
     const crossbarGeometry = new CylinderGeometry(
         crossbarRadius,
         crossbarRadius,
-        crossbarLength
+        crossbarLength,
+        crossbarSegments
     );
 
     crossbarGeometry.rotateZ(Math.PI / 2);
