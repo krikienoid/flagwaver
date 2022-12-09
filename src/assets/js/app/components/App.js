@@ -19,7 +19,6 @@ import AppModules from '../components/AppModules';
 import CameraControlPanel from '../components/CameraControlPanel';
 import Drawer from '../components/Drawer';
 import FocusDisabled from '../components/FocusDisabled';
-import FocusTrap from '../components/FocusTrap';
 import Icon from '../components/Icon';
 import Panel from '../components/Panel';
 import ActionsPanelContainer from '../containers/ActionsPanelContainer';
@@ -71,13 +70,13 @@ const navItems = [
 
 function App() {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [isDrawerAnimating, setIsDrawerAnimating] = useState(false);
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [appMode, setAppMode] = useState(AppMode.EDIT);
     const [isUIVisible, setIsUIVisible] = useState(true);
     const [isFullscreen, setIsFullscreen] = useState(false);
 
     const app = useRef(null);
-    const drawerModalRef = useRef(null);
 
     const forceUpdate = useForceUpdate();
 
@@ -184,13 +183,35 @@ function App() {
         };
     }, [isUIVisible]);
 
+    useEffect(() => {
+        const transitionDuration = 200;
+
+        setIsDrawerAnimating(false);
+
+        setTimeout(() => {
+            setIsDrawerAnimating(true);
+        }, 0);
+
+        setTimeout(() => {
+            app.current.module('resizeModule').resize();
+        }, transitionDuration);
+
+        setTimeout(() => {
+            setIsDrawerAnimating(false);
+        }, 2 * transitionDuration);
+    }, [isDrawerOpen]);
+
     return (
         <AppContext.Provider value={app.current}>
             <AppModules />
 
             <div
-                className={`site-wrapper ${isUIVisible ? 'site-mode-ui-visible' : 'site-mode-ui-hidden'}`}
-                aria-hidden={isDrawerOpen}
+                className={[
+                    'site-wrapper',
+                    (isDrawerOpen ? 'site-mode-drawer-open' : 'site-mode-drawer-closed'),
+                    (isDrawerAnimating ? 'site-mode-drawer-animating' : ''),
+                    (isUIVisible ? 'site-mode-ui-visible' : 'site-mode-ui-hidden')
+                ].filter(a => a).join(' ')}
             >
                 <header className="site-header" role="banner">
                     <div className="site-header-layout">
@@ -329,133 +350,115 @@ function App() {
                 </main>
             </div>
 
-            <FocusTrap
-                active={isDrawerOpen}
-                focusTrapOptions={{
-                    onDeactivate: closeDrawer,
-                    initialFocus: drawerModalRef.current
-                }}
-            >
-                <div>
-                    <Drawer.Overlay
-                        open={isDrawerOpen}
-                        onClick={closeDrawer}
-                    />
-
-                    <Drawer open={isDrawerOpen}>
-                        <FocusDisabled disabled={!isDrawerOpen}>
-                            <section
-                                ref={drawerModalRef}
-                                className="focusable-wrap"
-                                tabIndex="-1"
-                                role="dialog"
-                                aria-label="Drawer"
-                            >
-                                <div className="panel-navbar">
-                                    <div className="panel-navbar-layout">
-                                        <div className="panel-navbar-left">
-                                            {isNavOpen ? (
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-link"
-                                                    onClick={closeNav}
-                                                >
-                                                    <Icon component={MdArrowDropUp} />
-                                                    <span className="btn-text" aria-hidden="true">Menu</span>
-                                                    <span className="sr-only">Close menu</span>
-                                                </button>
-                                            ) : (
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-link"
-                                                    onClick={openNav}
-                                                >
-                                                    <Icon component={MdArrowDropDown} />
-                                                    <span className="btn-text" aria-hidden="true">Menu</span>
-                                                    <span className="sr-only">Open menu</span>
-                                                </button>
-                                            )}
-                                        </div>
-
-                                        <div className="panel-navbar-right">
-                                            <Drawer.Button
-                                                className="btn btn-link"
-                                                open={isDrawerOpen}
-                                                onClick={closeDrawer}
-                                            >
-                                                <Icon component={MdClose} />
-                                                <span className="sr-only">Close drawer</span>
-                                            </Drawer.Button>
-                                        </div>
-                                    </div>
+            <Drawer open={isDrawerOpen}>
+                <FocusDisabled disabled={!isDrawerOpen}>
+                    <section
+                        className="focusable-wrap"
+                        aria-label="Drawer"
+                    >
+                        <div className="panel-navbar">
+                            <div className="panel-navbar-layout">
+                                <div className="panel-navbar-left">
+                                    {isNavOpen ? (
+                                        <button
+                                            type="button"
+                                            className="btn btn-link"
+                                            onClick={closeNav}
+                                        >
+                                            <Icon component={MdArrowDropUp} />
+                                            <span className="btn-text" aria-hidden="true">Menu</span>
+                                            <span className="sr-only">Close menu</span>
+                                        </button>
+                                    ) : (
+                                        <button
+                                            type="button"
+                                            className="btn btn-link"
+                                            onClick={openNav}
+                                        >
+                                            <Icon component={MdArrowDropDown} />
+                                            <span className="btn-text" aria-hidden="true">Menu</span>
+                                            <span className="sr-only">Open menu</span>
+                                        </button>
+                                    )}
                                 </div>
 
-                                {isNavOpen ? (
-                                    <section className="panel">
-                                        <div className="panel-nav">
-                                            <h2 className="sr-only">Menu</h2>
+                                <div className="panel-navbar-right">
+                                    <Drawer.Button
+                                        className="btn btn-link"
+                                        open={isDrawerOpen}
+                                        onClick={closeDrawer}
+                                    >
+                                        <Icon component={MdClose} />
+                                        <span className="sr-only">Close drawer</span>
+                                    </Drawer.Button>
+                                </div>
+                            </div>
+                        </div>
 
-                                            <ul className="nav">
-                                                {navItems.map(({ key, displayName }) => (
-                                                    <li
-                                                        key={key}
-                                                        className={'nav-item' + (appMode === key ? ' ' + 'active' : '')}
-                                                    >
-                                                        <button
-                                                            type="button"
-                                                            className="link"
-                                                            onClick={() => { selectAppMode(key); }}
-                                                        >
-                                                            {displayName}
-                                                        </button>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    </section>
-                                ) : (appMode === AppMode.EDIT) ? (
-                                    <Fragment>
-                                        <Panel title="Flag">
-                                            <FlagGroupPanelContainer />
-                                        </Panel>
+                        <section className={isNavOpen ? 'panel' : 'hidden'}>
+                            <div className="panel-nav">
+                                <h2 className="sr-only">Menu</h2>
 
-                                        <Panel title="Wind">
-                                            <WindPanelContainer />
-                                        </Panel>
+                                <ul className="nav">
+                                    {navItems.map(({ key, displayName }) => (
+                                        <li
+                                            key={key}
+                                            className={'nav-item' + (appMode === key ? ' ' + 'active' : '')}
+                                        >
+                                            <button
+                                                type="button"
+                                                className="link"
+                                                onClick={() => { selectAppMode(key); }}
+                                            >
+                                                {displayName}
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </section>
 
-                                        <Panel title="Scenery">
-                                            <SceneryPanelContainer />
-                                        </Panel>
+                        {!isNavOpen ? (appMode === AppMode.EDIT) ? (
+                            <Fragment>
+                                <Panel title="Flag">
+                                    <FlagGroupPanelContainer />
+                                </Panel>
 
-                                        <Panel title="Actions">
-                                            <ActionsPanelContainer />
-                                        </Panel>
-                                    </Fragment>
-                                ) : (appMode === AppMode.ANIMATE) ? (
-                                    <Panel title="Animation control">
-                                        <AnimationControlBarContainer />
-                                    </Panel>
-                                ) : (appMode === AppMode.CAMERA) ? (
-                                    <Panel title="Camera control">
-                                        <CameraControlPanel />
-                                    </Panel>
-                                ) : (appMode === AppMode.ABOUT) ? (
-                                    <Panel title={(
-                                        <Fragment>
-                                            FlagWaver
-                                            <small>{process.env.VERSION}</small>
-                                        </Fragment>
-                                    )}>
-                                        <AboutPanel />
-                                    </Panel>
-                                ) : null}
-                            </section>
-                        </FocusDisabled>
-                    </Drawer>
+                                <Panel title="Wind">
+                                    <WindPanelContainer />
+                                </Panel>
 
-                    <ToastsContainer />
-                </div>
-            </FocusTrap>
+                                <Panel title="Scenery">
+                                    <SceneryPanelContainer />
+                                </Panel>
+
+                                <Panel title="Actions">
+                                    <ActionsPanelContainer />
+                                </Panel>
+                            </Fragment>
+                        ) : (appMode === AppMode.ANIMATE) ? (
+                            <Panel title="Animation control">
+                                <AnimationControlBarContainer />
+                            </Panel>
+                        ) : (appMode === AppMode.CAMERA) ? (
+                            <Panel title="Camera control">
+                                <CameraControlPanel />
+                            </Panel>
+                        ) : (appMode === AppMode.ABOUT) ? (
+                            <Panel title={(
+                                <Fragment>
+                                    FlagWaver
+                                    <small>{process.env.VERSION}</small>
+                                </Fragment>
+                            )}>
+                                <AboutPanel />
+                            </Panel>
+                        ) : null : null}
+                    </section>
+                </FocusDisabled>
+            </Drawer>
+
+            <ToastsContainer />
         </AppContext.Provider>
     );
 }

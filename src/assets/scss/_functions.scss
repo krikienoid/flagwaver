@@ -2,6 +2,4 @@
 // Functions
 //
 
-@use "variables" as s;
-
-@forward "functions/rem" with ($_font-size-root: s.$font-size-root);
+@forward "functions/rem";

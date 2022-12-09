@@ -1,9 +1,6 @@
 @use "sass:math";
 
-$_font-size-root: 16px !default;
-
 // px to rem unit converter
-
-@function rem($n) {
-    @return math.div($n, $_font-size-root) * 1rem;
+@function rem($n, $base: 16px) {
+    @return math.div($n, $base) * 1rem;
 }

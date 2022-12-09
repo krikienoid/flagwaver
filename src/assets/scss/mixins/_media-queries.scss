@@ -1,0 +1,22 @@
+$_min-width:                    600px;
+$_min-height:                   480px;
+
+@mixin mq-layout-drawer {
+    @media
+    (min-height: $_min-height) and (max-width: #{$_min-width - 0.02px}),
+    (min-width: $_min-width) {
+        @content;
+    }
+}
+
+@mixin mq-layout-drawer-bottom {
+    @media (min-height: $_min-height) and (max-width: #{$_min-width - 0.02px}) {
+        @content;
+    }
+}
+
+@mixin mq-layout-drawer-left {
+    @media (min-width: $_min-width) {
+        @content;
+    }
+}

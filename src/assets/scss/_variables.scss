@@ -1,8 +1,10 @@
+@use "sass:color";
+
+@use "functions/rem" as *;
+
 //
 // Variables
 //
-
-@use "sass:color";
 
 // Colors
 
@@ -101,9 +103,21 @@ $transition-timing-function:    ease-in-out;
 $transition-style:              $transition-duration
                                 $transition-timing-function;
 
+// Small delay to ensure transitions fire in order.
+$transition-wait:               15ms;
+
 $control-transition:            background-color $transition-style,
                                 border-color $transition-style,
                                 box-shadow $transition-style,
                                 color $transition-style;
 
 $control-shadow-transition:     box-shadow $transition-style;
+
+
+// Layout
+
+$app-viewer-height:             rem(240px);
+
+$drawer-width:                  rem(288px);
+$drawer-md-width:               rem(320px);
+$drawer-lg-width:               rem(360px);

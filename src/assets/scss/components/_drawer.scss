@@ -1,19 +1,13 @@
 @use "../abstracts" as s;
 
-$drawer-width:                  s.rem(288px);
-$drawer-xs-width:               s.rem(320px);
-$drawer-sm-width:               s.rem(360px);
-
-$drawer-zindex:                 s.$zindex-fixed;
-
 .drawer {
-    width: $drawer-width;
+    width: 100%;
     visibility: hidden;
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
-    z-index: $drawer-zindex;
+    z-index: s.$zindex-fixed;
     overflow-y: auto;
     background-color: s.$white;
     box-shadow: none;
@@ -23,12 +17,26 @@ $drawer-zindex:                 s.$zindex-fixed;
         box-shadow s.$transition-style,
         transform s.$transition-style;
 
-    @include s.breakpoint(xs) {
-        width: $drawer-xs-width;
+    @include s.mq-layout-drawer-bottom {
+        top: s.$app-viewer-height;
+        transform: translateY(100%);
+
+        &.open {
+            transform: translateY(0);
+        }
     }
 
-    @include s.breakpoint(sm) {
-        width: $drawer-sm-width;
+    @include s.mq-layout-drawer-left {
+        width: s.$drawer-width;
+        max-width: 100%;
+
+        @include s.breakpoint(md) {
+            width: s.$drawer-md-width;
+        }
+
+        @include s.breakpoint(lg) {
+            width: s.$drawer-lg-width;
+        }
     }
 
     &.open {
@@ -40,23 +48,11 @@ $drawer-zindex:                 s.$zindex-fixed;
             box-shadow s.$transition-style,
             transform s.$transition-style;
     }
-}
 
-.drawer-overlay {
-    visibility: hidden;
-    @include s.block-full;
-    z-index: $drawer-zindex;
-    background-color: s.$white;
-    opacity: 0;
-    transition:
-        opacity s.$transition-style,
-        visibility 0ms s.$transition-duration;
-
-    &.open {
-        visibility: visible;
-        opacity: 0.5;
-        transition:
-            opacity s.$transition-style,
-            visibility 0ms 0ms;
+    .panel-header,
+    .panel-body {
+        width: s.$drawer-lg-width;
+        max-width: 100%;
+        margin: 0 auto;
     }
 }
