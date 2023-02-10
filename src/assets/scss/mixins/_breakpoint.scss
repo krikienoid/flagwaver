@@ -36,7 +36,7 @@ $_grid-breakpoints: (
     $max: _get-breakpoint-value($max, $breakpoints);
 
     @if $max != null {
-        $max: $max - 0.02;
+        $max: $max - 0.02px;
     }
 
     @if $min != null and $max != null {

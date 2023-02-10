@@ -21,12 +21,12 @@ $bottom-app-bar-translate-y:    s.rem(96px);
 .bottom-app-bar-quaternary .btn:not(.site-mode-ui-visibility-toggle-btn) {
     .site-mode-ui-visible & {
         visibility: visible;
-        transition: visibility 0s 0s;
+        transition: visibility 0ms;
     }
 
     .site-mode-ui-hidden & {
         visibility: hidden;
-        transition: visibility 0s s.$transition-duration;
+        transition: visibility 0ms s.$transition-duration;
     }
 }
 

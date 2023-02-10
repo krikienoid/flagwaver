@@ -56,7 +56,7 @@ $site-header-btn-height: 1.5rem;
             visibility: visible;
             opacity: 1;
             transition:
-                visibility 0s 0s,
+                visibility 0ms,
                 opacity s.$transition-style;
         }
 
@@ -64,7 +64,7 @@ $site-header-btn-height: 1.5rem;
             visibility: hidden;
             opacity: 0;
             transition:
-                visibility 0s s.$transition-duration,
+                visibility 0ms s.$transition-duration,
                 opacity s.$transition-style;
         }
     }

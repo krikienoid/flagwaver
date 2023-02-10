@@ -104,6 +104,10 @@ function App() {
         setIsNavOpen(false);
     };
 
+    const toggleNav = () => {
+        setIsNavOpen(!isNavOpen);
+    };
+
     const selectAppMode = (appMode) => {
         setAppMode(appMode);
         setIsNavOpen(false);
@@ -337,17 +341,10 @@ function App() {
                                             className="btn site-mode-fullscreen-toggle-btn"
                                             onClick={toggleFullscreen}
                                         >
-                                            {isFullscreen ? (
-                                                <Fragment>
-                                                    <Icon component={MdFullscreenExit} />
-                                                    <span className="sr-only">Exit fullscreen mode</span>
-                                                </Fragment>
-                                            ) : (
-                                                <Fragment>
-                                                    <Icon component={MdFullscreen} />
-                                                    <span className="sr-only">Enter fullscreen mode</span>
-                                                </Fragment>
-                                            )}
+                                            <Icon component={isFullscreen ? MdFullscreenExit : MdFullscreen} />
+                                            <span className="sr-only">
+                                                {isFullscreen ? 'Exit fullscreen mode' : 'Enter fullscreen mode'}
+                                            </span>
                                         </button>
                                     ) : null}
                                 </div>
@@ -366,27 +363,17 @@ function App() {
                         <div className="drawer-header">
                             <div className="drawer-header-layout">
                                 <div className="drawer-header-left">
-                                    {isNavOpen ? (
-                                        <button
-                                            type="button"
-                                            className="btn btn-link"
-                                            onClick={closeNav}
-                                        >
-                                            <Icon component={MdArrowDropUp} />
-                                            <span className="btn-text" aria-hidden="true">Menu</span>
-                                            <span className="sr-only">Close menu</span>
-                                        </button>
-                                    ) : (
-                                        <button
-                                            type="button"
-                                            className="btn btn-link"
-                                            onClick={openNav}
-                                        >
-                                            <Icon component={MdArrowDropDown} />
-                                            <span className="btn-text" aria-hidden="true">Menu</span>
-                                            <span className="sr-only">Open menu</span>
-                                        </button>
-                                    )}
+                                    <button
+                                        type="button"
+                                        className="btn btn-link"
+                                        onClick={toggleNav}
+                                    >
+                                        <Icon component={isNavOpen ? MdArrowDropUp : MdArrowDropDown} />
+                                        <span className="btn-text" aria-hidden="true">Menu</span>
+                                        <span className="sr-only">
+                                            {isNavOpen ? 'Close menu' : 'Open menu'}
+                                        </span>
+                                    </button>
                                 </div>
 
                                 <div className="drawer-header-right">

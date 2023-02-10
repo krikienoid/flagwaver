@@ -1,4 +1,4 @@
-import { Fragment, useContext } from 'react';
+import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
     MdPlayArrow,
@@ -39,17 +39,10 @@ function AnimationControlBar({ muted, paused, setMuted, setPaused }) {
                                 setPaused(!paused);
                             }}
                         >
-                            {paused ? (
-                                <Fragment>
-                                    <Icon component={MdPlayArrow} />
-                                    <span className="sr-only">Play</span>
-                                </Fragment>
-                            ) : (
-                                <Fragment>
-                                    <Icon component={MdPause} />
-                                    <span className="sr-only">Pause</span>
-                                </Fragment>
-                            )}
+                            <Icon component={paused ? MdPlayArrow : MdPause} />
+                            <span className="sr-only">
+                                {paused ? 'Play' : 'Pause'}
+                            </span>
                         </button>
 
                         <button
@@ -88,17 +81,10 @@ function AnimationControlBar({ muted, paused, setMuted, setPaused }) {
                                 setMuted(!muted);
                             }}
                         >
-                            {muted ? (
-                                <Fragment>
-                                    <Icon component={MdVolumeOff} />
-                                    <span className="sr-only">Unmute</span>
-                                </Fragment>
-                            ) : (
-                                <Fragment>
-                                    <Icon component={MdVolumeUp} />
-                                    <span className="sr-only">Mute</span>
-                                </Fragment>
-                            )}
+                            <Icon component={muted ? MdVolumeOff : MdVolumeUp} />
+                            <span className="sr-only">
+                                {muted ? 'Unmute' : 'Mute'}
+                            </span>
                         </button>
                     </div>
                 </div>
