@@ -1,10 +1,17 @@
 @use "../abstracts" as s;
 
+@keyframes fade-in {
+    0%   { opacity: 0; }
+    50%  { opacity: 0; }
+    100% { opacity: 1; }
+}
+
 html,
 body,
 #root,
 .site-wrapper,
-.site-main {
+.site-main,
+.app-viewer {
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -18,6 +25,74 @@ html.no-js {
 
     .browser-error-old-ie {
         display: none;
+    }
+}
+
+body {
+    background-color: s.$black;
+}
+
+.site-wrapper {
+    visibility: visible;
+    position: relative;
+    transition: visibility 0ms;
+
+    &.site-mode-drawer-open {
+        visibility: hidden;
+        transition: visibility 0ms s.$transition-duration;
+    }
+
+    @include s.mq-layout-drawer {
+        &.site-mode-drawer-open {
+            visibility: visible;
+        }
+    }
+
+    @include s.mq-layout-drawer-bottom {
+        transition:
+            height 0ms s.$transition-wait,
+            visibility 0ms;
+
+        &.site-mode-drawer-animating {
+            transition:
+                height 0ms s.$transition-wait,
+                visibility 0ms s.$transition-duration;
+            animation:
+                (2 * s.$transition-duration)
+                s.$transition-timing-function
+                1
+                fade-in;
+        }
+
+        &.site-mode-drawer-open {
+            height: s.$app-viewer-height;
+        }
+    }
+}
+
+.app-viewer {
+    position: relative;
+    transform: none;
+    transition: transform s.$transition-style;
+
+    .site-mode-drawer-open & {
+        @include s.mq-layout-drawer-bottom {
+            transform:
+                translateY(-50%)
+                translateY(#{0.5 * s.$app-viewer-height});
+        }
+
+        @include s.mq-layout-drawer-left {
+            transform: translateX(#{0.5 * s.$drawer-width});
+
+            @include s.breakpoint(md) {
+                transform: translateX(#{0.5 * s.$drawer-md-width});
+            }
+
+            @include s.breakpoint(lg) {
+                transform: translateX(#{0.5 * s.$drawer-lg-width});
+            }
+        }
     }
 }
 

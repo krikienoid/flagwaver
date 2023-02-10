@@ -17,6 +17,22 @@ $site-header-btn-height: 1.5rem;
     @include s.breakpoint(sm) {
         padding: 1rem s.$grid-gutter-width 0;
     }
+
+    @include s.mq-layout-drawer-left {
+        transition: transform s.$transition-style;
+
+        .site-mode-drawer-open & {
+            transform: translateX(s.$drawer-width);
+
+            @include s.breakpoint(md) {
+                transform: translateX(s.$drawer-md-width);
+            }
+
+            @include s.breakpoint(lg) {
+                transform: translateX(s.$drawer-lg-width);
+            }
+        }
+    }
 }
 
 .site-header-layout {

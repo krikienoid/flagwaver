@@ -5,6 +5,7 @@ $bottom-app-bar-padding-x:      0.5 * s.$spacer;
 $bottom-app-bar-padding-y:      0.5 * s.$spacer;
 $bottom-app-bar-sm-padding-x:   s.$grid-gutter-width;
 $bottom-app-bar-sm-padding-y:   s.$grid-gutter-half;
+$bottom-app-bar-translate-y:    s.rem(96px);
 
 .bottom-app-bar,
 .bottom-app-bar-primary,
@@ -29,6 +30,17 @@ $bottom-app-bar-sm-padding-y:   s.$grid-gutter-half;
     }
 }
 
+.bottom-app-bar-primary,
+.bottom-app-bar-secondary,
+.bottom-app-bar-tertiary {
+    @include s.mq-layout-drawer {
+        .site-mode-ui-visible.site-mode-drawer-open & {
+            visibility: hidden;
+            transition: visibility 0ms s.$transition-duration;
+        }
+    }
+}
+
 .bottom-app-bar {
     position: absolute;
     left: 0;
@@ -36,16 +48,23 @@ $bottom-app-bar-sm-padding-y:   s.$grid-gutter-half;
     right: 0;
     z-index: 1;
     padding: $bottom-app-bar-padding-y $bottom-app-bar-padding-x;
-    background: s.$brand-overlay-white;
+    background-color: s.$brand-overlay-white;
+    transition:
+        opacity s.$transition-style,
+        transform s.$transition-style;
 
     .site-mode-ui-visible & {
         opacity: 1;
-        transition: opacity s.$transition-style;
     }
 
     .site-mode-ui-hidden & {
         opacity: 0;
-        transition: opacity s.$transition-style;
+    }
+
+    @include s.mq-layout-drawer {
+        .site-mode-drawer-open & {
+            transform: translateY($bottom-app-bar-translate-y);
+        }
     }
 
     @include s.breakpoint(sm) {
@@ -145,6 +164,14 @@ $bottom-app-bar-sm-padding-y:   s.$grid-gutter-half;
 
     .form-section {
         margin-right: 0;
+
+        @include s.mq-layout-drawer {
+            transition: transform s.$transition-style;
+
+            .site-mode-drawer-open & {
+                transform: translateY(-$bottom-app-bar-translate-y);
+            }
+        }
     }
 
     @include s.breakpoint(0 sm) {
@@ -154,16 +181,26 @@ $bottom-app-bar-sm-padding-y:   s.$grid-gutter-half;
             right: 0;
             margin-bottom: $bottom-app-bar-padding-y;
             margin-right: $bottom-app-bar-padding-x;
+
+            @include s.mq-layout-drawer-bottom {
+                transition:
+                    bottom 0ms s.$transition-duration,
+                    transform s.$transition-style;
+
+                .site-mode-drawer-open & {
+                    bottom: 0;
+                }
+            }
         }
     }
 }
 
 .site-mode-ui-visibility-toggle-btn-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    top: -9999px;
+    left: -9999px;
+    bottom: -9999px;
+    right: -9999px;
     opacity: 0;
     cursor: default;
 
