@@ -360,12 +360,12 @@ function App() {
             <Drawer id={drawerId} open={isDrawerOpen}>
                 <FocusDisabled disabled={!isDrawerOpen}>
                     <section
-                        className="focusable-wrap"
+                        className="drawer-layout focusable-wrap"
                         aria-label="Drawer"
                     >
-                        <div className="panel-navbar">
-                            <div className="panel-navbar-layout">
-                                <div className="panel-navbar-left">
+                        <div className="drawer-header">
+                            <div className="drawer-header-layout">
+                                <div className="drawer-header-left">
                                     {isNavOpen ? (
                                         <button
                                             type="button"
@@ -389,7 +389,7 @@ function App() {
                                     )}
                                 </div>
 
-                                <div className="panel-navbar-right">
+                                <div className="drawer-header-right">
                                     <Drawer.Button
                                         className="btn btn-link"
                                         open={isDrawerOpen}
@@ -403,65 +403,67 @@ function App() {
                             </div>
                         </div>
 
-                        <section className={isNavOpen ? 'panel' : 'hidden'}>
-                            <div className="panel-nav">
-                                <h2 className="sr-only">Menu</h2>
+                        <div className="drawer-body">
+                            <section className={isNavOpen ? 'panel' : 'hidden'}>
+                                <div className="panel-nav">
+                                    <h2 className="sr-only">Menu</h2>
 
-                                <ul className="nav">
-                                    {navItems.map(({ key, displayName }) => (
-                                        <li
-                                            key={key}
-                                            className={'nav-item' + (appMode === key ? ' ' + 'active' : '')}
-                                        >
-                                            <button
-                                                type="button"
-                                                className="link"
-                                                onClick={() => { selectAppMode(key); }}
+                                    <ul className="nav">
+                                        {navItems.map(({ key, displayName }) => (
+                                            <li
+                                                key={key}
+                                                className={'nav-item' + (appMode === key ? ' ' + 'active' : '')}
                                             >
-                                                {displayName}
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </section>
+                                                <button
+                                                    type="button"
+                                                    className="link"
+                                                    onClick={() => { selectAppMode(key); }}
+                                                >
+                                                    {displayName}
+                                                </button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </section>
 
-                        {!isNavOpen ? (appMode === AppMode.EDIT) ? (
-                            <Fragment>
-                                <Panel title="Flag">
-                                    <FlagGroupPanelContainer />
-                                </Panel>
-
-                                <Panel title="Wind">
-                                    <WindPanelContainer />
-                                </Panel>
-
-                                <Panel title="Scenery">
-                                    <SceneryPanelContainer />
-                                </Panel>
-
-                                <Panel title="Actions">
-                                    <ActionsPanelContainer />
-                                </Panel>
-                            </Fragment>
-                        ) : (appMode === AppMode.ANIMATE) ? (
-                            <Panel title="Animation control">
-                                <AnimationControlBarContainer />
-                            </Panel>
-                        ) : (appMode === AppMode.CAMERA) ? (
-                            <Panel title="Camera control">
-                                <CameraControlPanel />
-                            </Panel>
-                        ) : (appMode === AppMode.ABOUT) ? (
-                            <Panel title={(
+                            {!isNavOpen ? (appMode === AppMode.EDIT) ? (
                                 <Fragment>
-                                    FlagWaver
-                                    <small>{process.env.VERSION}</small>
+                                    <Panel title="Flag">
+                                        <FlagGroupPanelContainer />
+                                    </Panel>
+
+                                    <Panel title="Wind">
+                                        <WindPanelContainer />
+                                    </Panel>
+
+                                    <Panel title="Scenery">
+                                        <SceneryPanelContainer />
+                                    </Panel>
+
+                                    <Panel title="Actions">
+                                        <ActionsPanelContainer />
+                                    </Panel>
                                 </Fragment>
-                            )}>
-                                <AboutPanel />
-                            </Panel>
-                        ) : null : null}
+                            ) : (appMode === AppMode.ANIMATE) ? (
+                                <Panel title="Animation control">
+                                    <AnimationControlBarContainer />
+                                </Panel>
+                            ) : (appMode === AppMode.CAMERA) ? (
+                                <Panel title="Camera control">
+                                    <CameraControlPanel />
+                                </Panel>
+                            ) : (appMode === AppMode.ABOUT) ? (
+                                <Panel title={(
+                                    <Fragment>
+                                        FlagWaver
+                                        <small>{process.env.VERSION}</small>
+                                    </Fragment>
+                                )}>
+                                    <AboutPanel />
+                                </Panel>
+                            ) : null : null}
+                        </div>
                     </section>
                 </FocusDisabled>
             </Drawer>

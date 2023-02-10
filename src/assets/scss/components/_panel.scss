@@ -43,34 +43,6 @@ $panel-sm-outer-padding-y:      s.$grid-gutter-width;
     }
 }
 
-.panel-navbar {
-    position: relative;
-    z-index: 1;
-    border-bottom: spectre-css.$border-width solid spectre-css.$border-color;
-    font-size: 0.875rem;
-
-    .btn {
-        border-radius: 0;
-    }
-}
-
-.panel-navbar-layout {
-    display: flex;
-
-    .panel-navbar-left,
-    .panel-navbar-right {
-        flex: 1 0 auto;
-    }
-
-    .panel-navbar-left {
-        text-align: left;
-    }
-
-    .panel-navbar-right {
-        text-align: right;
-    }
-}
-
 .panel-nav {
     padding: ($panel-outer-padding-y - spectre-css.$unit-1)
         ($panel-outer-padding-x - spectre-css.$unit-2);

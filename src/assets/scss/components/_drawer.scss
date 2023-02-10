@@ -1,3 +1,4 @@
+@use "../vendors/spectre.css/abstracts" as spectre-css;
 @use "../abstracts" as s;
 
 .drawer {
@@ -8,7 +9,6 @@
     left: 0;
     bottom: 0;
     z-index: s.$zindex-fixed;
-    overflow-y: auto;
     background-color: s.$white;
     box-shadow: none;
     transform: translateX(-100%);
@@ -55,4 +55,45 @@
         max-width: 100%;
         margin: 0 auto;
     }
+}
+
+.drawer-layout {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.drawer-header {
+    flex: 0 0 auto;
+    position: relative;
+    z-index: 1;
+    border-bottom: spectre-css.$border-width solid spectre-css.$border-color;
+    font-size: 0.875rem;
+
+    .btn {
+        border-radius: 0;
+    }
+}
+
+.drawer-header-layout {
+    display: flex;
+
+    .drawer-header-left,
+    .drawer-header-right {
+        flex: 1 0 auto;
+    }
+
+    .drawer-header-left {
+        text-align: left;
+    }
+
+    .drawer-header-right {
+        text-align: right;
+    }
+}
+
+.drawer-body {
+    flex: 1 1 100%;
+    overflow-y: auto;
 }
