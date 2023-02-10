@@ -5,13 +5,15 @@ function DrawerButton({
     openClassName,
     open,
     onClick,
-    children
+    children,
+    ...props
 }) {
     return (
         <button
             type="button"
             className={className + (open ? ' ' + openClassName : '')}
             onClick={onClick}
+            {...props}
         >
             {children}
         </button>
@@ -35,12 +37,14 @@ function DrawerOverlay({
     className,
     openClassName,
     open,
-    onClick
+    onClick,
+    ...props
 }) {
     return (
         <div
             className={className + (open ? ' ' + openClassName : '')}
             onClick={onClick}
+            {...props}
         ></div>
     );
 }
@@ -61,12 +65,14 @@ function Drawer({
     className,
     openClassName,
     open,
-    children
+    children,
+    ...props
 }) {
     return (
         <div
             className={className + (open ? ' ' + openClassName : '')}
             aria-hidden={!open}
+            {...props}
         >
             {children}
         </div>

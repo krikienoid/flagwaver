@@ -34,6 +34,7 @@ import WindPanelContainer from '../containers/WindPanelContainer';
 import AppContext from '../contexts/AppContext';
 import withWebGLBrowserTest from '../hocs/withWebGLBrowserTest';
 import useForceUpdate from '../hooks/useForceUpdate';
+import useUniqueId from '../hooks/useUniqueId';
 import store from '../redux/store';
 
 const SITE_HEADLINE_INVERSE_IMAGE_PATH = `${process.env.ROOT_URL}/${
@@ -79,6 +80,9 @@ function App() {
     const app = useRef(null);
 
     const forceUpdate = useForceUpdate();
+    const id = useUniqueId();
+
+    const drawerId = `${id}-drawer`;
 
     const openDrawer = () => {
         setIsDrawerOpen(true);
@@ -231,6 +235,8 @@ function App() {
                                 className="site-header-btn drawer-btn"
                                 open={isDrawerOpen}
                                 onClick={toggleDrawer}
+                                aria-controls={drawerId}
+                                aria-expanded={isDrawerOpen}
                             >
                                 <span className="icon icon-bars" aria-hidden="true">
                                     <span className="icon-bar"></span>
@@ -238,7 +244,7 @@ function App() {
                                     <span className="icon-bar"></span>
                                 </span>
 
-                                <span className="sr-only">Open drawer</span>
+                                <span className="sr-only">Toggle drawer</span>
                             </Drawer.Button>
                         </div>
 
@@ -282,6 +288,7 @@ function App() {
                                         <button
                                             type="button"
                                             className="btn btn-link"
+                                            aria-controls={drawerId}
                                             onClick={openDrawer}
                                         >
                                             All options
@@ -350,7 +357,7 @@ function App() {
                 </main>
             </div>
 
-            <Drawer open={isDrawerOpen}>
+            <Drawer id={drawerId} open={isDrawerOpen}>
                 <FocusDisabled disabled={!isDrawerOpen}>
                     <section
                         className="focusable-wrap"
@@ -387,6 +394,7 @@ function App() {
                                         className="btn btn-link"
                                         open={isDrawerOpen}
                                         onClick={closeDrawer}
+                                        aria-controls={drawerId}
                                     >
                                         <Icon component={MdClose} />
                                         <span className="sr-only">Close drawer</span>
