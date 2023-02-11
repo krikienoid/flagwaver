@@ -29,6 +29,7 @@ function AnimationControlBar({ muted, paused, setMuted, setPaused }) {
                         <button
                             type="button"
                             className="btn"
+                            title={paused ? 'Play' : 'Pause'}
                             onClick={() => {
                                 if (paused) {
                                     animationControlModule.play();
@@ -48,6 +49,7 @@ function AnimationControlBar({ muted, paused, setMuted, setPaused }) {
                         <button
                             type="button"
                             className="btn"
+                            title="Stop"
                             onClick={() => {
                                 animationControlModule.pause();
                                 animationControlModule.reset();
@@ -62,6 +64,7 @@ function AnimationControlBar({ muted, paused, setMuted, setPaused }) {
                         <button
                             type="button"
                             className="btn"
+                            title="Step forward"
                             onClick={() => { animationControlModule.step(); }}
                         >
                             <Icon component={MdSkipNext} />
@@ -73,6 +76,7 @@ function AnimationControlBar({ muted, paused, setMuted, setPaused }) {
                         <button
                             type="button"
                             className="btn"
+                            title={muted ? 'Unmute' : 'Mute'}
                             onClick={() => {
                                 animationControlModule.muted = !muted;
 

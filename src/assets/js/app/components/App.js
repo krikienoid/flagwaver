@@ -248,7 +248,7 @@ function App() {
                                     <span className="icon-bar"></span>
                                 </span>
 
-                                <span className="sr-only">Toggle drawer</span>
+                                <span className="sr-only">Toggle side panel</span>
                             </Drawer.Button>
                         </div>
 
@@ -295,7 +295,7 @@ function App() {
                                             aria-controls={drawerId}
                                             onClick={openDrawer}
                                         >
-                                            All options
+                                            More options
                                         </button>
                                     </div>
                                 </div>
@@ -315,6 +315,7 @@ function App() {
                                     <button
                                         type="button"
                                         className="btn"
+                                        title="Reset camera"
                                         onClick={resetCamera}
                                     >
                                         <Icon component={MdOutlineCenterFocusWeak} />
@@ -326,12 +327,13 @@ function App() {
                                     <button
                                         type="button"
                                         className="btn site-mode-ui-visibility-toggle-btn"
+                                        title={isUIVisible ? 'Theater mode' : ''}
                                         onClick={toggleUIVisibility}
                                     >
                                         <div className="site-mode-ui-visibility-toggle-btn-overlay"></div>
                                         <Icon component={MdOutlineSettingsOverscan} />
                                         <span className="sr-only">
-                                            {isUIVisible ? 'Hide interface' : 'Show interface'}
+                                            {isUIVisible ? 'Theater mode' : 'Exit theater mode'}
                                         </span>
                                     </button>
 
@@ -339,11 +341,12 @@ function App() {
                                         <button
                                             type="button"
                                             className="btn site-mode-fullscreen-toggle-btn"
+                                            title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
                                             onClick={toggleFullscreen}
                                         >
                                             <Icon component={isFullscreen ? MdFullscreenExit : MdFullscreen} />
                                             <span className="sr-only">
-                                                {isFullscreen ? 'Exit fullscreen mode' : 'Enter fullscreen mode'}
+                                                {isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
                                             </span>
                                         </button>
                                     ) : null}
@@ -358,7 +361,7 @@ function App() {
                 <FocusDisabled disabled={!isDrawerOpen}>
                     <section
                         className="drawer-layout focusable-wrap"
-                        aria-label="Drawer"
+                        aria-label="Side panel"
                     >
                         <div className="drawer-header">
                             <div className="drawer-header-layout">
@@ -384,7 +387,7 @@ function App() {
                                         aria-controls={drawerId}
                                     >
                                         <Icon component={MdClose} />
-                                        <span className="sr-only">Close drawer</span>
+                                        <span className="sr-only">Hide side panel</span>
                                     </Drawer.Button>
                                 </div>
                             </div>

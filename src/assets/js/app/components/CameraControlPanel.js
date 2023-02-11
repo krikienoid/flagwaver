@@ -152,7 +152,7 @@ function CameraControlPanel({ app }) {
                     onClick={resetCamera}
                 >
                     <Icon component={MdOutlineCenterFocusWeak} />
-                    <span className="btn-text">Reset</span>
+                    <span className="btn-text">Reset camera</span>
                 </button>
             </div>
         </div>

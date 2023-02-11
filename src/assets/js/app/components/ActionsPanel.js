@@ -30,6 +30,7 @@ function ActionsPanel({
                     <button
                         type="button"
                         className="btn"
+                        title="Undo"
                         disabled={!canUndo}
                         onClick={() => {
                             if (canUndo) {
@@ -44,6 +45,7 @@ function ActionsPanel({
                     <button
                         type="button"
                         className="btn"
+                        title="Redo"
                         disabled={!canRedo}
                         onClick={() => {
                             if (canRedo) {

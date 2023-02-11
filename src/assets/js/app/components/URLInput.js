@@ -10,6 +10,7 @@ function URLInput({
     placeholder,
     value,
     disabled,
+    buttonTitle,
     buttonText,
     validator,
     onChange,
@@ -49,6 +50,7 @@ function URLInput({
                 <button
                     type="button"
                     className="btn input-group-btn"
+                    title={buttonTitle}
                     disabled={disabled}
                     onClick={onSubmit}
                 >

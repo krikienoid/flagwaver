@@ -111,10 +111,11 @@ function FilePickerInput({
                             label="URL"
                             name="url"
                             value={url}
+                            buttonTitle="Load"
                             buttonText={(
                                 <Fragment>
                                     <Icon component={MdArrowForward} />
-                                    <span className="sr-only">Submit</span>
+                                    <span className="sr-only">Load</span>
                                 </Fragment>
                             )}
                             validator={validateURL}
