@@ -21,7 +21,7 @@ $site-header-btn-height: 1.5rem;
     @include s.mq-layout-drawer-left {
         transition: transform s.$transition-style;
 
-        .site-mode-drawer-open & {
+        .site-is-drawer-open & {
             transform: translateX(s.$drawer-width);
 
             @include s.breakpoint(md) {
@@ -51,16 +51,13 @@ $site-header-btn-height: 1.5rem;
     .site-header-right {
         width: $site-header-btn-width + s.$grid-gutter-width;
         flex: 0 0 auto;
+        visibility: visible;
+        opacity: 1;
+        transition:
+            visibility 0ms,
+            opacity s.$transition-style;
 
-        .site-mode-ui-visible & {
-            visibility: visible;
-            opacity: 1;
-            transition:
-                visibility 0ms,
-                opacity s.$transition-style;
-        }
-
-        .site-mode-ui-hidden & {
+        .site-is-theater-mode & {
             visibility: hidden;
             opacity: 0;
             transition:
@@ -175,7 +172,11 @@ $site-header-btn-height: 1.5rem;
     font-size: 1.75rem;
     line-height: 1;
     white-space: nowrap;
+    opacity: 1;
     user-select: none;
+    transition:
+        opacity s.$transition-style,
+        transform s.$transition-style;
 
     img {
         width: auto;
@@ -186,14 +187,7 @@ $site-header-btn-height: 1.5rem;
         vertical-align: top;
     }
 
-    .site-mode-ui-visible & {
-        opacity: 1;
-        transition:
-            opacity s.$transition-style,
-            transform s.$transition-style;
-    }
-
-    .site-mode-ui-hidden & {
+    .site-is-theater-mode & {
         opacity: 0.2;
         transition:
             opacity s.$transition-style,
@@ -202,6 +196,7 @@ $site-header-btn-height: 1.5rem;
 
     @include s.breakpoint(sm) {
         font-size: 2rem;
+        transform: translateX(0rem);
 
         img {
             height: 3rem;
@@ -209,11 +204,7 @@ $site-header-btn-height: 1.5rem;
             margin-bottom: -0.375rem;
         }
 
-        .site-mode-ui-visible & {
-            transform: translateX(0rem);
-        }
-
-        .site-mode-ui-hidden & {
+        .site-is-theater-mode & {
             transform: translateX(#{-($site-header-btn-width + s.$grid-gutter-width)});
         }
     }

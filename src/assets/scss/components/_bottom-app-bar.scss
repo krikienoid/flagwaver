@@ -18,13 +18,11 @@ $bottom-app-bar-translate-y:    s.rem(96px);
 .bottom-app-bar-primary,
 .bottom-app-bar-secondary,
 .bottom-app-bar-tertiary,
-.bottom-app-bar-quaternary .btn:not(.site-mode-ui-visibility-toggle-btn) {
-    .site-mode-ui-visible & {
-        visibility: visible;
-        transition: visibility 0ms;
-    }
+.bottom-app-bar-quaternary .btn:not(.site-theater-mode-toggle-btn) {
+    visibility: visible;
+    transition: visibility 0ms;
 
-    .site-mode-ui-hidden & {
+    .site-is-theater-mode & {
         visibility: hidden;
         transition: visibility 0ms s.$transition-duration;
     }
@@ -34,7 +32,7 @@ $bottom-app-bar-translate-y:    s.rem(96px);
 .bottom-app-bar-secondary,
 .bottom-app-bar-tertiary {
     @include s.mq-layout-drawer {
-        .site-mode-ui-visible.site-mode-drawer-open & {
+        .site-is-drawer-open & {
             visibility: hidden;
             transition: visibility 0ms s.$transition-duration;
         }
@@ -49,20 +47,17 @@ $bottom-app-bar-translate-y:    s.rem(96px);
     z-index: 1;
     padding: $bottom-app-bar-padding-y $bottom-app-bar-padding-x;
     background-color: s.$brand-overlay-white;
+    opacity: 1;
     transition:
         opacity s.$transition-style,
         transform s.$transition-style;
 
-    .site-mode-ui-visible & {
-        opacity: 1;
-    }
-
-    .site-mode-ui-hidden & {
+    .site-is-theater-mode & {
         opacity: 0;
     }
 
     @include s.mq-layout-drawer {
-        .site-mode-drawer-open & {
+        .site-is-drawer-open & {
             transform: translateY($bottom-app-bar-translate-y);
         }
     }
@@ -168,7 +163,7 @@ $bottom-app-bar-translate-y:    s.rem(96px);
         @include s.mq-layout-drawer {
             transition: transform s.$transition-style;
 
-            .site-mode-drawer-open & {
+            .site-is-drawer-open & {
                 transform: translateY(-$bottom-app-bar-translate-y);
             }
         }
@@ -187,7 +182,7 @@ $bottom-app-bar-translate-y:    s.rem(96px);
                     bottom 0ms s.$transition-duration,
                     transform s.$transition-style;
 
-                .site-mode-drawer-open & {
+                .site-is-drawer-open & {
                     bottom: 0;
                 }
             }
@@ -195,7 +190,8 @@ $bottom-app-bar-translate-y:    s.rem(96px);
     }
 }
 
-.site-mode-ui-visibility-toggle-btn-overlay {
+.site-theater-mode-toggle-btn-overlay {
+    display: none;
     position: fixed;
     top: -9999px;
     left: -9999px;
@@ -204,12 +200,12 @@ $bottom-app-bar-translate-y:    s.rem(96px);
     opacity: 0;
     cursor: default;
 
-    .site-mode-ui-visible & {
-        display: none;
+    .site-is-theater-mode & {
+        display: block;
     }
 }
 
-.site-mode-fullscreen-toggle-btn {
+.site-fullscreen-toggle-btn {
     .svg-icon {
         transform: scale(1.25);
     }

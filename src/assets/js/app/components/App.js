@@ -74,7 +74,7 @@ function App() {
     const [isDrawerAnimating, setIsDrawerAnimating] = useState(false);
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [appMode, setAppMode] = useState(AppMode.EDIT);
-    const [isUIVisible, setIsUIVisible] = useState(true);
+    const [isTheaterMode, setIsTheaterMode] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
 
     const app = useRef(null);
@@ -119,8 +119,8 @@ function App() {
         orbitControls.reset();
     };
 
-    const toggleUIVisibility = () => {
-        setIsUIVisible(!isUIVisible);
+    const toggleTheaterMode = () => {
+        setIsTheaterMode(!isTheaterMode);
     };
 
     const toggleFullscreen = () => {
@@ -171,13 +171,13 @@ function App() {
         const handleKeyDown = (e) => {
             const key = e.key || e.keyCode;
 
-            if (!isUIVisible) {
+            if (isTheaterMode) {
                 if (
                     key === 'Enter' || key === 13 ||
                     key === ' ' || key === 32 ||
                     key === 'Escape' || key === 27
                 ) {
-                    setIsUIVisible(true);
+                    setIsTheaterMode(false);
 
                     e.preventDefault();
                 }
@@ -189,7 +189,7 @@ function App() {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [isUIVisible]);
+    }, [isTheaterMode]);
 
     useEffect(() => {
         const transitionDuration = 200;
@@ -216,9 +216,9 @@ function App() {
             <div
                 className={[
                     'site-wrapper',
-                    (isDrawerOpen ? 'site-mode-drawer-open' : 'site-mode-drawer-closed'),
-                    (isDrawerAnimating ? 'site-mode-drawer-animating' : ''),
-                    (isUIVisible ? 'site-mode-ui-visible' : 'site-mode-ui-hidden')
+                    (isDrawerOpen ? 'site-is-drawer-open' : 'site-not-drawer-open'),
+                    (isDrawerAnimating ? 'site-is-drawer-animating' : ''),
+                    (isTheaterMode ? 'site-is-theater-mode' : 'site-not-theater-mode')
                 ].filter(a => a).join(' ')}
             >
                 <header className="site-header" role="banner">
@@ -326,21 +326,21 @@ function App() {
 
                                     <button
                                         type="button"
-                                        className="btn site-mode-ui-visibility-toggle-btn"
-                                        title={isUIVisible ? 'Theater mode' : ''}
-                                        onClick={toggleUIVisibility}
+                                        className="btn site-theater-mode-toggle-btn"
+                                        title={isTheaterMode ? '' : 'Theater mode'}
+                                        onClick={toggleTheaterMode}
                                     >
-                                        <div className="site-mode-ui-visibility-toggle-btn-overlay"></div>
+                                        <div className="site-theater-mode-toggle-btn-overlay"></div>
                                         <Icon component={MdOutlineSettingsOverscan} />
                                         <span className="sr-only">
-                                            {isUIVisible ? 'Theater mode' : 'Exit theater mode'}
+                                            {isTheaterMode ? 'Exit theater mode' : 'Theater mode'}
                                         </span>
                                     </button>
 
                                     {document.fullscreenEnabled ? (
                                         <button
                                             type="button"
-                                            className="btn site-mode-fullscreen-toggle-btn"
+                                            className="btn site-fullscreen-toggle-btn"
                                             title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
                                             onClick={toggleFullscreen}
                                         >
