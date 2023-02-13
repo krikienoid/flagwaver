@@ -30,11 +30,10 @@ export default function buildFlagpole(options, flag) {
             break;
 
         case FlagpoleType.CROSSBAR:
-            settings.crossbarLength = (
+            settings.crossbarLength =
                 settings.verticalHoisting === VerticalHoisting.NONE
                     ? flag.cloth.width
-                    : flag.cloth.height
-            );
+                    : flag.cloth.height;
 
             flagpole = new CrossbarFlagpole(settings);
 

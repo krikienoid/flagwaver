@@ -43,7 +43,7 @@ export default function undoable(reducer, {
                     future: []
                 };
 
-            default:
+            default: {
                 const newPresent = reducer(present, action);
 
                 if (present === newPresent) {
@@ -55,6 +55,7 @@ export default function undoable(reducer, {
                     present: newPresent,
                     future: []
                 };
+            }
         }
     };
 }

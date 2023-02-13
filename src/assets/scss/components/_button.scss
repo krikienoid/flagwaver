@@ -52,7 +52,9 @@
 
         width: $size;
         height: $size;
-        vertical-align: ((s.$font-size-base - $size) * s.$line-height-base * 0.5);
+        vertical-align: (
+            (s.$font-size-base - $size) * s.$line-height-base * 0.5
+        );
     }
 
     .btn-text {

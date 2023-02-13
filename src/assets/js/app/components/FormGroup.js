@@ -9,7 +9,10 @@ function FormGroup({
     ...attributes
 }) {
     return (
-        <div className={className + (!valid ? ' ' + 'has-error' : '')} {...attributes}>
+        <div
+            className={className + (!valid ? ' ' + 'has-error' : '')}
+            {...attributes}
+        >
             {children}
 
             {!valid ? (

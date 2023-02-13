@@ -65,7 +65,9 @@ function withObjectURLCleaner(reducer) {
             .flat()
             .filter(url => !activeURLs.includes(url));
 
-        detachedURLs.map(url => { revokeObjectURL(url); });
+        detachedURLs.map((url) => {
+            revokeObjectURL(url);
+        });
     };
 
     return function (state, action) {

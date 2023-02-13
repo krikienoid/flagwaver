@@ -93,7 +93,11 @@ export default class VideoFlag extends Flag {
 
             video.currentTime += deltaTime;
 
-            if (video.loop && deltaTime && previousTime === video.currentTime) {
+            if (
+                video.loop &&
+                deltaTime &&
+                previousTime === video.currentTime
+            ) {
                 video.currentTime = 0;
             }
         }
@@ -105,7 +109,11 @@ export default class VideoFlag extends Flag {
 
             video2.currentTime += deltaTime;
 
-            if (video2.loop && deltaTime && previousTime === video2.currentTime) {
+            if (
+                video2.loop &&
+                deltaTime &&
+                previousTime === video2.currentTime
+            ) {
                 video2.currentTime = 0;
             }
         }

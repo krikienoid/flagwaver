@@ -89,7 +89,10 @@ function CameraControlPanel({ app }) {
                             name="radius"
                             value={round(radius)}
                             onChange={(e) => {
-                                updatePosition(e.target.name, Number(e.target.value));
+                                updatePosition(
+                                    e.target.name,
+                                    Number(e.target.value)
+                                );
                             }}
                         />
 
@@ -98,7 +101,10 @@ function CameraControlPanel({ app }) {
                             name="theta"
                             value={round(radToDeg(theta))}
                             onChange={(e) => {
-                                updatePosition(e.target.name, degToRad(Number(e.target.value)));
+                                updatePosition(
+                                    e.target.name,
+                                    degToRad(Number(e.target.value))
+                                );
                             }}
                         />
 
@@ -107,7 +113,10 @@ function CameraControlPanel({ app }) {
                             name="phi"
                             value={round(radToDeg(phi))}
                             onChange={(e) => {
-                                updatePosition(e.target.name, degToRad(Number(e.target.value)));
+                                updatePosition(
+                                    e.target.name,
+                                    degToRad(Number(e.target.value))
+                                );
                             }}
                         />
                     </div>

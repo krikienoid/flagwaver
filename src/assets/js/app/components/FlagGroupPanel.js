@@ -56,7 +56,8 @@ function FlagGroupPanel({ options, setOptions }) {
                 value={options.imageSrc}
                 accept="image/*, video/*"
                 onChange={handleFilePickerChange}
-                isValidFileType={type => type.match('image.*') || type.match('video.*')}
+                isValidFileType={type =>
+                    type.match('image.*') || type.match('video.*')}
             />
 
             <SwitchInput
@@ -74,7 +75,8 @@ function FlagGroupPanel({ options, setOptions }) {
                     value={options.backSideImageSrc}
                     accept="image/*, video/*"
                     onChange={handleFilePickerChange}
-                    isValidFileType={type => type.match('image.*') || type.match('video.*')}
+                    isValidFileType={type =>
+                        type.match('image.*') || type.match('video.*')}
                 />
             ) : null}
 
@@ -87,7 +89,10 @@ function FlagGroupPanel({ options, setOptions }) {
                         value: Hoisting.SINISTER,
                         label: (
                             <Fragment>
-                                <Icon component={MdFlag} className="icon-hoisting-sinister" />
+                                <Icon
+                                    component={MdFlag}
+                                    className="icon-hoisting-sinister"
+                                />
                                 <span className="btn-text">Sinister</span>
                             </Fragment>
                         )
@@ -96,7 +101,10 @@ function FlagGroupPanel({ options, setOptions }) {
                         value: Hoisting.DEXTER,
                         label: (
                             <Fragment>
-                                <Icon component={MdFlag} className="icon-hoisting-dexter" />
+                                <Icon
+                                    component={MdFlag}
+                                    className="icon-hoisting-dexter"
+                                />
                                 <span className="btn-text">Dexter</span>
                             </Fragment>
                         )

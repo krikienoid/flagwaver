@@ -205,7 +205,9 @@ $site-header-btn-height: 1.5rem;
         }
 
         .site-is-theater-mode & {
-            transform: translateX(#{-($site-header-btn-width + s.$grid-gutter-width)});
+            transform: translateX(#{
+                -($site-header-btn-width + s.$grid-gutter-width)
+            });
         }
     }
 }

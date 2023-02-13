@@ -26,7 +26,8 @@ function FlagGroupBar({ options, setOptions }) {
                 value={options.imageSrc}
                 accept="image/*, video/*"
                 onChange={handleFilePickerChange}
-                isValidFileType={type => type.match('image.*') || type.match('video.*')}
+                isValidFileType={type =>
+                    type.match('image.*') || type.match('video.*')}
             />
         </div>
     );

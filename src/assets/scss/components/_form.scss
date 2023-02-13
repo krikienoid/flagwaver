@@ -53,8 +53,10 @@ legend {
             height: spectre-css.$unit-4 + spectre-css.$border-width * 2;
             display: block;
             position: absolute;
-            top: (spectre-css.$control-size-sm - spectre-css.$unit-4) * 0.5 -
-                spectre-css.$border-width;
+            top: (
+                (spectre-css.$control-size-sm - spectre-css.$unit-4) * 0.5 -
+                spectre-css.$border-width
+            );
             left: 0;
             z-index: 1;
             border-radius: spectre-css.$unit-2 + spectre-css.$border-width;
@@ -160,14 +162,18 @@ legend {
 
         &__saturation {
             border-radius:
-                spectre-css.$border-radius spectre-css.$border-radius
-                0 0;
+                spectre-css.$border-radius
+                spectre-css.$border-radius
+                0
+                0;
         }
 
         &__last-control {
             border-radius:
-                0 0
-                spectre-css.$border-radius spectre-css.$border-radius;
+                0
+                0
+                spectre-css.$border-radius
+                spectre-css.$border-radius;
         }
 
         &__pointer {

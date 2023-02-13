@@ -44,11 +44,13 @@ $panel-sm-outer-padding-y:      s.$grid-gutter-width;
 }
 
 .panel-nav {
-    padding: ($panel-outer-padding-y - spectre-css.$unit-1)
+    padding:
+        ($panel-outer-padding-y - spectre-css.$unit-1)
         ($panel-outer-padding-x - spectre-css.$unit-2);
 
     @include s.breakpoint(sm) {
-        padding: ($panel-sm-outer-padding-y - spectre-css.$unit-1)
+        padding:
+            ($panel-sm-outer-padding-y - spectre-css.$unit-1)
             ($panel-sm-outer-padding-x - spectre-css.$unit-2);
     }
 }
