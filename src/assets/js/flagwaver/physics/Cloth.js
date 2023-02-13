@@ -1,6 +1,6 @@
 import { StreamDrawUsage, Vector3 } from 'three';
 import { ParametricGeometry }
-    from 'three/examples/jsm/geometries/ParametricGeometry';
+    from 'three/examples/jsm/geometries/ParametricGeometry.js';
 
 import { ITERATION_COUNT } from '../constants';
 import Particle from './Particle';

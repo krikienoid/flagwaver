@@ -36,8 +36,8 @@ const PRODUCTION = config.env === 'production';
 // Prepare destination directory
 //
 
-function clean(done) {
-  rimraf(config.paths.dest.root, done);
+function clean() {
+  return rimraf(config.paths.dest.root);
 }
 
 function copyGitIgnore() {
