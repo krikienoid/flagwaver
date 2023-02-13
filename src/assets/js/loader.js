@@ -51,7 +51,7 @@ function loader() {
     } else {
         // All other browsers load polyfills and then run `main()`.
         loadScript(
-            process.env.ROOT_URL + '/assets/js/polyfills.js',
+            process.env.ROOT_URL + '/assets/js/polyfills.js?v=' + process.env.VERSION,
             main
         );
     }

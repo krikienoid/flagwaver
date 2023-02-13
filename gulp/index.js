@@ -25,6 +25,7 @@ import modernizr                from 'modernizr';
 
 import { generateSW }           from 'workbox-build';
 
+import packageJson              from '../package.json';
 import config                   from './config';
 import rollupConfig             from './rollup.config';
 import rollupConfigLoader       from './rollup.config.loader';
@@ -55,6 +56,7 @@ function copyGitIgnore() {
 
 function buildPages() {
   return gulp.src(config.paths.src.html)
+    .pipe(replace('@VERSION', packageJson.version))
     .pipe(replace('@PUBLIC_URL', config.app.PUBLIC_URL))
     .pipe(replace('@ROOT_URL', config.app.ROOT_URL))
     .pipe(gulp.dest(config.paths.dest.html));
@@ -158,6 +160,7 @@ function buildFonts() {
 
 function buildStatic() {
   return gulp.src(config.paths.src.static)
+    .pipe(replace('@VERSION', packageJson.version))
     .pipe(replace('@PUBLIC_URL', config.app.PUBLIC_URL))
     .pipe(replace('@ROOT_URL', config.app.ROOT_URL))
     .pipe(gulp.dest(config.paths.dest.static));
