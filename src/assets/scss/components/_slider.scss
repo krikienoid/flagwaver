@@ -2,9 +2,6 @@
 @use "../abstracts" as s;
 
 .slider {
-    // Fixes for IE
-    // https://github.com/picturepan2/spectre/pull/599
-    padding: 0;
     transition: s.$control-shadow-transition;
 
     &::-webkit-slider-thumb {
@@ -23,13 +20,6 @@
         transition:
             background s.$transition-style,
             transform s.$transition-style;
-    }
-
-    &::-ms-track {
-        // Fixes for IE
-        // https://github.com/picturepan2/spectre/pull/599
-        border: 0;
-        color: transparent;
     }
 
     &:disabled,

@@ -1,7 +1,7 @@
 import setLoadedClass from '../globals/setLoadedClass';
 import EmptyStateScreen from '../components/EmptyStateScreen';
 
-export default function withWebGLBrowserTest(WrappedComponent) {
+export default function withBrowserTest(WrappedComponent) {
     return (props) => {
         if (!window.WebGLRenderingContext) {
             // Browser does not support WebGL
@@ -11,7 +11,7 @@ export default function withWebGLBrowserTest(WrappedComponent) {
             return (
                 <EmptyStateScreen>
                     <h2>Your browser or device does not support WebGL</h2>
-                    <p>This page requires a browser that supports WebGL.</p>
+                    <p>This site requires a browser that supports WebGL.</p>
                     <p><a href="http://get.webgl.org/" rel="noopener" target="_blank">More information</a></p>
                 </EmptyStateScreen>
             );
@@ -33,6 +33,22 @@ export default function withWebGLBrowserTest(WrappedComponent) {
                     </EmptyStateScreen>
                 );
             }
+        }
+
+        // IE 10 and IE 11
+        const isIE = /Trident\/|MSIE/.test(window.navigator.userAgent);
+
+        if (isIE) {
+            // Browser is not supported
+
+            setLoadedClass();
+
+            return (
+                <EmptyStateScreen>
+                    <h2>Your browser is not supported</h2>
+                    <p>Please upgrade your browser to use FlagWaver.</p>
+                </EmptyStateScreen>
+            );
         }
 
         // All good

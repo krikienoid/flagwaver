@@ -40,7 +40,6 @@ export default {
     autoprefixer: {
     },
     cleanCss: {
-      compatibility: 'ie9'
     },
     modernizr: {
       // https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json
@@ -53,7 +52,6 @@ export default {
         'svg/inline'
       ],
       options: [
-        'html5shiv',
         'setClasses'
       ]
     },

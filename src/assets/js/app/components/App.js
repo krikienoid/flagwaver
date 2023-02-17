@@ -32,7 +32,7 @@ import ToastsContainer from '../containers/ToastsContainer';
 import WindBarContainer from '../containers/WindBarContainer';
 import WindPanelContainer from '../containers/WindPanelContainer';
 import AppContext from '../contexts/AppContext';
-import withWebGLBrowserTest from '../hocs/withWebGLBrowserTest';
+import withBrowserTest from '../hocs/withBrowserTest';
 import useForceUpdate from '../hooks/useForceUpdate';
 import useUniqueId from '../hooks/useUniqueId';
 import store from '../redux/store';
@@ -463,4 +463,4 @@ function App() {
     );
 }
 
-export default withWebGLBrowserTest(App);
+export default withBrowserTest(App);

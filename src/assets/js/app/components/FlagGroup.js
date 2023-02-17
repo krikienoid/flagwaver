@@ -117,33 +117,27 @@ function FlagGroup({ app, options, addToast }) {
 
         (new Promise((resolve, reject) => {
             if (isVideoSrc(src) || isVideoSrc(src2)) {
-                const isBrowserIE11 = window.document.documentMode;
-
-                if (isBrowserIE11) {
-                    reject('Browser feature not supported.');
-                } else {
-                    Promise.all([
-                        isVideoSrc(src)
-                            ? promiseLoadVideo(src)
-                            : promiseLoadImage(src),
-                        isVideoSrc(src2)
-                            ? promiseLoadVideo(src2)
-                            : src2
-                                ? promiseLoadImage(src2)
-                                : null
-                    ])
-                        .then(([image, backSideImage]) => {
-                            resolve(new VideoFlag({
-                                ...flagOptions,
-                                ...computeFlagOptionsFromImage({
-                                    ...textureOptions,
-                                    image,
-                                    backSideImage
-                                })
-                            }));
-                        })
-                        .catch(reject);
-                }
+                Promise.all([
+                    isVideoSrc(src)
+                        ? promiseLoadVideo(src)
+                        : promiseLoadImage(src),
+                    isVideoSrc(src2)
+                        ? promiseLoadVideo(src2)
+                        : src2
+                            ? promiseLoadImage(src2)
+                            : null
+                ])
+                    .then(([image, backSideImage]) => {
+                        resolve(new VideoFlag({
+                            ...flagOptions,
+                            ...computeFlagOptionsFromImage({
+                                ...textureOptions,
+                                image,
+                                backSideImage
+                            })
+                        }));
+                    })
+                    .catch(reject);
             } else {
                 Promise.all([
                     promiseLoadImage(src),
