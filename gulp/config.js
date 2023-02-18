@@ -44,12 +44,6 @@ export default {
     modernizr: {
       // https://github.com/Modernizr/Modernizr/blob/master/lib/config-all.json
       'feature-detects': [
-        'canvas',
-        'css/flexbox',
-        'css/flexboxtweener',
-        'svg',
-        'svg/asimg',
-        'svg/inline'
       ],
       options: [
         'setClasses'

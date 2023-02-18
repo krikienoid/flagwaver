@@ -17,8 +17,10 @@ export default function withBrowserTest(WrappedComponent) {
             );
         } else {
             const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('webgl') ||
-                canvas.getContext('experimental-webgl');
+            const ctx = canvas.getContext && (
+                canvas.getContext('webgl') ||
+                canvas.getContext('experimental-webgl')
+            );
 
             if (!ctx) {
                 // Browser supports WebGL but initialization failed

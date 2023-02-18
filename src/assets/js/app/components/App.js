@@ -1,4 +1,3 @@
-import Modernizr from 'modernizr';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import {
     MdClose,
@@ -37,11 +36,7 @@ import useForceUpdate from '../hooks/useForceUpdate';
 import useUniqueId from '../hooks/useUniqueId';
 import store from '../redux/store';
 
-const SITE_HEADLINE_INVERSE_IMAGE_PATH = `${process.env.ROOT_URL}/${
-    Modernizr.svgasimg
-        ? 'assets/img/site-headline-inverse.svg'
-        : 'assets/img/site-headline-inverse.png'
-}`;
+const SITE_HEADLINE_INVERSE_IMAGE_PATH = `${process.env.ROOT_URL}/assets/img/site-headline-inverse.svg`;
 
 const AppMode = {
     EDIT: 'edit',

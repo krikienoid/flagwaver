@@ -131,7 +131,9 @@
 
         <!-- BEGIN JS -->
         <script type="text/javascript" src="@ROOT_URL/assets/js/modernizr-custom.js?v=@VERSION"></script>
-        <script type="text/javascript" src="@ROOT_URL/assets/js/app.js?v=@VERSION"></script>
+
+        <script type="module" src="@ROOT_URL/assets/js/app.js?v=@VERSION"></script>
+        <script nomodule src="@ROOT_URL/assets/js/app.es5.js?v=@VERSION"></script>
         <!-- END JS -->
     </body>
 </html>

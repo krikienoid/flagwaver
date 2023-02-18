@@ -1,5 +1,3 @@
-'use strict';
-
 import path                     from 'path';
 
 import gulp                     from 'gulp';
@@ -20,7 +18,7 @@ import sassTildeImporter        from 'node-sass-tilde-importer';
 import sass                     from 'sass';
 
 import rollup                   from 'gulp-better-rollup';
-import uglify                   from 'gulp-uglify';
+import terser                   from 'gulp-terser';
 import modernizr                from 'modernizr';
 
 import { generateSW }           from 'workbox-build';
@@ -28,8 +26,6 @@ import { generateSW }           from 'workbox-build';
 import packageJson              from '../package.json';
 import config                   from './config';
 import rollupConfig             from './rollup.config';
-import rollupConfigLoader       from './rollup.config.loader';
-import rollupConfigPolyfills    from './rollup.config.polyfills';
 
 const PRODUCTION = config.env === 'production';
 
@@ -92,7 +88,7 @@ function compileJS(rollupConfig) {
   return gulp.src(rollupConfig.input)
     .pipe(sourcemaps.init())
     .pipe(rollup(rollupConfig, rollupConfig.output))
-    .pipe(gulpif(PRODUCTION, uglify()
+    .pipe(gulpif(PRODUCTION, terser()
       .on('error', (e) => { console.log(e); })
     ))
     .pipe(gulpif(!PRODUCTION, sourcemaps.write('.')))
@@ -100,28 +96,21 @@ function compileJS(rollupConfig) {
 }
 
 function buildAppJS() {
-  return gulp.src(rollupConfigLoader.input)
-    .pipe(rollup(rollupConfigLoader, rollupConfigLoader.output))
-    .on('data', (file) => {
-      const loaderJS = file.contents.toString();
-      const [loaderJSStart, loaderJSEnd] = loaderJS.split('_MAIN_JS_');
-      const { output } = rollupConfig;
-
-      output.banner = (output.banner || '') + loaderJSStart;
-      output.footer = loaderJSEnd + (output.footer || '');
-
-      return compileJS(rollupConfig);
-    });
+  return compileJS(rollupConfig[0]);
 }
 
-function buildPolyfillsJS() {
-  return compileJS(rollupConfigPolyfills);
+function buildAppES5JS(done) {
+  if (PRODUCTION) {
+    return compileJS(rollupConfig[1]);
+  }
+
+  done();
 }
 
 function buildModernizrJS(done) {
   modernizr.build(config.settings.modernizr, (code) => {
     file('modernizr-custom.js', code, { src: true })
-      .pipe(gulpif(PRODUCTION, uglify()
+      .pipe(gulpif(PRODUCTION, terser()
         .on('error', (e) => { console.log(e); })
       ))
       .pipe(gulp.dest(config.paths.dest.js))
@@ -131,7 +120,7 @@ function buildModernizrJS(done) {
 
 const buildJS = gulp.parallel(
   buildAppJS,
-  buildPolyfillsJS,
+  buildAppES5JS,
   buildModernizrJS
 );
 
