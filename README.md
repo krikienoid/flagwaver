@@ -16,7 +16,7 @@ This project uses a Gulp powered build system to manage tasks such as transpilat
 
 **Dev tools** - Gulp, Rollup, Babel, Terser, Sass, Autoprefixer, clean-css
 
-**Frontend:** - Preact, React Redux, Redux, Spectre.css, three.js
+**Frontend** - Preact, React Redux, Redux, Spectre.css, three.js
 
 ### Build
 
