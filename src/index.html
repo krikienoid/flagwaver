@@ -53,10 +53,19 @@
         <!-- BEGIN Web Font Loader -->
         <script type="text/javascript">
             (function () {
+                var PATH_LOCAL_FONT = '@ROOT_URL/assets/css/fonts.css?v=@VERSION';
+
                 var sessionStorage = window.sessionStorage;
 
                 if (sessionStorage && sessionStorage.wfActive) {
-                    document.documentElement.className += ' wf-active';
+                    (function (d) {
+                        var l = d.createElement('link');
+                        l.rel = 'stylesheet';
+                        l.type = 'text/css';
+                        l.href = PATH_LOCAL_FONT;
+                        d.head.appendChild(l);
+                        d.documentElement.className += ' wf-active';
+                    })(document);
 
                     return;
                 }
@@ -65,6 +74,9 @@
                     custom: {
                         families: [
                             'Montserrat:n4,n5,n7'
+                        ],
+                        urls: [
+                            PATH_LOCAL_FONT
                         ]
                     },
                     timeout: 2000,
