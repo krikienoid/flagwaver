@@ -4,25 +4,19 @@
 
 [krikienoid.github.io/flagwaver](https://krikienoid.github.io/flagwaver/)
 
-## Features
+## Description
 
-- Upload images from the web or from your device.
-- Supports flag cloths with different aspect ratios.
-- Set the hoist side and flag orientation.
-- Try out different flagpoles.
-- Adjust wind speed and direction.
-- Progressive Web App support.
+FlagWaver is a web app that lets you upload your own image and turn it into a flag. It is a visualization tool that simulates a waving flag in 3D. You can change the hoist direction, wind, background, and more.
+
+See the [wiki](https://github.com/krikienoid/flagwaver/wiki) for details.
 
 ## Development
 
-This project uses a Gulp-powered build system with these features:
+This project uses a Gulp powered build system to manage tasks such as transpilation and minification. Code files from the ```src``` directory are compiled and output to the ```dist``` directory.
 
-- Sass compilation and prefixing
-- Rollup JavaScript bundler
-- Built-in BrowserSync server
-- For production builds:
-  - CSS compression
-  - JavaScript compression
+**Dev tools** - Gulp, Rollup, Babel, Terser, Sass, Autoprefixer, clean-css
+
+**Frontend:** - Preact, React Redux, Redux, Spectre.css, three.js
 
 ### Build
 
