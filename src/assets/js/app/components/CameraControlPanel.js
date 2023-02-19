@@ -57,6 +57,8 @@ function CameraControlPanel({ app }) {
 
     useEffect(() => {
         const handleChange = () => {
+            app.refresh();
+
             setRadius(orbitControls.getDistance());
             setTheta(orbitControls.getAzimuthalAngle());
             setPhi(orbitControls.getPolarAngle());
