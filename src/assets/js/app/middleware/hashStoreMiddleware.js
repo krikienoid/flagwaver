@@ -1,4 +1,4 @@
-import { toHash } from '../globals/hashStore';
+import { toHash } from '../globals/HashStore';
 import debounce from '../utils/debounce';
 
 const toHashDebounced = debounce(toHash);
